@@ -1,0 +1,94 @@
+export interface Professional {
+  id: string
+  name: string
+  email: string
+  password_hash: string
+  created_at: string
+}
+
+export interface Student {
+  id: string
+  professional_id: string
+  name: string
+  email: string | null
+  phone: string | null
+  objective: string | null
+  invite_token: string
+  status: 'active' | 'inactive'
+  ai_autopilot: boolean
+  created_at: string
+}
+
+export type MessageSender = 'student' | 'professional' | 'ai'
+
+export interface Message {
+  id: string
+  student_id: string
+  professional_id: string
+  sender: MessageSender
+  content: string
+  created_at: string
+}
+
+export interface Exercise {
+  id: string
+  name: string
+  muscle_group: string
+  equipment: string | null
+  instructions: string | null
+  video_url: string | null
+  created_at: string
+}
+
+export interface Workout {
+  id: string
+  professional_id: string
+  student_id: string
+  name: string
+  status: 'draft' | 'sent'
+  sent_at: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface WorkoutExercise {
+  id: string
+  workout_id: string
+  exercise_id: string
+  order_index: number
+  sets: number
+  reps: string
+  load_kg: number | null
+  rest_seconds: number | null
+  notes: string | null
+}
+
+export interface TrainingSession {
+  id: string
+  workout_id: string
+  student_id: string
+  status: 'in_progress' | 'completed'
+  started_at: string
+  finished_at: string | null
+}
+
+export interface SessionEntry {
+  id: string
+  training_session_id: string
+  workout_exercise_id: string
+  set_number: number
+  reps_done: number | null
+  load_kg_done: number | null
+  notes: string | null
+  created_at: string
+}
+
+export interface Feedback {
+  id: string
+  training_session_id: string
+  effort_rpe: number | null
+  satisfaction: number | null
+  discomfort: string | null
+  comment: string | null
+  created_at: string
+}
