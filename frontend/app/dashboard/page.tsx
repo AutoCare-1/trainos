@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
+import Avatar from '@/components/Avatar'
 import { api, ApiError } from '@/lib/api'
 import { Student } from '@/lib/types'
 
@@ -23,27 +24,50 @@ export default function DashboardPage() {
       .catch((err) => setErro(err instanceof ApiError ? err.message : 'Erro ao carregar alunos'))
   }, [router])
 
+  const totalSessoes = students?.reduce((acc, s) => acc + Number(s.sessoes_concluidas ?? 0), 0) ?? 0
+
   return (
     <>
       <Navbar />
-      <main className="max-w-5xl mx-auto w-full px-4 py-8 flex-1">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-xl font-bold text-slate-900">Meus alunos</h1>
-          <Link
-            href="/alunos/novo"
-            className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
-          >
+      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-white">Meus alunos</h1>
+            <p className="mt-1 text-sm text-slate-400">Acompanhe treinos, execuções e conversas</p>
+          </div>
+          <Link href="/alunos/novo" className="btn-primary rounded-xl px-5 py-2.5 text-sm">
             + Cadastrar aluno
           </Link>
         </div>
 
-        {erro && <p className="text-sm text-red-600 mb-4">{erro}</p>}
+        {students && students.length > 0 && (
+          <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <div className="glass rounded-2xl p-4">
+              <p className="text-xs font-medium uppercase tracking-wider text-slate-500">Alunos ativos</p>
+              <p className="mt-1 text-2xl font-bold text-white">{students.length}</p>
+            </div>
+            <div className="glass rounded-2xl p-4">
+              <p className="text-xs font-medium uppercase tracking-wider text-slate-500">Sessões concluídas</p>
+              <p className="mt-1 text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                {totalSessoes}
+              </p>
+            </div>
+            <div className="glass hidden rounded-2xl p-4 sm:block">
+              <p className="text-xs font-medium uppercase tracking-wider text-slate-500">Com treino ativo</p>
+              <p className="mt-1 text-2xl font-bold text-white">
+                {students.filter((s) => s.ultimo_treino).length}
+              </p>
+            </div>
+          </div>
+        )}
 
+        {erro && <p className="mb-4 text-sm text-rose-400">{erro}</p>}
         {students === null && !erro && <p className="text-slate-500">Carregando...</p>}
 
         {students?.length === 0 && (
-          <div className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-slate-500">
-            Nenhum aluno cadastrado ainda. Comece cadastrando o primeiro.
+          <div className="glass rounded-2xl border-dashed p-10 text-center">
+            <p className="text-slate-400">Nenhum aluno cadastrado ainda.</p>
+            <p className="mt-1 text-sm text-slate-500">Comece cadastrando o primeiro — leva menos de um minuto.</p>
           </div>
         )}
 
@@ -52,18 +76,21 @@ export default function DashboardPage() {
             <Link
               key={s.id}
               href={`/alunos/${s.id}`}
-              className="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-5 py-4 hover:border-indigo-300 hover:shadow-sm transition"
+              className="glass glass-hover flex items-center gap-4 rounded-2xl px-5 py-4"
             >
-              <div>
-                <p className="font-semibold text-slate-900">{s.name}</p>
-                <p className="text-sm text-slate-500">{s.objective || 'Sem objetivo definido'}</p>
+              <Avatar nome={s.name} />
+              <div className="min-w-0 flex-1">
+                <p className="truncate font-semibold text-white">{s.name}</p>
+                <p className="truncate text-sm text-slate-400">{s.objective || 'Sem objetivo definido'}</p>
               </div>
-              <div className="text-right text-sm text-slate-500">
-                <p>{s.ultimo_treino ?? 'Sem treino ainda'}</p>
-                <p>
-                  {s.sessoes_concluidas ?? 0} {(s.sessoes_concluidas ?? 0) === 1 ? 'sessão concluída' : 'sessões concluídas'}
+              <div className="hidden text-right sm:block">
+                <p className="text-sm text-slate-300">{s.ultimo_treino ?? 'Sem treino'}</p>
+                <p className="text-xs text-slate-500">
+                  {Number(s.sessoes_concluidas ?? 0)}{' '}
+                  {Number(s.sessoes_concluidas ?? 0) === 1 ? 'sessão concluída' : 'sessões concluídas'}
                 </p>
               </div>
+              <span className="text-slate-600">→</span>
             </Link>
           ))}
         </div>

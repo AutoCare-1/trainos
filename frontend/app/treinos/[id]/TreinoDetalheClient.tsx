@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import { api, ApiError } from '@/lib/api'
@@ -48,8 +49,8 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
     return (
       <>
         <Navbar />
-        <main className="max-w-3xl mx-auto w-full px-4 py-8 flex-1">
-          <p className="text-sm text-red-600">{erro}</p>
+        <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
+          <p className="text-sm text-rose-400">{erro}</p>
         </main>
       </>
     )
@@ -59,7 +60,7 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
     return (
       <>
         <Navbar />
-        <main className="max-w-3xl mx-auto w-full px-4 py-8 flex-1">
+        <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
           <p className="text-slate-500">Carregando...</p>
         </main>
       </>
@@ -69,13 +70,20 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
   return (
     <>
       <Navbar />
-      <main className="max-w-3xl mx-auto w-full px-4 py-8 flex-1">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-xl font-bold text-slate-900">{workout.name}</h1>
+      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
+        <Link
+          href={`/alunos/${workout.student_id}`}
+          className="mb-5 inline-block text-sm text-slate-500 transition hover:text-white"
+        >
+          ← Voltar ao aluno
+        </Link>
+
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-bold tracking-tight text-white">{workout.name}</h1>
             <span
-              className={`text-xs font-medium px-2 py-1 rounded-full ${
-                workout.status === 'sent' ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'
+              className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+                workout.status === 'sent' ? 'bg-emerald-500/15 text-emerald-300' : 'bg-white/8 text-slate-400'
               }`}
             >
               {workout.status === 'sent' ? 'Enviado ao aluno' : 'Rascunho'}
@@ -85,7 +93,7 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
             <button
               onClick={enviarTreino}
               disabled={enviando}
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-60"
+              className="btn-primary rounded-xl px-5 py-2.5 text-sm"
             >
               {enviando ? 'Enviando...' : 'Enviar ao aluno'}
             </button>
@@ -94,13 +102,30 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
 
         <div className="space-y-3">
           {exercises.map((ex, idx) => (
-            <div key={ex.id} className="rounded-xl border border-slate-200 bg-white p-4">
-              <p className="text-xs text-slate-400 mb-1">Exercício {idx + 1} — {ex.muscle_group}</p>
-              <p className="font-semibold text-slate-900 mb-1">{ex.exercise_name}</p>
-              <p className="text-sm text-slate-600">
-                {ex.sets} séries × {ex.reps} reps{ex.load_kg ? ` — ${ex.load_kg}kg` : ''}
-              </p>
-              {ex.instructions && <p className="text-sm text-slate-400 mt-2">{ex.instructions}</p>}
+            <div key={ex.id} className="glass rounded-2xl p-5">
+              <div className="flex items-start gap-4">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 text-sm font-bold text-emerald-300">
+                  {idx + 1}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs uppercase tracking-wider text-slate-500">{ex.muscle_group}</p>
+                  <p className="font-semibold text-white">{ex.exercise_name}</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    <span className="rounded-lg bg-white/6 px-2.5 py-1 text-xs text-slate-300">
+                      {ex.sets} séries
+                    </span>
+                    <span className="rounded-lg bg-white/6 px-2.5 py-1 text-xs text-slate-300">
+                      {ex.reps} reps
+                    </span>
+                    {ex.load_kg && (
+                      <span className="rounded-lg bg-emerald-500/12 px-2.5 py-1 text-xs text-emerald-300">
+                        {ex.load_kg} kg
+                      </span>
+                    )}
+                  </div>
+                  {ex.instructions && <p className="mt-3 text-sm text-slate-500">{ex.instructions}</p>}
+                </div>
+              </div>
             </div>
           ))}
         </div>

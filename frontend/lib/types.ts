@@ -12,9 +12,19 @@ export interface Student {
   objective: string | null
   invite_token: string
   status: 'active' | 'inactive'
+  ai_autopilot: boolean
   created_at: string
   ultimo_treino?: string | null
   sessoes_concluidas?: number
+}
+
+export interface Message {
+  id: string
+  student_id: string
+  professional_id: string
+  sender: 'student' | 'professional' | 'ai'
+  content: string
+  created_at: string
 }
 
 export interface Exercise {

@@ -1,8 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import ChatBox from '@/components/ChatBox'
 import { api, ApiError } from '@/lib/api'
-import { Workout, WorkoutExerciseDetail } from '@/lib/types'
+import { Message, Workout, WorkoutExerciseDetail } from '@/lib/types'
 
 interface PortalData {
   student: { id: string; name: string; objective: string | null }
@@ -14,6 +15,7 @@ interface PortalData {
 export default function PortalAlunoClient({ token }: { token: string }) {
   const [data, setData] = useState<PortalData | null>(null)
   const [erro, setErro] = useState<string | null>(null)
+  const [aba, setAba] = useState<'treino' | 'chat'>('treino')
   const [sessionId, setSessionId] = useState<string | null>(null)
   const [registrados, setRegistrados] = useState<Record<string, number>>({})
   const [inputs, setInputs] = useState<Record<string, { reps: string; load: string }>>({})
@@ -23,6 +25,17 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   const [satisfacao, setSatisfacao] = useState(5)
   const [desconforto, setDesconforto] = useState('')
   const [comentario, setComentario] = useState('')
+
+  // chat
+  const [messages, setMessages] = useState<Message[]>([])
+  const [aguardandoIa, setAguardandoIa] = useState(false)
+
+  const carregarMensagens = useCallback(() => {
+    api
+      .get<{ messages: Message[] }>(`/portal/${token}/mensagens`)
+      .then((d) => setMessages(d.messages))
+      .catch(() => {})
+  }, [token])
 
   useEffect(() => {
     api
@@ -37,7 +50,23 @@ export default function PortalAlunoClient({ token }: { token: string }) {
         setInputs(initialInputs)
       })
       .catch((err) => setErro(err instanceof ApiError ? err.message : 'Não foi possível carregar seu treino'))
-  }, [token])
+
+    carregarMensagens()
+    const intervalo = setInterval(carregarMensagens, 5000)
+    return () => clearInterval(intervalo)
+  }, [token, carregarMensagens])
+
+  async function enviarMensagem(texto: string) {
+    setAguardandoIa(true)
+    try {
+      const resp = await api.post<{ message: Message; aiReply: Message | null }>(`/portal/${token}/mensagens`, {
+        content: texto,
+      })
+      setMessages((prev) => [...prev, resp.message, ...(resp.aiReply ? [resp.aiReply] : [])])
+    } finally {
+      setAguardandoIa(false)
+    }
+  }
 
   async function iniciarTreino() {
     if (!data?.workout) return
@@ -88,10 +117,10 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     }
   }
 
-  if (erro) {
+  if (erro && !data) {
     return (
       <main className="flex flex-1 items-center justify-center px-4">
-        <p className="text-red-600 text-center">{erro}</p>
+        <p className="text-center text-rose-400">{erro}</p>
       </main>
     )
   }
@@ -104,160 +133,280 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     )
   }
 
+  const primeiroNome = data.student.name.split(' ')[0]
+
+  const cabecalho = (
+    <header className="sticky top-0 z-20 border-b border-white/8 bg-[#070b14]/85 backdrop-blur-xl">
+      <div className="mx-auto flex w-full max-w-lg items-center justify-between px-4 py-3.5">
+        <div>
+          <p className="text-xs text-slate-500">Olá, {primeiroNome} 👋</p>
+          <p className="font-bold text-white">{data.workout ? data.workout.name : 'Seu espaço de treino'}</p>
+        </div>
+        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-500 text-sm font-black text-[#04110d]">
+          T
+        </span>
+      </div>
+      <nav className="mx-auto flex w-full max-w-lg px-4">
+        {(
+          [
+            ['treino', 'Treino'],
+            ['chat', 'Chat'],
+          ] as const
+        ).map(([id, rotulo]) => (
+          <button
+            key={id}
+            onClick={() => setAba(id)}
+            className={`relative flex-1 pb-3 pt-1 text-sm font-medium transition ${
+              aba === id ? 'text-white' : 'text-slate-500 hover:text-slate-300'
+            }`}
+          >
+            {rotulo}
+            {aba === id && (
+              <span className="absolute inset-x-8 bottom-0 h-0.5 rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400" />
+            )}
+          </button>
+        ))}
+      </nav>
+    </header>
+  )
+
+  if (aba === 'chat') {
+    return (
+      <div className="flex min-h-screen flex-col">
+        {cabecalho}
+        <main className="mx-auto flex w-full max-w-lg flex-1 flex-col">
+          <div className="flex flex-1 flex-col" style={{ minHeight: 'calc(100vh - 110px)' }}>
+            <ChatBox
+              messages={messages}
+              perspective="student"
+              onSend={enviarMensagem}
+              aguardandoIa={aguardandoIa}
+              placeholder="Tire uma dúvida sobre seu treino..."
+              vazioTexto="Fale com seu professor ou tire dúvidas — a IA do seu coach responde na hora. 💬"
+            />
+          </div>
+        </main>
+      </div>
+    )
+  }
+
   if (treinoConcluido) {
     return (
-      <main className="flex flex-1 items-center justify-center px-4">
-        <div className="text-center max-w-sm">
-          <h1 className="text-2xl font-bold text-slate-900 mb-2">Treino concluído! 💪</h1>
-          <p className="text-slate-500">Bom trabalho, {data.student.name.split(' ')[0]}! Seu professor já pode ver seu progresso.</p>
-        </div>
-      </main>
+      <div className="flex min-h-screen flex-col">
+        {cabecalho}
+        <main className="flex flex-1 items-center justify-center px-4">
+          <div className="glass max-w-sm rounded-3xl p-8 text-center">
+            <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 text-3xl">
+              💪
+            </span>
+            <h1 className="text-2xl font-bold text-white">Treino concluído!</h1>
+            <p className="mt-2 text-slate-400">
+              Bom trabalho, {primeiroNome}! Seu professor já pode ver seu progresso.
+            </p>
+            <button onClick={() => setAba('chat')} className="btn-primary mt-6 w-full rounded-xl px-4 py-3 text-sm">
+              Mandar mensagem pro coach
+            </button>
+          </div>
+        </main>
+      </div>
     )
   }
 
   if (!data.workout) {
     return (
-      <main className="flex flex-1 items-center justify-center px-4">
-        <div className="text-center max-w-sm">
-          <h1 className="text-xl font-bold text-slate-900 mb-2">Olá, {data.student.name.split(' ')[0]}!</h1>
-          <p className="text-slate-500">Você ainda não tem nenhum treino disponível. Assim que seu professor enviar, ele aparece aqui.</p>
-        </div>
-      </main>
+      <div className="flex min-h-screen flex-col">
+        {cabecalho}
+        <main className="flex flex-1 items-center justify-center px-4">
+          <div className="glass max-w-sm rounded-3xl p-8 text-center">
+            <h1 className="text-xl font-bold text-white">Nenhum treino por aqui ainda</h1>
+            <p className="mt-2 text-sm text-slate-400">
+              Assim que seu professor enviar um treino, ele aparece aqui. Enquanto isso, pode mandar mensagem na aba
+              Chat.
+            </p>
+          </div>
+        </main>
+      </div>
     )
   }
 
   const todasSeriesFeitas = data.exercises.every((ex) => (registrados[ex.id] ?? 0) >= ex.sets)
+  const totalSeries = data.exercises.reduce((acc, ex) => acc + ex.sets, 0)
+  const seriesFeitas = Object.values(registrados).reduce((acc, n) => acc + n, 0)
+  const progresso = totalSeries > 0 ? Math.round((seriesFeitas / totalSeries) * 100) : 0
 
   return (
-    <main className="max-w-lg mx-auto w-full px-4 py-8 flex-1">
-      <div className="mb-6">
-        <p className="text-sm text-slate-500">Olá, {data.student.name.split(' ')[0]}</p>
-        <h1 className="text-xl font-bold text-slate-900">{data.workout.name}</h1>
-      </div>
+    <div className="flex min-h-screen flex-col">
+      {cabecalho}
+      <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6 pb-24">
+        {erro && <p className="mb-4 text-sm text-rose-400">{erro}</p>}
 
-      {!sessionId && (
-        <button
-          onClick={iniciarTreino}
-          className="w-full rounded-lg bg-indigo-600 px-4 py-3 text-base font-semibold text-white hover:bg-indigo-500 mb-6"
-        >
-          Iniciar treino
-        </button>
-      )}
+        {!sessionId && (
+          <button onClick={iniciarTreino} className="btn-primary mb-6 w-full rounded-2xl px-4 py-4 text-base">
+            Iniciar treino 🔥
+          </button>
+        )}
 
-      <div className="space-y-4">
-        {data.exercises.map((ex, idx) => {
-          const feitas = registrados[ex.id] ?? 0
-          const completo = feitas >= ex.sets
-          return (
-            <div
-              key={ex.id}
-              className={`rounded-xl border p-4 ${completo ? 'border-green-200 bg-green-50' : 'border-slate-200 bg-white'}`}
-            >
-              <p className="text-xs text-slate-400 mb-1">
-                Exercício {idx + 1} — {ex.muscle_group}
-              </p>
-              <p className="font-semibold text-slate-900 mb-1">{ex.exercise_name}</p>
-              <p className="text-sm text-slate-600 mb-3">
-                Alvo: {ex.sets} séries × {ex.reps} reps{ex.load_kg ? ` — ${ex.load_kg}kg` : ''}
-              </p>
-
-              {sessionId && !completo && (
-                <div className="flex items-end gap-2">
-                  <div>
-                    <label className="block text-xs text-slate-500 mb-1">Reps feitas</label>
-                    <input
-                      type="number"
-                      value={inputs[ex.id]?.reps ?? ''}
-                      onChange={(e) => setInputs({ ...inputs, [ex.id]: { ...inputs[ex.id], reps: e.target.value } })}
-                      className="w-20 rounded-lg border border-slate-300 px-2 py-2 text-sm"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-slate-500 mb-1">Carga (kg)</label>
-                    <input
-                      type="number"
-                      value={inputs[ex.id]?.load ?? ''}
-                      onChange={(e) => setInputs({ ...inputs, [ex.id]: { ...inputs[ex.id], load: e.target.value } })}
-                      className="w-20 rounded-lg border border-slate-300 px-2 py-2 text-sm"
-                    />
-                  </div>
-                  <button
-                    onClick={() => registrarSerie(ex)}
-                    className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-700"
-                  >
-                    Registrar série {feitas + 1}/{ex.sets}
-                  </button>
-                </div>
-              )}
-
-              {sessionId && (
-                <p className="text-xs text-slate-400 mt-2">
-                  {feitas}/{ex.sets} séries registradas
-                </p>
-              )}
+        {sessionId && (
+          <div className="glass mb-6 rounded-2xl p-4">
+            <div className="mb-2 flex items-center justify-between text-sm">
+              <span className="font-medium text-white">Progresso</span>
+              <span className="text-slate-400">
+                {seriesFeitas}/{totalSeries} séries
+              </span>
             </div>
-          )
-        })}
-      </div>
-
-      {sessionId && (
-        <div className="mt-8 rounded-xl border border-slate-200 bg-white p-4">
-          <h2 className="font-semibold text-slate-900 mb-3">
-            {todasSeriesFeitas ? 'Como foi o treino?' : 'Finalizar antes de terminar todas as séries?'}
-          </h2>
-          <div className="space-y-3">
-            <div>
-              <label className="block text-xs text-slate-500 mb-1">Esforço percebido (RPE 0-10)</label>
-              <input
-                type="range"
-                min={0}
-                max={10}
-                value={rpe}
-                onChange={(e) => setRpe(Number(e.target.value))}
-                className="w-full"
-              />
-              <p className="text-sm text-slate-600">{rpe}</p>
-            </div>
-            <div>
-              <label className="block text-xs text-slate-500 mb-1">Satisfação (1-5)</label>
-              <input
-                type="range"
-                min={1}
-                max={5}
-                value={satisfacao}
-                onChange={(e) => setSatisfacao(Number(e.target.value))}
-                className="w-full"
-              />
-              <p className="text-sm text-slate-600">{satisfacao}</p>
-            </div>
-            <div>
-              <label className="block text-xs text-slate-500 mb-1">Sentiu algum desconforto?</label>
-              <input
-                type="text"
-                value={desconforto}
-                onChange={(e) => setDesconforto(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+            <div className="h-2 overflow-hidden rounded-full bg-white/8">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 transition-all duration-500"
+                style={{ width: `${progresso}%` }}
               />
             </div>
-            <div>
-              <label className="block text-xs text-slate-500 mb-1">Comentário (opcional)</label>
-              <textarea
-                value={comentario}
-                onChange={(e) => setComentario(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-                rows={2}
-              />
-            </div>
-            <button
-              onClick={concluirTreino}
-              disabled={enviandoFeedback}
-              className="w-full rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-60"
-            >
-              {enviandoFeedback ? 'Enviando...' : 'Concluir treino'}
-            </button>
           </div>
+        )}
+
+        <div className="space-y-4">
+          {data.exercises.map((ex, idx) => {
+            const feitas = registrados[ex.id] ?? 0
+            const completo = feitas >= ex.sets
+            return (
+              <div
+                key={ex.id}
+                className={`rounded-2xl border p-5 transition ${
+                  completo
+                    ? 'border-emerald-400/30 bg-emerald-500/8'
+                    : 'glass'
+                }`}
+              >
+                <div className="flex items-start gap-3.5">
+                  <span
+                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-sm font-bold ${
+                      completo
+                        ? 'bg-emerald-500/20 text-emerald-300'
+                        : 'bg-white/8 text-slate-300'
+                    }`}
+                  >
+                    {completo ? '✓' : idx + 1}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs uppercase tracking-wider text-slate-500">{ex.muscle_group}</p>
+                    <p className="font-semibold text-white">{ex.exercise_name}</p>
+                    <p className="mt-0.5 text-sm text-slate-400">
+                      {ex.sets} × {ex.reps}
+                      {ex.load_kg ? ` · ${ex.load_kg}kg` : ''}
+                    </p>
+                  </div>
+                </div>
+
+                {sessionId && !completo && (
+                  <div className="mt-4 flex items-end gap-2">
+                    <div className="flex-1">
+                      <label className="mb-1 block text-xs text-slate-500">Reps</label>
+                      <input
+                        type="number"
+                        inputMode="numeric"
+                        value={inputs[ex.id]?.reps ?? ''}
+                        onChange={(e) => setInputs({ ...inputs, [ex.id]: { ...inputs[ex.id], reps: e.target.value } })}
+                        className="input-dark w-full rounded-xl px-3 py-2.5 text-center text-sm"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <label className="mb-1 block text-xs text-slate-500">Carga (kg)</label>
+                      <input
+                        type="number"
+                        inputMode="decimal"
+                        value={inputs[ex.id]?.load ?? ''}
+                        onChange={(e) => setInputs({ ...inputs, [ex.id]: { ...inputs[ex.id], load: e.target.value } })}
+                        className="input-dark w-full rounded-xl px-3 py-2.5 text-center text-sm"
+                      />
+                    </div>
+                    <button
+                      onClick={() => registrarSerie(ex)}
+                      className="btn-primary shrink-0 rounded-xl px-4 py-2.5 text-sm"
+                    >
+                      ✓ {feitas + 1}/{ex.sets}
+                    </button>
+                  </div>
+                )}
+
+                {sessionId && (
+                  <div className="mt-3 flex gap-1.5">
+                    {Array.from({ length: ex.sets }).map((_, i) => (
+                      <span
+                        key={i}
+                        className={`h-1.5 flex-1 rounded-full ${
+                          i < feitas ? 'bg-gradient-to-r from-emerald-400 to-cyan-400' : 'bg-white/8'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </div>
-      )}
-    </main>
+
+        {sessionId && (
+          <div className="glass mt-8 rounded-2xl p-5">
+            <h2 className="mb-4 font-semibold text-white">
+              {todasSeriesFeitas ? 'Como foi o treino? 🎯' : 'Finalizar treino'}
+            </h2>
+            <div className="space-y-4">
+              <div>
+                <div className="mb-1 flex justify-between text-xs text-slate-500">
+                  <span>Esforço percebido (RPE)</span>
+                  <span className="font-bold text-emerald-300">{rpe}</span>
+                </div>
+                <input
+                  type="range"
+                  min={0}
+                  max={10}
+                  value={rpe}
+                  onChange={(e) => setRpe(Number(e.target.value))}
+                  className="w-full accent-emerald-400"
+                />
+              </div>
+              <div>
+                <div className="mb-1 flex justify-between text-xs text-slate-500">
+                  <span>Satisfação</span>
+                  <span className="font-bold text-emerald-300">{'★'.repeat(satisfacao)}</span>
+                </div>
+                <input
+                  type="range"
+                  min={1}
+                  max={5}
+                  value={satisfacao}
+                  onChange={(e) => setSatisfacao(Number(e.target.value))}
+                  className="w-full accent-emerald-400"
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-xs text-slate-500">Sentiu algum desconforto?</label>
+                <input
+                  type="text"
+                  value={desconforto}
+                  onChange={(e) => setDesconforto(e.target.value)}
+                  className="input-dark w-full rounded-xl px-4 py-2.5 text-sm"
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-xs text-slate-500">Comentário (opcional)</label>
+                <textarea
+                  value={comentario}
+                  onChange={(e) => setComentario(e.target.value)}
+                  className="input-dark w-full rounded-xl px-4 py-2.5 text-sm"
+                  rows={2}
+                />
+              </div>
+              <button
+                onClick={concluirTreino}
+                disabled={enviandoFeedback}
+                className="btn-primary w-full rounded-xl px-4 py-3 text-sm"
+              >
+                {enviandoFeedback ? 'Enviando...' : 'Concluir treino 🏁'}
+              </button>
+            </div>
+          </div>
+        )}
+      </main>
+    </div>
   )
 }

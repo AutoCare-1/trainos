@@ -32,55 +32,60 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex flex-1 items-center justify-center px-4">
+    <div className="flex flex-1 items-center justify-center px-4 py-10">
       <div className="w-full max-w-sm">
-        <h1 className="text-2xl font-bold text-slate-900 mb-1">TrainOS</h1>
-        <p className="text-slate-500 mb-6">
-          {modo === 'login' ? 'Entre na sua conta de profissional' : 'Crie sua conta de profissional'}
-        </p>
+        <div className="mb-8 flex flex-col items-center text-center">
+          <span className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400 to-cyan-500 text-2xl font-black text-[#04110d] shadow-lg shadow-emerald-500/25">
+            T
+          </span>
+          <h1 className="text-3xl font-bold tracking-tight text-white">
+            Train<span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">OS</span>
+          </h1>
+          <p className="mt-2 text-sm text-slate-400">
+            {modo === 'login'
+              ? 'Entre para gerenciar seus alunos e treinos'
+              : 'Crie sua conta de profissional'}
+          </p>
+        </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+        <form onSubmit={handleSubmit} className="glass space-y-4 rounded-2xl p-6">
           {modo === 'signup' && (
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Nome</label>
+              <label className="mb-1.5 block text-sm font-medium text-slate-300">Nome</label>
               <input
                 type="text"
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="input-dark w-full rounded-xl px-4 py-2.5 text-sm"
               />
             </div>
           )}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">E-mail</label>
+            <label className="mb-1.5 block text-sm font-medium text-slate-300">E-mail</label>
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="input-dark w-full rounded-xl px-4 py-2.5 text-sm"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Senha</label>
+            <label className="mb-1.5 block text-sm font-medium text-slate-300">Senha</label>
             <input
               type="password"
               required
               minLength={6}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="input-dark w-full rounded-xl px-4 py-2.5 text-sm"
             />
           </div>
 
-          {erro && <p className="text-sm text-red-600">{erro}</p>}
+          {erro && <p className="text-sm text-rose-400">{erro}</p>}
 
-          <button
-            type="submit"
-            disabled={carregando}
-            className="w-full rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-60"
-          >
+          <button type="submit" disabled={carregando} className="btn-primary w-full rounded-xl px-4 py-3 text-sm">
             {carregando ? 'Aguarde...' : modo === 'login' ? 'Entrar' : 'Criar conta'}
           </button>
         </form>
@@ -88,9 +93,13 @@ export default function LoginPage() {
         <button
           type="button"
           onClick={() => setModo(modo === 'login' ? 'signup' : 'login')}
-          className="mt-4 text-sm text-indigo-600 hover:underline"
+          className="mt-5 w-full text-center text-sm text-slate-400 transition hover:text-emerald-300"
         >
-          {modo === 'login' ? 'Ainda não tem conta? Criar conta' : 'Já tem conta? Entrar'}
+          {modo === 'login' ? (
+            <>Ainda não tem conta? <span className="font-semibold text-emerald-400">Criar conta</span></>
+          ) : (
+            <>Já tem conta? <span className="font-semibold text-emerald-400">Entrar</span></>
+          )}
         </button>
       </div>
     </div>

@@ -87,39 +87,48 @@ export default function NovoTreinoClient() {
   return (
     <>
       <Navbar />
-      <main className="max-w-5xl mx-auto w-full px-4 py-8 flex-1">
-        <h1 className="text-xl font-bold text-slate-900 mb-6">Novo treino</h1>
+      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
+        <h1 className="mb-1 text-2xl font-bold tracking-tight text-white">Novo treino</h1>
+        <p className="mb-6 text-sm text-slate-400">Monte a prescrição em poucos cliques e envie direto pro aluno.</p>
 
-        {erro && <p className="text-sm text-red-600 mb-4">{erro}</p>}
+        {erro && <p className="mb-4 text-sm text-rose-400">{erro}</p>}
 
         {studentId && (
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid gap-6 md:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Nome do treino</label>
+              <label className="mb-1.5 block text-sm font-medium text-slate-300">Nome do treino</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm mb-6 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="input-dark mb-6 w-full rounded-xl px-4 py-2.5 text-sm"
               />
 
-              <h2 className="font-semibold text-slate-900 mb-3">Biblioteca de exercícios</h2>
-              <div className="space-y-4 max-h-[28rem] overflow-y-auto pr-2">
+              <h2 className="mb-3 font-semibold text-white">Biblioteca de exercícios</h2>
+              <div className="chat-scroll max-h-[28rem] space-y-4 overflow-y-auto pr-2">
                 {Object.entries(porGrupo).map(([grupo, exs]) => (
                   <div key={grupo}>
-                    <p className="text-xs font-semibold uppercase text-slate-400 mb-2">{grupo}</p>
+                    <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">{grupo}</p>
                     <div className="grid gap-2">
-                      {exs.map((ex) => (
-                        <button
-                          key={ex.id}
-                          type="button"
-                          onClick={() => adicionarExercicio(ex.id)}
-                          disabled={items.some((i) => i.exercise_id === ex.id)}
-                          className="text-left rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm hover:border-indigo-300 disabled:opacity-40 disabled:cursor-not-allowed"
-                        >
-                          {ex.name}
-                        </button>
-                      ))}
+                      {exs.map((ex) => {
+                        const selecionado = items.some((i) => i.exercise_id === ex.id)
+                        return (
+                          <button
+                            key={ex.id}
+                            type="button"
+                            onClick={() => adicionarExercicio(ex.id)}
+                            disabled={selecionado}
+                            className={`glass rounded-xl px-4 py-2.5 text-left text-sm transition ${
+                              selecionado
+                                ? 'opacity-35'
+                                : 'glass-hover text-slate-100'
+                            }`}
+                          >
+                            {ex.name}
+                            {selecionado && <span className="float-right text-emerald-400">✓</span>}
+                          </button>
+                        )
+                      })}
                     </div>
                   </div>
                 ))}
@@ -127,9 +136,14 @@ export default function NovoTreinoClient() {
             </div>
 
             <div>
-              <h2 className="font-semibold text-slate-900 mb-3">Exercícios selecionados ({items.length})</h2>
+              <h2 className="mb-3 font-semibold text-white">
+                Exercícios selecionados{' '}
+                <span className="ml-1 rounded-full bg-emerald-500/15 px-2 py-0.5 text-xs text-emerald-300">
+                  {items.length}
+                </span>
+              </h2>
               {items.length === 0 && (
-                <div className="rounded-xl border border-dashed border-slate-300 p-6 text-center text-slate-500 text-sm">
+                <div className="glass rounded-2xl border-dashed p-8 text-center text-sm text-slate-500">
                   Clique nos exercícios ao lado para adicionar
                 </div>
               )}
@@ -137,45 +151,45 @@ export default function NovoTreinoClient() {
                 {items.map((item) => {
                   const ex = exercises.find((e) => e.id === item.exercise_id)
                   return (
-                    <div key={item.exercise_id} className="rounded-xl border border-slate-200 bg-white p-4">
-                      <div className="flex items-center justify-between mb-3">
-                        <p className="font-medium text-slate-900">{ex?.name}</p>
+                    <div key={item.exercise_id} className="glass rounded-2xl p-4">
+                      <div className="mb-3 flex items-center justify-between">
+                        <p className="font-medium text-white">{ex?.name}</p>
                         <button
                           type="button"
                           onClick={() => removerExercicio(item.exercise_id)}
-                          className="text-xs text-red-600 hover:underline"
+                          className="text-xs text-rose-400 transition hover:text-rose-300"
                         >
                           Remover
                         </button>
                       </div>
                       <div className="grid grid-cols-3 gap-2">
                         <div>
-                          <label className="block text-xs text-slate-500 mb-1">Séries</label>
+                          <label className="mb-1 block text-xs text-slate-500">Séries</label>
                           <input
                             type="number"
                             min={1}
                             value={item.sets}
                             onChange={(e) => atualizarItem(item.exercise_id, 'sets', e.target.value)}
-                            className="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
+                            className="input-dark w-full rounded-lg px-2.5 py-2 text-sm"
                           />
                         </div>
                         <div>
-                          <label className="block text-xs text-slate-500 mb-1">Reps</label>
+                          <label className="mb-1 block text-xs text-slate-500">Reps</label>
                           <input
                             type="text"
                             value={item.reps}
                             onChange={(e) => atualizarItem(item.exercise_id, 'reps', e.target.value)}
-                            className="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
+                            className="input-dark w-full rounded-lg px-2.5 py-2 text-sm"
                           />
                         </div>
                         <div>
-                          <label className="block text-xs text-slate-500 mb-1">Carga (kg)</label>
+                          <label className="mb-1 block text-xs text-slate-500">Carga (kg)</label>
                           <input
                             type="number"
                             min={0}
                             value={item.load_kg ?? ''}
                             onChange={(e) => atualizarItem(item.exercise_id, 'load_kg', e.target.value)}
-                            className="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
+                            className="input-dark w-full rounded-lg px-2.5 py-2 text-sm"
                           />
                         </div>
                       </div>
@@ -188,7 +202,7 @@ export default function NovoTreinoClient() {
                 type="button"
                 onClick={salvarEEnviar}
                 disabled={salvando || items.length === 0}
-                className="mt-6 w-full rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-60"
+                className="btn-primary mt-6 w-full rounded-xl px-4 py-3 text-sm"
               >
                 {salvando ? 'Enviando...' : 'Salvar e enviar ao aluno'}
               </button>

@@ -14,6 +14,7 @@ export default function NovoAlunoPage() {
   const [erro, setErro] = useState<string | null>(null)
   const [carregando, setCarregando] = useState(false)
   const [criado, setCriado] = useState<Student | null>(null)
+  const [copiado, setCopiado] = useState(false)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -34,23 +35,39 @@ export default function NovoAlunoPage() {
     return (
       <>
         <Navbar />
-        <main className="max-w-lg mx-auto w-full px-4 py-8 flex-1">
-          <div className="rounded-xl border border-green-200 bg-green-50 p-6">
-            <h1 className="text-lg font-bold text-slate-900 mb-2">Aluno cadastrado!</h1>
-            <p className="text-sm text-slate-600 mb-4">
-              Envie este link para <strong>{criado.name}</strong> acessar o portal e ver os treinos:
+        <main className="mx-auto w-full max-w-lg flex-1 px-4 py-10">
+          <div className="glass rounded-2xl p-7">
+            <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/15 text-2xl">
+              ✓
+            </span>
+            <h1 className="text-xl font-bold text-white">Aluno cadastrado!</h1>
+            <p className="mt-2 text-sm text-slate-400">
+              Envie este link para <strong className="text-white">{criado.name}</strong> acessar o portal, ver os
+              treinos e conversar com você:
             </p>
-            <code className="block break-all rounded-lg bg-white border border-slate-200 px-3 py-2 text-sm text-indigo-700 mb-4">
-              {link}
-            </code>
-            <div className="flex gap-3">
-              <Link
-                href={`/treinos/novo?aluno=${criado.id}`}
-                className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
+            <div className="mt-4 flex items-center gap-2">
+              <code className="input-dark flex-1 truncate rounded-xl px-4 py-3 text-sm text-emerald-300">
+                {link}
+              </code>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(link)
+                  setCopiado(true)
+                  setTimeout(() => setCopiado(false), 2000)
+                }}
+                className="glass glass-hover rounded-xl px-4 py-3 text-sm text-slate-200"
               >
+                {copiado ? 'Copiado ✓' : 'Copiar'}
+              </button>
+            </div>
+            <div className="mt-6 flex gap-3">
+              <Link href={`/treinos/novo?aluno=${criado.id}`} className="btn-primary rounded-xl px-5 py-2.5 text-sm">
                 Criar treino agora
               </Link>
-              <Link href="/dashboard" className="rounded-lg px-4 py-2 text-sm font-semibold text-slate-600 hover:text-slate-900">
+              <Link
+                href="/dashboard"
+                className="rounded-xl px-5 py-2.5 text-sm font-medium text-slate-400 transition hover:text-white"
+              >
                 Voltar ao painel
               </Link>
             </div>
@@ -63,56 +80,54 @@ export default function NovoAlunoPage() {
   return (
     <>
       <Navbar />
-      <main className="max-w-lg mx-auto w-full px-4 py-8 flex-1">
-        <h1 className="text-xl font-bold text-slate-900 mb-6">Cadastrar aluno</h1>
-        <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+      <main className="mx-auto w-full max-w-lg flex-1 px-4 py-10">
+        <h1 className="mb-1 text-2xl font-bold tracking-tight text-white">Cadastrar aluno</h1>
+        <p className="mb-6 text-sm text-slate-400">O aluno recebe um link de acesso — sem senha, sem fricção.</p>
+
+        <form onSubmit={handleSubmit} className="glass space-y-4 rounded-2xl p-6">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Nome</label>
+            <label className="mb-1.5 block text-sm font-medium text-slate-300">Nome</label>
             <input
               type="text"
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="input-dark w-full rounded-xl px-4 py-2.5 text-sm"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">E-mail (opcional)</label>
+            <label className="mb-1.5 block text-sm font-medium text-slate-300">E-mail (opcional)</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="input-dark w-full rounded-xl px-4 py-2.5 text-sm"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Telefone (opcional)</label>
+            <label className="mb-1.5 block text-sm font-medium text-slate-300">Telefone (opcional)</label>
             <input
               type="text"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="input-dark w-full rounded-xl px-4 py-2.5 text-sm"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Objetivo</label>
+            <label className="mb-1.5 block text-sm font-medium text-slate-300">Objetivo</label>
             <input
               type="text"
               placeholder="Ex: hipertrofia, emagrecimento, condicionamento"
               value={objective}
               onChange={(e) => setObjective(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="input-dark w-full rounded-xl px-4 py-2.5 text-sm"
             />
           </div>
 
-          {erro && <p className="text-sm text-red-600">{erro}</p>}
+          {erro && <p className="text-sm text-rose-400">{erro}</p>}
 
-          <button
-            type="submit"
-            disabled={carregando}
-            className="w-full rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-60"
-          >
-            {carregando ? 'Salvando...' : 'Cadastrar'}
+          <button type="submit" disabled={carregando} className="btn-primary w-full rounded-xl px-4 py-3 text-sm">
+            {carregando ? 'Salvando...' : 'Cadastrar aluno'}
           </button>
         </form>
       </main>

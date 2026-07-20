@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express'
 import { pool } from '../db/pool'
-import { Student, Workout } from '../types'
+import { ContextoAluno, responderComoPersonal } from '../services/chat'
+import { Message, Student, Workout } from '../types'
 
 const router = Router()
 
@@ -154,6 +155,109 @@ router.post('/:token/sessoes/:sessionId/concluir', async (req: Request, res: Res
   )
 
   res.json({ session: sessionRows[0] })
+})
+
+// ─────────────────────────────────────────────
+// Chat (lado do aluno)
+// ─────────────────────────────────────────────
+
+async function montarContextoAluno(student: Student): Promise<ContextoAluno> {
+  const { rows: workoutRows } = await pool.query<Workout>(
+    `select * from workouts where student_id = $1 and status = 'sent' order by sent_at desc limit 1`,
+    [student.id]
+  )
+  const workout = workoutRows[0] ?? null
+
+  let exercicios: string[] = []
+  if (workout) {
+    const { rows } = await pool.query<{ name: string }>(
+      `select e.name from workout_exercises we join exercises e on e.id = we.exercise_id
+       where we.workout_id = $1 order by we.order_index`,
+      [workout.id]
+    )
+    exercicios = rows.map((r) => r.name)
+  }
+
+  const { rows: statsRows } = await pool.query<{ concluidas: string }>(
+    `select count(*) as concluidas from training_sessions where student_id = $1 and status = 'completed'`,
+    [student.id]
+  )
+
+  const { rows: rpeRows } = await pool.query<{ effort_rpe: number | null }>(
+    `select f.effort_rpe from feedbacks f
+     join training_sessions ts on ts.id = f.training_session_id
+     where ts.student_id = $1 order by f.created_at desc limit 1`,
+    [student.id]
+  )
+
+  return {
+    nome: student.name,
+    objetivo: student.objective,
+    treinoAtual: workout?.name ?? null,
+    exerciciosAtuais: exercicios,
+    sessoesConcluidas: Number(statsRows[0]?.concluidas ?? 0),
+    ultimoRpe: rpeRows[0]?.effort_rpe ?? null,
+  }
+}
+
+// GET /:token/mensagens — histórico do chat do aluno
+router.get('/:token/mensagens', async (req: Request, res: Response): Promise<void> => {
+  const student = await buscarAlunoPorToken(req.params.token as string)
+  if (!student) {
+    res.status(404).json({ error: 'Link inválido' })
+    return
+  }
+  const { rows } = await pool.query(
+    'select * from messages where student_id = $1 order by created_at',
+    [student.id]
+  )
+  res.json({ messages: rows })
+})
+
+// POST /:token/mensagens — aluno envia mensagem; IA responde se o autopilot estiver ligado
+router.post('/:token/mensagens', async (req: Request, res: Response): Promise<void> => {
+  const student = await buscarAlunoPorToken(req.params.token as string)
+  if (!student) {
+    res.status(404).json({ error: 'Link inválido' })
+    return
+  }
+
+  const { content } = req.body as { content?: string }
+  if (!content?.trim()) {
+    res.status(400).json({ error: 'content é obrigatório' })
+    return
+  }
+
+  const { rows: inseridas } = await pool.query<Message>(
+    `insert into messages (student_id, professional_id, sender, content)
+     values ($1, $2, 'student', $3) returning *`,
+    [student.id, student.professional_id, content.trim()]
+  )
+  const mensagemAluno = inseridas[0]
+
+  let respostaIa: Message | null = null
+  if (student.ai_autopilot) {
+    try {
+      const { rows: historico } = await pool.query<Message>(
+        'select * from messages where student_id = $1 order by created_at',
+        [student.id]
+      )
+      const contexto = await montarContextoAluno(student)
+      const texto = await responderComoPersonal(historico, contexto)
+      const { rows: iaRows } = await pool.query<Message>(
+        `insert into messages (student_id, professional_id, sender, content)
+         values ($1, $2, 'ai', $3) returning *`,
+        [student.id, student.professional_id, texto]
+      )
+      respostaIa = iaRows[0]
+    } catch (err) {
+      // IA fora do ar não pode impedir o registro da mensagem do aluno —
+      // o profissional responde manualmente depois.
+      console.error('[Chat IA] Falha ao gerar resposta automática:', err)
+    }
+  }
+
+  res.status(201).json({ message: mensagemAluno, aiReply: respostaIa })
 })
 
 export default router
