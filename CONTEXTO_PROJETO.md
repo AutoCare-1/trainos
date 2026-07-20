@@ -69,22 +69,24 @@ vendor agora.
 
 Fluxo completo validado ponta a ponta no navegador (ver `README.md`).
 
-## Em andamento / pela metade
+## Também pronto (segunda leva)
 
-Estava sendo implementado quando este documento foi escrito:
-
-- **Chat aluno ↔ profissional com IA copiloto**: a IA responde automaticamente
-  simulando o personal trainer (piloto automático, toggle por aluno), mas o
-  profissional pode responder manualmente a qualquer momento.
-  - Feito: tabela `messages`, coluna `students.ai_autopilot`, serviço de IA
-    (`backend/src/services/chat.ts`, usa Claude Haiku via `@anthropic-ai/sdk`),
-    rotas do lado do profissional (`GET/POST /alunos/:id/mensagens`,
-    `PATCH /alunos/:id/autopilot`).
-  - Falta: rotas do lado do portal (aluno envia mensagem → dispara resposta
-    da IA se autopilot ligado), UI de chat nos dois lados (componente de
-    bolhas, distinção aluno/profissional/IA).
-- **Redesign visual**: pedido para deixar a interface bem mais moderna (hoje
-  está funcional mas genérica — Tailwind básico). Ainda não começado.
+- **Chat aluno ↔ profissional com Coach IA**: aluno conversa pelo portal; se o
+  "piloto automático" do aluno estiver ligado (`students.ai_autopilot`, toggle
+  na tela do aluno no painel do profissional), a IA responde na hora simulando
+  o assistente do personal — tom curto e motivador, com limites de segurança
+  (não diagnostica; dor forte/sintoma preocupante → orienta procurar o
+  profissional/médico; mudança de treino → encaminha ao professor). O
+  profissional vê tudo e pode responder manualmente a qualquer momento.
+  Backend: `backend/src/services/chat.ts` (Claude Haiku via `@anthropic-ai/sdk`,
+  precisa de `ANTHROPIC_API_KEY` no `.env`), rotas em `alunos.ts` (lado
+  profissional) e `portal.ts` (lado aluno). Se a IA falhar, a mensagem do aluno
+  é registrada mesmo assim — o chat nunca perde mensagem por causa da IA.
+- **Redesign visual**: tema escuro premium (glassmorphism, gradiente
+  esmeralda→ciano, avatares com iniciais, pills de status, barra de progresso
+  do treino). Base em `frontend/app/globals.css` (classes `glass`,
+  `btn-primary`, `input-dark`, `bg-glow`); portal do aluno com abas
+  Treino/Chat, mobile-first.
 
 ## Como rodar
 
