@@ -1,5 +1,10 @@
 export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3002'
 
+/** Uploads salvos pelo backend voltam como caminho relativo (`/uploads/...`); precisam da origem da API pra virar URL válida. */
+export function resolveMediaUrl(url: string): string {
+  return url.startsWith('/uploads/') ? `${API_URL}${url}` : url
+}
+
 export class ApiError extends Error {}
 
 function getToken(): string | null {

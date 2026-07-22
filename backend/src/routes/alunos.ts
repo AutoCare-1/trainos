@@ -4,10 +4,13 @@ import { pool } from '../db/pool'
 import { asyncHandler } from '../middleware/asyncHandler'
 import { AuthedRequest, requireAuth } from '../middleware/auth'
 import { calcularBadges, calcularStreak } from '../services/gamification'
+import { criarUploader } from '../middleware/upload'
 import { Student } from '../types'
 
 const router = Router()
 router.use(requireAuth)
+
+const uploadFoto = criarUploader('student-photos', 'image/', 10 * 1024 * 1024)
 
 // GET / — lista alunos do profissional autenticado, com último treino e status
 router.get('/', asyncHandler(async (req: AuthedRequest, res: Response): Promise<void> => {
@@ -160,6 +163,29 @@ router.patch('/:id/avaliacao', asyncHandler(async (req: AuthedRequest, res: Resp
   const { rows } = await pool.query<Student>(
     `update students set par_q_answers = $1, health_notes = $2 where id = $3 returning *`,
     [par_q_answers ? JSON.stringify(par_q_answers) : null, health_notes?.trim() || null, req.params.id]
+  )
+  res.json({ student: rows[0] })
+}))
+
+// POST /:id/foto — profissional envia a foto do aluno (fallback, caso o aluno não tenha feito isso)
+router.post('/:id/foto', uploadFoto.single('foto'), asyncHandler(async (req: AuthedRequest, res: Response): Promise<void> => {
+  const { rows: studentRows } = await pool.query(
+    'select id from students where id = $1 and professional_id = $2',
+    [req.params.id, req.professionalId]
+  )
+  if (studentRows.length === 0) {
+    res.status(404).json({ error: 'Aluno não encontrado' })
+    return
+  }
+  if (!req.file) {
+    res.status(400).json({ error: 'Arquivo de imagem é obrigatório' })
+    return
+  }
+
+  const photoUrl = `/uploads/student-photos/${req.file.filename}`
+  const { rows } = await pool.query<Student>(
+    'update students set photo_url = $1 where id = $2 returning *',
+    [photoUrl, req.params.id]
   )
   res.json({ student: rows[0] })
 }))

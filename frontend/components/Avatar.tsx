@@ -1,3 +1,5 @@
+import { resolveMediaUrl } from '@/lib/api'
+
 const CORES = [
   'from-emerald-400 to-teal-500',
   'from-cyan-400 to-blue-500',
@@ -13,14 +15,33 @@ function iniciais(nome: string): string {
   return (primeira + ultima).toUpperCase()
 }
 
-export default function Avatar({ nome, tamanho = 'md' }: { nome: string; tamanho?: 'sm' | 'md' | 'lg' }) {
-  const idx = nome.length % CORES.length
+export default function Avatar({
+  nome,
+  fotoUrl,
+  tamanho = 'md',
+}: {
+  nome: string
+  fotoUrl?: string | null
+  tamanho?: 'sm' | 'md' | 'lg'
+}) {
   const classes = {
     sm: 'h-8 w-8 text-xs',
     md: 'h-11 w-11 text-sm',
     lg: 'h-14 w-14 text-lg',
   }[tamanho]
 
+  if (fotoUrl) {
+    // eslint-disable-next-line @next/next/no-img-element -- foto vem do backend (não do domínio otimizado pelo next/image)
+    return (
+      <img
+        src={resolveMediaUrl(fotoUrl)}
+        alt={nome}
+        className={`${classes} shrink-0 rounded-full object-cover`}
+      />
+    )
+  }
+
+  const idx = nome.length % CORES.length
   return (
     <span
       className={`flex ${classes} shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${CORES[idx]} font-bold text-[#04110d]`}

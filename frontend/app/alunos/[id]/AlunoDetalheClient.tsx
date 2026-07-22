@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
@@ -9,16 +9,8 @@ import Avatar from '@/components/Avatar'
 import ChatBox from '@/components/ChatBox'
 import WeightChart from '@/components/WeightChart'
 import { api, ApiError } from '@/lib/api'
+import { PAR_Q_PERGUNTAS, PAR_Q_VAZIO } from '@/lib/parq'
 import { BodyMeasurement, Gamificacao, Message, ParQAnswers, Student, Workout } from '@/lib/types'
-
-const PAR_Q_PERGUNTAS: { chave: keyof ParQAnswers; texto: string }[] = [
-  { chave: 'cardiaco', texto: 'Problema cardíaco ou dor no peito provocada por exercício?' },
-  { chave: 'tontura', texto: 'Já perdeu a consciência ou sofreu queda por tontura?' },
-  { chave: 'articular', texto: 'Problema ósseo ou articular que pode agravar com exercício?' },
-  { chave: 'pressao_medicacao', texto: 'Usa medicação para pressão ou coração?' },
-]
-
-const PAR_Q_VAZIO: ParQAnswers = { cardiaco: false, tontura: false, articular: false, pressao_medicacao: false }
 
 export default function AlunoDetalheClient({ studentId }: { studentId: string }) {
   const router = useRouter()
@@ -39,6 +31,8 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
   const [autopilot, setAutopilot] = useState(true)
   const [erro, setErro] = useState<string | null>(null)
   const [copiado, setCopiado] = useState(false)
+  const [enviandoFoto, setEnviandoFoto] = useState(false)
+  const fotoInputRef = useRef<HTMLInputElement | null>(null)
 
   const carregarMensagens = useCallback(() => {
     api
@@ -120,6 +114,21 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
     }
   }
 
+  async function enviarFoto(file: File) {
+    setEnviandoFoto(true)
+    setErro(null)
+    try {
+      const formData = new FormData()
+      formData.append('foto', file)
+      const { student: atualizado } = await api.postFile<{ student: Student }>(`/alunos/${studentId}/foto`, formData)
+      setStudent(atualizado)
+    } catch (err) {
+      setErro(err instanceof ApiError ? err.message : 'Erro ao enviar foto')
+    } finally {
+      setEnviandoFoto(false)
+    }
+  }
+
   async function alternarAutopilot() {
     const novo = !autopilot
     setAutopilot(novo)
@@ -161,7 +170,28 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
         <BackLink href="/dashboard" label="Voltar ao painel" />
 
         <div className="mb-6 flex items-start gap-4">
-          <Avatar nome={student.name} tamanho="lg" />
+          <div className="group relative shrink-0">
+            <Avatar nome={student.name} fotoUrl={student.photo_url} tamanho="lg" />
+            <button
+              onClick={() => fotoInputRef.current?.click()}
+              disabled={enviandoFoto}
+              title="Enviar foto do aluno"
+              className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-white text-xs shadow ring-1 ring-black/10 transition hover:bg-slate-50"
+            >
+              {enviandoFoto ? '…' : '📷'}
+            </button>
+            <input
+              ref={fotoInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0]
+                if (file) enviarFoto(file)
+                e.target.value = ''
+              }}
+            />
+          </div>
           <div className="min-w-0 flex-1">
             <h1 className="truncate text-2xl font-bold tracking-tight text-slate-900">{student.name}</h1>
             {(student.weight_kg || student.height_cm) && (
@@ -231,7 +261,18 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
           <div className="grid gap-4 lg:grid-cols-2">
             {/* Saúde / PAR-Q */}
             <div className="glass rounded-2xl p-5">
-              <h3 className="mb-3 text-sm font-semibold text-slate-900">Saúde (PAR-Q)</h3>
+              <div className="mb-3 flex items-center justify-between">
+                <h3 className="text-sm font-semibold text-slate-900">Saúde (PAR-Q)</h3>
+                <span
+                  className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+                    student.onboarding_completed_at
+                      ? 'bg-emerald-500/15 text-emerald-600'
+                      : 'bg-amber-500/15 text-amber-600'
+                  }`}
+                >
+                  {student.onboarding_completed_at ? 'Preenchido pelo aluno' : 'Aguardando o aluno'}
+                </span>
+              </div>
               <div className="space-y-2.5">
                 {PAR_Q_PERGUNTAS.map(({ chave, texto }) => (
                   <label key={chave} className="flex cursor-pointer items-start gap-2.5 text-sm text-slate-600">

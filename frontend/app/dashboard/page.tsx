@@ -109,7 +109,7 @@ export default function DashboardPage() {
               href={`/alunos/${s.id}`}
               className="glass glass-hover flex items-center gap-4 rounded-2xl px-5 py-4"
             >
-              <Avatar nome={s.name} />
+              <Avatar nome={s.name} fotoUrl={s.photo_url} />
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <p className="truncate font-semibold text-slate-900">{s.name}</p>

@@ -28,7 +28,7 @@ export default function Leaderboard({
             }`}
           >
             <span className="w-6 shrink-0 text-center text-sm">{MEDALHAS[i] ?? `${i + 1}º`}</span>
-            <Avatar nome={e.name} tamanho="sm" />
+            <Avatar nome={e.name} fotoUrl={e.photo_url} tamanho="sm" />
             <span className="flex min-w-0 flex-1 items-baseline gap-1">
               <span className="truncate text-sm font-medium text-slate-800">{e.name}</span>
               {destaque && <span className="shrink-0 text-xs text-[#2648b3]">(você)</span>}

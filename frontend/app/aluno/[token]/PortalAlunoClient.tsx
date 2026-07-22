@@ -5,12 +5,14 @@ import Image from 'next/image'
 import ChatBox from '@/components/ChatBox'
 import ExerciseAnimation from '@/components/ExerciseAnimation'
 import Leaderboard from '@/components/Leaderboard'
+import OnboardingAvaliacao from '@/components/OnboardingAvaliacao'
+import SideMenu, { MenuItem } from '@/components/SideMenu'
 import WeightChart from '@/components/WeightChart'
 import { api, ApiError } from '@/lib/api'
-import { BodyMeasurement, Challenge, Gamificacao, Message, Workout, WorkoutExerciseDetail } from '@/lib/types'
+import { BodyMeasurement, Challenge, Gamificacao, Message, ParQAnswers, Workout, WorkoutExerciseDetail } from '@/lib/types'
 
 interface PortalData {
-  student: { id: string; name: string; objective: string | null }
+  student: { id: string; name: string; objective: string | null; photo_url: string | null }
   workout: Workout | null
   exercises: WorkoutExerciseDetail[]
   activeSessionId: string | null
@@ -18,12 +20,21 @@ interface PortalData {
   measurements: BodyMeasurement[]
   gamificacao: Gamificacao
   desafio: Challenge | null
+  onboardingCompleted: boolean
 }
+
+const MENU_ITEMS: MenuItem[] = [
+  { id: 'treino', label: 'Treino', icon: '🏋️' },
+  { id: 'evolucao', label: 'Avaliação Física', icon: '📏' },
+  { id: 'desafio', label: 'Desafio', icon: '🏆' },
+  { id: 'chat', label: 'Mensagens', icon: '💬' },
+]
 
 export default function PortalAlunoClient({ token }: { token: string }) {
   const [data, setData] = useState<PortalData | null>(null)
   const [erro, setErro] = useState<string | null>(null)
   const [aba, setAba] = useState<'treino' | 'evolucao' | 'desafio' | 'chat'>('treino')
+  const [menuAberto, setMenuAberto] = useState(false)
   const [sessionId, setSessionId] = useState<string | null>(null)
   const [registrados, setRegistrados] = useState<Record<string, number>>({})
   const [inputs, setInputs] = useState<Record<string, { reps: string; load: string }>>({})
@@ -64,6 +75,28 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     const intervalo = setInterval(carregarMensagens, 5000)
     return () => clearInterval(intervalo)
   }, [token, carregarMensagens])
+
+  async function enviarAvaliacao(parQ: ParQAnswers, healthNotes: string, foto: File | null) {
+    await api.post(`/portal/${token}/avaliacao`, { par_q_answers: parQ, health_notes: healthNotes })
+
+    let photoUrl: string | null = null
+    if (foto) {
+      const formData = new FormData()
+      formData.append('foto', foto)
+      const resp = await api.postFile<{ photoUrl: string }>(`/portal/${token}/foto`, formData)
+      photoUrl = resp.photoUrl
+    }
+
+    setData((prev) =>
+      prev
+        ? {
+            ...prev,
+            onboardingCompleted: true,
+            student: photoUrl ? { ...prev.student, photo_url: photoUrl } : prev.student,
+          }
+        : prev
+    )
+  }
 
   async function enviarMensagem(texto: string) {
     setAguardandoIa(true)
@@ -142,40 +175,32 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     )
   }
 
+  if (!data.onboardingCompleted) {
+    return <OnboardingAvaliacao nome={data.student.name} onEnviar={enviarAvaliacao} />
+  }
+
   const primeiroNome = data.student.name.split(' ')[0]
 
   const cabecalho = (
     <header className="sticky top-0 z-20 border-b border-black/8 bg-white/90 backdrop-blur-xl">
-      <div className="mx-auto flex w-full max-w-lg items-center justify-between px-4 py-3">
-        <div>
+      <div className="mx-auto flex w-full max-w-lg items-center gap-3 px-4 py-3">
+        <button
+          onClick={() => setMenuAberto(true)}
+          aria-label="Abrir menu"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-600 transition hover:bg-slate-900/5"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="4" y1="7" x2="20" y2="7" />
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <line x1="4" y1="17" x2="20" y2="17" />
+          </svg>
+        </button>
+        <div className="min-w-0 flex-1">
           <p className="text-xs text-slate-500">Olá, {primeiroNome} 👋</p>
-          <p className="font-bold text-slate-900">{data.workout ? data.workout.name : 'Seu espaço de treino'}</p>
+          <p className="truncate font-bold text-slate-900">{data.workout ? data.workout.name : 'Seu espaço de treino'}</p>
         </div>
-        <Image src="/clubemais-icone.png" alt="Clube Mais" width={36} height={36} className="h-9 w-9" />
+        <Image src="/clubemais-icone.png" alt="Clube Mais" width={36} height={36} className="h-9 w-9 shrink-0" />
       </div>
-      <nav className="mx-auto flex w-full max-w-lg px-4">
-        {(
-          [
-            ['treino', 'Treino'],
-            ['evolucao', 'Evolução'],
-            ['desafio', 'Desafio'],
-            ['chat', 'Chat'],
-          ] as const
-        ).map(([id, rotulo]) => (
-          <button
-            key={id}
-            onClick={() => setAba(id)}
-            className={`relative flex-1 pb-3 pt-1 text-sm font-medium transition ${
-              aba === id ? 'text-slate-900' : 'text-slate-500 hover:text-slate-700'
-            }`}
-          >
-            {rotulo}
-            {aba === id && (
-              <span className="absolute inset-x-8 bottom-0 h-0.5 rounded-full bg-gradient-to-r from-[#2648b3] to-[#8b7fd6]" />
-            )}
-          </button>
-        ))}
-      </nav>
     </header>
   )
 
@@ -185,6 +210,16 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     return (
       <div className="flex min-h-screen flex-col">
         {cabecalho}
+        <SideMenu
+          open={menuAberto}
+          onClose={() => setMenuAberto(false)}
+          nome={data.student.name}
+          fotoUrl={data.student.photo_url}
+          subtitulo="Clube Mais"
+          items={MENU_ITEMS}
+          ativo={aba}
+          onSelect={(id) => setAba(id as typeof aba)}
+        />
         <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6">
           <div className="glass rounded-2xl p-5">
             <h2 className="mb-1 font-semibold text-slate-900">Sua evolução 📈</h2>
@@ -221,6 +256,16 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     return (
       <div className="flex min-h-screen flex-col">
         {cabecalho}
+        <SideMenu
+          open={menuAberto}
+          onClose={() => setMenuAberto(false)}
+          nome={data.student.name}
+          fotoUrl={data.student.photo_url}
+          subtitulo="Clube Mais"
+          items={MENU_ITEMS}
+          ativo={aba}
+          onSelect={(id) => setAba(id as typeof aba)}
+        />
         <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6 space-y-4">
           <div className="glass flex items-center gap-5 rounded-2xl p-5">
             <div>
@@ -274,6 +319,16 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     return (
       <div className="flex min-h-screen flex-col">
         {cabecalho}
+        <SideMenu
+          open={menuAberto}
+          onClose={() => setMenuAberto(false)}
+          nome={data.student.name}
+          fotoUrl={data.student.photo_url}
+          subtitulo="Clube Mais"
+          items={MENU_ITEMS}
+          ativo={aba}
+          onSelect={(id) => setAba(id as typeof aba)}
+        />
         <main className="mx-auto flex w-full max-w-lg flex-1 flex-col">
           <div className="flex flex-1 flex-col" style={{ minHeight: 'calc(100vh - 110px)' }}>
             <ChatBox
@@ -294,6 +349,16 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     return (
       <div className="flex min-h-screen flex-col">
         {cabecalho}
+        <SideMenu
+          open={menuAberto}
+          onClose={() => setMenuAberto(false)}
+          nome={data.student.name}
+          fotoUrl={data.student.photo_url}
+          subtitulo="Clube Mais"
+          items={MENU_ITEMS}
+          ativo={aba}
+          onSelect={(id) => setAba(id as typeof aba)}
+        />
         <main className="flex flex-1 items-center justify-center px-4">
           <div className="glass max-w-sm rounded-3xl p-8 text-center">
             <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 text-3xl">
@@ -316,6 +381,16 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     return (
       <div className="flex min-h-screen flex-col">
         {cabecalho}
+        <SideMenu
+          open={menuAberto}
+          onClose={() => setMenuAberto(false)}
+          nome={data.student.name}
+          fotoUrl={data.student.photo_url}
+          subtitulo="Clube Mais"
+          items={MENU_ITEMS}
+          ativo={aba}
+          onSelect={(id) => setAba(id as typeof aba)}
+        />
         <main className="flex flex-1 items-center justify-center px-4">
           <div className="glass max-w-sm rounded-3xl p-8 text-center">
             <h1 className="text-xl font-bold text-slate-900">Nenhum treino por aqui ainda</h1>
@@ -337,6 +412,16 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   return (
     <div className="flex min-h-screen flex-col">
       {cabecalho}
+        <SideMenu
+          open={menuAberto}
+          onClose={() => setMenuAberto(false)}
+          nome={data.student.name}
+          fotoUrl={data.student.photo_url}
+          subtitulo="Clube Mais"
+          items={MENU_ITEMS}
+          ativo={aba}
+          onSelect={(id) => setAba(id as typeof aba)}
+        />
       <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6 pb-24">
         {erro && <p className="mb-4 text-sm text-rose-400">{erro}</p>}
 

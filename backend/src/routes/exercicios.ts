@@ -1,26 +1,13 @@
 import { Router, Response } from 'express'
-import multer from 'multer'
-import path from 'path'
-import fs from 'fs'
-import { nanoid } from 'nanoid'
 import { pool } from '../db/pool'
 import { asyncHandler } from '../middleware/asyncHandler'
 import { AuthedRequest, requireAuth } from '../middleware/auth'
+import { criarUploader } from '../middleware/upload'
 
 const router = Router()
 router.use(requireAuth)
 
-const uploadDir = path.join(__dirname, '..', '..', 'uploads', 'exercise-videos')
-fs.mkdirSync(uploadDir, { recursive: true })
-
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: uploadDir,
-    filename: (_req, file, cb) => cb(null, `${nanoid(12)}${path.extname(file.originalname)}`),
-  }),
-  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB
-  fileFilter: (_req, file, cb) => cb(null, file.mimetype.startsWith('video/')),
-})
+const upload = criarUploader('exercise-videos', 'video/', 100 * 1024 * 1024)
 
 // GET / — biblioteca de exercícios, com o vídeo customizado do profissional (se houver) sobrepondo o padrão
 router.get('/', asyncHandler(async (req: AuthedRequest, res: Response): Promise<void> => {

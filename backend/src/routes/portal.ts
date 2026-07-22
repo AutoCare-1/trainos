@@ -3,9 +3,11 @@ import { pool } from '../db/pool'
 import { asyncHandler } from '../middleware/asyncHandler'
 import { ContextoAluno, responderComoPersonal } from '../services/chat'
 import { calcularBadges, calcularStreak } from '../services/gamification'
+import { criarUploader } from '../middleware/upload'
 import { Message, Student, Workout } from '../types'
 
 const router = Router()
+const uploadFoto = criarUploader('student-photos', 'image/', 10 * 1024 * 1024)
 
 async function buscarAlunoPorToken(token: string): Promise<Student | null> {
   const { rows } = await pool.query<Student>('select * from students where invite_token = $1', [token])
@@ -89,10 +91,10 @@ router.get('/:token', asyncHandler(async (req: Request, res: Response): Promise<
   )
   const desafioAtivo = desafioRows[0] ?? null
 
-  let leaderboard: { student_id: string; name: string; pontos: string }[] = []
+  let leaderboard: { student_id: string; name: string; photo_url: string | null; pontos: string }[] = []
   if (desafioAtivo) {
     const { rows } = await pool.query(
-      `select s.id as student_id, s.name,
+      `select s.id as student_id, s.name, s.photo_url,
               count(ts.id) filter (
                 where ts.status = 'completed'
                 and ts.finished_at::date between $2 and $3
@@ -102,7 +104,7 @@ router.get('/:token', asyncHandler(async (req: Request, res: Response): Promise<
        left join workouts w on w.student_id = s.id
        left join training_sessions ts on ts.workout_id = w.id and ts.student_id = s.id
        where cp.challenge_id = $1
-       group by s.id, s.name
+       group by s.id, s.name, s.photo_url
        order by pontos desc, s.name`,
       [desafioAtivo.id, desafioAtivo.start_date, desafioAtivo.end_date]
     )
@@ -110,7 +112,7 @@ router.get('/:token', asyncHandler(async (req: Request, res: Response): Promise<
   }
 
   res.json({
-    student: { id: student.id, name: student.name, objective: student.objective },
+    student: { id: student.id, name: student.name, objective: student.objective, photo_url: student.photo_url },
     workout,
     exercises,
     activeSessionId: activeSession?.id ?? null,
@@ -118,7 +120,51 @@ router.get('/:token', asyncHandler(async (req: Request, res: Response): Promise<
     measurements,
     gamificacao,
     desafio: desafioAtivo ? { ...desafioAtivo, leaderboard } : null,
+    onboardingCompleted: student.onboarding_completed_at !== null,
   })
+}))
+
+// POST /:token/avaliacao — o próprio aluno responde a avaliação de saúde (PAR-Q) no primeiro acesso
+router.post('/:token/avaliacao', asyncHandler(async (req: Request, res: Response): Promise<void> => {
+  const student = await buscarAlunoPorToken(req.params.token as string)
+  if (!student) {
+    res.status(404).json({ error: 'Link inválido' })
+    return
+  }
+
+  const { par_q_answers, health_notes } = req.body as {
+    par_q_answers?: { cardiaco: boolean; tontura: boolean; articular: boolean; pressao_medicacao: boolean }
+    health_notes?: string
+  }
+  if (!par_q_answers) {
+    res.status(400).json({ error: 'par_q_answers é obrigatório' })
+    return
+  }
+
+  await pool.query(
+    `update students set par_q_answers = $1, health_notes = $2, onboarding_completed_at = now() where id = $3`,
+    [JSON.stringify(par_q_answers), health_notes?.trim() || null, student.id]
+  )
+
+  res.status(201).json({ onboardingCompleted: true })
+}))
+
+// POST /:token/foto — o próprio aluno envia sua foto de perfil
+router.post('/:token/foto', uploadFoto.single('foto'), asyncHandler(async (req: Request, res: Response): Promise<void> => {
+  const student = await buscarAlunoPorToken(req.params.token as string)
+  if (!student) {
+    res.status(404).json({ error: 'Link inválido' })
+    return
+  }
+  if (!req.file) {
+    res.status(400).json({ error: 'Arquivo de imagem é obrigatório' })
+    return
+  }
+
+  const photoUrl = `/uploads/student-photos/${req.file.filename}`
+  await pool.query('update students set photo_url = $1 where id = $2', [photoUrl, student.id])
+
+  res.status(201).json({ photoUrl })
 }))
 
 // POST /:token/sessoes — inicia (ou retoma) uma sessão de execução do treino

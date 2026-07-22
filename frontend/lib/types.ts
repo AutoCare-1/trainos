@@ -24,6 +24,8 @@ export interface Student {
   ai_autopilot: boolean
   par_q_answers: ParQAnswers | null
   health_notes: string | null
+  onboarding_completed_at: string | null
+  photo_url: string | null
   created_at: string
   ultimo_treino?: string | null
   sessoes_concluidas?: number
@@ -127,6 +129,7 @@ export interface Gamificacao {
 export interface LeaderboardEntry {
   student_id: string
   name: string
+  photo_url: string | null
   pontos: string
 }
 

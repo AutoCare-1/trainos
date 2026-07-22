@@ -139,7 +139,7 @@ export default function NovoDesafioPage() {
                     onChange={() => alternar(s.id)}
                     className="h-4 w-4 accent-[#2648b3]"
                   />
-                  <Avatar nome={s.name} tamanho="sm" />
+                  <Avatar nome={s.name} fotoUrl={s.photo_url} tamanho="sm" />
                   <span className="text-sm text-slate-800">{s.name}</span>
                 </label>
               ))}

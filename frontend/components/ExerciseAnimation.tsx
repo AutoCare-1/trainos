@@ -1,11 +1,7 @@
 'use client'
 
 import { getMovementPattern, MovementPattern } from '@/lib/exercisePatterns'
-import { API_URL } from '@/lib/api'
-
-function resolverUrlMidia(url: string): string {
-  return url.startsWith('/uploads/') ? `${API_URL}${url}` : url
-}
+import { resolveMediaUrl } from '@/lib/api'
 
 const SIZES = { sm: 40, md: 64, lg: 128 } as const
 
@@ -416,7 +412,7 @@ export default function ExerciseAnimation({
   if (videoUrl) {
     return (
       <video
-        src={resolverUrlMidia(videoUrl)}
+        src={resolveMediaUrl(videoUrl)}
         aria-label={`Demonstração: ${name}`}
         width={px}
         height={px}

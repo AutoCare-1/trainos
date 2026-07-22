@@ -81,7 +81,7 @@ router.get('/:id', asyncHandler(async (req: AuthedRequest, res: Response): Promi
   }
 
   const { rows: leaderboard } = await pool.query(
-    `select s.id as student_id, s.name,
+    `select s.id as student_id, s.name, s.photo_url,
             count(ts.id) filter (
               where ts.status = 'completed'
               and ts.finished_at::date between $2 and $3
@@ -91,7 +91,7 @@ router.get('/:id', asyncHandler(async (req: AuthedRequest, res: Response): Promi
      left join workouts w on w.student_id = s.id
      left join training_sessions ts on ts.workout_id = w.id and ts.student_id = s.id
      where cp.challenge_id = $1
-     group by s.id, s.name
+     group by s.id, s.name, s.photo_url
      order by pontos desc, s.name`,
     [challenge.id, challenge.start_date, challenge.end_date]
   )
