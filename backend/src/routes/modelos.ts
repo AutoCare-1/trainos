@@ -14,6 +14,8 @@ interface ItemModelo {
   load_kg?: number
   rest_seconds?: number
   notes?: string
+  structure_type?: string
+  group_label?: string
 }
 
 // GET / — lista modelos do profissional, com quantidade de exercícios
@@ -50,9 +52,21 @@ router.post('/', asyncHandler(async (req: AuthedRequest, res: Response): Promise
     let orderIndex = 0
     for (const item of items) {
       await client.query(
-        `insert into workout_template_exercises (template_id, exercise_id, order_index, sets, reps, load_kg, rest_seconds, notes)
-         values ($1, $2, $3, $4, $5, $6, $7, $8)`,
-        [template.id, item.exercise_id, orderIndex++, item.sets, item.reps, item.load_kg ?? null, item.rest_seconds ?? null, item.notes ?? null]
+        `insert into workout_template_exercises
+           (template_id, exercise_id, order_index, sets, reps, load_kg, rest_seconds, notes, structure_type, group_label)
+         values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+        [
+          template.id,
+          item.exercise_id,
+          orderIndex++,
+          item.sets,
+          item.reps,
+          item.load_kg ?? null,
+          item.rest_seconds ?? null,
+          item.notes ?? null,
+          item.structure_type?.trim() || 'tradicional',
+          item.group_label?.trim() || null,
+        ]
       )
     }
 

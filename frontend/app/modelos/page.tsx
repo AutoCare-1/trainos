@@ -7,6 +7,7 @@ import BackLink from '@/components/BackLink'
 import ExerciseAnimation from '@/components/ExerciseAnimation'
 import { api, ApiError } from '@/lib/api'
 import { WorkoutTemplate, WorkoutTemplateExerciseDetail } from '@/lib/types'
+import { rotuloEstrutura } from '@/lib/workoutStructures'
 
 export default function ModelosPage() {
   const router = useRouter()
@@ -114,7 +115,15 @@ export default function ModelosPage() {
                         className="shrink-0 rounded-lg text-[#2648b3]"
                       />
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-slate-800">{ex.exercise_name}</p>
+                        <p className="text-sm font-medium text-slate-800">
+                          {ex.exercise_name}
+                          {ex.structure_type && ex.structure_type !== 'tradicional' && (
+                            <span className="ml-2 rounded-lg bg-violet-500/10 px-2 py-0.5 text-xs font-normal text-violet-600">
+                              {rotuloEstrutura(ex.structure_type).icone} {rotuloEstrutura(ex.structure_type).label}
+                              {ex.group_label ? ` ${ex.group_label}` : ''}
+                            </span>
+                          )}
+                        </p>
                         <p className="text-xs text-slate-500">
                           {ex.sets} séries · {ex.reps} reps{ex.load_kg ? ` · ${ex.load_kg}kg` : ''}
                           {ex.rest_seconds ? ` · ⏱ ${ex.rest_seconds}s` : ''}

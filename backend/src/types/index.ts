@@ -66,6 +66,18 @@ export interface Workout {
   updated_at: string
 }
 
+export type StructureType =
+  | 'tradicional'
+  | 'bi-set'
+  | 'tri-set'
+  | 'superset'
+  | 'circuito'
+  | 'drop-set'
+  | 'rest-pause'
+  | 'cluster'
+  | 'amrap'
+  | 'emom'
+
 export interface WorkoutExercise {
   id: string
   workout_id: string
@@ -76,6 +88,8 @@ export interface WorkoutExercise {
   load_kg: number | null
   rest_seconds: number | null
   notes: string | null
+  structure_type: StructureType
+  group_label: string | null
 }
 
 export interface TrainingSession {
@@ -137,6 +151,8 @@ export interface WorkoutTemplateExercise {
   load_kg: number | null
   rest_seconds: number | null
   notes: string | null
+  structure_type: StructureType
+  group_label: string | null
 }
 
 export interface DeviceConnection {

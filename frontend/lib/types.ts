@@ -73,6 +73,8 @@ export interface WorkoutTemplateExerciseDetail {
   load_kg: string | null
   rest_seconds: number | null
   notes: string | null
+  structure_type: string
+  group_label: string | null
   exercise_name: string
   muscle_group: string
   image_url: string | null
@@ -118,6 +120,8 @@ export interface WorkoutExerciseDetail {
   load_kg: string | null
   rest_seconds: number | null
   notes: string | null
+  structure_type: string
+  group_label: string | null
   exercise_name: string
   muscle_group: string
   instructions: string | null

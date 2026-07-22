@@ -7,6 +7,7 @@ import BackLink from '@/components/BackLink'
 import ExerciseAnimation from '@/components/ExerciseAnimation'
 import { api, ApiError } from '@/lib/api'
 import { Workout, WorkoutExerciseDetail } from '@/lib/types'
+import { agruparExercicios, rotuloEstrutura } from '@/lib/workoutStructures'
 
 export default function TreinoDetalheClient({ workoutId }: { workoutId: string }) {
   const router = useRouter()
@@ -96,50 +97,73 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
           )}
         </div>
 
-        <div className="space-y-3">
-          {exercises.map((ex, idx) => (
-            <div key={ex.id} className="glass rounded-2xl p-5">
-              <div className="flex items-start gap-4">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#2648b3]/15 to-[#8b7fd6]/15 text-sm font-bold text-[#2648b3]">
-                  {idx + 1}
-                </span>
-                <div className="min-w-[110px] flex-1">
-                  <p className="text-xs uppercase tracking-wider text-slate-500">{ex.muscle_group}</p>
-                  <p className="font-semibold text-slate-900">{ex.exercise_name}</p>
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    <span className="rounded-lg bg-slate-900/5 px-2.5 py-1 text-xs text-slate-600">
-                      {ex.sets} séries
-                    </span>
-                    <span className="rounded-lg bg-slate-900/5 px-2.5 py-1 text-xs text-slate-600">
-                      {ex.reps} reps
-                    </span>
-                    {ex.load_kg && (
-                      <span className="rounded-lg bg-[#2648b3]/10 px-2.5 py-1 text-xs text-[#2648b3]">
-                        {ex.load_kg} kg
-                      </span>
-                    )}
-                    {ex.rest_seconds && (
-                      <span className="rounded-lg bg-slate-900/5 px-2.5 py-1 text-xs text-slate-600">
-                        ⏱ {ex.rest_seconds}s descanso
-                      </span>
-                    )}
-                  </div>
-                  {ex.instructions && <p className="mt-3 text-sm text-slate-500">{ex.instructions}</p>}
-                </div>
-                <div className="glass shrink-0 rounded-xl p-1.5 text-[#2648b3]">
-                  <ExerciseAnimation
-                    name={ex.exercise_name}
-                    muscleGroup={ex.muscle_group}
-                    imageUrl={ex.image_url}
-                    videoUrl={ex.video_url}
-                    imageCredit={ex.image_credit}
-                    size="md"
-                    className="rounded-lg"
-                  />
+        <div className="space-y-4">
+          {agruparExercicios(exercises).map((grupo, gIdx) => {
+            const estrutura = rotuloEstrutura(grupo.structureType)
+            const emBloco = grupo.groupLabel && grupo.itens.length > 1
+            return (
+              <div
+                key={gIdx}
+                className={emBloco ? 'rounded-2xl border-2 border-dashed border-[#2648b3]/25 p-3' : ''}
+              >
+                {emBloco && (
+                  <p className="mb-2 px-2 text-xs font-bold uppercase tracking-wider text-[#2648b3]">
+                    {estrutura.icone} {estrutura.label} {grupo.groupLabel}
+                  </p>
+                )}
+                <div className="space-y-3">
+                  {grupo.itens.map((ex, idx) => (
+                    <div key={ex.id} className="glass rounded-2xl p-5">
+                      <div className="flex items-start gap-4">
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#2648b3]/15 to-[#8b7fd6]/15 text-sm font-bold text-[#2648b3]">
+                          {emBloco ? `${grupo.groupLabel}${idx + 1}` : gIdx + 1}
+                        </span>
+                        <div className="min-w-[110px] flex-1">
+                          <p className="text-xs uppercase tracking-wider text-slate-500">{ex.muscle_group}</p>
+                          <p className="font-semibold text-slate-900">{ex.exercise_name}</p>
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            <span className="rounded-lg bg-slate-900/5 px-2.5 py-1 text-xs text-slate-600">
+                              {ex.sets} séries
+                            </span>
+                            <span className="rounded-lg bg-slate-900/5 px-2.5 py-1 text-xs text-slate-600">
+                              {ex.reps} reps
+                            </span>
+                            {ex.load_kg && (
+                              <span className="rounded-lg bg-[#2648b3]/10 px-2.5 py-1 text-xs text-[#2648b3]">
+                                {ex.load_kg} kg
+                              </span>
+                            )}
+                            {ex.rest_seconds && (
+                              <span className="rounded-lg bg-slate-900/5 px-2.5 py-1 text-xs text-slate-600">
+                                ⏱ {ex.rest_seconds}s descanso
+                              </span>
+                            )}
+                            {!emBloco && estrutura.label !== 'Tradicional' && (
+                              <span className="rounded-lg bg-violet-500/10 px-2.5 py-1 text-xs text-violet-600">
+                                {estrutura.icone} {estrutura.label}
+                              </span>
+                            )}
+                          </div>
+                          {ex.instructions && <p className="mt-3 text-sm text-slate-500">{ex.instructions}</p>}
+                        </div>
+                        <div className="glass shrink-0 rounded-xl p-1.5 text-[#2648b3]">
+                          <ExerciseAnimation
+                            name={ex.exercise_name}
+                            muscleGroup={ex.muscle_group}
+                            imageUrl={ex.image_url}
+                            videoUrl={ex.video_url}
+                            imageCredit={ex.image_credit}
+                            size="md"
+                            className="rounded-lg"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </main>
     </>

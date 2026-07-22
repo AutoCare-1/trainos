@@ -20,6 +20,7 @@ import {
   Workout,
   WorkoutExerciseDetail,
 } from '@/lib/types'
+import { agruparExercicios, rotuloEstrutura } from '@/lib/workoutStructures'
 
 function formatarDuracao(segundos: number | null): string {
   if (!segundos) return ''
@@ -645,93 +646,113 @@ export default function PortalAlunoClient({ token }: { token: string }) {
         )}
 
         <div className="space-y-4">
-          {data.exercises.map((ex, idx) => {
-            const feitas = registrados[ex.id] ?? 0
-            const completo = feitas >= ex.sets
+          {agruparExercicios(data.exercises).map((grupo, gIdx) => {
+            const estrutura = rotuloEstrutura(grupo.structureType)
+            const emBloco = grupo.groupLabel && grupo.itens.length > 1
             return (
-              <div
-                key={ex.id}
-                className={`rounded-2xl border p-5 transition ${
-                  completo
-                    ? 'border-emerald-400/30 bg-emerald-500/8'
-                    : 'glass'
-                }`}
-              >
-                <div className="flex items-start gap-3.5">
-                  <span
-                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-sm font-bold ${
-                      completo
-                        ? 'bg-emerald-500/15 text-emerald-600'
-                        : 'bg-slate-900/6 text-slate-600'
-                    }`}
-                  >
-                    {completo ? '✓' : idx + 1}
-                  </span>
-                  <div className="min-w-[90px] flex-1">
-                    <p className="text-xs uppercase tracking-wider text-slate-500">{ex.muscle_group}</p>
-                    <p className="font-semibold text-slate-900">{ex.exercise_name}</p>
-                    <p className="mt-0.5 text-sm text-slate-500">
-                      {ex.sets} × {ex.reps}
-                      {ex.load_kg ? ` · ${ex.load_kg}kg` : ''}
-                      {ex.rest_seconds ? ` · ⏱ ${ex.rest_seconds}s` : ''}
-                    </p>
-                  </div>
-                  <div className="glass shrink-0 rounded-xl p-1.5 text-[#2648b3]">
-                    <ExerciseAnimation
-                      name={ex.exercise_name}
-                      muscleGroup={ex.muscle_group}
-                      imageUrl={ex.image_url}
-                      videoUrl={ex.video_url}
-                      imageCredit={ex.image_credit}
-                      size="md"
-                      className="rounded-lg"
-                    />
-                  </div>
-                </div>
-
-                {sessionId && !completo && (
-                  <div className="mt-4 flex items-end gap-2">
-                    <div className="flex-1">
-                      <label className="mb-1 block text-xs text-slate-500">Reps</label>
-                      <input
-                        type="number"
-                        inputMode="numeric"
-                        value={inputs[ex.id]?.reps ?? ''}
-                        onChange={(e) => setInputs({ ...inputs, [ex.id]: { ...inputs[ex.id], reps: e.target.value } })}
-                        className="input-dark w-full rounded-xl px-3 py-2.5 text-center text-sm"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <label className="mb-1 block text-xs text-slate-500">Carga (kg)</label>
-                      <input
-                        type="number"
-                        inputMode="decimal"
-                        value={inputs[ex.id]?.load ?? ''}
-                        onChange={(e) => setInputs({ ...inputs, [ex.id]: { ...inputs[ex.id], load: e.target.value } })}
-                        className="input-dark w-full rounded-xl px-3 py-2.5 text-center text-sm"
-                      />
-                    </div>
-                    <button
-                      onClick={() => registrarSerie(ex)}
-                      className="btn-primary shrink-0 rounded-xl px-4 py-2.5 text-sm"
-                    >
-                      ✓ {feitas + 1}/{ex.sets}
-                    </button>
-                  </div>
+              <div key={gIdx} className={emBloco ? 'rounded-2xl border-2 border-dashed border-[#2648b3]/25 p-3' : ''}>
+                {emBloco && (
+                  <p className="mb-2 px-1 text-xs font-bold uppercase tracking-wider text-[#2648b3]">
+                    {estrutura.icone} {estrutura.label} {grupo.groupLabel}
+                  </p>
                 )}
-
-                {sessionId && (
-                  <div className="mt-3 flex gap-1.5">
-                    {Array.from({ length: ex.sets }).map((_, i) => (
-                      <span
-                        key={i}
-                        className={`h-1.5 flex-1 rounded-full ${
-                          i < feitas ? 'bg-emerald-400' : 'bg-slate-900/8'
+                <div className="space-y-4">
+                  {grupo.itens.map((ex, idx) => {
+                    const feitas = registrados[ex.id] ?? 0
+                    const completo = feitas >= ex.sets
+                    return (
+                      <div
+                        key={ex.id}
+                        className={`rounded-2xl border p-5 transition ${
+                          completo ? 'border-emerald-400/30 bg-emerald-500/8' : 'glass'
                         }`}
-                      />
-                    ))}
-                  </div>
-                )}
+                      >
+                        <div className="flex items-start gap-3.5">
+                          <span
+                            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-sm font-bold ${
+                              completo ? 'bg-emerald-500/15 text-emerald-600' : 'bg-slate-900/6 text-slate-600'
+                            }`}
+                          >
+                            {completo ? '✓' : emBloco ? `${grupo.groupLabel}${idx + 1}` : gIdx + 1}
+                          </span>
+                          <div className="min-w-[90px] flex-1">
+                            <p className="text-xs uppercase tracking-wider text-slate-500">{ex.muscle_group}</p>
+                            <p className="font-semibold text-slate-900">{ex.exercise_name}</p>
+                            <p className="mt-0.5 text-sm text-slate-500">
+                              {ex.sets} × {ex.reps}
+                              {ex.load_kg ? ` · ${ex.load_kg}kg` : ''}
+                              {ex.rest_seconds ? ` · ⏱ ${ex.rest_seconds}s` : ''}
+                            </p>
+                            {!emBloco && estrutura.label !== 'Tradicional' && (
+                              <span className="mt-1 inline-block rounded-lg bg-violet-500/10 px-2 py-0.5 text-xs text-violet-600">
+                                {estrutura.icone} {estrutura.label}
+                              </span>
+                            )}
+                          </div>
+                          <div className="glass shrink-0 rounded-xl p-1.5 text-[#2648b3]">
+                            <ExerciseAnimation
+                              name={ex.exercise_name}
+                              muscleGroup={ex.muscle_group}
+                              imageUrl={ex.image_url}
+                              videoUrl={ex.video_url}
+                              imageCredit={ex.image_credit}
+                              size="md"
+                              className="rounded-lg"
+                            />
+                          </div>
+                        </div>
+
+                        {sessionId && !completo && (
+                          <div className="mt-4 flex items-end gap-2">
+                            <div className="flex-1">
+                              <label className="mb-1 block text-xs text-slate-500">Reps</label>
+                              <input
+                                type="number"
+                                inputMode="numeric"
+                                value={inputs[ex.id]?.reps ?? ''}
+                                onChange={(e) =>
+                                  setInputs({ ...inputs, [ex.id]: { ...inputs[ex.id], reps: e.target.value } })
+                                }
+                                className="input-dark w-full rounded-xl px-3 py-2.5 text-center text-sm"
+                              />
+                            </div>
+                            <div className="flex-1">
+                              <label className="mb-1 block text-xs text-slate-500">Carga (kg)</label>
+                              <input
+                                type="number"
+                                inputMode="decimal"
+                                value={inputs[ex.id]?.load ?? ''}
+                                onChange={(e) =>
+                                  setInputs({ ...inputs, [ex.id]: { ...inputs[ex.id], load: e.target.value } })
+                                }
+                                className="input-dark w-full rounded-xl px-3 py-2.5 text-center text-sm"
+                              />
+                            </div>
+                            <button
+                              onClick={() => registrarSerie(ex)}
+                              className="btn-primary shrink-0 rounded-xl px-4 py-2.5 text-sm"
+                            >
+                              ✓ {feitas + 1}/{ex.sets}
+                            </button>
+                          </div>
+                        )}
+
+                        {sessionId && (
+                          <div className="mt-3 flex gap-1.5">
+                            {Array.from({ length: ex.sets }).map((_, i) => (
+                              <span
+                                key={i}
+                                className={`h-1.5 flex-1 rounded-full ${
+                                  i < feitas ? 'bg-emerald-400' : 'bg-slate-900/8'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
             )
           })}

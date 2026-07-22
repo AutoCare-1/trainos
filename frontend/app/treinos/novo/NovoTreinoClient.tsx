@@ -7,6 +7,7 @@ import BackLink from '@/components/BackLink'
 import ExerciseAnimation from '@/components/ExerciseAnimation'
 import { api, ApiError } from '@/lib/api'
 import { Exercise, Workout, WorkoutTemplate, WorkoutTemplateExerciseDetail } from '@/lib/types'
+import { ESTRUTURAS } from '@/lib/workoutStructures'
 
 interface ItemTreino {
   exercise_id: string
@@ -14,6 +15,8 @@ interface ItemTreino {
   reps: string
   load_kg?: number
   rest_seconds?: number
+  structure_type: string
+  group_label?: string
 }
 
 export default function NovoTreinoClient() {
@@ -66,6 +69,8 @@ export default function NovoTreinoClient() {
           reps: ex.reps,
           load_kg: ex.load_kg ? Number(ex.load_kg) : undefined,
           rest_seconds: ex.rest_seconds ?? undefined,
+          structure_type: ex.structure_type || 'tradicional',
+          group_label: ex.group_label ?? undefined,
         }))
       )
     } catch (err) {
@@ -96,7 +101,7 @@ export default function NovoTreinoClient() {
 
   function adicionarExercicio(exerciseId: string) {
     if (items.some((i) => i.exercise_id === exerciseId)) return
-    setItems([...items, { exercise_id: exerciseId, sets: 3, reps: '10-12' }])
+    setItems([...items, { exercise_id: exerciseId, sets: 3, reps: '10-12', structure_type: 'tradicional' }])
   }
 
   function removerExercicio(exerciseId: string) {
@@ -110,6 +115,8 @@ export default function NovoTreinoClient() {
         if (campo === 'sets') return { ...i, sets: Number(valor) || 0 }
         if (campo === 'load_kg') return { ...i, load_kg: valor ? Number(valor) : undefined }
         if (campo === 'rest_seconds') return { ...i, rest_seconds: valor ? Number(valor) : undefined }
+        if (campo === 'structure_type') return { ...i, structure_type: valor }
+        if (campo === 'group_label') return { ...i, group_label: valor || undefined }
         return { ...i, reps: valor }
       })
     )
@@ -302,6 +309,36 @@ export default function NovoTreinoClient() {
                             className="input-dark w-full rounded-lg px-2.5 py-2 text-sm"
                           />
                         </div>
+                      </div>
+
+                      <div className="mt-2 grid grid-cols-2 gap-2">
+                        <div>
+                          <label className="mb-1 block text-xs text-slate-500">Estrutura</label>
+                          <select
+                            value={item.structure_type}
+                            onChange={(e) => atualizarItem(item.exercise_id, 'structure_type', e.target.value)}
+                            className="input-dark w-full rounded-lg px-2.5 py-2 text-sm"
+                          >
+                            {ESTRUTURAS.map((e) => (
+                              <option key={e.value} value={e.value}>
+                                {e.icone} {e.label}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        {ESTRUTURAS.find((e) => e.value === item.structure_type)?.agrupavel && (
+                          <div>
+                            <label className="mb-1 block text-xs text-slate-500">Grupo (ex: A)</label>
+                            <input
+                              type="text"
+                              maxLength={2}
+                              placeholder="A"
+                              value={item.group_label ?? ''}
+                              onChange={(e) => atualizarItem(item.exercise_id, 'group_label', e.target.value.toUpperCase())}
+                              className="input-dark w-full rounded-lg px-2.5 py-2 text-sm"
+                            />
+                          </div>
+                        )}
                       </div>
                     </div>
                   )
