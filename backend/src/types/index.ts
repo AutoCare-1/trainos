@@ -136,3 +136,31 @@ export interface WorkoutTemplateExercise {
   rest_seconds: number | null
   notes: string | null
 }
+
+export interface DeviceConnection {
+  id: string
+  student_id: string
+  provider: 'strava'
+  provider_athlete_id: string
+  access_token: string
+  refresh_token: string
+  expires_at: string
+  scope: string | null
+  connected_at: string
+}
+
+export interface ExternalActivity {
+  id: string
+  student_id: string
+  provider: 'strava'
+  external_id: string
+  activity_type: string
+  name: string | null
+  started_at: string
+  duration_seconds: number | null
+  distance_meters: number | null
+  calories: number | null
+  avg_heart_rate: number | null
+  raw_payload: unknown
+  created_at: string
+}

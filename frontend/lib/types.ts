@@ -43,6 +43,18 @@ export interface BodyMeasurement {
   created_at: string
 }
 
+export interface ExternalActivity {
+  id: string
+  provider: 'strava'
+  activity_type: string
+  name: string | null
+  started_at: string
+  duration_seconds: number | null
+  distance_meters: number | null
+  calories: number | null
+  avg_heart_rate: number | null
+}
+
 export interface WorkoutTemplate {
   id: string
   name: string
