@@ -98,6 +98,14 @@ export default function DashboardPage() {
                       {diasSemTreinar(s) === null ? 'Nunca treinou' : `Sem treinar há ${diasSemTreinar(s)}d`}
                     </span>
                   )}
+                  {(s.exercicios_sem_progresso ?? 0) > 0 && (
+                    <span
+                      className="shrink-0 rounded-full bg-orange-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-orange-700"
+                      title="Sem aumento de carga entre as duas últimas sessões nesses exercícios"
+                    >
+                      {s.exercicios_sem_progresso} sem progresso
+                    </span>
+                  )}
                 </div>
                 <p className="truncate text-sm text-slate-500">{s.objective || 'Sem objetivo definido'}</p>
               </div>

@@ -31,6 +31,14 @@ export interface Student {
   sessoes_concluidas?: number
   ultima_sessao_em?: string | null
   tem_treino_enviado?: boolean
+  exercicios_sem_progresso?: number
+}
+
+export interface AlertaEstagnacao {
+  exercise_id: string
+  exercise_name: string
+  ultima: string
+  anterior: string
 }
 
 export interface BodyMeasurement {

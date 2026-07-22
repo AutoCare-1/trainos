@@ -10,7 +10,7 @@ import ChatBox from '@/components/ChatBox'
 import WeightChart from '@/components/WeightChart'
 import { api, ApiError } from '@/lib/api'
 import { PAR_Q_PERGUNTAS, PAR_Q_VAZIO } from '@/lib/parq'
-import { BodyMeasurement, Gamificacao, Message, ParQAnswers, Student, Workout } from '@/lib/types'
+import { AlertaEstagnacao, BodyMeasurement, Gamificacao, Message, ParQAnswers, Student, Workout } from '@/lib/types'
 
 export default function AlunoDetalheClient({ studentId }: { studentId: string }) {
   const router = useRouter()
@@ -18,6 +18,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
   const [workouts, setWorkouts] = useState<Workout[]>([])
   const [measurements, setMeasurements] = useState<BodyMeasurement[]>([])
   const [gamificacao, setGamificacao] = useState<Gamificacao | null>(null)
+  const [alertasEstagnacao, setAlertasEstagnacao] = useState<AlertaEstagnacao[]>([])
   const [novoPeso, setNovoPeso] = useState('')
   const [novaCintura, setNovaCintura] = useState('')
   const [novoQuadril, setNovoQuadril] = useState('')
@@ -50,14 +51,19 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
       return
     }
     api
-      .get<{ student: Student; workouts: Workout[]; measurements: BodyMeasurement[]; gamificacao: Gamificacao }>(
-        `/alunos/${studentId}`
-      )
+      .get<{
+        student: Student
+        workouts: Workout[]
+        measurements: BodyMeasurement[]
+        gamificacao: Gamificacao
+        alertasEstagnacao: AlertaEstagnacao[]
+      }>(`/alunos/${studentId}`)
       .then((data) => {
         setStudent(data.student)
         setWorkouts(data.workouts)
         setMeasurements(data.measurements)
         setGamificacao(data.gamificacao)
+        setAlertasEstagnacao(data.alertasEstagnacao ?? [])
         setAutopilot(data.student.ai_autopilot)
         setParQ(data.student.par_q_answers ?? PAR_Q_VAZIO)
         setHealthNotes(data.student.health_notes ?? '')
@@ -264,6 +270,25 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
                 </div>
               </div>
             )}
+          </section>
+        )}
+
+        {alertasEstagnacao.length > 0 && (
+          <section className="glass mb-6 rounded-2xl border border-orange-200 bg-orange-50 p-4">
+            <p className="mb-2 text-sm font-semibold text-orange-800">
+              Sem aumento de carga nas duas últimas sessões
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {alertasEstagnacao.map((a) => (
+                <span
+                  key={a.exercise_id}
+                  className="rounded-lg bg-white px-2.5 py-1 text-xs text-orange-700"
+                  title={`Última: ${a.ultima}kg · Anterior: ${a.anterior}kg`}
+                >
+                  {a.exercise_name} ({a.ultima}kg, era {a.anterior}kg)
+                </span>
+              ))}
+            </div>
           </section>
         )}
 

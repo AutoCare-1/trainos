@@ -72,6 +72,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   }
   const [sessionId, setSessionId] = useState<string | null>(null)
   const [registrados, setRegistrados] = useState<Record<string, number>>({})
+  const [recordes, setRecordes] = useState<Record<string, boolean>>({})
   const [inputs, setInputs] = useState<Record<string, { reps: string; load: string }>>({})
   const [treinoConcluido, setTreinoConcluido] = useState(false)
   const [enviandoFeedback, setEnviandoFeedback] = useState(false)
@@ -258,13 +259,17 @@ export default function PortalAlunoClient({ token }: { token: string }) {
 
     const valores = inputs[ex.id] ?? { reps: ex.reps, load: ex.load_kg ?? '' }
     try {
-      await api.post(`/portal/${token}/sessoes/${sessionId}/registros`, {
+      const { isPr } = await api.post<{ isPr: boolean }>(`/portal/${token}/sessoes/${sessionId}/registros`, {
         workout_exercise_id: ex.id,
         set_number: jaFeitas + 1,
         reps_done: Number(valores.reps) || null,
         load_kg_done: valores.load ? Number(valores.load) : null,
       })
       setRegistrados({ ...registrados, [ex.id]: jaFeitas + 1 })
+      if (isPr) {
+        setRecordes((prev) => ({ ...prev, [ex.id]: true }))
+        setTimeout(() => setRecordes((prev) => ({ ...prev, [ex.id]: false })), 4000)
+      }
     } catch (err) {
       setErro(err instanceof ApiError ? err.message : 'Erro ao registrar série')
     }
@@ -688,6 +693,11 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                             {!emBloco && estrutura.label !== 'Tradicional' && (
                               <span className="mt-1 inline-block rounded-lg bg-violet-500/10 px-2 py-0.5 text-xs text-violet-600">
                                 {estrutura.label}
+                              </span>
+                            )}
+                            {recordes[ex.id] && (
+                              <span className="mt-1 ml-1 inline-block rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-700">
+                                Novo recorde
                               </span>
                             )}
                           </div>

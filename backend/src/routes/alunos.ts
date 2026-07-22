@@ -12,6 +12,41 @@ router.use(requireAuth)
 
 const uploadFoto = criarUploader('student-photos', 'image/', 10 * 1024 * 1024)
 
+// Conta, por aluno, quantos exercícios não tiveram a carga máxima aumentada
+// entre as duas últimas sessões concluídas em que ele registrou peso.
+async function contarEstagnacaoPorAluno(professionalId: string): Promise<Record<string, number>> {
+  const { rows } = await pool.query<{ student_id: string; estagnados: string }>(
+    `with cargas as (
+       select ts.student_id, we.exercise_id, ts.id as session_id, ts.finished_at,
+              max(se.load_kg_done) as carga_max
+       from session_entries se
+       join training_sessions ts on ts.id = se.training_session_id
+       join workout_exercises we on we.id = se.workout_exercise_id
+       join students s on s.id = ts.student_id
+       where s.professional_id = $1 and ts.status = 'completed' and se.load_kg_done is not null
+       group by ts.student_id, we.exercise_id, ts.id, ts.finished_at
+     ),
+     ranked as (
+       select *, row_number() over (partition by student_id, exercise_id order by finished_at desc) as rn
+       from cargas
+     ),
+     comparacao as (
+       select student_id, exercise_id,
+              max(case when rn = 1 then carga_max end) as ultima,
+              max(case when rn = 2 then carga_max end) as anterior
+       from ranked
+       where rn <= 2
+       group by student_id, exercise_id
+       having max(case when rn = 2 then carga_max end) is not null
+     )
+     select student_id, count(*) filter (where ultima <= anterior) as estagnados
+     from comparacao
+     group by student_id`,
+    [professionalId]
+  )
+  return Object.fromEntries(rows.map((r) => [r.student_id, Number(r.estagnados)]))
+}
+
 // GET / — lista alunos do profissional autenticado, com último treino e status
 router.get('/', asyncHandler(async (req: AuthedRequest, res: Response): Promise<void> => {
   const { rows } = await pool.query(
@@ -25,7 +60,11 @@ router.get('/', asyncHandler(async (req: AuthedRequest, res: Response): Promise<
      order by s.created_at desc`,
     [req.professionalId]
   )
-  res.json({ students: rows })
+
+  const estagnacao = await contarEstagnacaoPorAluno(req.professionalId as string)
+  const students = rows.map((s) => ({ ...s, exercicios_sem_progresso: estagnacao[s.id] ?? 0 }))
+
+  res.json({ students })
 }))
 
 // POST / — cadastra aluno e gera link de convite (token)
@@ -93,7 +132,38 @@ router.get('/:id', asyncHandler(async (req: AuthedRequest, res: Response): Promi
   const streak = calcularStreak(datas)
   const gamificacao = { total_sessoes: datas.length, streak, badges: calcularBadges(datas.length, streak) }
 
-  res.json({ student, workouts, measurements, gamificacao })
+  const { rows: alertasEstagnacao } = await pool.query(
+    `with cargas as (
+       select we.exercise_id, ts.id as session_id, ts.finished_at,
+              max(se.load_kg_done) as carga_max
+       from session_entries se
+       join training_sessions ts on ts.id = se.training_session_id
+       join workout_exercises we on we.id = se.workout_exercise_id
+       where ts.student_id = $1 and ts.status = 'completed' and se.load_kg_done is not null
+       group by we.exercise_id, ts.id, ts.finished_at
+     ),
+     ranked as (
+       select *, row_number() over (partition by exercise_id order by finished_at desc) as rn
+       from cargas
+     ),
+     comparacao as (
+       select exercise_id,
+              max(case when rn = 1 then carga_max end) as ultima,
+              max(case when rn = 2 then carga_max end) as anterior
+       from ranked
+       where rn <= 2
+       group by exercise_id
+       having max(case when rn = 2 then carga_max end) is not null
+     )
+     select c.exercise_id, e.name as exercise_name, c.ultima, c.anterior
+     from comparacao c
+     join exercises e on e.id = c.exercise_id
+     where c.ultima <= c.anterior
+     order by e.name`,
+    [student.id]
+  )
+
+  res.json({ student, workouts, measurements, gamificacao, alertasEstagnacao })
 }))
 
 // ─────────────────────────────────────────────

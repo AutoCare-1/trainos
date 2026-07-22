@@ -226,12 +226,29 @@ router.post('/:token/sessoes/:sessionId/registros', asyncHandler(async (req: Req
     return
   }
 
+  // Checa recorde ANTES de inserir a nova série, comparando com o maior peso
+  // já registrado pelo aluno nesse exercício (em qualquer treino/sessão).
+  let isPr = false
+  if (load_kg_done) {
+    const { rows: maxRows } = await pool.query<{ max_anterior: string | null }>(
+      `select max(se.load_kg_done) as max_anterior
+       from session_entries se
+       join workout_exercises we on we.id = se.workout_exercise_id
+       join training_sessions ts on ts.id = se.training_session_id
+       where ts.student_id = $1
+         and we.exercise_id = (select exercise_id from workout_exercises where id = $2)`,
+      [student.id, workout_exercise_id]
+    )
+    const maxAnterior = maxRows[0]?.max_anterior ? Number(maxRows[0].max_anterior) : 0
+    isPr = load_kg_done > maxAnterior
+  }
+
   const { rows } = await pool.query(
     `insert into session_entries (training_session_id, workout_exercise_id, set_number, reps_done, load_kg_done, notes)
      values ($1, $2, $3, $4, $5, $6) returning *`,
     [req.params.sessionId, workout_exercise_id, set_number, reps_done ?? null, load_kg_done ?? null, notes ?? null]
   )
-  res.status(201).json({ entry: rows[0] })
+  res.status(201).json({ entry: rows[0], isPr })
 }))
 
 // POST /:token/sessoes/:sessionId/concluir — finaliza a sessão + feedback pós-treino
