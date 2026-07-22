@@ -8,8 +8,38 @@ import Leaderboard from '@/components/Leaderboard'
 import OnboardingAvaliacao from '@/components/OnboardingAvaliacao'
 import SideMenu, { MenuItem } from '@/components/SideMenu'
 import WeightChart from '@/components/WeightChart'
-import { api, ApiError } from '@/lib/api'
-import { BodyMeasurement, Challenge, Gamificacao, Message, ParQAnswers, Workout, WorkoutExerciseDetail } from '@/lib/types'
+import { api, API_URL, ApiError } from '@/lib/api'
+import {
+  BodyMeasurement,
+  Challenge,
+  ExternalActivity,
+  Gamificacao,
+  Message,
+  ParQAnswers,
+  Workout,
+  WorkoutExerciseDetail,
+} from '@/lib/types'
+
+function formatarDuracao(segundos: number | null): string {
+  if (!segundos) return ''
+  const min = Math.round(segundos / 60)
+  return min >= 60 ? `${Math.floor(min / 60)}h${String(min % 60).padStart(2, '0')}` : `${min} min`
+}
+
+function formatarDistancia(metros: number | null): string {
+  if (!metros) return ''
+  return `${(metros / 1000).toFixed(1)} km`
+}
+
+const NOME_ATIVIDADE: Record<string, string> = {
+  Run: 'Corrida',
+  Ride: 'Pedal',
+  Walk: 'Caminhada',
+  Swim: 'Natação',
+  Hike: 'Trilha',
+  WeightTraining: 'Musculação',
+  Workout: 'Treino',
+}
 
 interface PortalData {
   student: { id: string; name: string; objective: string | null; photo_url: string | null }
@@ -49,12 +79,40 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   const [messages, setMessages] = useState<Message[]>([])
   const [aguardandoIa, setAguardandoIa] = useState(false)
 
+  // strava
+  const [stravaConectado, setStravaConectado] = useState(false)
+  const [atividades, setAtividades] = useState<ExternalActivity[]>([])
+  const [sincronizando, setSincronizando] = useState(false)
+  const [avisoStrava, setAvisoStrava] = useState<string | null>(null)
+
   const carregarMensagens = useCallback(() => {
     api
       .get<{ messages: Message[] }>(`/portal/${token}/mensagens`)
       .then((d) => setMessages(d.messages))
       .catch(() => {})
   }, [token])
+
+  const carregarStrava = useCallback(() => {
+    api
+      .get<{ conectado: boolean; atividades: ExternalActivity[] }>(`/strava/${token}/status`)
+      .then((d) => {
+        setStravaConectado(d.conectado)
+        setAtividades(d.atividades)
+      })
+      .catch(() => {})
+  }, [token])
+
+  async function sincronizarStrava() {
+    setSincronizando(true)
+    try {
+      await api.post(`/strava/${token}/sincronizar`)
+      carregarStrava()
+    } catch (err) {
+      setErro(err instanceof ApiError ? err.message : 'Erro ao sincronizar com o Strava')
+    } finally {
+      setSincronizando(false)
+    }
+  }
 
   useEffect(() => {
     api
@@ -73,8 +131,23 @@ export default function PortalAlunoClient({ token }: { token: string }) {
 
     carregarMensagens()
     const intervalo = setInterval(carregarMensagens, 5000)
+
+    carregarStrava()
+    const params = new URLSearchParams(window.location.search)
+    const statusStrava = params.get('strava')
+    if (statusStrava === 'conectado') {
+      setAvisoStrava('Strava conectado com sucesso! 🎉')
+      setAba('evolucao')
+    } else if (statusStrava === 'erro') {
+      setAvisoStrava('Não foi possível conectar ao Strava. Tenta de novo?')
+    }
+    if (statusStrava) {
+      window.history.replaceState({}, '', window.location.pathname)
+      setTimeout(() => setAvisoStrava(null), 5000)
+    }
+
     return () => clearInterval(intervalo)
-  }, [token, carregarMensagens])
+  }, [token, carregarMensagens, carregarStrava])
 
   async function enviarAvaliacao(parQ: ParQAnswers, healthNotes: string, foto: File | null) {
     await api.post(`/portal/${token}/avaliacao`, { par_q_answers: parQ, health_notes: healthNotes })
@@ -221,6 +294,12 @@ export default function PortalAlunoClient({ token }: { token: string }) {
           onSelect={(id) => setAba(id as typeof aba)}
         />
         <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6">
+          {avisoStrava && (
+            <div className="mb-4 rounded-2xl border border-[#2648b3]/25 bg-[#2648b3]/8 px-4 py-3 text-sm text-[#2648b3]">
+              {avisoStrava}
+            </div>
+          )}
+
           <div className="glass rounded-2xl p-5">
             <h2 className="mb-1 font-semibold text-slate-900">Sua evolução 📈</h2>
             <p className="mb-4 text-sm text-slate-500">
@@ -243,6 +322,62 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                     Quadril: <strong className="text-slate-900">{ultima.hip_cm} cm</strong>
                   </span>
                 )}
+              </div>
+            )}
+          </div>
+
+          <div className="glass mt-4 rounded-2xl p-5">
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className="font-semibold text-slate-900">Atividades (Strava)</h2>
+              {stravaConectado ? (
+                <button
+                  onClick={sincronizarStrava}
+                  disabled={sincronizando}
+                  className="glass glass-hover rounded-xl px-3 py-1.5 text-xs font-medium text-slate-700"
+                >
+                  {sincronizando ? 'Sincronizando...' : '↻ Sincronizar'}
+                </button>
+              ) : (
+                <a
+                  href={`${API_URL}/strava/conectar/${token}`}
+                  className="rounded-xl bg-[#fc4c02] px-3 py-1.5 text-xs font-semibold text-white"
+                >
+                  Conectar Strava
+                </a>
+              )}
+            </div>
+
+            {!stravaConectado && (
+              <p className="text-sm text-slate-500">
+                Conecte sua conta do Strava pra suas corridas, pedaladas e outras atividades aparecerem aqui
+                automaticamente.
+              </p>
+            )}
+
+            {stravaConectado && atividades.length === 0 && (
+              <p className="text-sm text-slate-500">
+                Nenhuma atividade sincronizada ainda. Clique em &quot;Sincronizar&quot; pra buscar suas atividades
+                recentes.
+              </p>
+            )}
+
+            {stravaConectado && atividades.length > 0 && (
+              <div className="space-y-2">
+                {atividades.map((a) => (
+                  <div key={a.id} className="flex items-center justify-between rounded-xl bg-slate-900/3 px-3 py-2.5">
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-medium text-slate-800">
+                        {NOME_ATIVIDADE[a.activity_type] ?? a.activity_type}
+                        {a.name ? ` — ${a.name}` : ''}
+                      </p>
+                      <p className="text-xs text-slate-500">
+                        {new Date(a.started_at).toLocaleDateString('pt-BR')}
+                        {a.duration_seconds ? ` · ${formatarDuracao(a.duration_seconds)}` : ''}
+                        {a.distance_meters ? ` · ${formatarDistancia(a.distance_meters)}` : ''}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </div>

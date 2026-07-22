@@ -8,6 +8,7 @@ import exerciciosRoutes from './routes/exercicios'
 import treinosRoutes from './routes/treinos'
 import portalRoutes from './routes/portal'
 import modelosRoutes from './routes/modelos'
+import stravaRoutes from './routes/strava'
 import desafiosRoutes from './routes/desafios'
 
 const app = express()
@@ -24,6 +25,7 @@ app.use('/exercicios', exerciciosRoutes)
 app.use('/treinos', treinosRoutes)
 app.use('/portal', portalRoutes)
 app.use('/modelos', modelosRoutes)
+app.use('/strava', stravaRoutes)
 app.use('/desafios', desafiosRoutes)
 
 app.use((err: Error & { code?: string }, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
