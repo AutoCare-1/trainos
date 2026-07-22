@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import ChatBox from '@/components/ChatBox'
 import ExerciseAnimation from '@/components/ExerciseAnimation'
@@ -54,13 +54,9 @@ interface PortalData {
   onboardingCompleted: boolean
 }
 
-const MENU_ITEMS: MenuItem[] = [
-  { id: 'treino', label: 'Treino', icon: '🏋️' },
-  { id: 'evolucao', label: 'Avaliação Física', icon: '📏' },
-  { id: 'desafio', label: 'Desafio', icon: '🏆' },
-  { id: 'chat', label: 'Mensagens', icon: '💬' },
-  { id: 'instalar', label: 'Instalar app', icon: '📲' },
-]
+function chaveUltimaVista(token: string): string {
+  return `chat_ultima_vista_${token}`
+}
 
 export default function PortalAlunoClient({ token }: { token: string }) {
   const [data, setData] = useState<PortalData | null>(null)
@@ -86,6 +82,19 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   // chat
   const [messages, setMessages] = useState<Message[]>([])
   const [aguardandoIa, setAguardandoIa] = useState(false)
+  const [ultimaVistaEm, setUltimaVistaEm] = useState<string | null>(null)
+
+  const naoLidas = messages.filter(
+    (m) => m.sender !== 'student' && (!ultimaVistaEm || new Date(m.created_at) > new Date(ultimaVistaEm))
+  ).length
+
+  const menuItems: MenuItem[] = [
+    { id: 'treino', label: 'Treino', icon: '🏋️' },
+    { id: 'evolucao', label: 'Avaliação Física', icon: '📏' },
+    { id: 'desafio', label: 'Desafio', icon: '🏆' },
+    { id: 'chat', label: naoLidas > 0 ? `Mensagens (${naoLidas})` : 'Mensagens', icon: '💬' },
+    { id: 'instalar', label: 'Instalar app', icon: '📲' },
+  ]
 
   // strava
   const [stravaConectado, setStravaConectado] = useState(false)
@@ -156,6 +165,44 @@ export default function PortalAlunoClient({ token }: { token: string }) {
 
     return () => clearInterval(intervalo)
   }, [token, carregarMensagens, carregarStrava])
+
+  // Restaura de onde o aluno parou de ler o chat (persiste entre visitas).
+  useEffect(() => {
+    const salvo = localStorage.getItem(chaveUltimaVista(token))
+    if (salvo) setUltimaVistaEm(salvo)
+  }, [token])
+
+  // Pede permissão de notificação do navegador uma vez, sem bloquear o carregamento da página.
+  useEffect(() => {
+    if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
+      Notification.requestPermission().catch(() => {})
+    }
+  }, [])
+
+  // Marca como lido assim que o aluno abre a aba de mensagens.
+  useEffect(() => {
+    if (aba !== 'chat' || messages.length === 0) return
+    const ultima = messages[messages.length - 1]
+    setUltimaVistaEm(ultima.created_at)
+    localStorage.setItem(chaveUltimaVista(token), ultima.created_at)
+  }, [aba, messages, token])
+
+  // Notifica o aluno quando chega mensagem nova do professor/IA e ele não está na aba de chat.
+  const totalMensagensAnterior = useRef(0)
+  useEffect(() => {
+    if (totalMensagensAnterior.current > 0 && messages.length > totalMensagensAnterior.current) {
+      const novas = messages.slice(totalMensagensAnterior.current)
+      const novaDoCoach = novas.find((m) => m.sender !== 'student')
+      const foraDoChat = aba !== 'chat' || document.hidden
+      if (novaDoCoach && foraDoChat && typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+        new Notification(novaDoCoach.sender === 'ai' ? 'Coach IA' : 'Seu professor', {
+          body: novaDoCoach.content,
+          icon: '/icon-192.png',
+        })
+      }
+    }
+    totalMensagensAnterior.current = messages.length
+  }, [messages, aba])
 
   async function enviarAvaliacao(parQ: ParQAnswers, healthNotes: string, foto: File | null) {
     await api.post(`/portal/${token}/avaliacao`, { par_q_answers: parQ, health_notes: healthNotes })
@@ -297,7 +344,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
           nome={data.student.name}
           fotoUrl={data.student.photo_url}
           subtitulo="Clube Mais"
-          items={MENU_ITEMS}
+          items={menuItems}
           ativo={aba}
           onSelect={selecionarItemMenu}
         />
@@ -406,7 +453,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
           nome={data.student.name}
           fotoUrl={data.student.photo_url}
           subtitulo="Clube Mais"
-          items={MENU_ITEMS}
+          items={menuItems}
           ativo={aba}
           onSelect={selecionarItemMenu}
         />
@@ -470,7 +517,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
           nome={data.student.name}
           fotoUrl={data.student.photo_url}
           subtitulo="Clube Mais"
-          items={MENU_ITEMS}
+          items={menuItems}
           ativo={aba}
           onSelect={selecionarItemMenu}
         />
@@ -501,7 +548,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
           nome={data.student.name}
           fotoUrl={data.student.photo_url}
           subtitulo="Clube Mais"
-          items={MENU_ITEMS}
+          items={menuItems}
           ativo={aba}
           onSelect={selecionarItemMenu}
         />
@@ -534,7 +581,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
           nome={data.student.name}
           fotoUrl={data.student.photo_url}
           subtitulo="Clube Mais"
-          items={MENU_ITEMS}
+          items={menuItems}
           ativo={aba}
           onSelect={selecionarItemMenu}
         />
@@ -566,7 +613,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
           nome={data.student.name}
           fotoUrl={data.student.photo_url}
           subtitulo="Clube Mais"
-          items={MENU_ITEMS}
+          items={menuItems}
           ativo={aba}
           onSelect={selecionarItemMenu}
         />
@@ -626,6 +673,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                     <p className="mt-0.5 text-sm text-slate-500">
                       {ex.sets} × {ex.reps}
                       {ex.load_kg ? ` · ${ex.load_kg}kg` : ''}
+                      {ex.rest_seconds ? ` · ⏱ ${ex.rest_seconds}s` : ''}
                     </p>
                   </div>
                   <div className="glass shrink-0 rounded-xl p-1.5 text-[#2648b3]">

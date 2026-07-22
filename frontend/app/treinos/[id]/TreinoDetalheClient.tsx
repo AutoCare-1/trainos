@@ -118,6 +118,11 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
                         {ex.load_kg} kg
                       </span>
                     )}
+                    {ex.rest_seconds && (
+                      <span className="rounded-lg bg-slate-900/5 px-2.5 py-1 text-xs text-slate-600">
+                        ⏱ {ex.rest_seconds}s descanso
+                      </span>
+                    )}
                   </div>
                   {ex.instructions && <p className="mt-3 text-sm text-slate-500">{ex.instructions}</p>}
                 </div>

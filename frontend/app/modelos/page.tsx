@@ -117,6 +117,7 @@ export default function ModelosPage() {
                         <p className="text-sm font-medium text-slate-800">{ex.exercise_name}</p>
                         <p className="text-xs text-slate-500">
                           {ex.sets} séries · {ex.reps} reps{ex.load_kg ? ` · ${ex.load_kg}kg` : ''}
+                          {ex.rest_seconds ? ` · ⏱ ${ex.rest_seconds}s` : ''}
                         </p>
                       </div>
                     </div>

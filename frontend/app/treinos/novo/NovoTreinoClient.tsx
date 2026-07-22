@@ -13,6 +13,7 @@ interface ItemTreino {
   sets: number
   reps: string
   load_kg?: number
+  rest_seconds?: number
 }
 
 export default function NovoTreinoClient() {
@@ -64,6 +65,7 @@ export default function NovoTreinoClient() {
           sets: ex.sets,
           reps: ex.reps,
           load_kg: ex.load_kg ? Number(ex.load_kg) : undefined,
+          rest_seconds: ex.rest_seconds ?? undefined,
         }))
       )
     } catch (err) {
@@ -107,6 +109,7 @@ export default function NovoTreinoClient() {
         if (i.exercise_id !== exerciseId) return i
         if (campo === 'sets') return { ...i, sets: Number(valor) || 0 }
         if (campo === 'load_kg') return { ...i, load_kg: valor ? Number(valor) : undefined }
+        if (campo === 'rest_seconds') return { ...i, rest_seconds: valor ? Number(valor) : undefined }
         return { ...i, reps: valor }
       })
     )
@@ -257,7 +260,7 @@ export default function NovoTreinoClient() {
                           Remover
                         </button>
                       </div>
-                      <div className="grid grid-cols-3 gap-2">
+                      <div className="grid grid-cols-2 gap-2">
                         <div>
                           <label className="mb-1 block text-xs text-slate-500">Séries</label>
                           <input
@@ -284,6 +287,18 @@ export default function NovoTreinoClient() {
                             min={0}
                             value={item.load_kg ?? ''}
                             onChange={(e) => atualizarItem(item.exercise_id, 'load_kg', e.target.value)}
+                            className="input-dark w-full rounded-lg px-2.5 py-2 text-sm"
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-1 block text-xs text-slate-500">Descanso (s)</label>
+                          <input
+                            type="number"
+                            min={0}
+                            step={5}
+                            placeholder="Ex: 60"
+                            value={item.rest_seconds ?? ''}
+                            onChange={(e) => atualizarItem(item.exercise_id, 'rest_seconds', e.target.value)}
                             className="input-dark w-full rounded-lg px-2.5 py-2 text-sm"
                           />
                         </div>
