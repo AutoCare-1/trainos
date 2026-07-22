@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -15,7 +15,20 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Clube Mais - Personal",
   description: "Gestão de alunos e treinos — Clube Mais Personal",
-  icons: { icon: "/clubemais-icone.png" },
+  manifest: "/manifest.json",
+  icons: {
+    icon: "/clubemais-icone.png",
+    apple: "/apple-touch-icon.png",
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Clube Mais",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#2648b3",
 };
 
 export default function RootLayout({

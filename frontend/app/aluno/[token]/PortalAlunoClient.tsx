@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
 import ChatBox from '@/components/ChatBox'
 import ExerciseAnimation from '@/components/ExerciseAnimation'
+import InstallAppModal from '@/components/InstallAppModal'
 import Leaderboard from '@/components/Leaderboard'
 import OnboardingAvaliacao from '@/components/OnboardingAvaliacao'
 import SideMenu, { MenuItem } from '@/components/SideMenu'
@@ -58,6 +59,7 @@ const MENU_ITEMS: MenuItem[] = [
   { id: 'evolucao', label: 'Avaliação Física', icon: '📏' },
   { id: 'desafio', label: 'Desafio', icon: '🏆' },
   { id: 'chat', label: 'Mensagens', icon: '💬' },
+  { id: 'instalar', label: 'Instalar app', icon: '📲' },
 ]
 
 export default function PortalAlunoClient({ token }: { token: string }) {
@@ -65,6 +67,12 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   const [erro, setErro] = useState<string | null>(null)
   const [aba, setAba] = useState<'treino' | 'evolucao' | 'desafio' | 'chat'>('treino')
   const [menuAberto, setMenuAberto] = useState(false)
+  const [instalarAberto, setInstalarAberto] = useState(false)
+
+  function selecionarItemMenu(id: string) {
+    if (id === 'instalar') setInstalarAberto(true)
+    else setAba(id as typeof aba)
+  }
   const [sessionId, setSessionId] = useState<string | null>(null)
   const [registrados, setRegistrados] = useState<Record<string, number>>({})
   const [inputs, setInputs] = useState<Record<string, { reps: string; load: string }>>({})
@@ -291,8 +299,9 @@ export default function PortalAlunoClient({ token }: { token: string }) {
           subtitulo="Clube Mais"
           items={MENU_ITEMS}
           ativo={aba}
-          onSelect={(id) => setAba(id as typeof aba)}
+          onSelect={selecionarItemMenu}
         />
+        <InstallAppModal open={instalarAberto} onClose={() => setInstalarAberto(false)} />
         <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6">
           {avisoStrava && (
             <div className="mb-4 rounded-2xl border border-[#2648b3]/25 bg-[#2648b3]/8 px-4 py-3 text-sm text-[#2648b3]">
@@ -399,8 +408,9 @@ export default function PortalAlunoClient({ token }: { token: string }) {
           subtitulo="Clube Mais"
           items={MENU_ITEMS}
           ativo={aba}
-          onSelect={(id) => setAba(id as typeof aba)}
+          onSelect={selecionarItemMenu}
         />
+        <InstallAppModal open={instalarAberto} onClose={() => setInstalarAberto(false)} />
         <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6 space-y-4">
           <div className="glass flex items-center gap-5 rounded-2xl p-5">
             <div>
@@ -462,8 +472,9 @@ export default function PortalAlunoClient({ token }: { token: string }) {
           subtitulo="Clube Mais"
           items={MENU_ITEMS}
           ativo={aba}
-          onSelect={(id) => setAba(id as typeof aba)}
+          onSelect={selecionarItemMenu}
         />
+        <InstallAppModal open={instalarAberto} onClose={() => setInstalarAberto(false)} />
         <main className="mx-auto flex w-full max-w-lg flex-1 flex-col">
           <div className="flex flex-1 flex-col" style={{ minHeight: 'calc(100vh - 110px)' }}>
             <ChatBox
@@ -492,8 +503,9 @@ export default function PortalAlunoClient({ token }: { token: string }) {
           subtitulo="Clube Mais"
           items={MENU_ITEMS}
           ativo={aba}
-          onSelect={(id) => setAba(id as typeof aba)}
+          onSelect={selecionarItemMenu}
         />
+        <InstallAppModal open={instalarAberto} onClose={() => setInstalarAberto(false)} />
         <main className="flex flex-1 items-center justify-center px-4">
           <div className="glass max-w-sm rounded-3xl p-8 text-center">
             <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 text-3xl">
@@ -524,8 +536,9 @@ export default function PortalAlunoClient({ token }: { token: string }) {
           subtitulo="Clube Mais"
           items={MENU_ITEMS}
           ativo={aba}
-          onSelect={(id) => setAba(id as typeof aba)}
+          onSelect={selecionarItemMenu}
         />
+        <InstallAppModal open={instalarAberto} onClose={() => setInstalarAberto(false)} />
         <main className="flex flex-1 items-center justify-center px-4">
           <div className="glass max-w-sm rounded-3xl p-8 text-center">
             <h1 className="text-xl font-bold text-slate-900">Nenhum treino por aqui ainda</h1>
@@ -555,8 +568,9 @@ export default function PortalAlunoClient({ token }: { token: string }) {
           subtitulo="Clube Mais"
           items={MENU_ITEMS}
           ativo={aba}
-          onSelect={(id) => setAba(id as typeof aba)}
+          onSelect={selecionarItemMenu}
         />
+        <InstallAppModal open={instalarAberto} onClose={() => setInstalarAberto(false)} />
       <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6 pb-24">
         {erro && <p className="mb-4 text-sm text-rose-400">{erro}</p>}
 

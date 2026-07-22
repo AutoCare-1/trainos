@@ -1,0 +1,14 @@
+{
+  "name": "Clube Mais - Personal",
+  "short_name": "Clube Mais",
+  "description": "Gestão de alunos e treinos — Clube Mais Personal",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#2648b3",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

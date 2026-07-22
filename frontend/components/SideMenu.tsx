@@ -8,6 +8,7 @@ export interface MenuItem {
   label: string
   icon: string
   href?: string
+  onClick?: () => void
 }
 
 export default function SideMenu({
@@ -91,7 +92,8 @@ export default function SideMenu({
               <button
                 key={item.id}
                 onClick={() => {
-                  onSelect?.(item.id)
+                  if (item.onClick) item.onClick()
+                  else onSelect?.(item.id)
                   onClose()
                 }}
                 className={classes}

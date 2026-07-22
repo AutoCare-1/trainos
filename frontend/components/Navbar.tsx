@@ -4,17 +4,10 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
+import InstallAppModal from '@/components/InstallAppModal'
 import SideMenu, { MenuItem } from '@/components/SideMenu'
 import { api, clearToken } from '@/lib/api'
 import { Professional } from '@/lib/types'
-
-const MENU_ITEMS: MenuItem[] = [
-  { id: 'dashboard', label: 'Meus alunos', icon: '👥', href: '/dashboard' },
-  { id: 'desafios', label: 'Desafios', icon: '🏆', href: '/desafios' },
-  { id: 'videos', label: 'Vídeos dos exercícios', icon: '🎥', href: '/videos' },
-  { id: 'modelos', label: 'Modelos de treino', icon: '📋', href: '/modelos' },
-  { id: 'novo-aluno', label: 'Cadastrar aluno', icon: '➕', href: '/alunos/novo' },
-]
 
 function itemAtivo(pathname: string): string {
   if (pathname.startsWith('/alunos/novo')) return 'novo-aluno'
@@ -29,7 +22,17 @@ export default function Navbar() {
   const router = useRouter()
   const pathname = usePathname()
   const [menuAberto, setMenuAberto] = useState(false)
+  const [instalarAberto, setInstalarAberto] = useState(false)
   const [profissional, setProfissional] = useState<Professional | null>(null)
+
+  const menuItems: MenuItem[] = [
+    { id: 'dashboard', label: 'Meus alunos', icon: '👥', href: '/dashboard' },
+    { id: 'desafios', label: 'Desafios', icon: '🏆', href: '/desafios' },
+    { id: 'videos', label: 'Vídeos dos exercícios', icon: '🎥', href: '/videos' },
+    { id: 'modelos', label: 'Modelos de treino', icon: '📋', href: '/modelos' },
+    { id: 'novo-aluno', label: 'Cadastrar aluno', icon: '➕', href: '/alunos/novo' },
+    { id: 'instalar', label: 'Instalar app', icon: '📲', onClick: () => setInstalarAberto(true) },
+  ]
 
   useEffect(() => {
     api
@@ -73,7 +76,7 @@ export default function Navbar() {
         onClose={() => setMenuAberto(false)}
         nome={profissional?.name ?? 'Personal'}
         subtitulo="Clube Mais"
-        items={MENU_ITEMS}
+        items={menuItems}
         ativo={itemAtivo(pathname)}
         rodape={
           <button
@@ -89,6 +92,8 @@ export default function Navbar() {
           </button>
         }
       />
+
+      <InstallAppModal open={instalarAberto} onClose={() => setInstalarAberto(false)} />
     </>
   )
 }
