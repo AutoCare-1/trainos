@@ -123,3 +123,34 @@ export interface WorkoutExerciseDetail {
   image_url: string | null
   image_credit: string | null
 }
+
+export interface Badge {
+  id: string
+  emoji: string
+  label: string
+}
+
+export interface Gamificacao {
+  total_sessoes: number
+  streak: number
+  badges: Badge[]
+}
+
+export interface LeaderboardEntry {
+  student_id: string
+  name: string
+  pontos: string
+}
+
+export interface Challenge {
+  id: string
+  professional_id: string
+  name: string
+  description: string | null
+  start_date: string
+  end_date: string
+  created_at: string
+  total_participantes?: number
+  status?: 'agendado' | 'ativo' | 'encerrado'
+  leaderboard?: LeaderboardEntry[]
+}

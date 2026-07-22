@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid'
 import { pool } from '../db/pool'
 import { asyncHandler } from '../middleware/asyncHandler'
 import { AuthedRequest, requireAuth } from '../middleware/auth'
+import { calcularBadges, calcularStreak } from '../services/gamification'
 import { Student } from '../types'
 
 const router = Router()
@@ -79,7 +80,17 @@ router.get('/:id', asyncHandler(async (req: AuthedRequest, res: Response): Promi
     [student.id]
   )
 
-  res.json({ student, workouts, measurements })
+  const { rows: sessoesConcluidas } = await pool.query<{ finished_at: Date }>(
+    `select ts.finished_at from training_sessions ts
+     join workouts w on w.id = ts.workout_id
+     where w.student_id = $1 and ts.status = 'completed'`,
+    [student.id]
+  )
+  const datas = sessoesConcluidas.map((s) => new Date(s.finished_at))
+  const streak = calcularStreak(datas)
+  const gamificacao = { total_sessoes: datas.length, streak, badges: calcularBadges(datas.length, streak) }
+
+  res.json({ student, workouts, measurements, gamificacao })
 }))
 
 // ─────────────────────────────────────────────

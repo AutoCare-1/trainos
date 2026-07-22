@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express'
 import { pool } from '../db/pool'
 import { asyncHandler } from '../middleware/asyncHandler'
 import { ContextoAluno, responderComoPersonal } from '../services/chat'
+import { calcularBadges, calcularStreak } from '../services/gamification'
 import { Message, Student, Workout } from '../types'
 
 const router = Router()
@@ -69,6 +70,45 @@ router.get('/:token', asyncHandler(async (req: Request, res: Response): Promise<
     [student.id]
   )
 
+  const { rows: sessoesConcluidas } = await pool.query<{ finished_at: Date }>(
+    `select ts.finished_at from training_sessions ts
+     join workouts w on w.id = ts.workout_id
+     where w.student_id = $1 and ts.status = 'completed'`,
+    [student.id]
+  )
+  const datas = sessoesConcluidas.map((s) => new Date(s.finished_at))
+  const streak = calcularStreak(datas)
+  const gamificacao = { total_sessoes: datas.length, streak, badges: calcularBadges(datas.length, streak) }
+
+  const { rows: desafioRows } = await pool.query(
+    `select c.* from challenges c
+     join challenge_participants cp on cp.challenge_id = c.id
+     where cp.student_id = $1 and current_date between c.start_date and c.end_date
+     order by c.start_date desc limit 1`,
+    [student.id]
+  )
+  const desafioAtivo = desafioRows[0] ?? null
+
+  let leaderboard: { student_id: string; name: string; pontos: string }[] = []
+  if (desafioAtivo) {
+    const { rows } = await pool.query(
+      `select s.id as student_id, s.name,
+              count(ts.id) filter (
+                where ts.status = 'completed'
+                and ts.finished_at::date between $2 and $3
+              ) as pontos
+       from challenge_participants cp
+       join students s on s.id = cp.student_id
+       left join workouts w on w.student_id = s.id
+       left join training_sessions ts on ts.workout_id = w.id and ts.student_id = s.id
+       where cp.challenge_id = $1
+       group by s.id, s.name
+       order by pontos desc, s.name`,
+      [desafioAtivo.id, desafioAtivo.start_date, desafioAtivo.end_date]
+    )
+    leaderboard = rows
+  }
+
   res.json({
     student: { id: student.id, name: student.name, objective: student.objective },
     workout,
@@ -76,6 +116,8 @@ router.get('/:token', asyncHandler(async (req: Request, res: Response): Promise<
     activeSessionId: activeSession?.id ?? null,
     registeredCounts,
     measurements,
+    gamificacao,
+    desafio: desafioAtivo ? { ...desafioAtivo, leaderboard } : null,
   })
 }))
 

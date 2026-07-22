@@ -46,7 +46,13 @@ export default function DashboardPage() {
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">Meus alunos</h1>
             <p className="mt-1 text-sm text-slate-500">Acompanhe treinos, execuções e conversas</p>
           </div>
-          <div className="flex gap-2.5">
+          <div className="flex flex-wrap gap-2.5">
+            <Link
+              href="/desafios"
+              className="glass glass-hover rounded-xl px-4 py-2.5 text-sm font-medium text-slate-700"
+            >
+              Desafios 🏆
+            </Link>
             <Link
               href="/videos"
               className="glass glass-hover rounded-xl px-4 py-2.5 text-sm font-medium text-slate-700"

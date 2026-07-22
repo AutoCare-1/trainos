@@ -4,9 +4,18 @@ import { useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
 import ChatBox from '@/components/ChatBox'
 import ExerciseAnimation from '@/components/ExerciseAnimation'
+import Leaderboard from '@/components/Leaderboard'
 import WeightChart from '@/components/WeightChart'
 import { api, API_URL, ApiError } from '@/lib/api'
-import { BodyMeasurement, ExternalActivity, Message, Workout, WorkoutExerciseDetail } from '@/lib/types'
+import {
+  BodyMeasurement,
+  Challenge,
+  ExternalActivity,
+  Gamificacao,
+  Message,
+  Workout,
+  WorkoutExerciseDetail,
+} from '@/lib/types'
 
 function formatarDuracao(segundos: number | null): string {
   if (!segundos) return ''
@@ -36,12 +45,14 @@ interface PortalData {
   activeSessionId: string | null
   registeredCounts: Record<string, number>
   measurements: BodyMeasurement[]
+  gamificacao: Gamificacao
+  desafio: Challenge | null
 }
 
 export default function PortalAlunoClient({ token }: { token: string }) {
   const [data, setData] = useState<PortalData | null>(null)
   const [erro, setErro] = useState<string | null>(null)
-  const [aba, setAba] = useState<'treino' | 'evolucao' | 'chat'>('treino')
+  const [aba, setAba] = useState<'treino' | 'evolucao' | 'desafio' | 'chat'>('treino')
   const [sessionId, setSessionId] = useState<string | null>(null)
   const [registrados, setRegistrados] = useState<Record<string, number>>({})
   const [inputs, setInputs] = useState<Record<string, { reps: string; load: string }>>({})
@@ -219,6 +230,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
           [
             ['treino', 'Treino'],
             ['evolucao', 'Evolução'],
+            ['desafio', 'Desafio'],
             ['chat', 'Chat'],
           ] as const
         ).map(([id, rotulo]) => (
@@ -331,6 +343,60 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                   </div>
                 ))}
               </div>
+            )}
+          </div>
+        </main>
+      </div>
+    )
+  }
+
+  if (aba === 'desafio') {
+    const { gamificacao, desafio } = data
+    return (
+      <div className="flex min-h-screen flex-col">
+        {cabecalho}
+        <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6 space-y-4">
+          <div className="glass flex items-center gap-5 rounded-2xl p-5">
+            <div>
+              <p className="text-xs uppercase tracking-wider text-slate-500">Sequência</p>
+              <p className="text-lg font-bold text-slate-900">
+                {gamificacao.streak > 0 ? `🔥 ${gamificacao.streak} dia${gamificacao.streak === 1 ? '' : 's'}` : '—'}
+              </p>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-wider text-slate-500">Treinos concluídos</p>
+              <p className="text-lg font-bold text-slate-900">{gamificacao.total_sessoes}</p>
+            </div>
+          </div>
+
+          {gamificacao.badges.length > 0 && (
+            <div className="glass rounded-2xl p-5">
+              <h2 className="mb-3 font-semibold text-slate-900">Suas medalhas 🎖️</h2>
+              <div className="flex flex-wrap gap-2">
+                {gamificacao.badges.map((b) => (
+                  <span
+                    key={b.id}
+                    title={b.label}
+                    className="flex items-center gap-1.5 rounded-full bg-slate-900/5 px-3 py-1.5 text-sm"
+                  >
+                    {b.emoji} <span className="text-xs text-slate-600">{b.label}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="glass rounded-2xl p-5">
+            <h2 className="mb-1 font-semibold text-slate-900">{desafio ? desafio.name : 'Nenhum desafio ativo'} 🏆</h2>
+            {desafio ? (
+              <>
+                <p className="mb-3 text-sm text-slate-500">Quem completa mais treinos no período sobe no quadro.</p>
+                <Leaderboard entries={desafio.leaderboard ?? []} highlightId={data.student.id} />
+              </>
+            ) : (
+              <p className="text-sm text-slate-500">
+                Assim que seu professor te colocar num desafio, ele aparece aqui.
+              </p>
             )}
           </div>
         </main>

@@ -164,3 +164,19 @@ export interface ExternalActivity {
   raw_payload: unknown
   created_at: string
 }
+
+export interface Challenge {
+  id: string
+  professional_id: string
+  name: string
+  description: string | null
+  start_date: string
+  end_date: string
+  created_at: string
+}
+
+export interface ChallengeParticipant {
+  id: string
+  challenge_id: string
+  student_id: string
+}
