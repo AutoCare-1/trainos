@@ -1,11 +1,13 @@
 'use client'
 
+import Link from 'next/link'
 import { resolveMediaUrl } from '@/lib/api'
 
 export interface MenuItem {
   id: string
   label: string
   icon: string
+  href?: string
 }
 
 export default function SideMenu({
@@ -17,6 +19,7 @@ export default function SideMenu({
   items,
   ativo,
   onSelect,
+  rodape,
 }: {
   open: boolean
   onClose: () => void
@@ -25,7 +28,8 @@ export default function SideMenu({
   subtitulo: string
   items: MenuItem[]
   ativo: string
-  onSelect: (id: string) => void
+  onSelect?: (id: string) => void
+  rodape?: React.ReactNode
 }) {
   return (
     <>
@@ -63,24 +67,42 @@ export default function SideMenu({
         </div>
 
         <nav className="py-2">
-          {items.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => {
-                onSelect(item.id)
-                onClose()
-              }}
-              className={`flex w-full items-center gap-4 border-b border-black/6 px-6 py-4 text-left transition ${
-                ativo === item.id ? 'bg-[#2648b3]/6' : 'hover:bg-slate-900/3'
-              }`}
-            >
-              <span className="text-xl">{item.icon}</span>
-              <span className={`text-sm font-semibold ${ativo === item.id ? 'text-[#2648b3]' : 'text-slate-800'}`}>
-                {item.label}
-              </span>
-            </button>
-          ))}
+          {items.map((item) => {
+            const conteudo = (
+              <>
+                <span className="text-xl">{item.icon}</span>
+                <span className={`text-sm font-semibold ${ativo === item.id ? 'text-[#2648b3]' : 'text-slate-800'}`}>
+                  {item.label}
+                </span>
+              </>
+            )
+            const classes = `flex w-full items-center gap-4 border-b border-black/6 px-6 py-4 text-left transition ${
+              ativo === item.id ? 'bg-[#2648b3]/6' : 'hover:bg-slate-900/3'
+            }`
+
+            if (item.href) {
+              return (
+                <Link key={item.id} href={item.href} onClick={onClose} className={classes}>
+                  {conteudo}
+                </Link>
+              )
+            }
+            return (
+              <button
+                key={item.id}
+                onClick={() => {
+                  onSelect?.(item.id)
+                  onClose()
+                }}
+                className={classes}
+              >
+                {conteudo}
+              </button>
+            )
+          })}
         </nav>
+
+        {rodape}
       </aside>
     </>
   )

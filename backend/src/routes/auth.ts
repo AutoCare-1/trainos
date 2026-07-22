@@ -1,10 +1,24 @@
 import { Router, Request, Response } from 'express'
 import { pool } from '../db/pool'
 import { asyncHandler } from '../middleware/asyncHandler'
+import { AuthedRequest, requireAuth } from '../middleware/auth'
 import { gerarToken, hashPassword, verificarSenha } from '../services/auth'
 import { Professional } from '../types'
 
 const router = Router()
+
+// GET /me — dados do profissional autenticado (pra exibir nome no menu, etc.)
+router.get('/me', requireAuth, asyncHandler(async (req: AuthedRequest, res: Response): Promise<void> => {
+  const { rows } = await pool.query<Professional>(
+    'select id, name, email from professionals where id = $1',
+    [req.professionalId]
+  )
+  if (rows.length === 0) {
+    res.status(404).json({ error: 'Profissional não encontrado' })
+    return
+  }
+  res.json({ professional: rows[0] })
+}))
 
 router.post('/signup', asyncHandler(async (req: Request, res: Response): Promise<void> => {
   const { name, email, password } = req.body as { name?: string; email?: string; password?: string }

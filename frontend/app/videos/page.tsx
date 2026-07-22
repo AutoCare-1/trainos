@@ -13,7 +13,8 @@ export default function VideosPage() {
   const [exercises, setExercises] = useState<Exercise[] | null>(null)
   const [erro, setErro] = useState<string | null>(null)
   const [enviando, setEnviando] = useState<string | null>(null)
-  const fileInputs = useRef<Record<string, HTMLInputElement | null>>({})
+  const inputsGravar = useRef<Record<string, HTMLInputElement | null>>({})
+  const inputsGaleria = useRef<Record<string, HTMLInputElement | null>>({})
 
   useEffect(() => {
     if (!localStorage.getItem('trainos_token')) {
@@ -105,10 +106,11 @@ export default function VideosPage() {
                         {ex.video_customizado ? 'Vídeo personalizado' : 'Vídeo/imagem padrão'}
                       </p>
                     </div>
-                    <div className="flex shrink-0 items-center gap-2">
+                    <div className="flex shrink-0 flex-col items-end gap-1.5">
+                      {/* dispara a câmera direto no celular */}
                       <input
                         ref={(el) => {
-                          fileInputs.current[ex.id] = el
+                          inputsGravar.current[ex.id] = el
                         }}
                         type="file"
                         accept="video/*"
@@ -120,6 +122,36 @@ export default function VideosPage() {
                           e.target.value = ''
                         }}
                       />
+                      {/* sem "capture": abre a galeria/fototeca do celular (ou arquivos, no desktop) */}
+                      <input
+                        ref={(el) => {
+                          inputsGaleria.current[ex.id] = el
+                        }}
+                        type="file"
+                        accept="video/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0]
+                          if (file) enviarVideo(ex.id, file)
+                          e.target.value = ''
+                        }}
+                      />
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => inputsGravar.current[ex.id]?.click()}
+                          disabled={enviando === ex.id}
+                          className="glass glass-hover rounded-xl px-3 py-2 text-xs font-medium text-slate-700"
+                        >
+                          {enviando === ex.id ? 'Enviando...' : '🎥 Gravar'}
+                        </button>
+                        <button
+                          onClick={() => inputsGaleria.current[ex.id]?.click()}
+                          disabled={enviando === ex.id}
+                          className="glass glass-hover rounded-xl px-3 py-2 text-xs font-medium text-slate-700"
+                        >
+                          📁 Galeria
+                        </button>
+                      </div>
                       {ex.video_customizado && (
                         <button
                           onClick={() => restaurarPadrao(ex.id)}
@@ -129,13 +161,6 @@ export default function VideosPage() {
                           Restaurar padrão
                         </button>
                       )}
-                      <button
-                        onClick={() => fileInputs.current[ex.id]?.click()}
-                        disabled={enviando === ex.id}
-                        className="glass glass-hover rounded-xl px-3 py-2 text-xs font-medium text-slate-700"
-                      >
-                        {enviando === ex.id ? 'Enviando...' : 'Enviar / gravar vídeo'}
-                      </button>
                     </div>
                   </div>
                 ))}
