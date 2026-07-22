@@ -1,8 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --background: #070b14;
-  --foreground: #e6ebf4;
+  --background: #ffffff;
+  --foreground: #1b1350;
+
+  /* Cores da marca Clube Mais */
+  --brand-blue: #2648b3;
+  --brand-lavender: #b5a9e5;
+  --brand-navy: #1b1350;
 }
 
 @theme inline {
@@ -18,66 +23,67 @@ body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
-/* Fundo com brilhos suaves, estilo app fitness premium */
+/* Fundo com brilhos suaves da marca, sobre branco */
 .bg-glow {
   background:
-    radial-gradient(ellipse 60% 40% at 15% -10%, rgba(16, 185, 129, 0.14), transparent 60%),
-    radial-gradient(ellipse 50% 35% at 90% 0%, rgba(6, 182, 212, 0.10), transparent 55%),
-    radial-gradient(ellipse 70% 50% at 50% 110%, rgba(99, 102, 241, 0.08), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 15% -10%, rgba(38, 72, 179, 0.07), transparent 60%),
+    radial-gradient(ellipse 50% 35% at 90% 0%, rgba(181, 169, 229, 0.16), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 50% 110%, rgba(38, 72, 179, 0.05), transparent 60%),
     var(--background);
 }
 
-/* Card de vidro padrão */
+/* Card padrão — claro, com sombra suave em vez de vidro escuro */
 .glass {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
+  background: #ffffff;
+  border: 1px solid rgba(27, 19, 80, 0.08);
+  box-shadow: 0 1px 3px rgba(27, 19, 80, 0.04);
 }
 
 .glass-hover {
   transition: border-color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 .glass-hover:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(52, 211, 153, 0.35);
+  background: rgba(38, 72, 179, 0.03);
+  border-color: rgba(38, 72, 179, 0.3);
   transform: translateY(-1px);
-  box-shadow: 0 8px 30px rgba(16, 185, 129, 0.08);
+  box-shadow: 0 8px 24px rgba(27, 19, 80, 0.08);
 }
 
-/* Botão primário com gradiente e glow */
+/* Botão primário com gradiente da marca (azul -> lilás) */
 .btn-primary {
-  background: linear-gradient(135deg, #10b981, #06b6d4);
-  color: #04110d;
+  background: linear-gradient(135deg, #2648b3, #8b7fd6);
+  color: #ffffff;
   font-weight: 600;
   transition: opacity 0.2s, box-shadow 0.2s, transform 0.1s;
-  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25);
+  box-shadow: 0 4px 16px rgba(38, 72, 179, 0.25);
 }
 .btn-primary:hover {
   opacity: 0.92;
-  box-shadow: 0 6px 28px rgba(16, 185, 129, 0.38);
+  box-shadow: 0 6px 22px rgba(38, 72, 179, 0.35);
 }
 .btn-primary:active {
   transform: scale(0.98);
 }
 .btn-primary:disabled {
-  opacity: 0.45;
+  opacity: 0.4;
   box-shadow: none;
 }
 
-/* Input padrão do tema escuro */
+/* Input padrão — claro */
 .input-dark {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #f7f7fb;
+  border: 1px solid rgba(27, 19, 80, 0.12);
   color: var(--foreground);
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 .input-dark::placeholder {
-  color: rgba(230, 235, 244, 0.35);
+  color: rgba(27, 19, 80, 0.35);
 }
 .input-dark:focus {
   outline: none;
-  border-color: rgba(52, 211, 153, 0.6);
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+  border-color: rgba(38, 72, 179, 0.6);
+  box-shadow: 0 0 0 3px rgba(38, 72, 179, 0.12);
+  background: #ffffff;
 }
 
 /* Scrollbar discreta no chat */
@@ -85,6 +91,6 @@ body {
   width: 6px;
 }
 .chat-scroll::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(27, 19, 80, 0.15);
   border-radius: 3px;
 }

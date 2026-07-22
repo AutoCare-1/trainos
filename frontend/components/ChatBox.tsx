@@ -75,25 +75,25 @@ export default function ChatBox({
                 className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
                   direita
                     ? ehIa
-                      ? 'rounded-br-md border border-violet-400/25 bg-violet-500/15 text-violet-50'
-                      : 'rounded-br-md bg-gradient-to-br from-emerald-500 to-cyan-600 text-[#04110d]'
+                      ? 'rounded-br-md border border-violet-300 bg-violet-50 text-violet-900'
+                      : 'rounded-br-md bg-gradient-to-br from-[#2648b3] to-[#5a4fb0] text-white'
                     : ehIa
-                      ? 'rounded-bl-md border border-violet-400/25 bg-violet-500/15 text-violet-50'
-                      : 'rounded-bl-md glass text-slate-100'
+                      ? 'rounded-bl-md border border-violet-300 bg-violet-50 text-violet-900'
+                      : 'rounded-bl-md glass text-slate-800'
                 }`}
               >
                 {ehIa && (
-                  <span className="mb-1 flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-violet-300">
+                  <span className="mb-1 flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-violet-500">
                     ✦ Coach IA
                   </span>
                 )}
                 {!ehIa && m.sender === 'professional' && perspective === 'student' && (
-                  <span className="mb-1 flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-emerald-300">
+                  <span className="mb-1 flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-[#2648b3]">
                     Seu professor
                   </span>
                 )}
                 <p className="whitespace-pre-wrap">{m.content}</p>
-                <p className={`mt-1 text-right text-[10px] ${direita && !ehIa ? 'text-[#04110d]/60' : 'text-slate-500'}`}>
+                <p className={`mt-1 text-right text-[10px] ${direita && !ehIa ? 'text-white/60' : 'text-slate-500'}`}>
                   {hora(m.created_at)}
                 </p>
               </div>
@@ -113,7 +113,7 @@ export default function ChatBox({
         <div ref={fimRef} />
       </div>
 
-      <form onSubmit={enviar} className="flex gap-2 border-t border-white/8 p-3">
+      <form onSubmit={enviar} className="flex gap-2 border-t border-black/8 p-3">
         <input
           type="text"
           value={texto}

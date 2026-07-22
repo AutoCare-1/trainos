@@ -16,6 +16,8 @@ const MODEL = 'claude-haiku-4-5-20251001'
 export interface ContextoAluno {
   nome: string
   objetivo: string | null
+  pesoKg: number | null
+  alturaCm: number | null
   treinoAtual: string | null
   exerciciosAtuais: string[]
   sessoesConcluidas: number
@@ -34,6 +36,8 @@ conversando por chat com o aluno ${primeiroNome} dentro do app de treinos dele.
 Contexto do aluno:
 - Nome: ${ctx.nome}
 - Objetivo: ${ctx.objetivo || 'não informado'}
+- Peso: ${ctx.pesoKg ? `${ctx.pesoKg} kg` : 'não informado'}
+- Altura: ${ctx.alturaCm ? `${ctx.alturaCm} cm` : 'não informado'}
 - Treino atual: ${ctx.treinoAtual || 'nenhum'}
 - Exercícios do treino atual: ${exercicios}
 - Sessões de treino já concluídas: ${ctx.sessoesConcluidas}

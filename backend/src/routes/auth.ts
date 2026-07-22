@@ -1,11 +1,12 @@
 import { Router, Request, Response } from 'express'
 import { pool } from '../db/pool'
+import { asyncHandler } from '../middleware/asyncHandler'
 import { gerarToken, hashPassword, verificarSenha } from '../services/auth'
 import { Professional } from '../types'
 
 const router = Router()
 
-router.post('/signup', async (req: Request, res: Response): Promise<void> => {
+router.post('/signup', asyncHandler(async (req: Request, res: Response): Promise<void> => {
   const { name, email, password } = req.body as { name?: string; email?: string; password?: string }
   if (!name?.trim() || !email?.trim() || !password || password.length < 6) {
     res.status(400).json({ error: 'name, email e password (mín. 6 caracteres) são obrigatórios' })
@@ -26,9 +27,9 @@ router.post('/signup', async (req: Request, res: Response): Promise<void> => {
 
   const professional = rows[0]
   res.status(201).json({ token: gerarToken(professional.id), professional })
-})
+}))
 
-router.post('/login', async (req: Request, res: Response): Promise<void> => {
+router.post('/login', asyncHandler(async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body as { email?: string; password?: string }
   if (!email?.trim() || !password) {
     res.status(400).json({ error: 'email e password são obrigatórios' })
@@ -46,6 +47,6 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
     token: gerarToken(professional.id),
     professional: { id: professional.id, name: professional.name, email: professional.email },
   })
-})
+}))
 
 export default router

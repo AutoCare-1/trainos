@@ -10,12 +10,47 @@ export interface Student {
   email: string | null
   phone: string | null
   objective: string | null
+  weight_kg: number | null
+  height_cm: number | null
   invite_token: string
   status: 'active' | 'inactive'
   ai_autopilot: boolean
   created_at: string
   ultimo_treino?: string | null
   sessoes_concluidas?: number
+  ultima_sessao_em?: string | null
+  tem_treino_enviado?: boolean
+}
+
+export interface BodyMeasurement {
+  id: string
+  student_id: string
+  recorded_at: string
+  weight_kg: number | null
+  notes: string | null
+  created_at: string
+}
+
+export interface WorkoutTemplate {
+  id: string
+  name: string
+  created_at: string
+  total_exercicios?: number
+}
+
+export interface WorkoutTemplateExerciseDetail {
+  id: string
+  exercise_id: string
+  order_index: number
+  sets: number
+  reps: string
+  load_kg: string | null
+  rest_seconds: number | null
+  notes: string | null
+  exercise_name: string
+  muscle_group: string
+  image_url: string | null
+  image_credit: string | null
 }
 
 export interface Message {
@@ -34,6 +69,8 @@ export interface Exercise {
   equipment: string | null
   instructions: string | null
   video_url: string | null
+  image_url: string | null
+  image_credit: string | null
 }
 
 export interface Workout {
@@ -58,4 +95,6 @@ export interface WorkoutExerciseDetail {
   muscle_group: string
   instructions: string | null
   video_url: string | null
+  image_url: string | null
+  image_credit: string | null
 }

@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express'
 import { pool } from '../db/pool'
+import { asyncHandler } from '../middleware/asyncHandler'
 import { ContextoAluno, responderComoPersonal } from '../services/chat'
 import { Message, Student, Workout } from '../types'
 
@@ -11,7 +12,7 @@ async function buscarAlunoPorToken(token: string): Promise<Student | null> {
 }
 
 // GET /:token — dados do aluno + treino mais recente enviado
-router.get('/:token', async (req: Request, res: Response): Promise<void> => {
+router.get('/:token', asyncHandler(async (req: Request, res: Response): Promise<void> => {
   const student = await buscarAlunoPorToken(req.params.token as string)
   if (!student) {
     res.status(404).json({ error: 'Link inválido' })
@@ -29,7 +30,7 @@ router.get('/:token', async (req: Request, res: Response): Promise<void> => {
 
   if (workout) {
     const { rows } = await pool.query(
-      `select we.*, e.name as exercise_name, e.muscle_group, e.instructions, e.video_url
+      `select we.*, e.name as exercise_name, e.muscle_group, e.instructions, e.video_url, e.image_url, e.image_credit
        from workout_exercises we
        join exercises e on e.id = we.exercise_id
        where we.workout_id = $1
@@ -51,10 +52,10 @@ router.get('/:token', async (req: Request, res: Response): Promise<void> => {
     exercises,
     activeSessionId: activeSession?.id ?? null,
   })
-})
+}))
 
 // POST /:token/sessoes — inicia (ou retoma) uma sessão de execução do treino
-router.post('/:token/sessoes', async (req: Request, res: Response): Promise<void> => {
+router.post('/:token/sessoes', asyncHandler(async (req: Request, res: Response): Promise<void> => {
   const student = await buscarAlunoPorToken(req.params.token as string)
   if (!student) {
     res.status(404).json({ error: 'Link inválido' })
@@ -81,10 +82,10 @@ router.post('/:token/sessoes', async (req: Request, res: Response): Promise<void
     [workout_id, student.id]
   )
   res.status(201).json({ session: rows[0] })
-})
+}))
 
 // POST /:token/sessoes/:sessionId/registros — registra uma série executada
-router.post('/:token/sessoes/:sessionId/registros', async (req: Request, res: Response): Promise<void> => {
+router.post('/:token/sessoes/:sessionId/registros', asyncHandler(async (req: Request, res: Response): Promise<void> => {
   const student = await buscarAlunoPorToken(req.params.token as string)
   if (!student) {
     res.status(404).json({ error: 'Link inválido' })
@@ -118,10 +119,10 @@ router.post('/:token/sessoes/:sessionId/registros', async (req: Request, res: Re
     [req.params.sessionId, workout_exercise_id, set_number, reps_done ?? null, load_kg_done ?? null, notes ?? null]
   )
   res.status(201).json({ entry: rows[0] })
-})
+}))
 
 // POST /:token/sessoes/:sessionId/concluir — finaliza a sessão + feedback pós-treino
-router.post('/:token/sessoes/:sessionId/concluir', async (req: Request, res: Response): Promise<void> => {
+router.post('/:token/sessoes/:sessionId/concluir', asyncHandler(async (req: Request, res: Response): Promise<void> => {
   const student = await buscarAlunoPorToken(req.params.token as string)
   if (!student) {
     res.status(404).json({ error: 'Link inválido' })
@@ -155,7 +156,7 @@ router.post('/:token/sessoes/:sessionId/concluir', async (req: Request, res: Res
   )
 
   res.json({ session: sessionRows[0] })
-})
+}))
 
 // ─────────────────────────────────────────────
 // Chat (lado do aluno)
@@ -193,6 +194,8 @@ async function montarContextoAluno(student: Student): Promise<ContextoAluno> {
   return {
     nome: student.name,
     objetivo: student.objective,
+    pesoKg: student.weight_kg,
+    alturaCm: student.height_cm,
     treinoAtual: workout?.name ?? null,
     exerciciosAtuais: exercicios,
     sessoesConcluidas: Number(statsRows[0]?.concluidas ?? 0),
@@ -201,7 +204,7 @@ async function montarContextoAluno(student: Student): Promise<ContextoAluno> {
 }
 
 // GET /:token/mensagens — histórico do chat do aluno
-router.get('/:token/mensagens', async (req: Request, res: Response): Promise<void> => {
+router.get('/:token/mensagens', asyncHandler(async (req: Request, res: Response): Promise<void> => {
   const student = await buscarAlunoPorToken(req.params.token as string)
   if (!student) {
     res.status(404).json({ error: 'Link inválido' })
@@ -212,10 +215,10 @@ router.get('/:token/mensagens', async (req: Request, res: Response): Promise<voi
     [student.id]
   )
   res.json({ messages: rows })
-})
+}))
 
 // POST /:token/mensagens — aluno envia mensagem; IA responde se o autopilot estiver ligado
-router.post('/:token/mensagens', async (req: Request, res: Response): Promise<void> => {
+router.post('/:token/mensagens', asyncHandler(async (req: Request, res: Response): Promise<void> => {
   const student = await buscarAlunoPorToken(req.params.token as string)
   if (!student) {
     res.status(404).json({ error: 'Link inválido' })
@@ -258,6 +261,6 @@ router.post('/:token/mensagens', async (req: Request, res: Response): Promise<vo
   }
 
   res.status(201).json({ message: mensagemAluno, aiReply: respostaIa })
-})
+}))
 
 export default router

@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TrainOS — protótipo",
-  description: "Protótipo do sistema para profissionais de Educação Física",
+  title: "Clube Mais - Personal",
+  description: "Gestão de alunos e treinos — Clube Mais Personal",
+  icons: { icon: "/clubemais-icone.png" },
 };
 
 export default function RootLayout({

@@ -1,5 +1,6 @@
 import { Router, Response } from 'express'
 import { pool } from '../db/pool'
+import { asyncHandler } from '../middleware/asyncHandler'
 import { AuthedRequest, requireAuth } from '../middleware/auth'
 import { Workout } from '../types'
 
@@ -16,7 +17,7 @@ interface ItemTreino {
 }
 
 // POST / — cria um treino (rascunho) com seus exercícios
-router.post('/', async (req: AuthedRequest, res: Response): Promise<void> => {
+router.post('/', asyncHandler(async (req: AuthedRequest, res: Response): Promise<void> => {
   const { student_id, name, items } = req.body as { student_id?: string; name?: string; items?: ItemTreino[] }
   if (!student_id || !name?.trim() || !items?.length) {
     res.status(400).json({ error: 'student_id, name e items (não vazio) são obrigatórios' })
@@ -59,10 +60,10 @@ router.post('/', async (req: AuthedRequest, res: Response): Promise<void> => {
   } finally {
     client.release()
   }
-})
+}))
 
 // GET /:id — detalhe do treino com exercícios
-router.get('/:id', async (req: AuthedRequest, res: Response): Promise<void> => {
+router.get('/:id', asyncHandler(async (req: AuthedRequest, res: Response): Promise<void> => {
   const { rows: workoutRows } = await pool.query<Workout>(
     'select * from workouts where id = $1 and professional_id = $2',
     [req.params.id, req.professionalId]
@@ -74,7 +75,7 @@ router.get('/:id', async (req: AuthedRequest, res: Response): Promise<void> => {
   }
 
   const { rows: exercises } = await pool.query(
-    `select we.*, e.name as exercise_name, e.muscle_group, e.instructions, e.video_url
+    `select we.*, e.name as exercise_name, e.muscle_group, e.instructions, e.video_url, e.image_url, e.image_credit
      from workout_exercises we
      join exercises e on e.id = we.exercise_id
      where we.workout_id = $1
@@ -83,10 +84,10 @@ router.get('/:id', async (req: AuthedRequest, res: Response): Promise<void> => {
   )
 
   res.json({ workout, exercises })
-})
+}))
 
 // POST /:id/enviar — publica o treino para o aluno
-router.post('/:id/enviar', async (req: AuthedRequest, res: Response): Promise<void> => {
+router.post('/:id/enviar', asyncHandler(async (req: AuthedRequest, res: Response): Promise<void> => {
   const { rows } = await pool.query<Workout>(
     `update workouts set status = 'sent', sent_at = now(), updated_at = now()
      where id = $1 and professional_id = $2 returning *`,
@@ -97,6 +98,6 @@ router.post('/:id/enviar', async (req: AuthedRequest, res: Response): Promise<vo
     return
   }
   res.json({ workout: rows[0] })
-})
+}))
 
 export default router

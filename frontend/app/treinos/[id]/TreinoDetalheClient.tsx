@@ -1,9 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
+import BackLink from '@/components/BackLink'
+import ExerciseAnimation from '@/components/ExerciseAnimation'
 import { api, ApiError } from '@/lib/api'
 import { Workout, WorkoutExerciseDetail } from '@/lib/types'
 
@@ -71,19 +72,14 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
     <>
       <Navbar />
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
-        <Link
-          href={`/alunos/${workout.student_id}`}
-          className="mb-5 inline-block text-sm text-slate-500 transition hover:text-white"
-        >
-          ← Voltar ao aluno
-        </Link>
+        <BackLink href={`/alunos/${workout.student_id}`} label="Voltar ao aluno" />
 
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold tracking-tight text-white">{workout.name}</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900">{workout.name}</h1>
             <span
               className={`rounded-full px-2.5 py-1 text-xs font-medium ${
-                workout.status === 'sent' ? 'bg-emerald-500/15 text-emerald-300' : 'bg-white/8 text-slate-400'
+                workout.status === 'sent' ? 'bg-emerald-500/15 text-emerald-600' : 'bg-slate-900/6 text-slate-500'
               }`}
             >
               {workout.status === 'sent' ? 'Enviado ao aluno' : 'Rascunho'}
@@ -104,26 +100,36 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
           {exercises.map((ex, idx) => (
             <div key={ex.id} className="glass rounded-2xl p-5">
               <div className="flex items-start gap-4">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 text-sm font-bold text-emerald-300">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#2648b3]/15 to-[#8b7fd6]/15 text-sm font-bold text-[#2648b3]">
                   {idx + 1}
                 </span>
-                <div className="min-w-0 flex-1">
+                <div className="min-w-[110px] flex-1">
                   <p className="text-xs uppercase tracking-wider text-slate-500">{ex.muscle_group}</p>
-                  <p className="font-semibold text-white">{ex.exercise_name}</p>
+                  <p className="font-semibold text-slate-900">{ex.exercise_name}</p>
                   <div className="mt-2 flex flex-wrap gap-2">
-                    <span className="rounded-lg bg-white/6 px-2.5 py-1 text-xs text-slate-300">
+                    <span className="rounded-lg bg-slate-900/5 px-2.5 py-1 text-xs text-slate-600">
                       {ex.sets} séries
                     </span>
-                    <span className="rounded-lg bg-white/6 px-2.5 py-1 text-xs text-slate-300">
+                    <span className="rounded-lg bg-slate-900/5 px-2.5 py-1 text-xs text-slate-600">
                       {ex.reps} reps
                     </span>
                     {ex.load_kg && (
-                      <span className="rounded-lg bg-emerald-500/12 px-2.5 py-1 text-xs text-emerald-300">
+                      <span className="rounded-lg bg-[#2648b3]/10 px-2.5 py-1 text-xs text-[#2648b3]">
                         {ex.load_kg} kg
                       </span>
                     )}
                   </div>
                   {ex.instructions && <p className="mt-3 text-sm text-slate-500">{ex.instructions}</p>}
+                </div>
+                <div className="glass shrink-0 rounded-xl p-1.5 text-[#2648b3]">
+                  <ExerciseAnimation
+                    name={ex.exercise_name}
+                    muscleGroup={ex.muscle_group}
+                    imageUrl={ex.image_url}
+                    imageCredit={ex.image_credit}
+                    size="md"
+                    className="rounded-lg"
+                  />
                 </div>
               </div>
             </div>

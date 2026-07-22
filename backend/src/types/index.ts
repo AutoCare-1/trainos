@@ -13,6 +13,8 @@ export interface Student {
   email: string | null
   phone: string | null
   objective: string | null
+  weight_kg: number | null
+  height_cm: number | null
   invite_token: string
   status: 'active' | 'inactive'
   ai_autopilot: boolean
@@ -37,6 +39,8 @@ export interface Exercise {
   equipment: string | null
   instructions: string | null
   video_url: string | null
+  image_url: string | null
+  image_credit: string | null
   created_at: string
 }
 
@@ -91,4 +95,32 @@ export interface Feedback {
   discomfort: string | null
   comment: string | null
   created_at: string
+}
+
+export interface BodyMeasurement {
+  id: string
+  student_id: string
+  recorded_at: string
+  weight_kg: number | null
+  notes: string | null
+  created_at: string
+}
+
+export interface WorkoutTemplate {
+  id: string
+  professional_id: string
+  name: string
+  created_at: string
+}
+
+export interface WorkoutTemplateExercise {
+  id: string
+  template_id: string
+  exercise_id: string
+  order_index: number
+  sets: number
+  reps: string
+  load_kg: number | null
+  rest_seconds: number | null
+  notes: string | null
 }
