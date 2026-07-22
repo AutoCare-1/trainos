@@ -205,16 +205,28 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
               {student.objective || 'Sem objetivo definido'}
             </p>
           </div>
-          <button
-            onClick={() => {
-              navigator.clipboard.writeText(inviteLink)
-              setCopiado(true)
-              setTimeout(() => setCopiado(false), 2000)
-            }}
-            className="glass glass-hover hidden shrink-0 rounded-xl px-4 py-2.5 text-sm text-slate-700 sm:block"
-          >
-            {copiado ? 'Link copiado ✓' : 'Copiar link do aluno'}
-          </button>
+          <div className="hidden shrink-0 gap-2 sm:flex">
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(inviteLink)
+                setCopiado(true)
+                setTimeout(() => setCopiado(false), 2000)
+              }}
+              className="glass glass-hover rounded-xl px-4 py-2.5 text-sm text-slate-700"
+            >
+              {copiado ? 'Link copiado ✓' : 'Copiar link'}
+            </button>
+            <a
+              href={`https://wa.me/?text=${encodeURIComponent(
+                `Oi, ${student.name.split(' ')[0]}! Aqui está seu acesso ao Clube Mais: ${inviteLink}`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 rounded-xl bg-[#25D366] px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
+            >
+              📱 WhatsApp
+            </a>
+          </div>
         </div>
 
         {gamificacao && (
