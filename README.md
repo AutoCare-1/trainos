@@ -18,8 +18,27 @@ infra definitiva com a integração ao sistema já existente. O schema em
 `backend/src/db/schema.sql` + `backend/migrations/` serve de referência para
 a migração.
 
-```
+Cada pessoa roda sua própria instância local (backend + banco + frontend na
+própria máquina) — não há banco compartilhado entre quem está desenvolvendo.
+
+## Configuração inicial (primeira vez, por máquina)
+
+```bash
+# 1. Instalar e subir o Postgres
+brew install postgresql@16
 brew services start postgresql@16
+
+# 2. Criar o usuário e o banco (senha combinando com o DATABASE_URL do .env.example)
+export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
+psql postgres -c "CREATE ROLE trainos WITH LOGIN PASSWORD 'trainos';"
+psql postgres -c "ALTER ROLE trainos CREATEDB;"
+psql postgres -c "CREATE DATABASE trainos OWNER trainos;"
+
+# 3. Aplicar o schema e as migrations, em ordem
+psql "postgresql://trainos:trainos@localhost:5432/trainos" -f backend/src/db/schema.sql
+for f in backend/migrations/*.sql; do
+  psql "postgresql://trainos:trainos@localhost:5432/trainos" -f "$f"
+done
 ```
 
 ## Rodando localmente
@@ -33,9 +52,6 @@ npm install
 npm run seed             # popula a biblioteca de exercícios (com imagens)
 npm run dev               # http://localhost:3002
 ```
-
-Aplique as migrations em `backend/migrations/` (em ordem numérica) no banco
-local antes do primeiro `npm run dev`, se ainda não aplicou.
 
 ### Frontend
 
