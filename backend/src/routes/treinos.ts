@@ -75,12 +75,14 @@ router.get('/:id', asyncHandler(async (req: AuthedRequest, res: Response): Promi
   }
 
   const { rows: exercises } = await pool.query(
-    `select we.*, e.name as exercise_name, e.muscle_group, e.instructions, e.video_url, e.image_url, e.image_credit
+    `select we.*, e.name as exercise_name, e.muscle_group, e.instructions,
+            coalesce(emo.video_url, e.video_url) as video_url, e.image_url, e.image_credit
      from workout_exercises we
      join exercises e on e.id = we.exercise_id
+     left join exercise_media_overrides emo on emo.exercise_id = e.id and emo.professional_id = $2
      where we.workout_id = $1
      order by we.order_index`,
-    [workout.id]
+    [workout.id, req.professionalId]
   )
 
   res.json({ workout, exercises })

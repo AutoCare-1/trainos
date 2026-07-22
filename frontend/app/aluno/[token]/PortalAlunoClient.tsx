@@ -4,20 +4,22 @@ import { useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
 import ChatBox from '@/components/ChatBox'
 import ExerciseAnimation from '@/components/ExerciseAnimation'
+import WeightChart from '@/components/WeightChart'
 import { api, ApiError } from '@/lib/api'
-import { Message, Workout, WorkoutExerciseDetail } from '@/lib/types'
+import { BodyMeasurement, Message, Workout, WorkoutExerciseDetail } from '@/lib/types'
 
 interface PortalData {
   student: { id: string; name: string; objective: string | null }
   workout: Workout | null
   exercises: WorkoutExerciseDetail[]
   activeSessionId: string | null
+  measurements: BodyMeasurement[]
 }
 
 export default function PortalAlunoClient({ token }: { token: string }) {
   const [data, setData] = useState<PortalData | null>(null)
   const [erro, setErro] = useState<string | null>(null)
-  const [aba, setAba] = useState<'treino' | 'chat'>('treino')
+  const [aba, setAba] = useState<'treino' | 'evolucao' | 'chat'>('treino')
   const [sessionId, setSessionId] = useState<string | null>(null)
   const [registrados, setRegistrados] = useState<Record<string, number>>({})
   const [inputs, setInputs] = useState<Record<string, { reps: string; load: string }>>({})
@@ -150,6 +152,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
         {(
           [
             ['treino', 'Treino'],
+            ['evolucao', 'Evolução'],
             ['chat', 'Chat'],
           ] as const
         ).map(([id, rotulo]) => (
@@ -169,6 +172,43 @@ export default function PortalAlunoClient({ token }: { token: string }) {
       </nav>
     </header>
   )
+
+  if (aba === 'evolucao') {
+    const validos = data.measurements.filter((m) => m.weight_kg != null)
+    const ultima = validos[validos.length - 1]
+    return (
+      <div className="flex min-h-screen flex-col">
+        {cabecalho}
+        <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6">
+          <div className="glass rounded-2xl p-5">
+            <h2 className="mb-1 font-semibold text-slate-900">Sua evolução 📈</h2>
+            <p className="mb-4 text-sm text-slate-500">
+              {validos.length > 1
+                ? 'Olha só o quanto você já caminhou até aqui!'
+                : validos.length === 1
+                  ? 'Primeira medição registrada — a partir daqui dá pra acompanhar sua evolução.'
+                  : 'Assim que seu professor registrar sua primeira medição, seu progresso aparece aqui.'}
+            </p>
+            <WeightChart pontos={data.measurements} />
+            {ultima && (ultima.waist_cm || ultima.hip_cm) && (
+              <div className="mt-4 flex gap-4 text-sm text-slate-500">
+                {ultima.waist_cm && (
+                  <span>
+                    Cintura: <strong className="text-slate-900">{ultima.waist_cm} cm</strong>
+                  </span>
+                )}
+                {ultima.hip_cm && (
+                  <span>
+                    Quadril: <strong className="text-slate-900">{ultima.hip_cm} cm</strong>
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+        </main>
+      </div>
+    )
+  }
 
   if (aba === 'chat') {
     return (
@@ -299,6 +339,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                       name={ex.exercise_name}
                       muscleGroup={ex.muscle_group}
                       imageUrl={ex.image_url}
+                      videoUrl={ex.video_url}
                       imageCredit={ex.image_credit}
                       size="md"
                       className="rounded-lg"

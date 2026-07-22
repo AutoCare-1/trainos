@@ -48,6 +48,12 @@ export default function DashboardPage() {
           </div>
           <div className="flex gap-2.5">
             <Link
+              href="/videos"
+              className="glass glass-hover rounded-xl px-4 py-2.5 text-sm font-medium text-slate-700"
+            >
+              Vídeos dos exercícios
+            </Link>
+            <Link
               href="/modelos"
               className="glass glass-hover rounded-xl px-4 py-2.5 text-sm font-medium text-slate-700"
             >

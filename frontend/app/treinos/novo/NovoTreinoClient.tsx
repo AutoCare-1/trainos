@@ -201,6 +201,7 @@ export default function NovoTreinoClient() {
                               name={ex.name}
                               muscleGroup={ex.muscle_group}
                               imageUrl={ex.image_url}
+                              videoUrl={ex.video_url}
                               imageCredit={ex.image_credit}
                               size="sm"
                               className="shrink-0 rounded-md text-[#2648b3]"
@@ -240,6 +241,7 @@ export default function NovoTreinoClient() {
                               name={ex.name}
                               muscleGroup={ex.muscle_group}
                               imageUrl={ex.image_url}
+                              videoUrl={ex.video_url}
                               imageCredit={ex.image_credit}
                               size="sm"
                               className="shrink-0 rounded-md text-[#8b7fd6]"

@@ -9,7 +9,16 @@ import Avatar from '@/components/Avatar'
 import ChatBox from '@/components/ChatBox'
 import WeightChart from '@/components/WeightChart'
 import { api, ApiError } from '@/lib/api'
-import { BodyMeasurement, Message, Student, Workout } from '@/lib/types'
+import { BodyMeasurement, Message, ParQAnswers, Student, Workout } from '@/lib/types'
+
+const PAR_Q_PERGUNTAS: { chave: keyof ParQAnswers; texto: string }[] = [
+  { chave: 'cardiaco', texto: 'Problema cardíaco ou dor no peito provocada por exercício?' },
+  { chave: 'tontura', texto: 'Já perdeu a consciência ou sofreu queda por tontura?' },
+  { chave: 'articular', texto: 'Problema ósseo ou articular que pode agravar com exercício?' },
+  { chave: 'pressao_medicacao', texto: 'Usa medicação para pressão ou coração?' },
+]
+
+const PAR_Q_VAZIO: ParQAnswers = { cardiaco: false, tontura: false, articular: false, pressao_medicacao: false }
 
 export default function AlunoDetalheClient({ studentId }: { studentId: string }) {
   const router = useRouter()
@@ -17,7 +26,14 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
   const [workouts, setWorkouts] = useState<Workout[]>([])
   const [measurements, setMeasurements] = useState<BodyMeasurement[]>([])
   const [novoPeso, setNovoPeso] = useState('')
+  const [novaCintura, setNovaCintura] = useState('')
+  const [novoQuadril, setNovoQuadril] = useState('')
+  const [novaGordura, setNovaGordura] = useState('')
   const [salvandoPeso, setSalvandoPeso] = useState(false)
+  const [parQ, setParQ] = useState<ParQAnswers>(PAR_Q_VAZIO)
+  const [healthNotes, setHealthNotes] = useState('')
+  const [salvandoAvaliacao, setSalvandoAvaliacao] = useState(false)
+  const [avaliacaoSalva, setAvaliacaoSalva] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
   const [autopilot, setAutopilot] = useState(true)
   const [erro, setErro] = useState<string | null>(null)
@@ -45,6 +61,8 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
         setWorkouts(data.workouts)
         setMeasurements(data.measurements)
         setAutopilot(data.student.ai_autopilot)
+        setParQ(data.student.par_q_answers ?? PAR_Q_VAZIO)
+        setHealthNotes(data.student.health_notes ?? '')
       })
       .catch((err) => setErro(err instanceof ApiError ? err.message : 'Erro ao carregar aluno'))
 
@@ -65,13 +83,36 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
     try {
       const { measurement } = await api.post<{ measurement: BodyMeasurement }>(`/alunos/${studentId}/medicoes`, {
         weight_kg: Number(novoPeso),
+        waist_cm: novaCintura ? Number(novaCintura) : undefined,
+        hip_cm: novoQuadril ? Number(novoQuadril) : undefined,
+        body_fat_pct: novaGordura ? Number(novaGordura) : undefined,
       })
       setMeasurements((prev) => [...prev, measurement])
       setNovoPeso('')
+      setNovaCintura('')
+      setNovoQuadril('')
+      setNovaGordura('')
     } catch (err) {
       setErro(err instanceof ApiError ? err.message : 'Erro ao registrar medição')
     } finally {
       setSalvandoPeso(false)
+    }
+  }
+
+  async function salvarAvaliacao() {
+    setSalvandoAvaliacao(true)
+    try {
+      const { student: atualizado } = await api.patch<{ student: Student }>(`/alunos/${studentId}/avaliacao`, {
+        par_q_answers: parQ,
+        health_notes: healthNotes,
+      })
+      setStudent(atualizado)
+      setAvaliacaoSalva(true)
+      setTimeout(() => setAvaliacaoSalva(false), 2000)
+    } catch (err) {
+      setErro(err instanceof ApiError ? err.message : 'Erro ao salvar avaliação')
+    } finally {
+      setSalvandoAvaliacao(false)
     }
   }
 
@@ -142,32 +183,105 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
           </button>
         </div>
 
-        <section className="glass mb-6 rounded-2xl p-5">
-          <h2 className="mb-3 font-semibold text-slate-900">Evolução física</h2>
-          <div className="grid gap-5 sm:grid-cols-2">
-            <WeightChart pontos={measurements} />
-            <form onSubmit={registrarPeso} className="flex flex-col justify-center gap-2">
-              <label className="text-xs text-slate-500">Registrar peso de hoje</label>
-              <div className="flex gap-2">
+        <section className="mb-6">
+          <h2 className="mb-3 font-semibold text-slate-900">Avaliação física</h2>
+
+          {Object.values(parQ).some(Boolean) && (
+            <div className="mb-4 rounded-2xl border border-amber-300 bg-amber-50 px-5 py-3 text-sm text-amber-800">
+              ⚠️ Atenção: {student.name.split(' ')[0]} respondeu <strong>sim</strong> a um ou mais itens do PAR-Q —
+              recomende avaliação médica antes de seguir com o treino.
+            </div>
+          )}
+
+          <div className="grid gap-4 lg:grid-cols-2">
+            {/* Saúde / PAR-Q */}
+            <div className="glass rounded-2xl p-5">
+              <h3 className="mb-3 text-sm font-semibold text-slate-900">Saúde (PAR-Q)</h3>
+              <div className="space-y-2.5">
+                {PAR_Q_PERGUNTAS.map(({ chave, texto }) => (
+                  <label key={chave} className="flex cursor-pointer items-start gap-2.5 text-sm text-slate-600">
+                    <input
+                      type="checkbox"
+                      checked={parQ[chave]}
+                      onChange={(e) => setParQ({ ...parQ, [chave]: e.target.checked })}
+                      className="mt-0.5 h-4 w-4 shrink-0 accent-[#2648b3]"
+                    />
+                    {texto}
+                  </label>
+                ))}
+              </div>
+              <label className="mb-1.5 mt-4 block text-xs text-slate-500">
+                Cirurgias, medicamentos, observações
+              </label>
+              <textarea
+                value={healthNotes}
+                onChange={(e) => setHealthNotes(e.target.value)}
+                rows={2}
+                className="input-dark w-full rounded-xl px-3 py-2 text-sm"
+              />
+              <button
+                onClick={salvarAvaliacao}
+                disabled={salvandoAvaliacao}
+                className="btn-primary mt-3 rounded-xl px-4 py-2 text-sm"
+              >
+                {salvandoAvaliacao ? 'Salvando...' : avaliacaoSalva ? 'Salvo ✓' : 'Salvar avaliação'}
+              </button>
+            </div>
+
+            {/* Medidas */}
+            <div className="glass rounded-2xl p-5">
+              <h3 className="mb-3 text-sm font-semibold text-slate-900">Medidas</h3>
+              <WeightChart pontos={measurements} />
+              <form onSubmit={registrarPeso} className="mt-4 grid grid-cols-2 gap-2">
                 <input
                   type="number"
                   step="0.1"
                   min={0}
                   inputMode="decimal"
-                  placeholder="kg"
+                  placeholder="Peso (kg)"
                   value={novoPeso}
                   onChange={(e) => setNovoPeso(e.target.value)}
-                  className="input-dark w-28 rounded-xl px-3 py-2 text-sm"
+                  className="input-dark rounded-xl px-3 py-2 text-sm"
+                />
+                <input
+                  type="number"
+                  step="0.1"
+                  min={0}
+                  inputMode="decimal"
+                  placeholder="Cintura (cm)"
+                  value={novaCintura}
+                  onChange={(e) => setNovaCintura(e.target.value)}
+                  className="input-dark rounded-xl px-3 py-2 text-sm"
+                />
+                <input
+                  type="number"
+                  step="0.1"
+                  min={0}
+                  inputMode="decimal"
+                  placeholder="Quadril (cm)"
+                  value={novoQuadril}
+                  onChange={(e) => setNovoQuadril(e.target.value)}
+                  className="input-dark rounded-xl px-3 py-2 text-sm"
+                />
+                <input
+                  type="number"
+                  step="0.1"
+                  min={0}
+                  inputMode="decimal"
+                  placeholder="% Gordura"
+                  value={novaGordura}
+                  onChange={(e) => setNovaGordura(e.target.value)}
+                  className="input-dark rounded-xl px-3 py-2 text-sm"
                 />
                 <button
                   type="submit"
                   disabled={salvandoPeso || !novoPeso}
-                  className="btn-primary rounded-xl px-4 py-2 text-sm"
+                  className="btn-primary col-span-2 rounded-xl px-4 py-2 text-sm"
                 >
-                  {salvandoPeso ? 'Salvando...' : 'Registrar'}
+                  {salvandoPeso ? 'Salvando...' : 'Registrar medição'}
                 </button>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
         </section>
 

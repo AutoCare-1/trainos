@@ -97,18 +97,60 @@ router.post('/:id/medicoes', asyncHandler(async (req: AuthedRequest, res: Respon
     return
   }
 
-  const { weight_kg, recorded_at, notes } = req.body as { weight_kg?: number; recorded_at?: string; notes?: string }
+  const { weight_kg, waist_cm, hip_cm, body_fat_pct, recorded_at, notes } = req.body as {
+    weight_kg?: number
+    waist_cm?: number
+    hip_cm?: number
+    body_fat_pct?: number
+    recorded_at?: string
+    notes?: string
+  }
   if (!weight_kg) {
     res.status(400).json({ error: 'weight_kg é obrigatório' })
     return
   }
 
   const { rows } = await pool.query(
-    `insert into body_measurements (student_id, recorded_at, weight_kg, notes)
-     values ($1, coalesce($2, current_date), $3, $4) returning *`,
-    [req.params.id, recorded_at || null, weight_kg, notes?.trim() || null]
+    `insert into body_measurements (student_id, recorded_at, weight_kg, waist_cm, hip_cm, body_fat_pct, notes)
+     values ($1, coalesce($2, current_date), $3, $4, $5, $6, $7) returning *`,
+    [
+      req.params.id,
+      recorded_at || null,
+      weight_kg,
+      waist_cm || null,
+      hip_cm || null,
+      body_fat_pct || null,
+      notes?.trim() || null,
+    ]
   )
   res.status(201).json({ measurement: rows[0] })
+}))
+
+// ─────────────────────────────────────────────
+// Avaliação física (anamnese/PAR-Q)
+// ─────────────────────────────────────────────
+
+// PATCH /:id/avaliacao — atualiza anamnese de saúde (PAR-Q resumido) do aluno
+router.patch('/:id/avaliacao', asyncHandler(async (req: AuthedRequest, res: Response): Promise<void> => {
+  const { rows: studentRows } = await pool.query(
+    'select id from students where id = $1 and professional_id = $2',
+    [req.params.id, req.professionalId]
+  )
+  if (studentRows.length === 0) {
+    res.status(404).json({ error: 'Aluno não encontrado' })
+    return
+  }
+
+  const { par_q_answers, health_notes } = req.body as {
+    par_q_answers?: { cardiaco: boolean; tontura: boolean; articular: boolean; pressao_medicacao: boolean }
+    health_notes?: string
+  }
+
+  const { rows } = await pool.query<Student>(
+    `update students set par_q_answers = $1, health_notes = $2 where id = $3 returning *`,
+    [par_q_answers ? JSON.stringify(par_q_answers) : null, health_notes?.trim() || null, req.params.id]
+  )
+  res.json({ student: rows[0] })
 }))
 
 // ─────────────────────────────────────────────

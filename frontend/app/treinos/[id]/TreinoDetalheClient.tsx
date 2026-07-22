@@ -126,6 +126,7 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
                     name={ex.exercise_name}
                     muscleGroup={ex.muscle_group}
                     imageUrl={ex.image_url}
+                    videoUrl={ex.video_url}
                     imageCredit={ex.image_credit}
                     size="md"
                     className="rounded-lg"

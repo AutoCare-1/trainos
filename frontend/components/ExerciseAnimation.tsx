@@ -1,6 +1,11 @@
 'use client'
 
 import { getMovementPattern, MovementPattern } from '@/lib/exercisePatterns'
+import { API_URL } from '@/lib/api'
+
+function resolverUrlMidia(url: string): string {
+  return url.startsWith('/uploads/') ? `${API_URL}${url}` : url
+}
 
 const SIZES = { sm: 40, md: 64, lg: 128 } as const
 
@@ -394,6 +399,7 @@ export default function ExerciseAnimation({
   muscleGroup,
   imageUrl,
   imageCredit,
+  videoUrl,
   size = 'md',
   className,
 }: {
@@ -401,10 +407,28 @@ export default function ExerciseAnimation({
   muscleGroup?: string
   imageUrl?: string | null
   imageCredit?: string | null
+  videoUrl?: string | null
   size?: keyof typeof SIZES
   className?: string
 }) {
   const px = SIZES[size]
+
+  if (videoUrl) {
+    return (
+      <video
+        src={resolverUrlMidia(videoUrl)}
+        aria-label={`Demonstração: ${name}`}
+        width={px}
+        height={px}
+        className={className}
+        style={{ width: px, height: px, objectFit: 'cover' }}
+        autoPlay
+        muted
+        loop
+        playsInline
+      />
+    )
+  }
 
   if (imageUrl) {
     return (

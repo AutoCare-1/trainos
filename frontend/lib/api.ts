@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3002'
+export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3002'
 
 export class ApiError extends Error {}
 
@@ -33,9 +33,24 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   return data as T
 }
 
+async function requestFormData<T>(path: string, formData: FormData, method: string): Promise<T> {
+  const token = getToken()
+  const res = await fetch(`${API_URL}${path}`, {
+    method,
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    body: formData,
+  })
+  const data = await res.json().catch(() => ({}))
+  if (!res.ok) {
+    throw new ApiError(data.error ?? `Erro ${res.status}`)
+  }
+  return data as T
+}
+
 export const api = {
   get: <T>(path: string) => request<T>(path),
   post: <T>(path: string, body?: unknown) => request<T>(path, { method: 'POST', body: body ? JSON.stringify(body) : undefined }),
   patch: <T>(path: string, body?: unknown) => request<T>(path, { method: 'PATCH', body: body ? JSON.stringify(body) : undefined }),
   delete: <T>(path: string) => request<T>(path, { method: 'DELETE' }),
+  postFile: <T>(path: string, formData: FormData) => requestFormData<T>(path, formData, 'POST'),
 }

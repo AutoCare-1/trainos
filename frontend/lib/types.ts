@@ -4,6 +4,13 @@ export interface Professional {
   email: string
 }
 
+export interface ParQAnswers {
+  cardiaco: boolean
+  tontura: boolean
+  articular: boolean
+  pressao_medicacao: boolean
+}
+
 export interface Student {
   id: string
   name: string
@@ -15,6 +22,8 @@ export interface Student {
   invite_token: string
   status: 'active' | 'inactive'
   ai_autopilot: boolean
+  par_q_answers: ParQAnswers | null
+  health_notes: string | null
   created_at: string
   ultimo_treino?: string | null
   sessoes_concluidas?: number
@@ -27,6 +36,9 @@ export interface BodyMeasurement {
   student_id: string
   recorded_at: string
   weight_kg: number | null
+  waist_cm: number | null
+  hip_cm: number | null
+  body_fat_pct: number | null
   notes: string | null
   created_at: string
 }
@@ -71,6 +83,7 @@ export interface Exercise {
   video_url: string | null
   image_url: string | null
   image_credit: string | null
+  video_customizado?: boolean
 }
 
 export interface Workout {
