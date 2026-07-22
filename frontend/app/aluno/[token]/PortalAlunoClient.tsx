@@ -13,6 +13,7 @@ interface PortalData {
   workout: Workout | null
   exercises: WorkoutExerciseDetail[]
   activeSessionId: string | null
+  registeredCounts: Record<string, number>
   measurements: BodyMeasurement[]
 }
 
@@ -47,6 +48,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
       .then((d) => {
         setData(d)
         setSessionId(d.activeSessionId)
+        setRegistrados(d.registeredCounts ?? {})
         const initialInputs: Record<string, { reps: string; load: string }> = {}
         d.exercises.forEach((ex) => {
           initialInputs[ex.id] = { reps: ex.reps, load: ex.load_kg ?? '' }

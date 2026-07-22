@@ -48,6 +48,22 @@ router.get('/:token', asyncHandler(async (req: Request, res: Response): Promise<
     activeSession = sessionRows[0] ?? null
   }
 
+  // Se o aluno já tinha uma sessão em andamento (ex: fechou o app no meio do treino
+  // e reabriu o link depois), devolve quantas séries já foram registradas por
+  // exercício — sem isso, o app reiniciaria a contagem do zero e duplicaria séries
+  // já salvas ao registrar de novo.
+  let registeredCounts: Record<string, number> = {}
+  if (activeSession) {
+    const { rows: countRows } = await pool.query<{ workout_exercise_id: string; total: string }>(
+      `select workout_exercise_id, count(*) as total
+       from session_entries
+       where training_session_id = $1
+       group by workout_exercise_id`,
+      [activeSession.id]
+    )
+    registeredCounts = Object.fromEntries(countRows.map((r) => [r.workout_exercise_id, Number(r.total)]))
+  }
+
   const { rows: measurements } = await pool.query(
     'select * from body_measurements where student_id = $1 order by recorded_at asc',
     [student.id]
@@ -58,6 +74,7 @@ router.get('/:token', asyncHandler(async (req: Request, res: Response): Promise<
     workout,
     exercises,
     activeSessionId: activeSession?.id ?? null,
+    registeredCounts,
     measurements,
   })
 }))
