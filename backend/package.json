@@ -1,7 +1,7 @@
 {
   "name": "trainos-backend",
   "version": "1.0.0",
-  "description": "TrainOS — API do profissional de Educação Física",
+  "description": "Clube Mais Personal — API do profissional de Educação Física",
   "main": "dist/index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
