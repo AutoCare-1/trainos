@@ -9,7 +9,7 @@ import Avatar from '@/components/Avatar'
 import ChatBox from '@/components/ChatBox'
 import WeightChart from '@/components/WeightChart'
 import { api, ApiError } from '@/lib/api'
-import { BodyMeasurement, Message, ParQAnswers, Student, Workout } from '@/lib/types'
+import { BodyMeasurement, Gamificacao, Message, ParQAnswers, Student, Workout } from '@/lib/types'
 
 const PAR_Q_PERGUNTAS: { chave: keyof ParQAnswers; texto: string }[] = [
   { chave: 'cardiaco', texto: 'Problema cardíaco ou dor no peito provocada por exercício?' },
@@ -25,6 +25,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
   const [student, setStudent] = useState<Student | null>(null)
   const [workouts, setWorkouts] = useState<Workout[]>([])
   const [measurements, setMeasurements] = useState<BodyMeasurement[]>([])
+  const [gamificacao, setGamificacao] = useState<Gamificacao | null>(null)
   const [novoPeso, setNovoPeso] = useState('')
   const [novaCintura, setNovaCintura] = useState('')
   const [novoQuadril, setNovoQuadril] = useState('')
@@ -55,11 +56,14 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
       return
     }
     api
-      .get<{ student: Student; workouts: Workout[]; measurements: BodyMeasurement[] }>(`/alunos/${studentId}`)
+      .get<{ student: Student; workouts: Workout[]; measurements: BodyMeasurement[]; gamificacao: Gamificacao }>(
+        `/alunos/${studentId}`
+      )
       .then((data) => {
         setStudent(data.student)
         setWorkouts(data.workouts)
         setMeasurements(data.measurements)
+        setGamificacao(data.gamificacao)
         setAutopilot(data.student.ai_autopilot)
         setParQ(data.student.par_q_answers ?? PAR_Q_VAZIO)
         setHealthNotes(data.student.health_notes ?? '')
@@ -182,6 +186,37 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
             {copiado ? 'Link copiado ✓' : 'Copiar link do aluno'}
           </button>
         </div>
+
+        {gamificacao && (
+          <section className="glass mb-6 flex flex-wrap items-center gap-5 rounded-2xl p-4">
+            <div>
+              <p className="text-xs uppercase tracking-wider text-slate-500">Sequência</p>
+              <p className="text-lg font-bold text-slate-900">
+                {gamificacao.streak > 0 ? `🔥 ${gamificacao.streak} dia${gamificacao.streak === 1 ? '' : 's'}` : '—'}
+              </p>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-wider text-slate-500">Treinos concluídos</p>
+              <p className="text-lg font-bold text-slate-900">{gamificacao.total_sessoes}</p>
+            </div>
+            {gamificacao.badges.length > 0 && (
+              <div className="flex-1">
+                <p className="mb-1 text-xs uppercase tracking-wider text-slate-500">Medalhas</p>
+                <div className="flex flex-wrap gap-2">
+                  {gamificacao.badges.map((b) => (
+                    <span
+                      key={b.id}
+                      title={b.label}
+                      className="flex items-center gap-1 rounded-full bg-slate-900/5 px-2.5 py-1 text-sm"
+                    >
+                      {b.emoji} <span className="text-xs text-slate-600">{b.label}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+        )}
 
         <section className="mb-6">
           <h2 className="mb-3 font-semibold text-slate-900">Avaliação física</h2>
