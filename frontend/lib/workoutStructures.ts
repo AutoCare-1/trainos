@@ -12,15 +12,15 @@ export type StructureType =
 
 export const ESTRUTURAS: { value: StructureType; label: string; icone: string; agrupavel: boolean }[] = [
   { value: 'tradicional', label: 'Tradicional', icone: '', agrupavel: false },
-  { value: 'bi-set', label: 'Bi-set', icone: '🔗', agrupavel: true },
-  { value: 'tri-set', label: 'Tri-set', icone: '🔗', agrupavel: true },
-  { value: 'superset', label: 'Superset', icone: '🔗', agrupavel: true },
-  { value: 'circuito', label: 'Circuito', icone: '🔁', agrupavel: true },
-  { value: 'drop-set', label: 'Drop-set', icone: '⬇️', agrupavel: false },
-  { value: 'rest-pause', label: 'Rest-pause', icone: '⏸️', agrupavel: false },
-  { value: 'cluster', label: 'Cluster', icone: '🔹', agrupavel: false },
-  { value: 'amrap', label: 'AMRAP', icone: '⏱️', agrupavel: false },
-  { value: 'emom', label: 'EMOM', icone: '⏱️', agrupavel: false },
+  { value: 'bi-set', label: 'Bi-set', icone: '', agrupavel: true },
+  { value: 'tri-set', label: 'Tri-set', icone: '', agrupavel: true },
+  { value: 'superset', label: 'Superset', icone: '', agrupavel: true },
+  { value: 'circuito', label: 'Circuito', icone: '', agrupavel: true },
+  { value: 'drop-set', label: 'Drop-set', icone: '', agrupavel: false },
+  { value: 'rest-pause', label: 'Rest-pause', icone: '', agrupavel: false },
+  { value: 'cluster', label: 'Cluster', icone: '', agrupavel: false },
+  { value: 'amrap', label: 'AMRAP', icone: '', agrupavel: false },
+  { value: 'emom', label: 'EMOM', icone: '', agrupavel: false },
 ]
 
 export function rotuloEstrutura(tipo: string | null | undefined): { label: string; icone: string } {

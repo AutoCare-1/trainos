@@ -78,7 +78,7 @@ export default function NovoAlunoPage() {
               rel="noopener noreferrer"
               className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-[#25D366] px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
             >
-              📱 Enviar por WhatsApp
+              Enviar por WhatsApp
             </a>
             <div className="mt-6 flex gap-3">
               <Link href={`/treinos/novo?aluno=${criado.id}`} className="btn-primary rounded-xl px-5 py-2.5 text-sm">

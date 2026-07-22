@@ -12,7 +12,7 @@ export default function InstallAppModal({ open, onClose }: { open: boolean; onCl
         className="max-h-[85vh] w-full max-w-md overflow-y-auto rounded-t-3xl bg-white p-6 shadow-2xl sm:rounded-3xl"
       >
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-slate-900">Instalar na tela inicial 📲</h2>
+          <h2 className="text-lg font-bold text-slate-900">Instalar na tela inicial</h2>
           <button
             onClick={onClose}
             aria-label="Fechar"

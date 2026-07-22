@@ -3,8 +3,6 @@
 import Avatar from '@/components/Avatar'
 import { LeaderboardEntry } from '@/lib/types'
 
-const MEDALHAS = ['🥇', '🥈', '🥉']
-
 export default function Leaderboard({
   entries,
   highlightId,
@@ -27,7 +25,7 @@ export default function Leaderboard({
               destaque ? 'border border-[#2648b3]/25 bg-[#2648b3]/6' : 'bg-slate-900/3'
             }`}
           >
-            <span className="w-6 shrink-0 text-center text-sm">{MEDALHAS[i] ?? `${i + 1}º`}</span>
+            <span className="w-6 shrink-0 text-center text-sm font-semibold text-slate-500">{i + 1}º</span>
             <Avatar nome={e.name} fotoUrl={e.photo_url} tamanho="sm" />
             <span className="flex min-w-0 flex-1 items-baseline gap-1">
               <span className="truncate text-sm font-medium text-slate-800">{e.name}</span>

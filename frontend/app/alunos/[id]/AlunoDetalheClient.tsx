@@ -178,7 +178,14 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
               title="Enviar foto do aluno"
               className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-white text-xs shadow ring-1 ring-black/10 transition hover:bg-slate-50"
             >
-              {enviandoFoto ? '…' : '📷'}
+              {enviandoFoto ? (
+                '…'
+              ) : (
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                  <circle cx="12" cy="13" r="4" />
+                </svg>
+              )}
             </button>
             <input
               ref={fotoInputRef}
@@ -224,7 +231,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 rounded-xl bg-[#25D366] px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
             >
-              📱 WhatsApp
+              WhatsApp
             </a>
           </div>
         </div>
@@ -234,7 +241,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
             <div>
               <p className="text-xs uppercase tracking-wider text-slate-500">Sequência</p>
               <p className="text-lg font-bold text-slate-900">
-                {gamificacao.streak > 0 ? `🔥 ${gamificacao.streak} dia${gamificacao.streak === 1 ? '' : 's'}` : '—'}
+                {gamificacao.streak > 0 ? `${gamificacao.streak} dia${gamificacao.streak === 1 ? '' : 's'}` : '—'}
               </p>
             </div>
             <div>
@@ -265,7 +272,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
 
           {Object.values(parQ).some(Boolean) && (
             <div className="mb-4 rounded-2xl border border-amber-300 bg-amber-50 px-5 py-3 text-sm text-amber-800">
-              ⚠️ Atenção: {student.name.split(' ')[0]} respondeu <strong>sim</strong> a um ou mais itens do PAR-Q —
+              Atenção: {student.name.split(' ')[0]} respondeu <strong>sim</strong> a um ou mais itens do PAR-Q —
               recomende avaliação médica antes de seguir com o treino.
             </div>
           )}
@@ -427,7 +434,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
                 <span
                   className={`h-2 w-2 rounded-full ${autopilot ? 'bg-violet-400' : 'bg-slate-600'}`}
                 />
-                ✦ Coach IA {autopilot ? 'ligado' : 'desligado'}
+                Coach IA {autopilot ? 'ligado' : 'desligado'}
               </button>
             </div>
 

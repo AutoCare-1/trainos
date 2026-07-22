@@ -52,7 +52,7 @@ export default function DesafiosPage() {
         <BackLink href="/dashboard" label="Voltar ao painel" />
         <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="mb-1 text-2xl font-bold tracking-tight text-slate-900">Desafios 🏆</h1>
+            <h1 className="mb-1 text-2xl font-bold tracking-tight text-slate-900">Desafios</h1>
             <p className="text-sm text-slate-500">
               Crie um desafio com prazo — pontos vêm de treinos concluídos, não de carga, então todo mundo compete de
               igual pra igual.

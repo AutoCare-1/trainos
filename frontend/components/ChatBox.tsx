@@ -84,7 +84,7 @@ export default function ChatBox({
               >
                 {ehIa && (
                   <span className="mb-1 flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-violet-500">
-                    ✦ Coach IA
+                    Coach IA
                   </span>
                 )}
                 {!ehIa && m.sender === 'professional' && perspective === 'student' && (

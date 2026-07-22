@@ -142,14 +142,14 @@ export default function VideosPage() {
                           disabled={enviando === ex.id}
                           className="glass glass-hover rounded-xl px-3 py-2 text-xs font-medium text-slate-700"
                         >
-                          {enviando === ex.id ? 'Enviando...' : '🎥 Gravar'}
+                          {enviando === ex.id ? 'Enviando...' : 'Gravar'}
                         </button>
                         <button
                           onClick={() => inputsGaleria.current[ex.id]?.click()}
                           disabled={enviando === ex.id}
                           className="glass glass-hover rounded-xl px-3 py-2 text-xs font-medium text-slate-700"
                         >
-                          📁 Galeria
+                          Galeria
                         </button>
                       </div>
                       {ex.video_customizado && (

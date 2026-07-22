@@ -28,7 +28,11 @@ export default function InstallAppInstructions() {
   if (instalado) {
     return (
       <div className="glass rounded-2xl p-6 text-center">
-        <span className="mb-2 block text-3xl">✅</span>
+        <span className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-600" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="mx-auto">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </span>
         <p className="font-semibold text-slate-900">Já instalado!</p>
         <p className="mt-1 text-sm text-slate-500">Você já está usando o app pela tela inicial.</p>
       </div>
@@ -43,7 +47,7 @@ export default function InstallAppInstructions() {
 
       {(plataforma === 'ios' || plataforma === null) && (
         <div className="glass rounded-2xl p-5">
-          <p className="mb-3 text-sm font-semibold text-slate-900">📱 iPhone (Safari)</p>
+          <p className="mb-3 text-sm font-semibold text-slate-900">iPhone (Safari)</p>
           <ol className="space-y-2 text-sm text-slate-600">
             <li>
               1. Toque no ícone de <strong>Compartilhar</strong> (□ com seta ↑) na barra do Safari
@@ -60,7 +64,7 @@ export default function InstallAppInstructions() {
 
       {(plataforma === 'android' || plataforma === null) && (
         <div className="glass rounded-2xl p-5">
-          <p className="mb-3 text-sm font-semibold text-slate-900">🤖 Android (Chrome)</p>
+          <p className="mb-3 text-sm font-semibold text-slate-900">Android (Chrome)</p>
           <ol className="space-y-2 text-sm text-slate-600">
             <li>
               1. Toque no menu (⋮) no canto superior direito do navegador
@@ -78,7 +82,7 @@ export default function InstallAppInstructions() {
       {plataforma === 'outro' && (
         <div className="glass rounded-2xl p-5 text-center">
           <p className="text-sm text-slate-600">
-            💻 Você está num computador. Abra esse mesmo link no <strong>celular</strong> (iPhone ou Android) pra ver
+            Você está num computador. Abra esse mesmo link no <strong>celular</strong> (iPhone ou Android) pra ver
             o passo a passo e instalar por lá.
           </p>
         </div>

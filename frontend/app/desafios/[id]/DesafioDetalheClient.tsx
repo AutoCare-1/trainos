@@ -71,7 +71,7 @@ export default function DesafioDetalheClient({ challengeId }: { challengeId: str
 
         <div className="mb-6 flex items-start justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">{challenge.name} 🏆</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900">{challenge.name}</h1>
             <p className="mt-0.5 text-sm text-slate-500">
               {formatarData(challenge.start_date)} – {formatarData(challenge.end_date)}
             </p>

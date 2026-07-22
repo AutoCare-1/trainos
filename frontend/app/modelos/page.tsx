@@ -119,14 +119,14 @@ export default function ModelosPage() {
                           {ex.exercise_name}
                           {ex.structure_type && ex.structure_type !== 'tradicional' && (
                             <span className="ml-2 rounded-lg bg-violet-500/10 px-2 py-0.5 text-xs font-normal text-violet-600">
-                              {rotuloEstrutura(ex.structure_type).icone} {rotuloEstrutura(ex.structure_type).label}
+                              {rotuloEstrutura(ex.structure_type).label}
                               {ex.group_label ? ` ${ex.group_label}` : ''}
                             </span>
                           )}
                         </p>
                         <p className="text-xs text-slate-500">
                           {ex.sets} séries · {ex.reps} reps{ex.load_kg ? ` · ${ex.load_kg}kg` : ''}
-                          {ex.rest_seconds ? ` · ⏱ ${ex.rest_seconds}s` : ''}
+                          {ex.rest_seconds ? ` · ${ex.rest_seconds}s descanso` : ''}
                         </p>
                       </div>
                     </div>

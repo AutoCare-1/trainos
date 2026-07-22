@@ -90,11 +90,11 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   ).length
 
   const menuItems: MenuItem[] = [
-    { id: 'treino', label: 'Treino', icon: '🏋️' },
-    { id: 'evolucao', label: 'Avaliação Física', icon: '📏' },
-    { id: 'desafio', label: 'Desafio', icon: '🏆' },
-    { id: 'chat', label: naoLidas > 0 ? `Mensagens (${naoLidas})` : 'Mensagens', icon: '💬' },
-    { id: 'instalar', label: 'Instalar app', icon: '📲' },
+    { id: 'treino', label: 'Treino', icon: '' },
+    { id: 'evolucao', label: 'Avaliação Física', icon: '' },
+    { id: 'desafio', label: 'Desafio', icon: '' },
+    { id: 'chat', label: naoLidas > 0 ? `Mensagens (${naoLidas})` : 'Mensagens', icon: '' },
+    { id: 'instalar', label: 'Instalar app', icon: '' },
   ]
 
   // strava
@@ -154,7 +154,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     const params = new URLSearchParams(window.location.search)
     const statusStrava = params.get('strava')
     if (statusStrava === 'conectado') {
-      setAvisoStrava('Strava conectado com sucesso! 🎉')
+      setAvisoStrava('Strava conectado com sucesso!')
       setAba('evolucao')
     } else if (statusStrava === 'erro') {
       setAvisoStrava('Não foi possível conectar ao Strava. Tenta de novo?')
@@ -325,7 +325,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
           </svg>
         </button>
         <div className="min-w-0 flex-1">
-          <p className="text-xs text-slate-500">Olá, {primeiroNome} 👋</p>
+          <p className="text-xs text-slate-500">Olá, {primeiroNome}</p>
           <p className="truncate font-bold text-slate-900">{data.workout ? data.workout.name : 'Seu espaço de treino'}</p>
         </div>
         <Image src="/clubemais-icone.png" alt="Clube Mais" width={36} height={36} className="h-9 w-9 shrink-0" />
@@ -358,7 +358,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
           )}
 
           <div className="glass rounded-2xl p-5">
-            <h2 className="mb-1 font-semibold text-slate-900">Sua evolução 📈</h2>
+            <h2 className="mb-1 font-semibold text-slate-900">Sua evolução</h2>
             <p className="mb-4 text-sm text-slate-500">
               {validos.length > 1
                 ? 'Olha só o quanto você já caminhou até aqui!'
@@ -392,7 +392,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                   disabled={sincronizando}
                   className="glass glass-hover rounded-xl px-3 py-1.5 text-xs font-medium text-slate-700"
                 >
-                  {sincronizando ? 'Sincronizando...' : '↻ Sincronizar'}
+                  {sincronizando ? 'Sincronizando...' : 'Sincronizar'}
                 </button>
               ) : (
                 <a
@@ -464,7 +464,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
             <div>
               <p className="text-xs uppercase tracking-wider text-slate-500">Sequência</p>
               <p className="text-lg font-bold text-slate-900">
-                {gamificacao.streak > 0 ? `🔥 ${gamificacao.streak} dia${gamificacao.streak === 1 ? '' : 's'}` : '—'}
+                {gamificacao.streak > 0 ? `${gamificacao.streak} dia${gamificacao.streak === 1 ? '' : 's'}` : '—'}
               </p>
             </div>
             <div>
@@ -475,7 +475,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
 
           {gamificacao.badges.length > 0 && (
             <div className="glass rounded-2xl p-5">
-              <h2 className="mb-3 font-semibold text-slate-900">Suas medalhas 🎖️</h2>
+              <h2 className="mb-3 font-semibold text-slate-900">Suas medalhas</h2>
               <div className="flex flex-wrap gap-2">
                 {gamificacao.badges.map((b) => (
                   <span
@@ -491,7 +491,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
           )}
 
           <div className="glass rounded-2xl p-5">
-            <h2 className="mb-1 font-semibold text-slate-900">{desafio ? desafio.name : 'Nenhum desafio ativo'} 🏆</h2>
+            <h2 className="mb-1 font-semibold text-slate-900">{desafio ? desafio.name : 'Nenhum desafio ativo'}</h2>
             {desafio ? (
               <>
                 <p className="mb-3 text-sm text-slate-500">Quem completa mais treinos no período sobe no quadro.</p>
@@ -531,7 +531,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
               onSend={enviarMensagem}
               aguardandoIa={aguardandoIa}
               placeholder="Tire uma dúvida sobre seu treino..."
-              vazioTexto="Fale com seu professor ou tire dúvidas — a IA do seu coach responde na hora. 💬"
+              vazioTexto="Fale com seu professor ou tire dúvidas — a IA do seu coach responde na hora."
             />
           </div>
         </main>
@@ -556,8 +556,10 @@ export default function PortalAlunoClient({ token }: { token: string }) {
         <InstallAppModal open={instalarAberto} onClose={() => setInstalarAberto(false)} />
         <main className="flex flex-1 items-center justify-center px-4">
           <div className="glass max-w-sm rounded-3xl p-8 text-center">
-            <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 text-3xl">
-              💪
+            <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 text-white">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
             </span>
             <h1 className="text-2xl font-bold text-slate-900">Treino concluído!</h1>
             <p className="mt-2 text-slate-500">
@@ -624,7 +626,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
 
         {!sessionId && (
           <button onClick={iniciarTreino} className="btn-primary mb-6 w-full rounded-2xl px-4 py-4 text-base">
-            Iniciar treino 🔥
+            Iniciar treino
           </button>
         )}
 
@@ -653,7 +655,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
               <div key={gIdx} className={emBloco ? 'rounded-2xl border-2 border-dashed border-[#2648b3]/25 p-3' : ''}>
                 {emBloco && (
                   <p className="mb-2 px-1 text-xs font-bold uppercase tracking-wider text-[#2648b3]">
-                    {estrutura.icone} {estrutura.label} {grupo.groupLabel}
+                    {estrutura.label} {grupo.groupLabel}
                   </p>
                 )}
                 <div className="space-y-4">
@@ -681,11 +683,11 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                             <p className="mt-0.5 text-sm text-slate-500">
                               {ex.sets} × {ex.reps}
                               {ex.load_kg ? ` · ${ex.load_kg}kg` : ''}
-                              {ex.rest_seconds ? ` · ⏱ ${ex.rest_seconds}s` : ''}
+                              {ex.rest_seconds ? ` · ${ex.rest_seconds}s descanso` : ''}
                             </p>
                             {!emBloco && estrutura.label !== 'Tradicional' && (
                               <span className="mt-1 inline-block rounded-lg bg-violet-500/10 px-2 py-0.5 text-xs text-violet-600">
-                                {estrutura.icone} {estrutura.label}
+                                {estrutura.label}
                               </span>
                             )}
                           </div>
@@ -761,7 +763,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
         {sessionId && (
           <div className="glass mt-8 rounded-2xl p-5">
             <h2 className="mb-4 font-semibold text-slate-900">
-              {todasSeriesFeitas ? 'Como foi o treino? 🎯' : 'Finalizar treino'}
+              {todasSeriesFeitas ? 'Como foi o treino?' : 'Finalizar treino'}
             </h2>
             <div className="space-y-4">
               <div>
@@ -815,7 +817,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                 disabled={enviandoFeedback}
                 className="btn-primary w-full rounded-xl px-4 py-3 text-sm"
               >
-                {enviandoFeedback ? 'Enviando...' : 'Concluir treino 🏁'}
+                {enviandoFeedback ? 'Enviando...' : 'Concluir treino'}
               </button>
             </div>
           </div>

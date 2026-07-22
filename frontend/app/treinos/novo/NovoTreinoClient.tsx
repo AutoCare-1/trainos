@@ -352,7 +352,7 @@ export default function NovoTreinoClient() {
                   disabled={salvandoModelo || items.length === 0}
                   className="glass glass-hover shrink-0 rounded-xl px-4 py-3 text-sm font-medium text-slate-700"
                 >
-                  {salvandoModelo ? 'Salvando...' : modeloSalvo ? 'Modelo salvo ✓' : '💾 Salvar como modelo'}
+                  {salvandoModelo ? 'Salvando...' : modeloSalvo ? 'Modelo salvo ✓' : 'Salvar como modelo'}
                 </button>
                 <button
                   type="button"

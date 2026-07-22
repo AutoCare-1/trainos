@@ -108,7 +108,7 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
               >
                 {emBloco && (
                   <p className="mb-2 px-2 text-xs font-bold uppercase tracking-wider text-[#2648b3]">
-                    {estrutura.icone} {estrutura.label} {grupo.groupLabel}
+                    {estrutura.label} {grupo.groupLabel}
                   </p>
                 )}
                 <div className="space-y-3">
@@ -135,12 +135,12 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
                             )}
                             {ex.rest_seconds && (
                               <span className="rounded-lg bg-slate-900/5 px-2.5 py-1 text-xs text-slate-600">
-                                ⏱ {ex.rest_seconds}s descanso
+                                {ex.rest_seconds}s descanso
                               </span>
                             )}
                             {!emBloco && estrutura.label !== 'Tradicional' && (
                               <span className="rounded-lg bg-violet-500/10 px-2.5 py-1 text-xs text-violet-600">
-                                {estrutura.icone} {estrutura.label}
+                                {estrutura.label}
                               </span>
                             )}
                           </div>

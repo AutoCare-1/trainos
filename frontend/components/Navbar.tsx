@@ -26,12 +26,12 @@ export default function Navbar() {
   const [profissional, setProfissional] = useState<Professional | null>(null)
 
   const menuItems: MenuItem[] = [
-    { id: 'dashboard', label: 'Meus alunos', icon: '👥', href: '/dashboard' },
-    { id: 'desafios', label: 'Desafios', icon: '🏆', href: '/desafios' },
-    { id: 'videos', label: 'Vídeos dos exercícios', icon: '🎥', href: '/videos' },
-    { id: 'modelos', label: 'Modelos de treino', icon: '📋', href: '/modelos' },
-    { id: 'novo-aluno', label: 'Cadastrar aluno', icon: '➕', href: '/alunos/novo' },
-    { id: 'instalar', label: 'Instalar app', icon: '📲', onClick: () => setInstalarAberto(true) },
+    { id: 'dashboard', label: 'Meus alunos', icon: '', href: '/dashboard' },
+    { id: 'desafios', label: 'Desafios', icon: '', href: '/desafios' },
+    { id: 'videos', label: 'Vídeos dos exercícios', icon: '', href: '/videos' },
+    { id: 'modelos', label: 'Modelos de treino', icon: '', href: '/modelos' },
+    { id: 'novo-aluno', label: 'Cadastrar aluno', icon: '', href: '/alunos/novo' },
+    { id: 'instalar', label: 'Instalar app', icon: '', onClick: () => setInstalarAberto(true) },
   ]
 
   useEffect(() => {

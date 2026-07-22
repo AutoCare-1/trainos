@@ -44,7 +44,7 @@ export default function OnboardingAvaliacao({
       <div className="w-full max-w-md">
         <div className="mb-6 flex flex-col items-center text-center">
           <Image src="/clubemais-logo.png" alt="Clube Mais" width={200} height={56} priority className="h-12 w-auto" />
-          <h1 className="mt-5 text-xl font-bold text-slate-900">Oi, {nome.split(' ')[0]}! 👋</h1>
+          <h1 className="mt-5 text-xl font-bold text-slate-900">Oi, {nome.split(' ')[0]}!</h1>
           <p className="mt-2 text-sm text-slate-500">
             Antes de ver seu treino, responda essas perguntas rápidas de segurança — leva menos de 1 minuto.
           </p>
