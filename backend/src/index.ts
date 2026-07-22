@@ -37,4 +37,4 @@ app.use((err: Error & { code?: string }, _req: express.Request, res: express.Res
 })
 
 const port = Number(process.env.PORT) || 3001
-app.listen(port, () => console.log(`TrainOS backend rodando em http://localhost:${port}`))
+app.listen(port, () => console.log(`Clube Mais Personal — backend rodando em http://localhost:${port}`))
