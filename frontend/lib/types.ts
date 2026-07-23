@@ -47,6 +47,7 @@ export interface DiaSemanaCheckin {
   date: string
   label: string
   checked: boolean
+  comment: string | null
 }
 
 export interface ResumoSemanaCheckins {

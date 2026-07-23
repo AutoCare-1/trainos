@@ -147,6 +147,8 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   const [periodoHistorico, setPeriodoHistorico] = useState<'week' | 'month'>('week')
   const [refHistorico, setRefHistorico] = useState<string | null>(null)
   const [historico, setHistorico] = useState<HistoricoCheckins | null>(null)
+  const [fotoCheckinSelecionada, setFotoCheckinSelecionada] = useState<File | null>(null)
+  const [comentarioCheckin, setComentarioCheckin] = useState('')
   const checkinInputRef = useRef<HTMLInputElement | null>(null)
 
   const carregarResumoCheckins = useCallback(() => {
@@ -172,16 +174,20 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     carregarHistoricoCheckins(periodoHistorico, refHistorico)
   }, [periodoHistorico, refHistorico, carregarHistoricoCheckins])
 
-  async function enviarCheckin(file: File) {
+  async function enviarCheckin() {
+    if (!fotoCheckinSelecionada) return
     setEnviandoCheckin(true)
     setErroCheckin(null)
     try {
-      const comprimida = await comprimirImagem(file)
+      const comprimida = await comprimirImagem(fotoCheckinSelecionada)
       const formData = new FormData()
       formData.append('foto', comprimida, 'checkin.jpg')
+      if (comentarioCheckin.trim()) formData.append('comment', comentarioCheckin.trim())
       await api.postFile(`/portal/${token}/checkins`, formData)
       carregarResumoCheckins()
       carregarHistoricoCheckins(periodoHistorico, refHistorico)
+      setFotoCheckinSelecionada(null)
+      setComentarioCheckin('')
     } catch (err) {
       setErroCheckin(err instanceof ApiError ? err.message : 'Erro ao marcar check-in')
     } finally {
@@ -577,21 +583,51 @@ export default function PortalAlunoClient({ token }: { token: string }) {
               className="hidden"
               onChange={(e) => {
                 const file = e.target.files?.[0]
-                if (file) enviarCheckin(file)
+                if (file) setFotoCheckinSelecionada(file)
                 e.target.value = ''
               }}
             />
-            <button
-              onClick={() => checkinInputRef.current?.click()}
-              disabled={enviandoCheckin}
-              className="btn-primary w-full rounded-xl px-4 py-3 text-sm"
-            >
-              {enviandoCheckin
-                ? 'Enviando...'
-                : resumoCheckins?.checkinHoje
-                  ? 'Treino de hoje já marcado — trocar foto'
-                  : 'Marcar treino de hoje'}
-            </button>
+
+            {fotoCheckinSelecionada ? (
+              <div className="space-y-3">
+                <p className="text-sm text-slate-600">
+                  Foto selecionada: <span className="font-medium text-slate-900">{fotoCheckinSelecionada.name}</span>
+                </p>
+                <textarea
+                  value={comentarioCheckin}
+                  onChange={(e) => setComentarioCheckin(e.target.value)}
+                  placeholder="Comentário pro seu professor (opcional)"
+                  rows={2}
+                  className="input-dark w-full rounded-xl px-4 py-2.5 text-sm"
+                />
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      setFotoCheckinSelecionada(null)
+                      setComentarioCheckin('')
+                    }}
+                    disabled={enviandoCheckin}
+                    className="glass glass-hover rounded-xl px-4 py-2.5 text-sm text-slate-700"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    onClick={enviarCheckin}
+                    disabled={enviandoCheckin}
+                    className="btn-primary flex-1 rounded-xl px-4 py-2.5 text-sm"
+                  >
+                    {enviandoCheckin ? 'Enviando...' : 'Enviar check-in'}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                onClick={() => checkinInputRef.current?.click()}
+                className="btn-primary w-full rounded-xl px-4 py-3 text-sm"
+              >
+                {resumoCheckins?.checkinHoje ? 'Treino de hoje já marcado — trocar foto' : 'Marcar treino de hoje'}
+              </button>
+            )}
           </div>
 
           {resumoCheckins && (
@@ -624,6 +660,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                     <div key={d.date} className="flex flex-col items-center gap-1">
                       <span className="text-[10px] text-slate-400">{d.label}</span>
                       <span
+                        title={d.comment ?? undefined}
                         className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold ${
                           d.checked ? 'bg-emerald-500 text-white' : 'bg-slate-900/6 text-slate-400'
                         }`}
@@ -633,6 +670,17 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                     </div>
                   ))}
                 </div>
+                {resumoCheckins.semana.grid.some((d) => d.comment) && (
+                  <div className="mt-3 space-y-1.5 border-t border-black/6 pt-3">
+                    {resumoCheckins.semana.grid
+                      .filter((d) => d.comment)
+                      .map((d) => (
+                        <p key={d.date} className="text-xs text-slate-600">
+                          <span className="font-medium text-slate-800">{d.label}:</span> {d.comment}
+                        </p>
+                      ))}
+                  </div>
+                )}
               </div>
             </>
           )}
@@ -700,6 +748,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                     <div key={d.date} className="flex flex-col items-center gap-1">
                       <span className="text-[10px] text-slate-400">{d.label}</span>
                       <span
+                        title={d.comment ?? undefined}
                         className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold ${
                           d.checked ? 'bg-emerald-500 text-white' : 'bg-slate-900/6 text-slate-400'
                         }`}
@@ -712,6 +761,17 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                 <p className="mt-3 text-sm text-slate-600">
                   {historico.semana.dias_com_checkin} de {historico.semana.total_dias} dias
                 </p>
+                {historico.semana.grid.some((d) => d.comment) && (
+                  <div className="mt-3 space-y-1.5 border-t border-black/6 pt-3">
+                    {historico.semana.grid
+                      .filter((d) => d.comment)
+                      .map((d) => (
+                        <p key={d.date} className="text-xs text-slate-600">
+                          <span className="font-medium text-slate-800">{d.label}:</span> {d.comment}
+                        </p>
+                      ))}
+                  </div>
+                )}
               </div>
             )}
 
