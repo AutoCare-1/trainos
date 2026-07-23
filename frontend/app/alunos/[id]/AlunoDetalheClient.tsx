@@ -329,33 +329,36 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
         </div>
 
         {resumoCheckins && (
-          <section className="glass mb-6 flex flex-wrap items-center gap-5 rounded-2xl p-4">
-            <div>
-              <p className="text-xs uppercase tracking-wider text-slate-500">Check-in semana</p>
-              <p className="text-lg font-bold text-slate-900">
-                {resumoCheckins.semana.dias_com_checkin}
-                <span className="text-sm font-normal text-slate-400">/{resumoCheckins.semana.total_dias}</span>
-              </p>
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-wider text-slate-500">Check-in mês</p>
-              <p className="text-lg font-bold text-slate-900">
-                {resumoCheckins.mes.dias_com_checkin}
-                <span className="text-sm font-normal text-slate-400">/{resumoCheckins.mes.total_dias_mes}</span>
-              </p>
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-wider text-slate-500">Check-in ano</p>
-              <p className="text-lg font-bold text-slate-900">{resumoCheckins.ano.dias_com_checkin}</p>
-            </div>
-            <div className="flex gap-1.5">
-              {resumoCheckins.semana.grid.map((d) => (
-                <span
-                  key={d.date}
-                  title={d.comment ? `${d.label}: ${d.comment}` : d.label}
-                  className={`h-2.5 w-2.5 rounded-full ${d.checked ? 'bg-emerald-500' : 'bg-slate-900/10'}`}
-                />
-              ))}
+          <section className="glass mb-6 rounded-2xl p-4">
+            <h2 className="mb-3 font-semibold text-slate-900">Check-in</h2>
+            <div className="flex flex-wrap items-center gap-5">
+              <div>
+                <p className="text-xs uppercase tracking-wider text-slate-500">Semana</p>
+                <p className="text-lg font-bold text-slate-900">
+                  {resumoCheckins.semana.dias_com_checkin}
+                  <span className="text-sm font-normal text-slate-400">/{resumoCheckins.semana.total_dias}</span>
+                </p>
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-wider text-slate-500">Mês</p>
+                <p className="text-lg font-bold text-slate-900">
+                  {resumoCheckins.mes.dias_com_checkin}
+                  <span className="text-sm font-normal text-slate-400">/{resumoCheckins.mes.total_dias_mes}</span>
+                </p>
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-wider text-slate-500">Ano</p>
+                <p className="text-lg font-bold text-slate-900">{resumoCheckins.ano.dias_com_checkin}</p>
+              </div>
+              <div className="flex gap-1.5">
+                {resumoCheckins.semana.grid.map((d) => (
+                  <span
+                    key={d.date}
+                    title={d.comment ? `${d.label}: ${d.comment}` : d.label}
+                    className={`h-2.5 w-2.5 rounded-full ${d.checked ? 'bg-emerald-500' : 'bg-slate-900/10'}`}
+                  />
+                ))}
+              </div>
             </div>
           </section>
         )}
