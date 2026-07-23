@@ -134,6 +134,16 @@ export interface BodyMeasurement {
   created_at: string
 }
 
+export interface BodyPhoto {
+  id: string
+  student_id: string
+  file_path: string
+  taken_at: string
+  ai_feedback: string | null
+  compared_to_photo_id: string | null
+  created_at: string
+}
+
 export interface WorkoutTemplate {
   id: string
   professional_id: string
