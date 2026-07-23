@@ -322,3 +322,23 @@ export interface FormAnalysisResult {
   analysis_status: 'analyzing' | 'completed' | 'failed'
   created_at: string
 }
+
+export type ContentFormat = 'post' | 'story' | 'reels'
+
+export interface ContentIdea {
+  id: string
+  professional_id: string
+  batch_id: string
+  format: ContentFormat
+  title: string
+  description: string
+  caption_suggestion: string
+  saved: boolean
+  created_at: string
+}
+
+export interface TrendCache {
+  id: string
+  content_snapshot: string
+  cached_at: string
+}
