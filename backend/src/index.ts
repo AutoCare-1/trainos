@@ -12,6 +12,7 @@ import stravaRoutes from './routes/strava'
 import desafiosRoutes from './routes/desafios'
 import academiaRoutes from './routes/academia'
 import contentRoutes from './routes/content'
+import consultorIaRoutes from './routes/consultorIa'
 
 const app = express()
 
@@ -31,6 +32,7 @@ app.use('/strava', stravaRoutes)
 app.use('/desafios', desafiosRoutes)
 app.use('/academia', academiaRoutes)
 app.use('/conteudo', contentRoutes)
+app.use('/consultor-ia', consultorIaRoutes)
 
 app.use((err: Error & { code?: string }, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   if (err.code === '22P02') {
