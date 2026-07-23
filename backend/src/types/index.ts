@@ -217,3 +217,77 @@ export interface ChallengeParticipant {
   challenge_id: string
   student_id: string
 }
+
+export type GymSubmissionType = 'photo' | 'video' | 'album'
+export type GymSubmissionStatus = 'analyzing' | 'completed' | 'failed'
+
+export interface GymMediaSubmission {
+  id: string
+  student_id: string
+  professional_id: string
+  submission_type: GymSubmissionType
+  days_per_week: number | null
+  status: GymSubmissionStatus
+  error_message: string | null
+  created_at: string
+}
+
+export interface GymMediaAsset {
+  id: string
+  submission_id: string
+  asset_type: 'photo' | 'video_frame'
+  file_path: string
+  frame_index: number | null
+  created_at: string
+}
+
+export interface MachineDetectado {
+  name: string
+  category: string
+  primary_muscles: string[]
+  secondary_muscles: string[]
+  confidence: number
+  notes: string
+}
+
+export interface MachinesJson {
+  machines: MachineDetectado[]
+}
+
+export interface GymAnalysisResult {
+  id: string
+  submission_id: string
+  machines_json: MachinesJson
+  zones_identified: string[]
+  total_unique_machines: number
+  coverage_estimate: string | null
+  gaps: string[]
+  notes: string | null
+  created_at: string
+}
+
+export interface RecommendedItem {
+  exercise_id: string
+  exercise_name: string
+  sets: number
+  reps: string
+  rest_seconds: number
+  notes: string
+}
+
+export type GymApprovalStatus = 'pending' | 'approved' | 'rejected'
+
+export interface GymWorkoutRecommendation {
+  id: string
+  submission_id: string
+  analysis_result_id: string
+  name: string
+  split_type: string | null
+  reasoning: string | null
+  recommended_items: RecommendedItem[]
+  approval_status: GymApprovalStatus
+  approved_workout_id: string | null
+  professional_notes: string | null
+  approved_at: string | null
+  created_at: string
+}

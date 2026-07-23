@@ -18,6 +18,7 @@ import {
   Challenge,
   ExternalActivity,
   Gamificacao,
+  GymMediaSubmission,
   HistoricoCheckins,
   Message,
   ParQAnswers,
@@ -67,7 +68,7 @@ function chaveUltimaVista(token: string): string {
 export default function PortalAlunoClient({ token }: { token: string }) {
   const [data, setData] = useState<PortalData | null>(null)
   const [erro, setErro] = useState<string | null>(null)
-  const [aba, setAba] = useState<'treino' | 'checkin' | 'evolucao' | 'fotos' | 'desafio' | 'chat'>('treino')
+  const [aba, setAba] = useState<'treino' | 'checkin' | 'evolucao' | 'fotos' | 'academia' | 'desafio' | 'chat'>('treino')
   const [menuAberto, setMenuAberto] = useState(false)
   const [instalarAberto, setInstalarAberto] = useState(false)
 
@@ -100,6 +101,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     { id: 'checkin', label: 'Check-in', icon: '' },
     { id: 'evolucao', label: 'Avaliação Física', icon: '' },
     { id: 'fotos', label: 'Evolução', icon: '' },
+    { id: 'academia', label: 'Academia', icon: '' },
     { id: 'desafio', label: 'Desafio', icon: '' },
     { id: 'chat', label: naoLidas > 0 ? `Mensagens (${naoLidas})` : 'Mensagens', icon: '' },
     { id: 'instalar', label: 'Instalar app', icon: '' },
@@ -137,6 +139,44 @@ export default function PortalAlunoClient({ token }: { token: string }) {
       setErroFotoEvolucao(err instanceof ApiError ? err.message : 'Erro ao enviar foto')
     } finally {
       setEnviandoFotoEvolucao(false)
+    }
+  }
+
+  // análise de academia por mídia (foto, vídeo ou álbum)
+  const [submissoesAcademia, setSubmissoesAcademia] = useState<GymMediaSubmission[]>([])
+  const [enviandoAcademia, setEnviandoAcademia] = useState(false)
+  const [erroAcademia, setErroAcademia] = useState<string | null>(null)
+  const [diasSemanaAcademia, setDiasSemanaAcademia] = useState(3)
+  const fotosAcademiaInputRef = useRef<HTMLInputElement | null>(null)
+  const videoAcademiaInputRef = useRef<HTMLInputElement | null>(null)
+
+  const carregarSubmissoesAcademia = useCallback(() => {
+    api
+      .get<{ submissions: GymMediaSubmission[] }>(`/portal/${token}/academia`)
+      .then((d) => setSubmissoesAcademia(d.submissions))
+      .catch(() => {})
+  }, [token])
+
+  async function enviarMidiaAcademia(files: File[]) {
+    setEnviandoAcademia(true)
+    setErroAcademia(null)
+    try {
+      const formData = new FormData()
+      for (const file of files) {
+        if (file.type.startsWith('image/')) {
+          const comprimida = await comprimirImagem(file)
+          formData.append('media', comprimida, file.name.replace(/\.[^.]+$/, '.jpg'))
+        } else {
+          formData.append('media', file)
+        }
+      }
+      formData.append('days_per_week', String(diasSemanaAcademia))
+      await api.postFile(`/portal/${token}/academia`, formData)
+      carregarSubmissoesAcademia()
+    } catch (err) {
+      setErroAcademia(err instanceof ApiError ? err.message : 'Erro ao enviar mídia da academia')
+    } finally {
+      setEnviandoAcademia(false)
     }
   }
 
@@ -257,6 +297,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
 
     carregarFotosEvolucao()
     carregarResumoCheckins()
+    carregarSubmissoesAcademia()
     carregarStrava()
     const params = new URLSearchParams(window.location.search)
     const statusStrava = params.get('strava')
@@ -272,7 +313,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     }
 
     return () => clearInterval(intervalo)
-  }, [token, carregarMensagens, carregarStrava, carregarFotosEvolucao, carregarResumoCheckins])
+  }, [token, carregarMensagens, carregarStrava, carregarFotosEvolucao, carregarResumoCheckins, carregarSubmissoesAcademia])
 
   // Restaura de onde o aluno parou de ler o chat (persiste entre visitas).
   useEffect(() => {
@@ -909,6 +950,132 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                     </div>
                   )}
                 </div>
+              </div>
+            ))}
+          </div>
+        </main>
+      </div>
+    )
+  }
+
+  if (aba === 'academia') {
+    const rotuloStatus: Record<string, string> = {
+      analyzing: 'Analisando...',
+      failed: 'Falhou',
+      pending: 'Aguardando o professor',
+      approved: 'Aprovado — já está no seu treino',
+      rejected: 'Não aprovado desta vez',
+    }
+    return (
+      <div className="flex min-h-screen flex-col">
+        {cabecalho}
+        <SideMenu
+          open={menuAberto}
+          onClose={() => setMenuAberto(false)}
+          nome={data.student.name}
+          fotoUrl={data.student.photo_url}
+          subtitulo="Clube Mais"
+          items={menuItems}
+          ativo={aba}
+          onSelect={selecionarItemMenu}
+        />
+        <InstallAppModal open={instalarAberto} onClose={() => setInstalarAberto(false)} />
+        <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6">
+          <div className="glass mb-4 rounded-2xl p-5">
+            <h2 className="mb-1 font-semibold text-slate-900">Análise de academia</h2>
+            <p className="mb-4 text-sm text-slate-500">
+              Envie fotos ou um vídeo curto da sua academia — a IA identifica os equipamentos e
+              monta uma sugestão de treino pro seu professor revisar e aprovar.
+            </p>
+
+            <label className="mb-3 block text-sm font-medium text-slate-700">
+              Quantos dias por semana você treina?
+              <select
+                value={diasSemanaAcademia}
+                onChange={(e) => setDiasSemanaAcademia(Number(e.target.value))}
+                className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm"
+              >
+                {[2, 3, 4, 5, 6].map((n) => (
+                  <option key={n} value={n}>
+                    {n} dias
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            {erroAcademia && <p className="mb-3 text-sm text-rose-500">{erroAcademia}</p>}
+
+            <input
+              ref={fotosAcademiaInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              capture="environment"
+              className="hidden"
+              onChange={(e) => {
+                const files = Array.from(e.target.files ?? [])
+                if (files.length) enviarMidiaAcademia(files)
+                e.target.value = ''
+              }}
+            />
+            <input
+              ref={videoAcademiaInputRef}
+              type="file"
+              accept="video/mp4,video/quicktime"
+              capture="environment"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0]
+                if (file) enviarMidiaAcademia([file])
+                e.target.value = ''
+              }}
+            />
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={() => fotosAcademiaInputRef.current?.click()}
+                disabled={enviandoAcademia}
+                className="btn-primary rounded-xl px-4 py-3 text-sm"
+              >
+                {enviandoAcademia ? 'Enviando...' : 'Enviar fotos'}
+              </button>
+              <button
+                onClick={() => videoAcademiaInputRef.current?.click()}
+                disabled={enviandoAcademia}
+                className="glass glass-hover rounded-xl px-4 py-3 text-sm font-medium text-slate-700"
+              >
+                {enviandoAcademia ? 'Enviando...' : 'Enviar vídeo'}
+              </button>
+            </div>
+            {enviandoAcademia && (
+              <p className="mt-3 text-center text-sm text-slate-500">
+                Analisando sua academia — isso pode levar alguns segundos...
+              </p>
+            )}
+          </div>
+
+          {submissoesAcademia.length === 0 && !enviandoAcademia && (
+            <div className="glass rounded-2xl border-dashed p-8 text-center">
+              <p className="text-sm text-slate-500">Nenhuma análise enviada ainda.</p>
+            </div>
+          )}
+
+          <div className="space-y-3">
+            {submissoesAcademia.map((sub) => (
+              <div key={sub.id} className="glass rounded-2xl p-4">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-sm font-semibold text-slate-900">
+                    {sub.recommendation_name ?? (sub.submission_type === 'video' ? 'Vídeo enviado' : 'Fotos enviadas')}
+                  </p>
+                  <span className="shrink-0 rounded-full bg-slate-900/5 px-2.5 py-1 text-[11px] font-medium text-slate-600">
+                    {sub.status === 'completed' ? rotuloStatus[sub.approval_status ?? 'pending'] : rotuloStatus[sub.status]}
+                  </span>
+                </div>
+                <p className="mt-1 text-xs text-slate-500">
+                  {new Date(sub.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
+                </p>
+                {sub.status === 'failed' && (
+                  <p className="mt-2 text-xs text-rose-500">Não foi possível analisar essa mídia. Tenta enviar de novo?</p>
+                )}
               </div>
             ))}
           </div>

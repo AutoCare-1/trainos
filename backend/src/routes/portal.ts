@@ -13,13 +13,43 @@ import {
   existeCheckinHoje,
   listarCheckinsPeriodo,
 } from '../services/checkins'
+import { analisarMidiaAcademia } from '../services/academiaAnalyzer'
+import { ExercicioDisponivel, recomendarTreino } from '../services/academiaRecomendador'
+import { extrairFramesDeVideo } from '../services/videoProcessor'
 import { criarUploader, criarUploaderPrivadoPorChave, PRIVATE_UPLOADS_ROOT } from '../middleware/upload'
-import { BodyPhoto, CheckIn, Message, Student, Workout } from '../types'
+import {
+  BodyPhoto,
+  CheckIn,
+  GymAnalysisResult,
+  GymMediaAsset,
+  GymMediaSubmission,
+  GymSubmissionType,
+  GymWorkoutRecommendation,
+  Message,
+  ParQAnswers,
+  Student,
+  Workout,
+} from '../types'
 
 const router = Router()
 const uploadFoto = criarUploader('student-photos', 'image/', 10 * 1024 * 1024)
 const uploadFotoEvolucao = criarUploaderPrivadoPorChave('token', 'body-photos', 'image/', 15 * 1024 * 1024)
 const uploadCheckin = criarUploaderPrivadoPorChave('token', 'checkins', 'image/', 10 * 1024 * 1024)
+const uploadMidiaAcademia = criarUploader('gym-media', ['image/', 'video/'], 100 * 1024 * 1024)
+
+const GYM_MEDIA_DIR = path.join(__dirname, '..', '..', 'uploads', 'gym-media')
+
+const LABEL_PAR_Q: Record<keyof ParQAnswers, string> = {
+  cardiaco: 'histórico cardíaco',
+  tontura: 'tontura/equilíbrio',
+  articular: 'problema articular',
+  pressao_medicacao: 'pressão alta ou uso de medicação contínua',
+}
+
+function limitacoesParQ(respostas: ParQAnswers | null): string[] {
+  if (!respostas) return []
+  return (Object.keys(LABEL_PAR_Q) as Array<keyof ParQAnswers>).filter((k) => respostas[k]).map((k) => LABEL_PAR_Q[k])
+}
 
 async function buscarAlunoPorToken(token: string): Promise<Student | null> {
   const { rows } = await pool.query<Student>('select * from students where invite_token = $1', [token])
@@ -388,6 +418,196 @@ router.get(
     }
 
     res.sendFile(path.join(PRIVATE_UPLOADS_ROOT, rows[0].file_path))
+  })
+)
+
+// ─────────────────────────────────────────────
+// Análise de academia por mídia (foto, vídeo ou álbum)
+// ─────────────────────────────────────────────
+
+// GET /:token/academia — histórico de submissões do aluno, mais recente primeiro
+router.get('/:token/academia', asyncHandler(async (req: Request, res: Response): Promise<void> => {
+  const student = await buscarAlunoPorToken(req.params.token as string)
+  if (!student) {
+    res.status(404).json({ error: 'Link inválido' })
+    return
+  }
+
+  const { rows } = await pool.query(
+    `select s.*, r.approval_status, r.name as recommendation_name
+     from gym_media_submissions s
+     left join gym_workout_recommendations r on r.submission_id = s.id
+     where s.student_id = $1
+     order by s.created_at desc`,
+    [student.id]
+  )
+  res.json({ submissions: rows })
+}))
+
+// GET /:token/academia/:submissionId — detalhe de uma submissão (mídia, análise e recomendação)
+router.get('/:token/academia/:submissionId', asyncHandler(async (req: Request, res: Response): Promise<void> => {
+  const student = await buscarAlunoPorToken(req.params.token as string)
+  if (!student) {
+    res.status(404).json({ error: 'Link inválido' })
+    return
+  }
+
+  const { rows: submissionRows } = await pool.query<GymMediaSubmission>(
+    'select * from gym_media_submissions where id = $1 and student_id = $2',
+    [req.params.submissionId, student.id]
+  )
+  const submission = submissionRows[0]
+  if (!submission) {
+    res.status(404).json({ error: 'Submissão não encontrada' })
+    return
+  }
+
+  const { rows: assets } = await pool.query<GymMediaAsset>(
+    'select * from gym_media_assets where submission_id = $1 order by frame_index nulls first',
+    [submission.id]
+  )
+  const { rows: analysisRows } = await pool.query<GymAnalysisResult>(
+    'select * from gym_analysis_results where submission_id = $1',
+    [submission.id]
+  )
+  const { rows: recommendationRows } = await pool.query<GymWorkoutRecommendation>(
+    'select * from gym_workout_recommendations where submission_id = $1',
+    [submission.id]
+  )
+
+  res.json({
+    submission,
+    assets,
+    analysis: analysisRows[0] ?? null,
+    recommendation: recommendationRows[0] ?? null,
+  })
+}))
+
+// POST /:token/academia — aluno envia foto(s) ou vídeo da academia; dispara o pipeline completo
+router.post(
+  '/:token/academia',
+  uploadMidiaAcademia.array('media', 10),
+  asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const student = await buscarAlunoPorToken(req.params.token as string)
+    if (!student) {
+      res.status(404).json({ error: 'Link inválido' })
+      return
+    }
+
+    const files = (req.files as Express.Multer.File[] | undefined) ?? []
+    if (files.length === 0) {
+      res.status(400).json({ error: 'Envie ao menos uma foto ou um vídeo' })
+      return
+    }
+
+    const videos = files.filter((f) => f.mimetype.startsWith('video/'))
+    if (videos.length > 1 || (videos.length === 1 && files.length > 1)) {
+      res.status(400).json({ error: 'Envie um vídeo por vez, ou uma ou mais fotos' })
+      return
+    }
+
+    const daysPerWeek = Math.min(6, Math.max(2, parseInt(String(req.body.days_per_week), 10) || 3))
+    const submissionType: GymSubmissionType = videos.length === 1 ? 'video' : files.length > 1 ? 'album' : 'photo'
+
+    const { rows: submissionRows } = await pool.query<GymMediaSubmission>(
+      `insert into gym_media_submissions (student_id, professional_id, submission_type, days_per_week)
+       values ($1, $2, $3, $4) returning *`,
+      [student.id, student.professional_id, submissionType, daysPerWeek]
+    )
+    const submission = submissionRows[0]
+
+    try {
+      let caminhosParaAnalise: { caminhoAbsoluto: string; asset: { asset_type: 'photo' | 'video_frame'; file_path: string; frame_index: number | null } }[]
+
+      if (submissionType === 'video') {
+        const dirFrames = path.join(GYM_MEDIA_DIR, `${submission.id}-frames`)
+        const frames = await extrairFramesDeVideo(videos[0]!.path, dirFrames)
+        caminhosParaAnalise = frames.map((caminho, i) => ({
+          caminhoAbsoluto: caminho,
+          asset: {
+            asset_type: 'video_frame',
+            file_path: `/uploads/gym-media/${submission.id}-frames/${path.basename(caminho)}`,
+            frame_index: i,
+          },
+        }))
+      } else {
+        caminhosParaAnalise = files.map((f) => ({
+          caminhoAbsoluto: f.path,
+          asset: { asset_type: 'photo', file_path: `/uploads/gym-media/${f.filename}`, frame_index: null },
+        }))
+      }
+
+      for (const item of caminhosParaAnalise) {
+        await pool.query(
+          `insert into gym_media_assets (submission_id, asset_type, file_path, frame_index) values ($1, $2, $3, $4)`,
+          [submission.id, item.asset.asset_type, item.asset.file_path, item.asset.frame_index]
+        )
+      }
+
+      const analise = await analisarMidiaAcademia(caminhosParaAnalise.map((c) => c.caminhoAbsoluto))
+
+      const { rows: analysisRows } = await pool.query<GymAnalysisResult>(
+        `insert into gym_analysis_results
+           (submission_id, machines_json, zones_identified, total_unique_machines, coverage_estimate, gaps, notes)
+         values ($1, $2, $3, $4, $5, $6, $7) returning *`,
+        [
+          submission.id,
+          JSON.stringify(analise.machines),
+          analise.zones_identified,
+          analise.machines.machines.length,
+          analise.coverage_estimate,
+          analise.gaps,
+          analise.notes,
+        ]
+      )
+      const analysisResult = analysisRows[0]!
+
+      const { rows: exerciseRows } = await pool.query<ExercicioDisponivel>(
+        'select id, name, muscle_group, equipment from exercises order by muscle_group, name'
+      )
+
+      const recomendacao = await recomendarTreino(analise.machines, exerciseRows, {
+        nome: student.name,
+        objective: student.objective,
+        healthNotes: student.health_notes,
+        limitacoesParQ: limitacoesParQ(student.par_q_answers),
+        daysPerWeek,
+      })
+
+      const { rows: recommendationRows } = await pool.query<GymWorkoutRecommendation>(
+        `insert into gym_workout_recommendations
+           (submission_id, analysis_result_id, name, split_type, reasoning, recommended_items)
+         values ($1, $2, $3, $4, $5, $6) returning *`,
+        [
+          submission.id,
+          analysisResult.id,
+          recomendacao.name,
+          recomendacao.split_type,
+          recomendacao.reasoning,
+          JSON.stringify(recomendacao.items),
+        ]
+      )
+
+      await pool.query(`update gym_media_submissions set status = 'completed' where id = $1`, [submission.id])
+
+      res.status(201).json({
+        submission: { ...submission, status: 'completed' },
+        analysis: analysisResult,
+        recommendation: recommendationRows[0],
+      })
+    } catch (err) {
+      console.error('[Análise de academia] Falha no pipeline:', err)
+      const mensagem = err instanceof Error ? err.message : 'Erro desconhecido'
+      await pool.query(`update gym_media_submissions set status = 'failed', error_message = $2 where id = $1`, [
+        submission.id,
+        mensagem,
+      ])
+      res.status(201).json({
+        submission: { ...submission, status: 'failed', error_message: mensagem },
+        analysis: null,
+        recommendation: null,
+      })
+    }
   })
 )
 

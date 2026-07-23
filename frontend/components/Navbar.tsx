@@ -15,6 +15,7 @@ function itemAtivo(pathname: string): string {
   if (pathname.startsWith('/desafios')) return 'desafios'
   if (pathname.startsWith('/videos')) return 'videos'
   if (pathname.startsWith('/modelos')) return 'modelos'
+  if (pathname.startsWith('/academia')) return 'academia'
   return ''
 }
 
@@ -30,6 +31,7 @@ export default function Navbar() {
     { id: 'desafios', label: 'Desafios', icon: '', href: '/desafios' },
     { id: 'videos', label: 'Vídeos dos exercícios', icon: '', href: '/videos' },
     { id: 'modelos', label: 'Modelos de treino', icon: '', href: '/modelos' },
+    { id: 'academia', label: 'Análises de academia', icon: '', href: '/academia' },
     { id: 'novo-aluno', label: 'Cadastrar aluno', icon: '', href: '/alunos/novo' },
     { id: 'instalar', label: 'Instalar app', icon: '', onClick: () => setInstalarAberto(true) },
   ]
