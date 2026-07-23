@@ -291,6 +291,27 @@ export interface GymWorkoutRecommendation {
   created_at: string
 }
 
+export type FormFeedbackPriority = 'good' | 'warning' | 'critical'
+
+export interface FormFeedbackItem {
+  title: string
+  feedback: string
+  priority: FormFeedbackPriority
+}
+
+export interface FormAnalysisResult {
+  id: string
+  video_id: string
+  amplitude_assessment: string | null
+  posture_assessment: string | null
+  tempo_assessment: string | null
+  compensations: string | null
+  safety_notes: string | null
+  three_key_feedback: FormFeedbackItem[]
+  analysis_status: 'analyzing' | 'completed' | 'failed'
+  created_at: string
+}
+
 export interface Challenge {
   id: string
   professional_id: string

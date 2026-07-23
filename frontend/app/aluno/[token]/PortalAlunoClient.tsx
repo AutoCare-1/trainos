@@ -5,6 +5,7 @@ import Image from 'next/image'
 import ChatBox from '@/components/ChatBox'
 import ExerciseAnimation from '@/components/ExerciseAnimation'
 import InstallAppModal from '@/components/InstallAppModal'
+import FormCorrectionModal from '@/components/FormCorrectionModal'
 import Leaderboard from '@/components/Leaderboard'
 import OnboardingAvaliacao from '@/components/OnboardingAvaliacao'
 import SideMenu, { MenuItem } from '@/components/SideMenu'
@@ -77,6 +78,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     else setAba(id as typeof aba)
   }
   const [sessionId, setSessionId] = useState<string | null>(null)
+  const [exercicioAnaliseForm, setExercicioAnaliseForm] = useState<{ id: string; nome: string } | null>(null)
   const [registrados, setRegistrados] = useState<Record<string, number>>({})
   const [recordes, setRecordes] = useState<Record<string, boolean>>({})
   const [inputs, setInputs] = useState<Record<string, { reps: string; load: string }>>({})
@@ -1292,6 +1294,14 @@ export default function PortalAlunoClient({ token }: { token: string }) {
           onSelect={selecionarItemMenu}
         />
         <InstallAppModal open={instalarAberto} onClose={() => setInstalarAberto(false)} />
+        <FormCorrectionModal
+          open={exercicioAnaliseForm !== null}
+          onClose={() => setExercicioAnaliseForm(null)}
+          token={token}
+          exerciseId={exercicioAnaliseForm?.id ?? ''}
+          exerciseName={exercicioAnaliseForm?.nome ?? ''}
+          workoutId={data.workout?.id}
+        />
       <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6 pb-24">
         {erro && <p className="mb-4 text-sm text-rose-400">{erro}</p>}
 
@@ -1379,6 +1389,15 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                             />
                           </div>
                         </div>
+
+                        {sessionId && (
+                          <button
+                            onClick={() => setExercicioAnaliseForm({ id: ex.exercise_id, nome: ex.exercise_name })}
+                            className="mt-3 rounded-lg bg-slate-900/5 px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-slate-900/10"
+                          >
+                            🎥 Analisar forma
+                          </button>
+                        )}
 
                         {sessionId && !completo && (
                           <div className="mt-4 flex items-end gap-2">

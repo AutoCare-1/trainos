@@ -15,11 +15,14 @@ import {
 } from '../services/checkins'
 import { analisarMidiaAcademia } from '../services/academiaAnalyzer'
 import { ExercicioDisponivel, recomendarTreino } from '../services/academiaRecomendador'
-import { extrairFramesDeVideo } from '../services/videoProcessor'
+import { analisarForma } from '../services/formAnalyzer'
+import { extrairFramesChave, extrairFramesDeVideo, obterDuracaoVideo } from '../services/videoProcessor'
 import { criarUploader, criarUploaderPrivadoPorChave, PRIVATE_UPLOADS_ROOT } from '../middleware/upload'
 import {
   BodyPhoto,
   CheckIn,
+  FormAnalysisResult,
+  FormCorrectionVideo,
   GymAnalysisResult,
   GymMediaAsset,
   GymMediaSubmission,
@@ -36,8 +39,16 @@ const uploadFoto = criarUploader('student-photos', 'image/', 10 * 1024 * 1024)
 const uploadFotoEvolucao = criarUploaderPrivadoPorChave('token', 'body-photos', 'image/', 15 * 1024 * 1024)
 const uploadCheckin = criarUploaderPrivadoPorChave('token', 'checkins', 'image/', 10 * 1024 * 1024)
 const uploadMidiaAcademia = criarUploader('gym-media', ['image/', 'video/'], 100 * 1024 * 1024)
+const uploadVideoForma = criarUploader('form-videos', 'video/', 50 * 1024 * 1024)
 
 const GYM_MEDIA_DIR = path.join(__dirname, '..', '..', 'uploads', 'gym-media')
+const FORM_VIDEOS_DIR = path.join(__dirname, '..', '..', 'uploads', 'form-videos')
+
+function inferirNivelAluno(totalSessoesConcluidas: number): string {
+  if (totalSessoesConcluidas < 20) return 'iniciante'
+  if (totalSessoesConcluidas < 50) return 'intermediário'
+  return 'avançado'
+}
 
 const LABEL_PAR_Q: Record<keyof ParQAnswers, string> = {
   cardiaco: 'histórico cardíaco',
@@ -607,6 +618,100 @@ router.post(
         analysis: null,
         recommendation: null,
       })
+    }
+  })
+)
+
+// ─────────────────────────────────────────────
+// Análise de forma em tempo real (aluno filma uma série durante o treino)
+// ─────────────────────────────────────────────
+
+// POST /:token/forma — analisa a forma de execução a partir de um vídeo curto (3-15s) de uma série
+router.post(
+  '/:token/forma',
+  uploadVideoForma.single('video'),
+  asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const student = await buscarAlunoPorToken(req.params.token as string)
+    if (!student) {
+      res.status(404).json({ error: 'Link inválido' })
+      return
+    }
+    if (!req.file) {
+      res.status(400).json({ error: 'Arquivo de vídeo é obrigatório' })
+      return
+    }
+
+    const { exercise_id, exercise_name, workout_id } = req.body as {
+      exercise_id?: string
+      exercise_name?: string
+      workout_id?: string
+    }
+    if (!exercise_id || !exercise_name?.trim()) {
+      await fs.promises.unlink(req.file.path)
+      res.status(400).json({ error: 'exercise_id e exercise_name são obrigatórios' })
+      return
+    }
+
+    const duracao = await obterDuracaoVideo(req.file.path)
+    if (duracao < 3 || duracao > 15) {
+      await fs.promises.unlink(req.file.path)
+      res.status(400).json({ error: 'O vídeo precisa ter entre 3 e 15 segundos' })
+      return
+    }
+
+    const { rows: videoRows } = await pool.query<FormCorrectionVideo>(
+      `insert into form_correction_videos (student_id, workout_id, exercise_id, video_file_path, video_duration_seconds)
+       values ($1, $2, $3, $4, $5) returning *`,
+      [student.id, workout_id || null, exercise_id, `/uploads/form-videos/${req.file.filename}`, duracao]
+    )
+    const video = videoRows[0]!
+
+    const dirFrames = path.join(FORM_VIDEOS_DIR, '..', 'form-frames', video.id)
+    try {
+      const frames = await extrairFramesChave(req.file.path, dirFrames)
+
+      const { rows: sessoesRows } = await pool.query<{ total: string }>(
+        `select count(*) as total from training_sessions where student_id = $1 and status = 'completed'`,
+        [student.id]
+      )
+      const nivel = inferirNivelAluno(Number(sessoesRows[0]?.total ?? 0))
+
+      const analise = await analisarForma(frames, exercise_name.trim(), nivel)
+
+      const { rows: analysisRows } = await pool.query<FormAnalysisResult>(
+        `insert into form_analysis_results
+           (video_id, amplitude_assessment, posture_assessment, tempo_assessment, compensations, safety_notes, three_key_feedback, analysis_status)
+         values ($1, $2, $3, $4, $5, $6, $7, 'completed') returning *`,
+        [
+          video.id,
+          analise.amplitude_assessment,
+          analise.posture_assessment,
+          analise.tempo_assessment,
+          analise.compensations,
+          analise.safety_notes,
+          JSON.stringify(analise.three_key_feedback),
+        ]
+      )
+
+      await pool.query(
+        `insert into form_feedback_history (student_id, exercise_id, feedback_count, last_feedback_at)
+         values ($1, $2, 1, now())
+         on conflict (student_id, exercise_id) do update
+           set feedback_count = form_feedback_history.feedback_count + 1, last_feedback_at = now()`,
+        [student.id, exercise_id]
+      )
+
+      res.status(201).json({ video, analysis: analysisRows[0] })
+    } catch (err) {
+      console.error('[Análise de forma] Falha no pipeline:', err)
+      const { rows: analysisRows } = await pool.query<FormAnalysisResult>(
+        `insert into form_analysis_results (video_id, safety_notes, three_key_feedback, analysis_status)
+         values ($1, $2, '[]', 'failed') returning *`,
+        [video.id, err instanceof Error ? err.message : 'Erro desconhecido']
+      )
+      res.status(201).json({ video, analysis: analysisRows[0] })
+    } finally {
+      await fs.promises.rm(dirFrames, { recursive: true, force: true })
     }
   })
 )

@@ -291,3 +291,34 @@ export interface GymWorkoutRecommendation {
   approved_at: string | null
   created_at: string
 }
+
+export interface FormCorrectionVideo {
+  id: string
+  student_id: string
+  workout_id: string | null
+  exercise_id: string
+  video_file_path: string
+  video_duration_seconds: number | null
+  created_at: string
+}
+
+export type FormFeedbackPriority = 'good' | 'warning' | 'critical'
+
+export interface FormFeedbackItem {
+  title: string
+  feedback: string
+  priority: FormFeedbackPriority
+}
+
+export interface FormAnalysisResult {
+  id: string
+  video_id: string
+  amplitude_assessment: string | null
+  posture_assessment: string | null
+  tempo_assessment: string | null
+  compensations: string | null
+  safety_notes: string | null
+  three_key_feedback: FormFeedbackItem[]
+  analysis_status: 'analyzing' | 'completed' | 'failed'
+  created_at: string
+}
