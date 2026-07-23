@@ -34,6 +34,15 @@ export interface Student {
   exercicios_sem_progresso?: number
 }
 
+export interface BodyPhoto {
+  id: string
+  student_id: string
+  taken_at: string
+  ai_feedback: string | null
+  compared_to_photo_id: string | null
+  created_at: string
+}
+
 export interface AlertaEstagnacao {
   exercise_id: string
   exercise_name: string

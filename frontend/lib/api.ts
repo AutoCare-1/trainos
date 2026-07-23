@@ -7,7 +7,7 @@ export function resolveMediaUrl(url: string): string {
 
 export class ApiError extends Error {}
 
-function getToken(): string | null {
+export function getToken(): string | null {
   if (typeof window === 'undefined') return null
   return localStorage.getItem('trainos_token')
 }
@@ -50,6 +50,21 @@ async function requestFormData<T>(path: string, formData: FormData, method: stri
     throw new ApiError(data.error ?? `Erro ${res.status}`)
   }
   return data as T
+}
+
+/**
+ * Busca uma imagem que exige autenticação (ex: fotos de evolução física, que não
+ * ficam sob /uploads público) e devolve uma object URL pra usar num <img src>.
+ * Quem chama é responsável por revogar a URL (URL.revokeObjectURL) ao desmontar.
+ */
+export async function fetchImagemAutenticada(path: string): Promise<string> {
+  const token = getToken()
+  const res = await fetch(`${API_URL}${path}`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+  })
+  if (!res.ok) throw new ApiError('Não foi possível carregar a imagem')
+  const blob = await res.blob()
+  return URL.createObjectURL(blob)
 }
 
 export const api = {

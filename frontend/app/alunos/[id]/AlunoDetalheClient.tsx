@@ -8,9 +8,47 @@ import BackLink from '@/components/BackLink'
 import Avatar from '@/components/Avatar'
 import ChatBox from '@/components/ChatBox'
 import WeightChart from '@/components/WeightChart'
-import { api, ApiError } from '@/lib/api'
+import { api, ApiError, fetchImagemAutenticada } from '@/lib/api'
 import { PAR_Q_PERGUNTAS, PAR_Q_VAZIO } from '@/lib/parq'
-import { AlertaEstagnacao, BodyMeasurement, Gamificacao, Message, ParQAnswers, Student, Workout } from '@/lib/types'
+import {
+  AlertaEstagnacao,
+  BodyMeasurement,
+  BodyPhoto,
+  Gamificacao,
+  Message,
+  ParQAnswers,
+  Student,
+  Workout,
+} from '@/lib/types'
+
+/** Fotos de evolução física ficam atrás de rota autenticada (JWT) — não dá pra
+ * usar <img src> direto, então busca o blob e mantém a object URL local. */
+function FotoAutenticada({ src, alt }: { src: string; alt: string }) {
+  const [url, setUrl] = useState<string | null>(null)
+
+  useEffect(() => {
+    let objectUrl: string | null = null
+    let cancelado = false
+    fetchImagemAutenticada(src).then((resultado) => {
+      if (cancelado) {
+        URL.revokeObjectURL(resultado)
+        return
+      }
+      objectUrl = resultado
+      setUrl(resultado)
+    })
+    return () => {
+      cancelado = true
+      if (objectUrl) URL.revokeObjectURL(objectUrl)
+    }
+  }, [src])
+
+  if (!url) {
+    return <div className="flex h-full w-full items-center justify-center bg-slate-900/5 text-xs text-slate-400">Carregando...</div>
+  }
+  // eslint-disable-next-line @next/next/no-img-element -- imagem vem de rota autenticada, não do next/image
+  return <img src={url} alt={alt} className="h-full w-full object-cover" />
+}
 
 export default function AlunoDetalheClient({ studentId }: { studentId: string }) {
   const router = useRouter()
@@ -19,6 +57,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
   const [measurements, setMeasurements] = useState<BodyMeasurement[]>([])
   const [gamificacao, setGamificacao] = useState<Gamificacao | null>(null)
   const [alertasEstagnacao, setAlertasEstagnacao] = useState<AlertaEstagnacao[]>([])
+  const [fotosEvolucao, setFotosEvolucao] = useState<BodyPhoto[]>([])
   const [novoPeso, setNovoPeso] = useState('')
   const [novaCintura, setNovaCintura] = useState('')
   const [novoQuadril, setNovoQuadril] = useState('')
@@ -72,6 +111,12 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
 
     carregarMensagens()
     const intervalo = setInterval(carregarMensagens, 5000)
+
+    api
+      .get<{ photos: BodyPhoto[] }>(`/alunos/${studentId}/body-photos`)
+      .then((data) => setFotosEvolucao(data.photos))
+      .catch(() => {})
+
     return () => clearInterval(intervalo)
   }, [studentId, router, carregarMensagens])
 
@@ -404,6 +449,27 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
             </div>
           </div>
         </section>
+
+        {fotosEvolucao.length > 0 && (
+          <section className="mb-6">
+            <h2 className="mb-3 font-semibold text-slate-900">Evolução (fotos)</h2>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+              {fotosEvolucao.map((foto) => (
+                <div key={foto.id} className="glass overflow-hidden rounded-2xl">
+                  <div className="aspect-square">
+                    <FotoAutenticada src={`/alunos/${studentId}/body-photos/${foto.id}/imagem`} alt="Foto de evolução do aluno" />
+                  </div>
+                  <div className="p-3">
+                    <p className="mb-1.5 text-[10px] uppercase tracking-wider text-slate-500">
+                      {new Date(foto.taken_at).toLocaleDateString('pt-BR')}
+                    </p>
+                    {foto.ai_feedback && <p className="line-clamp-3 text-xs text-slate-600">{foto.ai_feedback}</p>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Coluna: treinos */}

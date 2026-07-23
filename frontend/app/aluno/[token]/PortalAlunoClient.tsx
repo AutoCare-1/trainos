@@ -10,8 +10,10 @@ import OnboardingAvaliacao from '@/components/OnboardingAvaliacao'
 import SideMenu, { MenuItem } from '@/components/SideMenu'
 import WeightChart from '@/components/WeightChart'
 import { api, API_URL, ApiError } from '@/lib/api'
+import { comprimirImagem } from '@/lib/compressImage'
 import {
   BodyMeasurement,
+  BodyPhoto,
   Challenge,
   ExternalActivity,
   Gamificacao,
@@ -62,7 +64,7 @@ function chaveUltimaVista(token: string): string {
 export default function PortalAlunoClient({ token }: { token: string }) {
   const [data, setData] = useState<PortalData | null>(null)
   const [erro, setErro] = useState<string | null>(null)
-  const [aba, setAba] = useState<'treino' | 'evolucao' | 'desafio' | 'chat'>('treino')
+  const [aba, setAba] = useState<'treino' | 'evolucao' | 'fotos' | 'desafio' | 'chat'>('treino')
   const [menuAberto, setMenuAberto] = useState(false)
   const [instalarAberto, setInstalarAberto] = useState(false)
 
@@ -93,6 +95,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   const menuItems: MenuItem[] = [
     { id: 'treino', label: 'Treino', icon: '' },
     { id: 'evolucao', label: 'Avaliação Física', icon: '' },
+    { id: 'fotos', label: 'Evolução', icon: '' },
     { id: 'desafio', label: 'Desafio', icon: '' },
     { id: 'chat', label: naoLidas > 0 ? `Mensagens (${naoLidas})` : 'Mensagens', icon: '' },
     { id: 'instalar', label: 'Instalar app', icon: '' },
@@ -103,6 +106,35 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   const [atividades, setAtividades] = useState<ExternalActivity[]>([])
   const [sincronizando, setSincronizando] = useState(false)
   const [avisoStrava, setAvisoStrava] = useState<string | null>(null)
+
+  // evolução física por fotos
+  const [fotosEvolucao, setFotosEvolucao] = useState<BodyPhoto[]>([])
+  const [enviandoFotoEvolucao, setEnviandoFotoEvolucao] = useState(false)
+  const [erroFotoEvolucao, setErroFotoEvolucao] = useState<string | null>(null)
+  const fotoEvolucaoInputRef = useRef<HTMLInputElement | null>(null)
+
+  const carregarFotosEvolucao = useCallback(() => {
+    api
+      .get<{ photos: BodyPhoto[] }>(`/portal/${token}/body-photos`)
+      .then((d) => setFotosEvolucao(d.photos))
+      .catch(() => {})
+  }, [token])
+
+  async function enviarFotoEvolucao(file: File) {
+    setEnviandoFotoEvolucao(true)
+    setErroFotoEvolucao(null)
+    try {
+      const comprimida = await comprimirImagem(file)
+      const formData = new FormData()
+      formData.append('foto', comprimida, 'evolucao.jpg')
+      const { photo } = await api.postFile<{ photo: BodyPhoto }>(`/portal/${token}/body-photos`, formData)
+      setFotosEvolucao((prev) => [photo, ...prev])
+    } catch (err) {
+      setErroFotoEvolucao(err instanceof ApiError ? err.message : 'Erro ao enviar foto')
+    } finally {
+      setEnviandoFotoEvolucao(false)
+    }
+  }
 
   const carregarMensagens = useCallback(() => {
     api
@@ -151,6 +183,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     carregarMensagens()
     const intervalo = setInterval(carregarMensagens, 5000)
 
+    carregarFotosEvolucao()
     carregarStrava()
     const params = new URLSearchParams(window.location.search)
     const statusStrava = params.get('strava')
@@ -166,7 +199,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     }
 
     return () => clearInterval(intervalo)
-  }, [token, carregarMensagens, carregarStrava])
+  }, [token, carregarMensagens, carregarStrava, carregarFotosEvolucao])
 
   // Restaura de onde o aluno parou de ler o chat (persiste entre visitas).
   useEffect(() => {
@@ -442,6 +475,95 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                 ))}
               </div>
             )}
+          </div>
+        </main>
+      </div>
+    )
+  }
+
+  if (aba === 'fotos') {
+    return (
+      <div className="flex min-h-screen flex-col">
+        {cabecalho}
+        <SideMenu
+          open={menuAberto}
+          onClose={() => setMenuAberto(false)}
+          nome={data.student.name}
+          fotoUrl={data.student.photo_url}
+          subtitulo="Clube Mais"
+          items={menuItems}
+          ativo={aba}
+          onSelect={selecionarItemMenu}
+        />
+        <InstallAppModal open={instalarAberto} onClose={() => setInstalarAberto(false)} />
+        <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6">
+          <div className="glass mb-4 rounded-2xl p-5">
+            <h2 className="mb-1 font-semibold text-slate-900">Evolução</h2>
+            <p className="mb-4 text-sm text-slate-500">
+              Registre fotos do seu corpo quando sentir que faz sentido — não existe frequência
+              certa. A Coach IA comenta a evolução comparando com a foto anterior.
+            </p>
+
+            {erroFotoEvolucao && <p className="mb-3 text-sm text-rose-500">{erroFotoEvolucao}</p>}
+
+            <input
+              ref={fotoEvolucaoInputRef}
+              type="file"
+              accept="image/*"
+              capture="environment"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0]
+                if (file) enviarFotoEvolucao(file)
+                e.target.value = ''
+              }}
+            />
+            <button
+              onClick={() => fotoEvolucaoInputRef.current?.click()}
+              disabled={enviandoFotoEvolucao}
+              className="btn-primary w-full rounded-xl px-4 py-3 text-sm"
+            >
+              {enviandoFotoEvolucao ? 'Enviando...' : 'Registrar nova foto'}
+            </button>
+          </div>
+
+          {fotosEvolucao.length === 0 && !enviandoFotoEvolucao && (
+            <div className="glass rounded-2xl border-dashed p-8 text-center">
+              <p className="text-sm text-slate-500">
+                Nenhuma foto registrada ainda. Tire a primeira quando quiser começar a acompanhar
+                sua evolução.
+              </p>
+            </div>
+          )}
+
+          <div className="space-y-4">
+            {fotosEvolucao.map((foto) => (
+              <div key={foto.id} className="glass overflow-hidden rounded-2xl">
+                {/* eslint-disable-next-line @next/next/no-img-element -- foto vem de rota autenticada do backend, não do next/image */}
+                <img
+                  src={`${API_URL}/portal/${token}/body-photos/${foto.id}/imagem`}
+                  alt="Foto de evolução"
+                  className="max-h-96 w-full object-cover"
+                />
+                <div className="p-4">
+                  <p className="mb-2 text-xs uppercase tracking-wider text-slate-500">
+                    {new Date(foto.taken_at).toLocaleDateString('pt-BR', {
+                      day: '2-digit',
+                      month: 'long',
+                      year: 'numeric',
+                    })}
+                  </p>
+                  {foto.ai_feedback && (
+                    <div className="rounded-2xl rounded-bl-md border border-violet-300 bg-violet-50 px-4 py-2.5 text-sm leading-relaxed text-violet-900">
+                      <span className="mb-1 flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-violet-500">
+                        Coach IA
+                      </span>
+                      <p className="whitespace-pre-wrap">{foto.ai_feedback}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </main>
       </div>
