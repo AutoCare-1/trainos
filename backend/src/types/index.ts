@@ -342,3 +342,13 @@ export interface TrendCache {
   content_snapshot: string
   cached_at: string
 }
+
+export type ConsultorIaRole = 'personal' | 'ai'
+
+export interface ConsultorIaMessage {
+  id: string
+  professional_id: string
+  role: ConsultorIaRole
+  content: string
+  created_at: string
+}

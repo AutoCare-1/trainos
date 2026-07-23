@@ -326,6 +326,16 @@ export interface ContentIdea {
   created_at: string
 }
 
+export type ConsultorIaRole = 'personal' | 'ai'
+
+export interface ConsultorIaMessage {
+  id: string
+  professional_id: string
+  role: ConsultorIaRole
+  content: string
+  created_at: string
+}
+
 export interface Challenge {
   id: string
   professional_id: string
