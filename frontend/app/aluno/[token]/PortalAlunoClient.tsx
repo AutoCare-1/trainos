@@ -614,9 +614,10 @@ export default function PortalAlunoClient({ token }: { token: string }) {
         <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6">
           <div className="glass mb-4 rounded-2xl p-5">
             <h2 className="mb-1 font-semibold text-slate-900">Check-in</h2>
-            <p className="mb-4 text-sm text-slate-500">
+            <p className="mb-1 text-sm text-slate-500">
               Marque o treino de hoje com uma foto — na academia, treinando, tanto faz. Só conta 1 check-in por dia.
             </p>
+            <p className="mb-4 text-xs text-slate-400">Seu professor também vê essas fotos e comentários.</p>
 
             {erroCheckin && <p className="mb-3 text-sm text-rose-500">{erroCheckin}</p>}
 

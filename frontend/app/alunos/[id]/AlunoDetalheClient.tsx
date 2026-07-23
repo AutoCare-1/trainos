@@ -9,12 +9,14 @@ import Avatar from '@/components/Avatar'
 import ChatBox from '@/components/ChatBox'
 import WeightChart from '@/components/WeightChart'
 import { api, ApiError, fetchImagemAutenticada } from '@/lib/api'
+import { formatarDataCurta, formatarDataLonga, nomeMes, primeiroDiaAno, primeiroDiaMes, somarDias } from '@/lib/checkinDates'
 import { PAR_Q_PERGUNTAS, PAR_Q_VAZIO } from '@/lib/parq'
 import {
   AlertaEstagnacao,
   BodyMeasurement,
   BodyPhoto,
   Gamificacao,
+  HistoricoCheckins,
   Message,
   ParQAnswers,
   ResumoCheckins,
@@ -60,6 +62,9 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
   const [alertasEstagnacao, setAlertasEstagnacao] = useState<AlertaEstagnacao[]>([])
   const [fotosEvolucao, setFotosEvolucao] = useState<BodyPhoto[]>([])
   const [resumoCheckins, setResumoCheckins] = useState<ResumoCheckins | null>(null)
+  const [periodoCheckins, setPeriodoCheckins] = useState<'week' | 'month' | 'year'>('week')
+  const [refCheckins, setRefCheckins] = useState<string | null>(null)
+  const [historicoCheckins, setHistoricoCheckins] = useState<HistoricoCheckins | null>(null)
   const [novoPeso, setNovoPeso] = useState('')
   const [novaCintura, setNovaCintura] = useState('')
   const [novoQuadril, setNovoQuadril] = useState('')
@@ -126,6 +131,35 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
 
     return () => clearInterval(intervalo)
   }, [studentId, router, carregarMensagens])
+
+  const carregarHistoricoCheckins = useCallback(
+    (period: 'week' | 'month' | 'year', ref: string | null) => {
+      const params = new URLSearchParams({ period })
+      if (ref) params.set('ref', ref)
+      api
+        .get<HistoricoCheckins>(`/alunos/${studentId}/checkins?${params.toString()}`)
+        .then(setHistoricoCheckins)
+        .catch(() => {})
+    },
+    [studentId]
+  )
+
+  useEffect(() => {
+    carregarHistoricoCheckins(periodoCheckins, refCheckins)
+  }, [periodoCheckins, refCheckins, carregarHistoricoCheckins])
+
+  function irParaPeriodoCheckins(direcao: -1 | 1) {
+    if (periodoCheckins === 'week') {
+      const base = historicoCheckins?.semana?.inicio ?? resumoCheckins?.semana.inicio
+      if (base) setRefCheckins(somarDias(base, direcao * 7))
+    } else if (periodoCheckins === 'month') {
+      const base = historicoCheckins?.mes ?? resumoCheckins?.mes
+      if (base) setRefCheckins(primeiroDiaMes(base.ano, base.mes + direcao))
+    } else {
+      const base = historicoCheckins?.ano ?? resumoCheckins?.ano
+      if (base) setRefCheckins(primeiroDiaAno(base.ano + direcao))
+    }
+  }
 
   async function enviarMensagem(texto: string) {
     const { message } = await api.post<{ message: Message }>(`/alunos/${studentId}/mensagens`, { content: texto })
@@ -325,6 +359,109 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
             </div>
           </section>
         )}
+
+        <section className="glass mb-6 rounded-2xl p-4">
+          <div className="mb-3 flex items-center justify-between">
+            <div className="flex gap-1 rounded-lg bg-slate-900/5 p-1">
+              <button
+                onClick={() => {
+                  setPeriodoCheckins('week')
+                  setRefCheckins(null)
+                }}
+                className={`rounded-md px-3 py-1 text-xs font-medium transition ${
+                  periodoCheckins === 'week' ? 'bg-white text-slate-900 shadow' : 'text-slate-500'
+                }`}
+              >
+                Semana
+              </button>
+              <button
+                onClick={() => {
+                  setPeriodoCheckins('month')
+                  setRefCheckins(null)
+                }}
+                className={`rounded-md px-3 py-1 text-xs font-medium transition ${
+                  periodoCheckins === 'month' ? 'bg-white text-slate-900 shadow' : 'text-slate-500'
+                }`}
+              >
+                Mês
+              </button>
+              <button
+                onClick={() => {
+                  setPeriodoCheckins('year')
+                  setRefCheckins(null)
+                }}
+                className={`rounded-md px-3 py-1 text-xs font-medium transition ${
+                  periodoCheckins === 'year' ? 'bg-white text-slate-900 shadow' : 'text-slate-500'
+                }`}
+              >
+                Ano
+              </button>
+            </div>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => irParaPeriodoCheckins(-1)}
+                aria-label="Período anterior"
+                className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-900/5"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+              </button>
+              {refCheckins && (
+                <button onClick={() => setRefCheckins(null)} className="px-1 text-xs font-medium text-[#2648b3]">
+                  Hoje
+                </button>
+              )}
+              <button
+                onClick={() => irParaPeriodoCheckins(1)}
+                aria-label="Próximo período"
+                className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-900/5"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          {historicoCheckins?.period === 'week' && historicoCheckins.semana && (
+            <p className="mb-3 text-xs text-slate-500">
+              {formatarDataCurta(historicoCheckins.semana.inicio)} a {formatarDataCurta(historicoCheckins.semana.fim)} ·{' '}
+              {historicoCheckins.semana.dias_com_checkin} de {historicoCheckins.semana.total_dias} dias
+            </p>
+          )}
+          {historicoCheckins?.period === 'month' && historicoCheckins.mes && (
+            <p className="mb-3 text-xs text-slate-500">
+              {nomeMes(historicoCheckins.mes.mes)} de {historicoCheckins.mes.ano} · {historicoCheckins.mes.dias_com_checkin} dias treinados
+            </p>
+          )}
+          {historicoCheckins?.period === 'year' && historicoCheckins.ano && (
+            <p className="mb-3 text-xs text-slate-500">
+              {historicoCheckins.ano.dias_com_checkin} dias treinados em {historicoCheckins.ano.ano}
+            </p>
+          )}
+
+          {historicoCheckins && historicoCheckins.fotos.length === 0 && (
+            <p className="text-sm text-slate-500">Nenhum check-in registrado nesse período.</p>
+          )}
+
+          {historicoCheckins && historicoCheckins.fotos.length > 0 && (
+            <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
+              {historicoCheckins.fotos.map((foto) => (
+                <div key={foto.id} className="overflow-hidden rounded-xl">
+                  <div className="aspect-square">
+                    <FotoAutenticada
+                      src={`/alunos/${studentId}/checkins/${foto.id}/imagem`}
+                      alt="Foto do check-in"
+                    />
+                  </div>
+                  <p className="mt-1 truncate text-[10px] text-slate-500">{formatarDataLonga(foto.checkin_date)}</p>
+                  {foto.comment && <p className="line-clamp-2 text-[11px] text-slate-600">{foto.comment}</p>}
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
 
         {gamificacao && (
           <section className="glass mb-6 flex flex-wrap items-center gap-5 rounded-2xl p-4">
