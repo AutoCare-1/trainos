@@ -144,6 +144,14 @@ export interface BodyPhoto {
   created_at: string
 }
 
+export interface CheckIn {
+  id: string
+  student_id: string
+  checkin_date: string
+  file_path: string
+  created_at: string
+}
+
 export interface WorkoutTemplate {
   id: string
   professional_id: string
