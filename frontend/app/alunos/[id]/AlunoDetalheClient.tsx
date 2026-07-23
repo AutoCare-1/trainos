@@ -323,17 +323,6 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
                 />
               ))}
             </div>
-            {resumoCheckins.semana.grid.some((d) => d.comment) && (
-              <div className="w-full space-y-1 border-t border-black/6 pt-3">
-                {resumoCheckins.semana.grid
-                  .filter((d) => d.comment)
-                  .map((d) => (
-                    <p key={d.date} className="text-xs text-slate-600">
-                      <span className="font-medium text-slate-800">{d.label}:</span> {d.comment}
-                    </p>
-                  ))}
-              </div>
-            )}
           </section>
         )}
 

@@ -10,7 +10,7 @@ import OnboardingAvaliacao from '@/components/OnboardingAvaliacao'
 import SideMenu, { MenuItem } from '@/components/SideMenu'
 import WeightChart from '@/components/WeightChart'
 import { api, API_URL, ApiError } from '@/lib/api'
-import { formatarDataCurta, nomeMes, primeiroDiaMes, somarDias } from '@/lib/checkinDates'
+import { formatarDataCurta, formatarDataLonga, nomeMes, primeiroDiaAno, primeiroDiaMes, somarDias } from '@/lib/checkinDates'
 import { comprimirImagem } from '@/lib/compressImage'
 import {
   BodyMeasurement,
@@ -144,7 +144,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   const [resumoCheckins, setResumoCheckins] = useState<ResumoCheckins | null>(null)
   const [enviandoCheckin, setEnviandoCheckin] = useState(false)
   const [erroCheckin, setErroCheckin] = useState<string | null>(null)
-  const [periodoHistorico, setPeriodoHistorico] = useState<'week' | 'month'>('week')
+  const [periodoHistorico, setPeriodoHistorico] = useState<'week' | 'month' | 'year'>('week')
   const [refHistorico, setRefHistorico] = useState<string | null>(null)
   const [historico, setHistorico] = useState<HistoricoCheckins | null>(null)
   const [fotoCheckinSelecionada, setFotoCheckinSelecionada] = useState<File | null>(null)
@@ -159,7 +159,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   }, [token])
 
   const carregarHistoricoCheckins = useCallback(
-    (period: 'week' | 'month', ref: string | null) => {
+    (period: 'week' | 'month' | 'year', ref: string | null) => {
       const params = new URLSearchParams({ period })
       if (ref) params.set('ref', ref)
       api
@@ -199,9 +199,12 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     if (periodoHistorico === 'week') {
       const base = historico?.semana?.inicio ?? resumoCheckins?.semana.inicio
       if (base) setRefHistorico(somarDias(base, direcao * 7))
-    } else {
+    } else if (periodoHistorico === 'month') {
       const base = historico?.mes ?? resumoCheckins?.mes
       if (base) setRefHistorico(primeiroDiaMes(base.ano, base.mes + direcao))
+    } else {
+      const base = historico?.ano ?? resumoCheckins?.ano
+      if (base) setRefHistorico(primeiroDiaAno(base.ano + direcao))
     }
   }
 
@@ -670,17 +673,6 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                     </div>
                   ))}
                 </div>
-                {resumoCheckins.semana.grid.some((d) => d.comment) && (
-                  <div className="mt-3 space-y-1.5 border-t border-black/6 pt-3">
-                    {resumoCheckins.semana.grid
-                      .filter((d) => d.comment)
-                      .map((d) => (
-                        <p key={d.date} className="text-xs text-slate-600">
-                          <span className="font-medium text-slate-800">{d.label}:</span> {d.comment}
-                        </p>
-                      ))}
-                  </div>
-                )}
               </div>
             </>
           )}
@@ -709,6 +701,17 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                   }`}
                 >
                   Mês
+                </button>
+                <button
+                  onClick={() => {
+                    setPeriodoHistorico('year')
+                    setRefHistorico(null)
+                  }}
+                  className={`rounded-md px-3 py-1 text-xs font-medium transition ${
+                    periodoHistorico === 'year' ? 'bg-white text-slate-900 shadow' : 'text-slate-500'
+                  }`}
+                >
+                  Ano
                 </button>
               </div>
               <div className="flex items-center gap-1">
@@ -761,17 +764,6 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                 <p className="mt-3 text-sm text-slate-600">
                   {historico.semana.dias_com_checkin} de {historico.semana.total_dias} dias
                 </p>
-                {historico.semana.grid.some((d) => d.comment) && (
-                  <div className="mt-3 space-y-1.5 border-t border-black/6 pt-3">
-                    {historico.semana.grid
-                      .filter((d) => d.comment)
-                      .map((d) => (
-                        <p key={d.date} className="text-xs text-slate-600">
-                          <span className="font-medium text-slate-800">{d.label}:</span> {d.comment}
-                        </p>
-                      ))}
-                  </div>
-                )}
               </div>
             )}
 
@@ -797,7 +789,38 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                 <p className="mt-3 text-sm text-slate-600">{historico.mes.dias_com_checkin} dias treinados</p>
               </div>
             )}
+
+            {historico?.period === 'year' && historico.ano && (
+              <div>
+                <p className="text-sm text-slate-600">
+                  <span className="text-lg font-bold text-slate-900">{historico.ano.dias_com_checkin}</span> dias
+                  treinados em {historico.ano.ano}
+                </p>
+              </div>
+            )}
           </div>
+
+          {historico && historico.fotos.length > 0 && (
+            <div className="glass mt-4 rounded-2xl p-5">
+              <p className="mb-3 text-xs uppercase tracking-wider text-slate-500">Fotos do período</p>
+              <div className="space-y-3">
+                {historico.fotos.map((foto) => (
+                  <div key={foto.id} className="flex gap-3 rounded-xl bg-slate-900/3 p-3">
+                    {/* eslint-disable-next-line @next/next/no-img-element -- foto vem de rota autenticada pelo token do aluno */}
+                    <img
+                      src={`${API_URL}/portal/${token}/checkins/${foto.id}/imagem`}
+                      alt="Foto do check-in"
+                      className="h-16 w-16 shrink-0 rounded-lg object-cover"
+                    />
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs text-slate-500">{formatarDataLonga(foto.checkin_date)}</p>
+                      {foto.comment && <p className="mt-0.5 text-sm text-slate-700">{foto.comment}</p>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </main>
       </div>
     )

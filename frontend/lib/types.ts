@@ -78,10 +78,18 @@ export interface ResumoCheckins {
   checkinHoje?: boolean
 }
 
+export interface FotoCheckin {
+  id: string
+  checkin_date: string
+  comment: string | null
+}
+
 export interface HistoricoCheckins {
-  period: 'week' | 'month'
+  period: 'week' | 'month' | 'year'
   semana?: ResumoSemanaCheckins
   mes?: ResumoMesCheckins
+  ano?: ResumoAnoCheckins
+  fotos: FotoCheckin[]
 }
 
 export interface AlertaEstagnacao {

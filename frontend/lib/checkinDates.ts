@@ -36,3 +36,13 @@ export function primeiroDiaMes(ano: number, mes: number): string {
   const d = new Date(ano, mes - 1, 1)
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-01`
 }
+
+export function primeiroDiaAno(ano: number): string {
+  return `${ano}-01-01`
+}
+
+export function formatarDataLonga(iso: string): string {
+  const [ano, mes, dia] = iso.split('-').map(Number)
+  const d = new Date(ano, mes - 1, dia)
+  return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
+}
