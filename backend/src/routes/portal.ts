@@ -6,7 +6,13 @@ import { asyncHandler } from '../middleware/asyncHandler'
 import { ContextoAluno, responderComoPersonal } from '../services/chat'
 import { calcularBadges, calcularStreak } from '../services/gamification'
 import { comentarPrimeiraFoto, compararEvolucaoFisica } from '../services/evolucaoFisica'
-import { calcularResumoAno, calcularResumoMes, calcularResumoSemana, existeCheckinHoje } from '../services/checkins'
+import {
+  calcularResumoAno,
+  calcularResumoMes,
+  calcularResumoSemana,
+  existeCheckinHoje,
+  listarCheckinsPeriodo,
+} from '../services/checkins'
 import { criarUploader, criarUploaderPrivadoPorChave, PRIVATE_UPLOADS_ROOT } from '../middleware/upload'
 import { BodyPhoto, CheckIn, Message, Student, Workout } from '../types'
 
@@ -293,7 +299,8 @@ router.get(
   })
 )
 
-// GET /:token/checkins?period=week|month&ref=YYYY-MM-DD — histórico navegável
+// GET /:token/checkins?period=week|month|year&ref=YYYY-MM-DD — histórico navegável
+// (grid/contagem do período + galeria de fotos com comentário, mais recente primeiro)
 router.get(
   '/:token/checkins',
   asyncHandler(async (req: Request, res: Response): Promise<void> => {
@@ -304,10 +311,17 @@ router.get(
     }
 
     const ref = typeof req.query.ref === 'string' ? req.query.ref : null
-    if (req.query.period === 'month') {
-      res.json({ period: 'month', mes: await calcularResumoMes(student.id, ref) })
+    const period: 'week' | 'month' | 'year' =
+      req.query.period === 'month' ? 'month' : req.query.period === 'year' ? 'year' : 'week'
+
+    const fotos = await listarCheckinsPeriodo(student.id, period, ref)
+
+    if (period === 'month') {
+      res.json({ period, mes: await calcularResumoMes(student.id, ref), fotos })
+    } else if (period === 'year') {
+      res.json({ period, ano: await calcularResumoAno(student.id, ref), fotos })
     } else {
-      res.json({ period: 'week', semana: await calcularResumoSemana(student.id, ref) })
+      res.json({ period, semana: await calcularResumoSemana(student.id, ref), fotos })
     }
   })
 )

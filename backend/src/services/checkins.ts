@@ -118,6 +118,34 @@ export async function calcularResumoAno(studentId: string, ref: string | null): 
   return { ano: linha.ano, dias_com_checkin: Number(linha.dias_com_checkin) }
 }
 
+export interface FotoCheckin {
+  id: string
+  checkin_date: string
+  comment: string | null
+}
+
+/** Lista as fotos (com data e comentário) do período — pra galeria navegável
+ * por semana/mês/ano, mais recente primeiro. */
+export async function listarCheckinsPeriodo(
+  studentId: string,
+  period: 'week' | 'month' | 'year',
+  ref: string | null
+): Promise<FotoCheckin[]> {
+  const unidade = period === 'week' ? 'week' : period === 'month' ? 'month' : 'year'
+  const intervalo = period === 'week' ? '7 days' : period === 'month' ? '1 month' : '1 year'
+
+  const { rows } = await pool.query<FotoCheckin>(
+    `select id, checkin_date::text as checkin_date, comment
+     from checkins
+     where student_id = $1
+       and checkin_date >= date_trunc('${unidade}', coalesce($2::date, current_date))
+       and checkin_date < date_trunc('${unidade}', coalesce($2::date, current_date)) + interval '${intervalo}'
+     order by checkin_date desc`,
+    [studentId, ref]
+  )
+  return rows
+}
+
 export async function existeCheckinHoje(studentId: string): Promise<boolean> {
   const { rows } = await pool.query('select 1 from checkins where student_id = $1 and checkin_date = current_date', [
     studentId,
