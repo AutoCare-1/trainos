@@ -17,6 +17,7 @@ import {
   Gamificacao,
   Message,
   ParQAnswers,
+  ResumoCheckins,
   Student,
   Workout,
 } from '@/lib/types'
@@ -58,6 +59,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
   const [gamificacao, setGamificacao] = useState<Gamificacao | null>(null)
   const [alertasEstagnacao, setAlertasEstagnacao] = useState<AlertaEstagnacao[]>([])
   const [fotosEvolucao, setFotosEvolucao] = useState<BodyPhoto[]>([])
+  const [resumoCheckins, setResumoCheckins] = useState<ResumoCheckins | null>(null)
   const [novoPeso, setNovoPeso] = useState('')
   const [novaCintura, setNovaCintura] = useState('')
   const [novoQuadril, setNovoQuadril] = useState('')
@@ -115,6 +117,11 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
     api
       .get<{ photos: BodyPhoto[] }>(`/alunos/${studentId}/body-photos`)
       .then((data) => setFotosEvolucao(data.photos))
+      .catch(() => {})
+
+    api
+      .get<ResumoCheckins>(`/alunos/${studentId}/checkins/summary`)
+      .then(setResumoCheckins)
       .catch(() => {})
 
     return () => clearInterval(intervalo)
@@ -286,6 +293,38 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
             </a>
           </div>
         </div>
+
+        {resumoCheckins && (
+          <section className="glass mb-6 flex flex-wrap items-center gap-5 rounded-2xl p-4">
+            <div>
+              <p className="text-xs uppercase tracking-wider text-slate-500">Check-in semana</p>
+              <p className="text-lg font-bold text-slate-900">
+                {resumoCheckins.semana.dias_com_checkin}
+                <span className="text-sm font-normal text-slate-400">/{resumoCheckins.semana.total_dias}</span>
+              </p>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-wider text-slate-500">Check-in mês</p>
+              <p className="text-lg font-bold text-slate-900">
+                {resumoCheckins.mes.dias_com_checkin}
+                <span className="text-sm font-normal text-slate-400">/{resumoCheckins.mes.total_dias_mes}</span>
+              </p>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-wider text-slate-500">Check-in ano</p>
+              <p className="text-lg font-bold text-slate-900">{resumoCheckins.ano.dias_com_checkin}</p>
+            </div>
+            <div className="flex gap-1.5">
+              {resumoCheckins.semana.grid.map((d) => (
+                <span
+                  key={d.date}
+                  title={d.label}
+                  className={`h-2.5 w-2.5 rounded-full ${d.checked ? 'bg-emerald-500' : 'bg-slate-900/10'}`}
+                />
+              ))}
+            </div>
+          </section>
+        )}
 
         {gamificacao && (
           <section className="glass mb-6 flex flex-wrap items-center gap-5 rounded-2xl p-4">

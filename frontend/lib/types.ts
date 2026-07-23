@@ -43,6 +43,46 @@ export interface BodyPhoto {
   created_at: string
 }
 
+export interface DiaSemanaCheckin {
+  date: string
+  label: string
+  checked: boolean
+}
+
+export interface ResumoSemanaCheckins {
+  inicio: string
+  fim: string
+  dias_com_checkin: number
+  total_dias: number
+  grid: DiaSemanaCheckin[]
+}
+
+export interface ResumoMesCheckins {
+  ano: number
+  mes: number
+  dias_com_checkin: number
+  total_dias_mes: number
+  dias_marcados: number[]
+}
+
+export interface ResumoAnoCheckins {
+  ano: number
+  dias_com_checkin: number
+}
+
+export interface ResumoCheckins {
+  semana: ResumoSemanaCheckins
+  mes: ResumoMesCheckins
+  ano: ResumoAnoCheckins
+  checkinHoje?: boolean
+}
+
+export interface HistoricoCheckins {
+  period: 'week' | 'month'
+  semana?: ResumoSemanaCheckins
+  mes?: ResumoMesCheckins
+}
+
 export interface AlertaEstagnacao {
   exercise_id: string
   exercise_name: string

@@ -10,6 +10,7 @@ import OnboardingAvaliacao from '@/components/OnboardingAvaliacao'
 import SideMenu, { MenuItem } from '@/components/SideMenu'
 import WeightChart from '@/components/WeightChart'
 import { api, API_URL, ApiError } from '@/lib/api'
+import { formatarDataCurta, nomeMes, primeiroDiaMes, somarDias } from '@/lib/checkinDates'
 import { comprimirImagem } from '@/lib/compressImage'
 import {
   BodyMeasurement,
@@ -17,8 +18,10 @@ import {
   Challenge,
   ExternalActivity,
   Gamificacao,
+  HistoricoCheckins,
   Message,
   ParQAnswers,
+  ResumoCheckins,
   Workout,
   WorkoutExerciseDetail,
 } from '@/lib/types'
@@ -64,7 +67,7 @@ function chaveUltimaVista(token: string): string {
 export default function PortalAlunoClient({ token }: { token: string }) {
   const [data, setData] = useState<PortalData | null>(null)
   const [erro, setErro] = useState<string | null>(null)
-  const [aba, setAba] = useState<'treino' | 'evolucao' | 'fotos' | 'desafio' | 'chat'>('treino')
+  const [aba, setAba] = useState<'treino' | 'checkin' | 'evolucao' | 'fotos' | 'desafio' | 'chat'>('treino')
   const [menuAberto, setMenuAberto] = useState(false)
   const [instalarAberto, setInstalarAberto] = useState(false)
 
@@ -94,6 +97,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
 
   const menuItems: MenuItem[] = [
     { id: 'treino', label: 'Treino', icon: '' },
+    { id: 'checkin', label: 'Check-in', icon: '' },
     { id: 'evolucao', label: 'Avaliação Física', icon: '' },
     { id: 'fotos', label: 'Evolução', icon: '' },
     { id: 'desafio', label: 'Desafio', icon: '' },
@@ -133,6 +137,65 @@ export default function PortalAlunoClient({ token }: { token: string }) {
       setErroFotoEvolucao(err instanceof ApiError ? err.message : 'Erro ao enviar foto')
     } finally {
       setEnviandoFotoEvolucao(false)
+    }
+  }
+
+  // check-in de frequência
+  const [resumoCheckins, setResumoCheckins] = useState<ResumoCheckins | null>(null)
+  const [enviandoCheckin, setEnviandoCheckin] = useState(false)
+  const [erroCheckin, setErroCheckin] = useState<string | null>(null)
+  const [periodoHistorico, setPeriodoHistorico] = useState<'week' | 'month'>('week')
+  const [refHistorico, setRefHistorico] = useState<string | null>(null)
+  const [historico, setHistorico] = useState<HistoricoCheckins | null>(null)
+  const checkinInputRef = useRef<HTMLInputElement | null>(null)
+
+  const carregarResumoCheckins = useCallback(() => {
+    api
+      .get<ResumoCheckins>(`/portal/${token}/checkins/summary`)
+      .then(setResumoCheckins)
+      .catch(() => {})
+  }, [token])
+
+  const carregarHistoricoCheckins = useCallback(
+    (period: 'week' | 'month', ref: string | null) => {
+      const params = new URLSearchParams({ period })
+      if (ref) params.set('ref', ref)
+      api
+        .get<HistoricoCheckins>(`/portal/${token}/checkins?${params.toString()}`)
+        .then(setHistorico)
+        .catch(() => {})
+    },
+    [token]
+  )
+
+  useEffect(() => {
+    carregarHistoricoCheckins(periodoHistorico, refHistorico)
+  }, [periodoHistorico, refHistorico, carregarHistoricoCheckins])
+
+  async function enviarCheckin(file: File) {
+    setEnviandoCheckin(true)
+    setErroCheckin(null)
+    try {
+      const comprimida = await comprimirImagem(file)
+      const formData = new FormData()
+      formData.append('foto', comprimida, 'checkin.jpg')
+      await api.postFile(`/portal/${token}/checkins`, formData)
+      carregarResumoCheckins()
+      carregarHistoricoCheckins(periodoHistorico, refHistorico)
+    } catch (err) {
+      setErroCheckin(err instanceof ApiError ? err.message : 'Erro ao marcar check-in')
+    } finally {
+      setEnviandoCheckin(false)
+    }
+  }
+
+  function irParaPeriodo(direcao: -1 | 1) {
+    if (periodoHistorico === 'week') {
+      const base = historico?.semana?.inicio ?? resumoCheckins?.semana.inicio
+      if (base) setRefHistorico(somarDias(base, direcao * 7))
+    } else {
+      const base = historico?.mes ?? resumoCheckins?.mes
+      if (base) setRefHistorico(primeiroDiaMes(base.ano, base.mes + direcao))
     }
   }
 
@@ -184,6 +247,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     const intervalo = setInterval(carregarMensagens, 5000)
 
     carregarFotosEvolucao()
+    carregarResumoCheckins()
     carregarStrava()
     const params = new URLSearchParams(window.location.search)
     const statusStrava = params.get('strava')
@@ -199,7 +263,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     }
 
     return () => clearInterval(intervalo)
-  }, [token, carregarMensagens, carregarStrava, carregarFotosEvolucao])
+  }, [token, carregarMensagens, carregarStrava, carregarFotosEvolucao, carregarResumoCheckins])
 
   // Restaura de onde o aluno parou de ler o chat (persiste entre visitas).
   useEffect(() => {
@@ -473,6 +537,204 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                     </div>
                   </div>
                 ))}
+              </div>
+            )}
+          </div>
+        </main>
+      </div>
+    )
+  }
+
+  if (aba === 'checkin') {
+    return (
+      <div className="flex min-h-screen flex-col">
+        {cabecalho}
+        <SideMenu
+          open={menuAberto}
+          onClose={() => setMenuAberto(false)}
+          nome={data.student.name}
+          fotoUrl={data.student.photo_url}
+          subtitulo="Clube Mais"
+          items={menuItems}
+          ativo={aba}
+          onSelect={selecionarItemMenu}
+        />
+        <InstallAppModal open={instalarAberto} onClose={() => setInstalarAberto(false)} />
+        <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6">
+          <div className="glass mb-4 rounded-2xl p-5">
+            <h2 className="mb-1 font-semibold text-slate-900">Check-in</h2>
+            <p className="mb-4 text-sm text-slate-500">
+              Marque o treino de hoje com uma foto — na academia, treinando, tanto faz. Só conta 1 check-in por dia.
+            </p>
+
+            {erroCheckin && <p className="mb-3 text-sm text-rose-500">{erroCheckin}</p>}
+
+            <input
+              ref={checkinInputRef}
+              type="file"
+              accept="image/*"
+              capture="environment"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0]
+                if (file) enviarCheckin(file)
+                e.target.value = ''
+              }}
+            />
+            <button
+              onClick={() => checkinInputRef.current?.click()}
+              disabled={enviandoCheckin}
+              className="btn-primary w-full rounded-xl px-4 py-3 text-sm"
+            >
+              {enviandoCheckin
+                ? 'Enviando...'
+                : resumoCheckins?.checkinHoje
+                  ? 'Treino de hoje já marcado — trocar foto'
+                  : 'Marcar treino de hoje'}
+            </button>
+          </div>
+
+          {resumoCheckins && (
+            <>
+              <div className="mb-4 grid grid-cols-3 gap-3">
+                <div className="glass rounded-2xl p-4 text-center">
+                  <p className="text-xs uppercase tracking-wider text-slate-500">Semana</p>
+                  <p className="mt-1 text-xl font-bold text-slate-900">
+                    {resumoCheckins.semana.dias_com_checkin}
+                    <span className="text-sm font-normal text-slate-400">/{resumoCheckins.semana.total_dias}</span>
+                  </p>
+                </div>
+                <div className="glass rounded-2xl p-4 text-center">
+                  <p className="text-xs uppercase tracking-wider text-slate-500">Mês</p>
+                  <p className="mt-1 text-xl font-bold text-slate-900">
+                    {resumoCheckins.mes.dias_com_checkin}
+                    <span className="text-sm font-normal text-slate-400">/{resumoCheckins.mes.total_dias_mes}</span>
+                  </p>
+                </div>
+                <div className="glass rounded-2xl p-4 text-center">
+                  <p className="text-xs uppercase tracking-wider text-slate-500">Ano</p>
+                  <p className="mt-1 text-xl font-bold text-slate-900">{resumoCheckins.ano.dias_com_checkin}</p>
+                </div>
+              </div>
+
+              <div className="glass mb-4 rounded-2xl p-5">
+                <p className="mb-3 text-xs uppercase tracking-wider text-slate-500">Semana atual</p>
+                <div className="grid grid-cols-7 gap-2">
+                  {resumoCheckins.semana.grid.map((d) => (
+                    <div key={d.date} className="flex flex-col items-center gap-1">
+                      <span className="text-[10px] text-slate-400">{d.label}</span>
+                      <span
+                        className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold ${
+                          d.checked ? 'bg-emerald-500 text-white' : 'bg-slate-900/6 text-slate-400'
+                        }`}
+                      >
+                        {Number(d.date.slice(-2))}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
+
+          <div className="glass rounded-2xl p-5">
+            <div className="mb-3 flex items-center justify-between">
+              <div className="flex gap-1 rounded-lg bg-slate-900/5 p-1">
+                <button
+                  onClick={() => {
+                    setPeriodoHistorico('week')
+                    setRefHistorico(null)
+                  }}
+                  className={`rounded-md px-3 py-1 text-xs font-medium transition ${
+                    periodoHistorico === 'week' ? 'bg-white text-slate-900 shadow' : 'text-slate-500'
+                  }`}
+                >
+                  Semana
+                </button>
+                <button
+                  onClick={() => {
+                    setPeriodoHistorico('month')
+                    setRefHistorico(null)
+                  }}
+                  className={`rounded-md px-3 py-1 text-xs font-medium transition ${
+                    periodoHistorico === 'month' ? 'bg-white text-slate-900 shadow' : 'text-slate-500'
+                  }`}
+                >
+                  Mês
+                </button>
+              </div>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => irParaPeriodo(-1)}
+                  aria-label="Período anterior"
+                  className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-900/5"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="15 18 9 12 15 6" />
+                  </svg>
+                </button>
+                {refHistorico && (
+                  <button onClick={() => setRefHistorico(null)} className="px-1 text-xs font-medium text-[#2648b3]">
+                    Hoje
+                  </button>
+                )}
+                <button
+                  onClick={() => irParaPeriodo(1)}
+                  aria-label="Próximo período"
+                  className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-900/5"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            {historico?.period === 'week' && historico.semana && (
+              <div>
+                <p className="mb-3 text-xs text-slate-500">
+                  {formatarDataCurta(historico.semana.inicio)} a {formatarDataCurta(historico.semana.fim)}
+                </p>
+                <div className="grid grid-cols-7 gap-2">
+                  {historico.semana.grid.map((d) => (
+                    <div key={d.date} className="flex flex-col items-center gap-1">
+                      <span className="text-[10px] text-slate-400">{d.label}</span>
+                      <span
+                        className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold ${
+                          d.checked ? 'bg-emerald-500 text-white' : 'bg-slate-900/6 text-slate-400'
+                        }`}
+                      >
+                        {Number(d.date.slice(-2))}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <p className="mt-3 text-sm text-slate-600">
+                  {historico.semana.dias_com_checkin} de {historico.semana.total_dias} dias
+                </p>
+              </div>
+            )}
+
+            {historico?.period === 'month' && historico.mes && (
+              <div>
+                <p className="mb-3 text-xs text-slate-500">
+                  {nomeMes(historico.mes.mes)} de {historico.mes.ano}
+                </p>
+                <div className="grid grid-cols-7 gap-1.5">
+                  {Array.from({ length: historico.mes.total_dias_mes }, (_, i) => i + 1).map((dia) => (
+                    <span
+                      key={dia}
+                      className={`flex h-7 w-7 items-center justify-center rounded-full text-[10px] font-medium ${
+                        historico.mes?.dias_marcados.includes(dia)
+                          ? 'bg-emerald-500 text-white'
+                          : 'bg-slate-900/6 text-slate-400'
+                      }`}
+                    >
+                      {dia}
+                    </span>
+                  ))}
+                </div>
+                <p className="mt-3 text-sm text-slate-600">{historico.mes.dias_com_checkin} dias treinados</p>
               </div>
             )}
           </div>
