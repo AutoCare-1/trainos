@@ -66,7 +66,7 @@ usando SOMENTE exercícios da biblioteca acima cujo equipamento seja compatível
 detectadas (ou que não exijam equipamento, tipo exercícios de peso corporal). Considere que o
 aluno treina ${contexto.daysPerWeek}x/semana ao dosar volume total. Se limitações de saúde foram
 sinalizadas, evite exercícios que as agravem. A ordem dos itens no array "items" é a ordem de
-execução do treino.
+execução do treino. Nos campos de texto ("reasoning", "notes"), NÃO use emojis.
 
 Responda APENAS com um JSON válido, sem texto antes ou depois, neste formato exato:
 {

@@ -30,7 +30,7 @@ router.get('/conectar/:token', asyncHandler(async (req: Request, res: Response):
 router.get('/callback', asyncHandler(async (req: Request, res: Response): Promise<void> => {
   const { code, state, error } = req.query as { code?: string; state?: string; error?: string }
   const voltarPara = (status: 'conectado' | 'erro') =>
-    res.redirect(`${FRONTEND_URL}/aluno/${state}?strava=${status}`)
+    res.redirect(`${FRONTEND_URL}/aluno/${encodeURIComponent(state ?? '')}?strava=${status}`)
 
   if (error || !code || !state) {
     voltarPara('erro')

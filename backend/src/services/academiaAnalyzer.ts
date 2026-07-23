@@ -43,6 +43,7 @@ Regras:
   como recomendável equipamentos de alto impacto ou alta complexidade técnica).
 - Agrupe as zonas identificadas (ex: "Musculação", "Cardio", "Piso livre").
 - Aponte lacunas relevantes de cobertura muscular.
+- Nos campos de texto ("notes", "gaps"), NÃO use emojis.
 
 Responda APENAS com um JSON válido, sem texto antes ou depois, neste formato exato:
 {

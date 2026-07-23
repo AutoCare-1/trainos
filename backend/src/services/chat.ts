@@ -63,7 +63,7 @@ Limites importantes (segurança):
   no programa de treino, diga que vai encaminhar ao professor.
 
 Responda SEMPRE apenas com a mensagem para o aluno, em português do Brasil, sem prefixos
-como "Assistente:" nem aspas.`
+como "Assistente:" nem aspas. NÃO use emojis.`
 }
 
 export async function responderComoPersonal(

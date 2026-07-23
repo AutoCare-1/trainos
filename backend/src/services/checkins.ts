@@ -131,6 +131,11 @@ export async function listarCheckinsPeriodo(
   period: 'week' | 'month' | 'year',
   ref: string | null
 ): Promise<FotoCheckin[]> {
+  // period já vem tipado, mas o valor é interpolado direto na query (date_trunc não aceita
+  // parâmetro para a unidade) — trava aqui pra qualquer chamador futuro não abrir injection.
+  if (period !== 'week' && period !== 'month' && period !== 'year') {
+    throw new Error(`period inválido: ${period}`)
+  }
   const unidade = period === 'week' ? 'week' : period === 'month' ? 'month' : 'year'
   const intervalo = period === 'week' ? '7 days' : period === 'month' ? '1 month' : '1 year'
 

@@ -73,7 +73,8 @@ Avalie:
 - Priorize segurança antes de performance.
 - Escolha os 3 feedbacks que mais importam, nunca mais que isso.
 - "priority": "good" = algo funcionando bem (motivar); "warning" = ajuste importante sem risco imediato;
-  "critical" = parar e corrigir antes da próxima série.`
+  "critical" = parar e corrigir antes da próxima série.
+- NÃO use emojis em nenhum campo de texto.`
 }
 
 export interface FormAnalysisOutcome {

@@ -32,7 +32,9 @@ router.post('/chat', asyncHandler(async (req: AuthedRequest, res: Response): Pro
   const mensagemPersonal = inseridas[0]
 
   const { rows: historico } = await pool.query<ConsultorIaMessage>(
-    'select * from consultor_ia_messages where professional_id = $1 order by created_at',
+    `select * from (
+       select * from consultor_ia_messages where professional_id = $1 order by created_at desc limit 30
+     ) recentes order by created_at asc`,
     [req.professionalId]
   )
 

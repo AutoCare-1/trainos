@@ -921,7 +921,9 @@ router.post('/:token/mensagens', asyncHandler(async (req: Request, res: Response
   if (student.ai_autopilot) {
     try {
       const { rows: historico } = await pool.query<Message>(
-        'select * from messages where student_id = $1 order by created_at',
+        `select * from (
+           select * from messages where student_id = $1 order by created_at desc limit 30
+         ) recentes order by created_at asc`,
         [student.id]
       )
       const contexto = await montarContextoAluno(student)

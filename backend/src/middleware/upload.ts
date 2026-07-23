@@ -36,6 +36,13 @@ export function criarUploaderPrivadoPorChave(chaveParam: string, subdir: string,
     storage: multer.diskStorage({
       destination: (req, _file, cb) => {
         const chave = (req.params as Record<string, string>)[chaveParam]
+        // chave vem direto do param da URL (ex: token do aluno) e roda ANTES do
+        // handler validar o dono — nunca confiar nela sem checar o formato, senão
+        // um valor com ".." escaparia de PRIVATE_UPLOADS_ROOT via path.join.
+        if (!chave || !/^[A-Za-z0-9_-]+$/.test(chave)) {
+          cb(new Error('Identificador inválido'), '')
+          return
+        }
         const dir = path.join(PRIVATE_UPLOADS_ROOT, subdir, chave)
         fs.mkdirSync(dir, { recursive: true })
         cb(null, dir)
