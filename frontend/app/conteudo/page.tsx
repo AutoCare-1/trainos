@@ -87,7 +87,7 @@ export default function ConteudoPage() {
       <Navbar />
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
         <div className="mb-6">
-          <h1 className="mb-1 text-2xl font-bold tracking-tight text-slate-900">Conteúdo</h1>
+          <h1 className="mb-1 text-2xl font-bold tracking-tight text-slate-900">Ideias de Conteúdo</h1>
           <p className="text-sm text-slate-500">
             Ideias de post, story e reels pro seu Instagram — cada ideia já junta uma tendência de
             formato em alta com um dado real (e anônimo) da sua base de alunos.

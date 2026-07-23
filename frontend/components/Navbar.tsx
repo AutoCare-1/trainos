@@ -33,7 +33,7 @@ export default function Navbar() {
     { id: 'videos', label: 'Vídeos dos exercícios', icon: '', href: '/videos' },
     { id: 'modelos', label: 'Modelos de treino', icon: '', href: '/modelos' },
     { id: 'academia', label: 'Análises de academia', icon: '', href: '/academia' },
-    { id: 'conteudo', label: 'Conteúdo', icon: '', href: '/conteudo' },
+    { id: 'conteudo', label: 'Ideias de Conteúdo', icon: '', href: '/conteudo' },
     { id: 'novo-aluno', label: 'Cadastrar aluno', icon: '', href: '/alunos/novo' },
     { id: 'instalar', label: 'Instalar app', icon: '', onClick: () => setInstalarAberto(true) },
   ]
