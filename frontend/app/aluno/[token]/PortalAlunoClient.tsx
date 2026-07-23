@@ -825,25 +825,29 @@ export default function PortalAlunoClient({ token }: { token: string }) {
             )}
           </div>
 
-          {historico && historico.fotos.length > 0 && (
+          {historico && (
             <div className="glass mt-4 rounded-2xl p-5">
               <p className="mb-3 text-xs uppercase tracking-wider text-slate-500">Fotos do período</p>
-              <div className="space-y-3">
-                {historico.fotos.map((foto) => (
-                  <div key={foto.id} className="flex gap-3 rounded-xl bg-slate-900/3 p-3">
-                    {/* eslint-disable-next-line @next/next/no-img-element -- foto vem de rota autenticada pelo token do aluno */}
-                    <img
-                      src={`${API_URL}/portal/${token}/checkins/${foto.id}/imagem`}
-                      alt="Foto do check-in"
-                      className="h-16 w-16 shrink-0 rounded-lg object-cover"
-                    />
-                    <div className="min-w-0 flex-1">
-                      <p className="text-xs text-slate-500">{formatarDataLonga(foto.checkin_date)}</p>
-                      {foto.comment && <p className="mt-0.5 text-sm text-slate-700">{foto.comment}</p>}
+              {historico.fotos.length === 0 ? (
+                <p className="text-sm text-slate-500">Nenhuma foto registrada nesse período ainda.</p>
+              ) : (
+                <div className="space-y-3">
+                  {historico.fotos.map((foto) => (
+                    <div key={foto.id} className="flex gap-3 rounded-xl bg-slate-900/3 p-3">
+                      {/* eslint-disable-next-line @next/next/no-img-element -- foto vem de rota autenticada pelo token do aluno */}
+                      <img
+                        src={`${API_URL}/portal/${token}/checkins/${foto.id}/imagem`}
+                        alt="Foto do check-in"
+                        className="h-16 w-16 shrink-0 rounded-lg object-cover"
+                      />
+                      <div className="min-w-0 flex-1">
+                        <p className="text-xs text-slate-500">{formatarDataLonga(foto.checkin_date)}</p>
+                        {foto.comment && <p className="mt-0.5 text-sm text-slate-700">{foto.comment}</p>}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </main>
