@@ -5,7 +5,7 @@ import { pool } from '../db/pool'
 import { asyncHandler } from '../middleware/asyncHandler'
 import { AuthedRequest, requireAuth } from '../middleware/auth'
 import { calcularBadges, calcularStreak } from '../services/gamification'
-import { calcularResumoAno, calcularResumoMes, calcularResumoSemana } from '../services/checkins'
+import { calcularResumoAno, calcularResumoMes, calcularResumoSemana, listarCheckinsPeriodo } from '../services/checkins'
 import { criarUploader, PRIVATE_UPLOADS_ROOT } from '../middleware/upload'
 import { BodyPhoto, Student } from '../types'
 
@@ -277,6 +277,59 @@ router.get('/:id/checkins/summary', asyncHandler(async (req: AuthedRequest, res:
 
   res.json({ semana, mes, ano })
 }))
+
+// GET /:id/checkins?period=week|month|year&ref=YYYY-MM-DD — galeria navegável
+// (mesma visão que o aluno tem, com foto + comentário de cada dia)
+router.get('/:id/checkins', asyncHandler(async (req: AuthedRequest, res: Response): Promise<void> => {
+  const { rows: studentRows } = await pool.query(
+    'select id from students where id = $1 and professional_id = $2',
+    [req.params.id, req.professionalId]
+  )
+  if (studentRows.length === 0) {
+    res.status(404).json({ error: 'Aluno não encontrado' })
+    return
+  }
+
+  const ref = typeof req.query.ref === 'string' ? req.query.ref : null
+  const period: 'week' | 'month' | 'year' =
+    req.query.period === 'month' ? 'month' : req.query.period === 'year' ? 'year' : 'week'
+
+  const fotos = await listarCheckinsPeriodo(req.params.id as string, period, ref)
+
+  if (period === 'month') {
+    res.json({ period, mes: await calcularResumoMes(req.params.id as string, ref), fotos })
+  } else if (period === 'year') {
+    res.json({ period, ano: await calcularResumoAno(req.params.id as string, ref), fotos })
+  } else {
+    res.json({ period, semana: await calcularResumoSemana(req.params.id as string, ref), fotos })
+  }
+}))
+
+// GET /:id/checkins/:checkinId/imagem — serve o arquivo (autenticado por JWT + dono do aluno)
+router.get(
+  '/:id/checkins/:checkinId/imagem',
+  asyncHandler(async (req: AuthedRequest, res: Response): Promise<void> => {
+    const { rows: studentRows } = await pool.query(
+      'select id from students where id = $1 and professional_id = $2',
+      [req.params.id, req.professionalId]
+    )
+    if (studentRows.length === 0) {
+      res.status(404).json({ error: 'Aluno não encontrado' })
+      return
+    }
+
+    const { rows } = await pool.query<{ file_path: string }>(
+      'select file_path from checkins where id = $1 and student_id = $2',
+      [req.params.checkinId, req.params.id]
+    )
+    if (!rows[0]) {
+      res.status(404).json({ error: 'Check-in não encontrado' })
+      return
+    }
+
+    res.sendFile(path.join(PRIVATE_UPLOADS_ROOT, rows[0].file_path))
+  })
+)
 
 // ─────────────────────────────────────────────
 // Avaliação física (anamnese/PAR-Q)
