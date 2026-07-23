@@ -1,16 +1,19 @@
 import { Router, Request, Response } from 'express'
+import fs from 'fs'
 import path from 'path'
 import { pool } from '../db/pool'
 import { asyncHandler } from '../middleware/asyncHandler'
 import { ContextoAluno, responderComoPersonal } from '../services/chat'
 import { calcularBadges, calcularStreak } from '../services/gamification'
 import { comentarPrimeiraFoto, compararEvolucaoFisica } from '../services/evolucaoFisica'
+import { calcularResumoAno, calcularResumoMes, calcularResumoSemana, existeCheckinHoje } from '../services/checkins'
 import { criarUploader, criarUploaderPrivadoPorChave, PRIVATE_UPLOADS_ROOT } from '../middleware/upload'
-import { BodyPhoto, Message, Student, Workout } from '../types'
+import { BodyPhoto, CheckIn, Message, Student, Workout } from '../types'
 
 const router = Router()
 const uploadFoto = criarUploader('student-photos', 'image/', 10 * 1024 * 1024)
 const uploadFotoEvolucao = criarUploaderPrivadoPorChave('token', 'body-photos', 'image/', 15 * 1024 * 1024)
+const uploadCheckin = criarUploaderPrivadoPorChave('token', 'checkins', 'image/', 10 * 1024 * 1024)
 
 async function buscarAlunoPorToken(token: string): Promise<Student | null> {
   const { rows } = await pool.query<Student>('select * from students where invite_token = $1', [token])
@@ -258,6 +261,114 @@ router.get(
     )
     if (!rows[0]) {
       res.status(404).json({ error: 'Foto não encontrada' })
+      return
+    }
+
+    res.sendFile(path.join(PRIVATE_UPLOADS_ROOT, rows[0].file_path))
+  })
+)
+
+// ─────────────────────────────────────────────
+// Check-in de frequência (foto do dia, separado da Evolução física)
+// ─────────────────────────────────────────────
+
+// GET /:token/checkins/summary — marcadores semanal/mensal/anual + grid da semana atual
+router.get(
+  '/:token/checkins/summary',
+  asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const student = await buscarAlunoPorToken(req.params.token as string)
+    if (!student) {
+      res.status(404).json({ error: 'Link inválido' })
+      return
+    }
+
+    const [semana, mes, ano, checkinHoje] = await Promise.all([
+      calcularResumoSemana(student.id, null),
+      calcularResumoMes(student.id, null),
+      calcularResumoAno(student.id, null),
+      existeCheckinHoje(student.id),
+    ])
+
+    res.json({ semana, mes, ano, checkinHoje })
+  })
+)
+
+// GET /:token/checkins?period=week|month&ref=YYYY-MM-DD — histórico navegável
+router.get(
+  '/:token/checkins',
+  asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const student = await buscarAlunoPorToken(req.params.token as string)
+    if (!student) {
+      res.status(404).json({ error: 'Link inválido' })
+      return
+    }
+
+    const ref = typeof req.query.ref === 'string' ? req.query.ref : null
+    if (req.query.period === 'month') {
+      res.json({ period: 'month', mes: await calcularResumoMes(student.id, ref) })
+    } else {
+      res.json({ period: 'week', semana: await calcularResumoSemana(student.id, ref) })
+    }
+  })
+)
+
+// POST /:token/checkins — marca o treino de hoje (substitui a foto se já tiver check-in hoje)
+router.post(
+  '/:token/checkins',
+  uploadCheckin.single('foto'),
+  asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const student = await buscarAlunoPorToken(req.params.token as string)
+    if (!student) {
+      res.status(404).json({ error: 'Link inválido' })
+      return
+    }
+    if (!req.file) {
+      res.status(400).json({ error: 'Arquivo de imagem é obrigatório' })
+      return
+    }
+
+    const filePath = `checkins/${req.params.token}/${req.file.filename}`
+
+    const { rows: existenteRows } = await pool.query<{ file_path: string }>(
+      'select file_path from checkins where student_id = $1 and checkin_date = current_date',
+      [student.id]
+    )
+    const arquivoAnterior = existenteRows[0]?.file_path ?? null
+
+    const { rows } = await pool.query<CheckIn>(
+      `insert into checkins (student_id, file_path)
+       values ($1, $2)
+       on conflict (student_id, checkin_date) do update set file_path = excluded.file_path
+       returning *`,
+      [student.id, filePath]
+    )
+
+    // Se já existia check-in hoje, a foto antiga foi substituída — remove o
+    // arquivo órfão do disco (sem travar a resposta se der erro).
+    if (arquivoAnterior && arquivoAnterior !== filePath) {
+      fs.unlink(path.join(PRIVATE_UPLOADS_ROOT, arquivoAnterior), () => {})
+    }
+
+    res.status(201).json({ checkin: rows[0] })
+  })
+)
+
+// GET /:token/checkins/:checkinId/imagem — serve o arquivo (autenticado pelo token do aluno)
+router.get(
+  '/:token/checkins/:checkinId/imagem',
+  asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const student = await buscarAlunoPorToken(req.params.token as string)
+    if (!student) {
+      res.status(404).json({ error: 'Link inválido' })
+      return
+    }
+
+    const { rows } = await pool.query<{ file_path: string }>(
+      'select file_path from checkins where id = $1 and student_id = $2',
+      [req.params.checkinId, student.id]
+    )
+    if (!rows[0]) {
+      res.status(404).json({ error: 'Check-in não encontrado' })
       return
     }
 

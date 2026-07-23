@@ -5,6 +5,7 @@ import { pool } from '../db/pool'
 import { asyncHandler } from '../middleware/asyncHandler'
 import { AuthedRequest, requireAuth } from '../middleware/auth'
 import { calcularBadges, calcularStreak } from '../services/gamification'
+import { calcularResumoAno, calcularResumoMes, calcularResumoSemana } from '../services/checkins'
 import { criarUploader, PRIVATE_UPLOADS_ROOT } from '../middleware/upload'
 import { BodyPhoto, Student } from '../types'
 
@@ -255,6 +256,27 @@ router.get(
     res.sendFile(path.join(PRIVATE_UPLOADS_ROOT, rows[0].file_path))
   })
 )
+
+// GET /:id/checkins/summary — frequência do aluno (semanal/mensal/anual), útil pra
+// o profissional identificar quem está consistente e quem está sumindo
+router.get('/:id/checkins/summary', asyncHandler(async (req: AuthedRequest, res: Response): Promise<void> => {
+  const { rows: studentRows } = await pool.query(
+    'select id from students where id = $1 and professional_id = $2',
+    [req.params.id, req.professionalId]
+  )
+  if (studentRows.length === 0) {
+    res.status(404).json({ error: 'Aluno não encontrado' })
+    return
+  }
+
+  const [semana, mes, ano] = await Promise.all([
+    calcularResumoSemana(req.params.id as string, null),
+    calcularResumoMes(req.params.id as string, null),
+    calcularResumoAno(req.params.id as string, null),
+  ])
+
+  res.json({ semana, mes, ano })
+}))
 
 // ─────────────────────────────────────────────
 // Avaliação física (anamnese/PAR-Q)
