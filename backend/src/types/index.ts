@@ -149,6 +149,7 @@ export interface CheckIn {
   student_id: string
   checkin_date: string
   file_path: string
+  comment: string | null
   created_at: string
 }
 
