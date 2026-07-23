@@ -16,6 +16,7 @@ interface ChatBoxProps {
   placeholder?: string
   aguardandoIa?: boolean
   vazioTexto?: string
+  nomeIa?: string
 }
 
 function hora(iso: string): string {
@@ -29,6 +30,7 @@ export default function ChatBox({
   placeholder = 'Escreva sua mensagem...',
   aguardandoIa = false,
   vazioTexto = 'Nenhuma mensagem ainda. Comece a conversa!',
+  nomeIa = 'Coach IA',
 }: ChatBoxProps) {
   const [texto, setTexto] = useState('')
   const [enviando, setEnviando] = useState(false)
@@ -84,7 +86,7 @@ export default function ChatBox({
               >
                 {ehIa && (
                   <span className="mb-1 flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-violet-500">
-                    Coach IA
+                    {nomeIa}
                   </span>
                 )}
                 {!ehIa && m.sender === 'professional' && perspective === 'student' && (

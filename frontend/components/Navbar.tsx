@@ -17,6 +17,7 @@ function itemAtivo(pathname: string): string {
   if (pathname.startsWith('/modelos')) return 'modelos'
   if (pathname.startsWith('/academia')) return 'academia'
   if (pathname.startsWith('/conteudo')) return 'conteudo'
+  if (pathname.startsWith('/consultor-ia')) return 'consultor-ia'
   return ''
 }
 
@@ -34,6 +35,7 @@ export default function Navbar() {
     { id: 'modelos', label: 'Modelos de treino', icon: '', href: '/modelos' },
     { id: 'academia', label: 'Análises de academia', icon: '', href: '/academia' },
     { id: 'conteudo', label: 'Ideias de Conteúdo', icon: '', href: '/conteudo' },
+    { id: 'consultor-ia', label: 'Consultor IA', icon: '', href: '/consultor-ia' },
     { id: 'novo-aluno', label: 'Cadastrar aluno', icon: '', href: '/alunos/novo' },
     { id: 'instalar', label: 'Instalar app', icon: '', onClick: () => setInstalarAberto(true) },
   ]
