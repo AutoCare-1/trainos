@@ -11,6 +11,7 @@ export interface DiaSemana {
   date: string
   label: string
   checked: boolean
+  comment: string | null
 }
 
 export interface ResumoSemana {
@@ -35,19 +36,26 @@ export interface ResumoAno {
 }
 
 export async function calcularResumoSemana(studentId: string, ref: string | null): Promise<ResumoSemana> {
-  const { rows } = await pool.query<{ date: string; checked: boolean }>(
+  const { rows } = await pool.query<{ date: string; checked: boolean; comment: string | null }>(
     `select gs::date::text as date,
-            exists(select 1 from checkins c where c.student_id = $1 and c.checkin_date = gs::date) as checked
+            c.id is not null as checked,
+            c.comment as comment
      from generate_series(
        date_trunc('week', coalesce($2::date, current_date)),
        date_trunc('week', coalesce($2::date, current_date)) + interval '6 days',
        interval '1 day'
      ) as gs
+     left join checkins c on c.student_id = $1 and c.checkin_date = gs::date
      order by gs`,
     [studentId, ref]
   )
 
-  const grid: DiaSemana[] = rows.map((r, i) => ({ date: r.date, label: LABELS_DIA[i], checked: r.checked }))
+  const grid: DiaSemana[] = rows.map((r, i) => ({
+    date: r.date,
+    label: LABELS_DIA[i],
+    checked: r.checked,
+    comment: r.comment,
+  }))
   return {
     inicio: grid[0]?.date,
     fim: grid[6]?.date,

@@ -328,6 +328,7 @@ router.post(
     }
 
     const filePath = `checkins/${req.params.token}/${req.file.filename}`
+    const comment = typeof req.body.comment === 'string' ? req.body.comment.trim() || null : null
 
     const { rows: existenteRows } = await pool.query<{ file_path: string }>(
       'select file_path from checkins where student_id = $1 and checkin_date = current_date',
@@ -336,11 +337,11 @@ router.post(
     const arquivoAnterior = existenteRows[0]?.file_path ?? null
 
     const { rows } = await pool.query<CheckIn>(
-      `insert into checkins (student_id, file_path)
-       values ($1, $2)
-       on conflict (student_id, checkin_date) do update set file_path = excluded.file_path
+      `insert into checkins (student_id, file_path, comment)
+       values ($1, $2, $3)
+       on conflict (student_id, checkin_date) do update set file_path = excluded.file_path, comment = excluded.comment
        returning *`,
-      [student.id, filePath]
+      [student.id, filePath, comment]
     )
 
     // Se já existia check-in hoje, a foto antiga foi substituída — remove o
