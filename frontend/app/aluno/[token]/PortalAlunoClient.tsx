@@ -511,6 +511,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
               {avisoStrava}
             </div>
           )}
+          {erro && <p className="mb-4 text-sm text-rose-400">{erro}</p>}
 
           <div className="glass rounded-2xl p-5">
             <h2 className="mb-1 font-semibold text-slate-900">Sua evolução</h2>

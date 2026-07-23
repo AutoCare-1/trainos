@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
@@ -25,10 +25,11 @@ export default function DashboardPage() {
   }, [router])
 
   const totalSessoes = students?.reduce((acc, s) => acc + Number(s.sessoes_concluidas ?? 0), 0) ?? 0
+  const agora = useMemo(() => Date.now(), [])
 
   function diasSemTreinar(s: Student): number | null {
     if (!s.ultima_sessao_em) return null
-    return Math.floor((Date.now() - new Date(s.ultima_sessao_em).getTime()) / 86400000)
+    return Math.floor((agora - new Date(s.ultima_sessao_em).getTime()) / 86400000)
   }
 
   function inativo(s: Student): boolean {

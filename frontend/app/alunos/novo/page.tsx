@@ -1,13 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import BackLink from '@/components/BackLink'
 import { api, ApiError } from '@/lib/api'
 import { Student } from '@/lib/types'
 
 export default function NovoAlunoPage() {
+  const router = useRouter()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
@@ -18,6 +20,12 @@ export default function NovoAlunoPage() {
   const [carregando, setCarregando] = useState(false)
   const [criado, setCriado] = useState<Student | null>(null)
   const [copiado, setCopiado] = useState(false)
+
+  useEffect(() => {
+    if (!localStorage.getItem('trainos_token')) {
+      router.replace('/login')
+    }
+  }, [router])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()

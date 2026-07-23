@@ -39,10 +39,7 @@ export default function NovoTreinoClient() {
       router.replace('/login')
       return
     }
-    if (!studentId) {
-      setErro('Nenhum aluno selecionado. Volte ao perfil do aluno e clique em "Novo treino".')
-      return
-    }
+    if (!studentId) return
     api
       .get<{ exercises: Exercise[] }>('/exercicios')
       .then((data) => setExercises(data.exercises))
@@ -155,6 +152,11 @@ export default function NovoTreinoClient() {
         <h1 className="mb-1 text-2xl font-bold tracking-tight text-slate-900">Novo treino</h1>
         <p className="mb-6 text-sm text-slate-500">Monte a prescrição em poucos cliques e envie direto pro aluno.</p>
 
+        {!studentId && (
+          <p className="mb-4 text-sm text-rose-400">
+            Nenhum aluno selecionado. Volte ao perfil do aluno e clique em &quot;Novo treino&quot;.
+          </p>
+        )}
         {erro && <p className="mb-4 text-sm text-rose-400">{erro}</p>}
 
         {studentId && (
