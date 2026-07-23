@@ -461,7 +461,8 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
                   </div>
                   <div className="p-3">
                     <p className="mb-1.5 text-[10px] uppercase tracking-wider text-slate-500">
-                      {new Date(foto.taken_at).toLocaleDateString('pt-BR')}
+                      {new Date(foto.taken_at).toLocaleDateString('pt-BR')}{' '}
+                      {new Date(foto.taken_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                     </p>
                     {foto.ai_feedback && <p className="line-clamp-3 text-xs text-slate-600">{foto.ai_feedback}</p>}
                   </div>

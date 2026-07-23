@@ -552,6 +552,8 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                       month: 'long',
                       year: 'numeric',
                     })}
+                    {' às '}
+                    {new Date(foto.taken_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                   </p>
                   {foto.ai_feedback && (
                     <div className="rounded-2xl rounded-bl-md border border-violet-300 bg-violet-50 px-4 py-2.5 text-sm leading-relaxed text-violet-900">
