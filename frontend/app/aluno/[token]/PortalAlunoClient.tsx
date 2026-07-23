@@ -149,7 +149,8 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   const [historico, setHistorico] = useState<HistoricoCheckins | null>(null)
   const [fotoCheckinSelecionada, setFotoCheckinSelecionada] = useState<File | null>(null)
   const [comentarioCheckin, setComentarioCheckin] = useState('')
-  const checkinInputRef = useRef<HTMLInputElement | null>(null)
+  const checkinCameraInputRef = useRef<HTMLInputElement | null>(null)
+  const checkinGaleriaInputRef = useRef<HTMLInputElement | null>(null)
 
   const carregarResumoCheckins = useCallback(() => {
     api
@@ -579,10 +580,21 @@ export default function PortalAlunoClient({ token }: { token: string }) {
             {erroCheckin && <p className="mb-3 text-sm text-rose-500">{erroCheckin}</p>}
 
             <input
-              ref={checkinInputRef}
+              ref={checkinCameraInputRef}
               type="file"
               accept="image/*"
               capture="environment"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0]
+                if (file) setFotoCheckinSelecionada(file)
+                e.target.value = ''
+              }}
+            />
+            <input
+              ref={checkinGaleriaInputRef}
+              type="file"
+              accept="image/*"
               className="hidden"
               onChange={(e) => {
                 const file = e.target.files?.[0]
@@ -624,12 +636,25 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                 </div>
               </div>
             ) : (
-              <button
-                onClick={() => checkinInputRef.current?.click()}
-                className="btn-primary w-full rounded-xl px-4 py-3 text-sm"
-              >
-                {resumoCheckins?.checkinHoje ? 'Treino de hoje já marcado — trocar foto' : 'Marcar treino de hoje'}
-              </button>
+              <div className="space-y-2">
+                {resumoCheckins?.checkinHoje && (
+                  <p className="text-xs text-slate-500">Treino de hoje já marcado — pode trocar a foto se quiser.</p>
+                )}
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => checkinCameraInputRef.current?.click()}
+                    className="btn-primary flex-1 rounded-xl px-4 py-3 text-sm"
+                  >
+                    Tirar foto agora
+                  </button>
+                  <button
+                    onClick={() => checkinGaleriaInputRef.current?.click()}
+                    className="glass glass-hover flex-1 rounded-xl px-4 py-3 text-sm text-slate-700"
+                  >
+                    Escolher da galeria
+                  </button>
+                </div>
+              </div>
             )}
           </div>
 
