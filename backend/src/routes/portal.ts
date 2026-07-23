@@ -1,13 +1,16 @@
 import { Router, Request, Response } from 'express'
+import path from 'path'
 import { pool } from '../db/pool'
 import { asyncHandler } from '../middleware/asyncHandler'
 import { ContextoAluno, responderComoPersonal } from '../services/chat'
 import { calcularBadges, calcularStreak } from '../services/gamification'
-import { criarUploader } from '../middleware/upload'
-import { Message, Student, Workout } from '../types'
+import { comentarPrimeiraFoto, compararEvolucaoFisica } from '../services/evolucaoFisica'
+import { criarUploader, criarUploaderPrivadoPorChave, PRIVATE_UPLOADS_ROOT } from '../middleware/upload'
+import { BodyPhoto, Message, Student, Workout } from '../types'
 
 const router = Router()
 const uploadFoto = criarUploader('student-photos', 'image/', 10 * 1024 * 1024)
+const uploadFotoEvolucao = criarUploaderPrivadoPorChave('token', 'body-photos', 'image/', 15 * 1024 * 1024)
 
 async function buscarAlunoPorToken(token: string): Promise<Student | null> {
   const { rows } = await pool.query<Student>('select * from students where invite_token = $1', [token])
@@ -166,6 +169,101 @@ router.post('/:token/foto', uploadFoto.single('foto'), asyncHandler(async (req: 
 
   res.status(201).json({ photoUrl })
 }))
+
+// ─────────────────────────────────────────────
+// Evolução física por fotos (lado do aluno)
+// ─────────────────────────────────────────────
+
+// GET /:token/body-photos — galeria de fotos de evolução do aluno, mais recente primeiro
+router.get('/:token/body-photos', asyncHandler(async (req: Request, res: Response): Promise<void> => {
+  const student = await buscarAlunoPorToken(req.params.token as string)
+  if (!student) {
+    res.status(404).json({ error: 'Link inválido' })
+    return
+  }
+
+  const { rows } = await pool.query<BodyPhoto>(
+    `select id, student_id, taken_at, ai_feedback, compared_to_photo_id, created_at
+     from body_photos where student_id = $1 order by taken_at desc`,
+    [student.id]
+  )
+  res.json({ photos: rows })
+}))
+
+// POST /:token/body-photos — o aluno registra uma nova foto; dispara comentário da Coach IA
+router.post(
+  '/:token/body-photos',
+  uploadFotoEvolucao.single('foto'),
+  asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const student = await buscarAlunoPorToken(req.params.token as string)
+    if (!student) {
+      res.status(404).json({ error: 'Link inválido' })
+      return
+    }
+    if (!req.file) {
+      res.status(400).json({ error: 'Arquivo de imagem é obrigatório' })
+      return
+    }
+
+    const filePath = `body-photos/${req.params.token}/${req.file.filename}`
+    const caminhoAbsolutoNova = path.join(PRIVATE_UPLOADS_ROOT, filePath)
+
+    const { rows: anteriorRows } = await pool.query<BodyPhoto>(
+      'select id, file_path from body_photos where student_id = $1 order by taken_at desc limit 1',
+      [student.id]
+    )
+    const anterior = anteriorRows[0] ?? null
+
+    let aiFeedback: string
+    try {
+      aiFeedback = anterior
+        ? await compararEvolucaoFisica(
+            student.name,
+            path.join(PRIVATE_UPLOADS_ROOT, anterior.file_path),
+            caminhoAbsolutoNova
+          )
+        : await comentarPrimeiraFoto(student.name, caminhoAbsolutoNova)
+    } catch (err) {
+      // A IA fora do ar não pode impedir o registro da foto — o comentário
+      // fica em branco e o aluno vê a foto normalmente.
+      console.error('[Evolução física] Falha ao gerar comentário da IA:', err)
+      aiFeedback = anterior
+        ? 'Foto registrada! Em breve o comentário da Coach IA aparece por aqui.'
+        : 'Primeira foto registrada! Esse é o seu ponto de partida — daqui pra frente dá pra acompanhar sua evolução de verdade.'
+    }
+
+    const { rows } = await pool.query<BodyPhoto>(
+      `insert into body_photos (student_id, file_path, ai_feedback, compared_to_photo_id)
+       values ($1, $2, $3, $4)
+       returning id, student_id, taken_at, ai_feedback, compared_to_photo_id, created_at`,
+      [student.id, filePath, aiFeedback, anterior?.id ?? null]
+    )
+    res.status(201).json({ photo: rows[0] })
+  })
+)
+
+// GET /:token/body-photos/:photoId/imagem — serve o arquivo (autenticado pelo token do aluno)
+router.get(
+  '/:token/body-photos/:photoId/imagem',
+  asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const student = await buscarAlunoPorToken(req.params.token as string)
+    if (!student) {
+      res.status(404).json({ error: 'Link inválido' })
+      return
+    }
+
+    const { rows } = await pool.query<{ file_path: string }>(
+      'select file_path from body_photos where id = $1 and student_id = $2',
+      [req.params.photoId, student.id]
+    )
+    if (!rows[0]) {
+      res.status(404).json({ error: 'Foto não encontrada' })
+      return
+    }
+
+    res.sendFile(path.join(PRIVATE_UPLOADS_ROOT, rows[0].file_path))
+  })
+)
 
 // POST /:token/sessoes — inicia (ou retoma) uma sessão de execução do treino
 router.post('/:token/sessoes', asyncHandler(async (req: Request, res: Response): Promise<void> => {

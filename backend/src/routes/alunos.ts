@@ -1,11 +1,12 @@
 import { Router, Response } from 'express'
+import path from 'path'
 import { nanoid } from 'nanoid'
 import { pool } from '../db/pool'
 import { asyncHandler } from '../middleware/asyncHandler'
 import { AuthedRequest, requireAuth } from '../middleware/auth'
 import { calcularBadges, calcularStreak } from '../services/gamification'
-import { criarUploader } from '../middleware/upload'
-import { Student } from '../types'
+import { criarUploader, PRIVATE_UPLOADS_ROOT } from '../middleware/upload'
+import { BodyPhoto, Student } from '../types'
 
 const router = Router()
 router.use(requireAuth)
@@ -209,6 +210,51 @@ router.post('/:id/medicoes', asyncHandler(async (req: AuthedRequest, res: Respon
   )
   res.status(201).json({ measurement: rows[0] })
 }))
+
+// GET /:id/body-photos — profissional vê a galeria de evolução física do aluno (só leitura)
+router.get('/:id/body-photos', asyncHandler(async (req: AuthedRequest, res: Response): Promise<void> => {
+  const { rows: studentRows } = await pool.query(
+    'select id from students where id = $1 and professional_id = $2',
+    [req.params.id, req.professionalId]
+  )
+  if (studentRows.length === 0) {
+    res.status(404).json({ error: 'Aluno não encontrado' })
+    return
+  }
+
+  const { rows } = await pool.query<BodyPhoto>(
+    `select id, student_id, taken_at, ai_feedback, compared_to_photo_id, created_at
+     from body_photos where student_id = $1 order by taken_at desc`,
+    [req.params.id]
+  )
+  res.json({ photos: rows })
+}))
+
+// GET /:id/body-photos/:photoId/imagem — serve o arquivo (autenticado por JWT + dono do aluno)
+router.get(
+  '/:id/body-photos/:photoId/imagem',
+  asyncHandler(async (req: AuthedRequest, res: Response): Promise<void> => {
+    const { rows: studentRows } = await pool.query(
+      'select id from students where id = $1 and professional_id = $2',
+      [req.params.id, req.professionalId]
+    )
+    if (studentRows.length === 0) {
+      res.status(404).json({ error: 'Aluno não encontrado' })
+      return
+    }
+
+    const { rows } = await pool.query<{ file_path: string }>(
+      'select file_path from body_photos where id = $1 and student_id = $2',
+      [req.params.photoId, req.params.id]
+    )
+    if (!rows[0]) {
+      res.status(404).json({ error: 'Foto não encontrada' })
+      return
+    }
+
+    res.sendFile(path.join(PRIVATE_UPLOADS_ROOT, rows[0].file_path))
+  })
+)
 
 // ─────────────────────────────────────────────
 // Avaliação física (anamnese/PAR-Q)

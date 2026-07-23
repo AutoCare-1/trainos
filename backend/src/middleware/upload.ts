@@ -17,3 +17,31 @@ export function criarUploader(subdir: string, mimePrefix: string, limiteBytes: n
     fileFilter: (_req, file, cb) => cb(null, file.mimetype.startsWith(mimePrefix)),
   })
 }
+
+/**
+ * Raiz de arquivos sensíveis (ex: fotos de evolução física) que NÃO podem ser
+ * servidos via rota estática pública — só por rota autenticada que confere
+ * dono do dado antes de ler o arquivo do disco.
+ */
+export const PRIVATE_UPLOADS_ROOT = path.join(__dirname, '..', '..', 'private-uploads')
+
+/**
+ * Cria um uploader multer que salva em backend/private-uploads/<subdir>/<chave>,
+ * onde <chave> é o token do aluno (ou outro identificador) presente nos params
+ * da rota — separa os arquivos de cada aluno em pastas isoladas.
+ */
+export function criarUploaderPrivadoPorChave(chaveParam: string, subdir: string, mimePrefix: string, limiteBytes: number) {
+  return multer({
+    storage: multer.diskStorage({
+      destination: (req, _file, cb) => {
+        const chave = (req.params as Record<string, string>)[chaveParam]
+        const dir = path.join(PRIVATE_UPLOADS_ROOT, subdir, chave)
+        fs.mkdirSync(dir, { recursive: true })
+        cb(null, dir)
+      },
+      filename: (_req, file, cb) => cb(null, `${nanoid(12)}${path.extname(file.originalname)}`),
+    }),
+    limits: { fileSize: limiteBytes },
+    fileFilter: (_req, file, cb) => cb(null, file.mimetype.startsWith(mimePrefix)),
+  })
+}
