@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlunoController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DesafioController;
 use App\Http\Controllers\ExercicioController;
 use App\Http\Controllers\ModeloController;
 use App\Http\Controllers\TreinoController;
@@ -39,5 +40,12 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/', [ModeloController::class, 'store']);
         Route::get('/{id}', [ModeloController::class, 'show']);
         Route::delete('/{id}', [ModeloController::class, 'destroy']);
+    });
+
+    Route::prefix('desafios')->group(function () {
+        Route::get('/', [DesafioController::class, 'index']);
+        Route::post('/', [DesafioController::class, 'store']);
+        Route::get('/{id}', [DesafioController::class, 'show']);
+        Route::delete('/{id}', [DesafioController::class, 'destroy']);
     });
 });
