@@ -3,6 +3,7 @@
 use App\Http\Controllers\AlunoController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExercicioController;
+use App\Http\Controllers\ModeloController;
 use App\Http\Controllers\TreinoController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,5 +32,12 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/', [TreinoController::class, 'store']);
         Route::get('/{id}', [TreinoController::class, 'show']);
         Route::post('/{id}/enviar', [TreinoController::class, 'enviar']);
+    });
+
+    Route::prefix('modelos')->group(function () {
+        Route::get('/', [ModeloController::class, 'index']);
+        Route::post('/', [ModeloController::class, 'store']);
+        Route::get('/{id}', [ModeloController::class, 'show']);
+        Route::delete('/{id}', [ModeloController::class, 'destroy']);
     });
 });
