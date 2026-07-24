@@ -181,7 +181,7 @@ export default function AcademiaDetalheClient({ submissionId }: { submissionId: 
 
                 <div className="space-y-2">
                   {itens.map((item, idx) => (
-                    <div key={item.exercise_id} className="flex flex-wrap items-center gap-2 rounded-xl bg-slate-900/3 p-3">
+                    <div key={`${item.exercise_id}-${idx}`} className="flex flex-wrap items-center gap-2 rounded-xl bg-slate-900/3 p-3">
                       <span className="min-w-[10rem] flex-1 text-sm font-medium text-slate-800">{item.exercise_name}</span>
                       <input
                         type="number"
