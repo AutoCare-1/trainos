@@ -13,4 +13,8 @@ class TrendCache extends Model
     protected $table = 'trend_cache';
 
     protected $fillable = ['content_snapshot'];
+
+    protected $casts = [
+        'cached_at' => 'datetime',
+    ];
 }

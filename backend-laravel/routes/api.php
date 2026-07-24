@@ -3,6 +3,7 @@
 use App\Http\Controllers\AlunoController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AcademiaController;
+use App\Http\Controllers\ContentController;
 use App\Http\Controllers\DesafioController;
 use App\Http\Controllers\ExercicioController;
 use App\Http\Controllers\ModeloController;
@@ -56,6 +57,12 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{submissionId}', [AcademiaController::class, 'show']);
         Route::patch('/{submissionId}/aprovar', [AcademiaController::class, 'aprovar']);
         Route::patch('/{submissionId}/rejeitar', [AcademiaController::class, 'rejeitar']);
+    });
+
+    Route::prefix('conteudo')->group(function () {
+        Route::get('/', [ContentController::class, 'index']);
+        Route::post('/', [ContentController::class, 'store']);
+        Route::patch('/{id}', [ContentController::class, 'update']);
     });
 });
 
