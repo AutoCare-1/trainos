@@ -8,6 +8,7 @@ use App\Http\Controllers\ContentController;
 use App\Http\Controllers\DesafioController;
 use App\Http\Controllers\ExercicioController;
 use App\Http\Controllers\ModeloController;
+use App\Http\Controllers\NegocioController;
 use App\Http\Controllers\StravaController;
 use App\Http\Controllers\TreinoController;
 use Illuminate\Support\Facades\Route;
@@ -70,6 +71,8 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/', [ConsultorIaController::class, 'index']);
         Route::post('/chat', [ConsultorIaController::class, 'chat']);
     });
+
+    Route::get('/negocio', [NegocioController::class, 'index']);
 });
 
 // Rotas públicas: autenticadas pelo invite_token do aluno, não por JWT (mesmo
