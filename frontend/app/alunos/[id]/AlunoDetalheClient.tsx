@@ -690,7 +690,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
           </section>
 
           {/* Coluna: chat */}
-          <section>
+          <section id="conversa">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="font-semibold text-slate-900">Conversa</h2>
               <button

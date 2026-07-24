@@ -13,6 +13,7 @@ import desafiosRoutes from './routes/desafios'
 import academiaRoutes from './routes/academia'
 import contentRoutes from './routes/content'
 import consultorIaRoutes from './routes/consultorIa'
+import negocioRoutes from './routes/negocio'
 
 const app = express()
 
@@ -33,6 +34,7 @@ app.use('/desafios', desafiosRoutes)
 app.use('/academia', academiaRoutes)
 app.use('/conteudo', contentRoutes)
 app.use('/consultor-ia', consultorIaRoutes)
+app.use('/negocio', negocioRoutes)
 
 app.use((err: Error & { code?: string }, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   if (err.code === '22P02') {

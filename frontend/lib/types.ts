@@ -348,3 +348,23 @@ export interface Challenge {
   status?: 'agendado' | 'ativo' | 'encerrado'
   leaderboard?: LeaderboardEntry[]
 }
+
+export interface DashboardNegocioKpis {
+  total_alunos: number
+  novos_no_mes: number
+  inativos: number
+  retencao_pct: number | null
+}
+
+export interface AlunoEmRisco {
+  id: string
+  name: string
+  prioridade: 'alta' | 'media'
+  motivo: string
+}
+
+export interface DashboardNegocio {
+  financeiro: { status: 'em_breve' }
+  kpis: DashboardNegocioKpis
+  alunos_em_risco: AlunoEmRisco[]
+}
