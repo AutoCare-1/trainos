@@ -40,4 +40,8 @@ return [
         'client_secret' => env('STRAVA_CLIENT_SECRET'),
     ],
 
+    'anthropic' => [
+        'api_key' => env('ANTHROPIC_API_KEY'),
+    ],
+
 ];

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlunoController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AcademiaController;
 use App\Http\Controllers\DesafioController;
 use App\Http\Controllers\ExercicioController;
 use App\Http\Controllers\ModeloController;
@@ -48,6 +49,13 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/', [DesafioController::class, 'store']);
         Route::get('/{id}', [DesafioController::class, 'show']);
         Route::delete('/{id}', [DesafioController::class, 'destroy']);
+    });
+
+    Route::prefix('academia')->group(function () {
+        Route::get('/', [AcademiaController::class, 'index']);
+        Route::get('/{submissionId}', [AcademiaController::class, 'show']);
+        Route::patch('/{submissionId}/aprovar', [AcademiaController::class, 'aprovar']);
+        Route::patch('/{submissionId}/rejeitar', [AcademiaController::class, 'rejeitar']);
     });
 });
 
