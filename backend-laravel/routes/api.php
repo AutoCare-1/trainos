@@ -9,6 +9,12 @@ use App\Http\Controllers\DesafioController;
 use App\Http\Controllers\ExercicioController;
 use App\Http\Controllers\ModeloController;
 use App\Http\Controllers\NegocioController;
+use App\Http\Controllers\PortalAcademiaController;
+use App\Http\Controllers\PortalBodyPhotoController;
+use App\Http\Controllers\PortalChatController;
+use App\Http\Controllers\PortalCheckinController;
+use App\Http\Controllers\PortalController;
+use App\Http\Controllers\PortalFormaController;
 use App\Http\Controllers\StravaController;
 use App\Http\Controllers\TreinoController;
 use Illuminate\Support\Facades\Route;
@@ -82,4 +88,32 @@ Route::prefix('strava')->group(function () {
     Route::get('/callback', [StravaController::class, 'callback']);
     Route::get('/{token}/status', [StravaController::class, 'status']);
     Route::post('/{token}/sincronizar', [StravaController::class, 'sincronizar']);
+});
+
+Route::prefix('portal')->group(function () {
+    Route::get('/{token}', [PortalController::class, 'show']);
+    Route::post('/{token}/avaliacao', [PortalController::class, 'avaliacao']);
+    Route::post('/{token}/foto', [PortalController::class, 'foto']);
+
+    Route::get('/{token}/body-photos', [PortalBodyPhotoController::class, 'index']);
+    Route::post('/{token}/body-photos', [PortalBodyPhotoController::class, 'store']);
+    Route::get('/{token}/body-photos/{photoId}/imagem', [PortalBodyPhotoController::class, 'imagem']);
+
+    Route::get('/{token}/checkins/summary', [PortalCheckinController::class, 'summary']);
+    Route::get('/{token}/checkins', [PortalCheckinController::class, 'index']);
+    Route::post('/{token}/checkins', [PortalCheckinController::class, 'store']);
+    Route::get('/{token}/checkins/{checkinId}/imagem', [PortalCheckinController::class, 'imagem']);
+
+    Route::get('/{token}/academia', [PortalAcademiaController::class, 'index']);
+    Route::get('/{token}/academia/{submissionId}', [PortalAcademiaController::class, 'show']);
+    Route::post('/{token}/academia', [PortalAcademiaController::class, 'store']);
+
+    Route::post('/{token}/forma', [PortalFormaController::class, 'store']);
+
+    Route::post('/{token}/sessoes', [PortalController::class, 'iniciarSessao']);
+    Route::post('/{token}/sessoes/{sessionId}/registros', [PortalController::class, 'registrarSerie']);
+    Route::post('/{token}/sessoes/{sessionId}/concluir', [PortalController::class, 'concluirSessao']);
+
+    Route::get('/{token}/mensagens', [PortalChatController::class, 'index']);
+    Route::post('/{token}/mensagens', [PortalChatController::class, 'store']);
 });
