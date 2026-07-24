@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DesafioController;
 use App\Http\Controllers\ExercicioController;
 use App\Http\Controllers\ModeloController;
+use App\Http\Controllers\StravaController;
 use App\Http\Controllers\TreinoController;
 use Illuminate\Support\Facades\Route;
 
@@ -48,4 +49,13 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{id}', [DesafioController::class, 'show']);
         Route::delete('/{id}', [DesafioController::class, 'destroy']);
     });
+});
+
+// Rotas públicas: autenticadas pelo invite_token do aluno, não por JWT (mesmo
+// padrão do backend Node — usadas pelo fluxo de OAuth do Strava e pelo portal).
+Route::prefix('strava')->group(function () {
+    Route::get('/conectar/{token}', [StravaController::class, 'conectar']);
+    Route::get('/callback', [StravaController::class, 'callback']);
+    Route::get('/{token}/status', [StravaController::class, 'status']);
+    Route::post('/{token}/sincronizar', [StravaController::class, 'sincronizar']);
 });

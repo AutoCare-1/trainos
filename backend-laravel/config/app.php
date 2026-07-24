@@ -54,6 +54,11 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    // URLs do frontend Next.js e deste backend, usadas para montar redirects
+    // no fluxo de OAuth do Strava (espelha FRONTEND_URL/BACKEND_URL do Node).
+    'frontend_url' => env('FRONTEND_URL', 'http://localhost:3101'),
+    'backend_url' => env('BACKEND_URL', 'http://localhost:3002'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
