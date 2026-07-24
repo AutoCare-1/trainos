@@ -3,6 +3,7 @@
 use App\Http\Controllers\AlunoController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AcademiaController;
+use App\Http\Controllers\ConsultorIaController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\DesafioController;
 use App\Http\Controllers\ExercicioController;
@@ -63,6 +64,11 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/', [ContentController::class, 'index']);
         Route::post('/', [ContentController::class, 'store']);
         Route::patch('/{id}', [ContentController::class, 'update']);
+    });
+
+    Route::prefix('consultor-ia')->group(function () {
+        Route::get('/', [ConsultorIaController::class, 'index']);
+        Route::post('/chat', [ConsultorIaController::class, 'chat']);
     });
 });
 
