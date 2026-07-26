@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class NegocioController extends Controller
@@ -39,48 +40,58 @@ class NegocioController extends Controller
         $diasAlunoNovo = self::DIAS_ALUNO_NOVO;
         $treinosMinimosAlunoNovo = self::TREINOS_MINIMOS_ALUNO_NOVO;
 
+        // date_trunc/interval não existem no MySQL — limites de data calculados em PHP/Carbon.
+        $agora = Carbon::now()->toDateTimeString();
+        $inicioMes = Carbon::now()->startOfMonth()->toDateTimeString();
+        $inicioMesData = Carbon::now()->startOfMonth()->toDateString();
+        $limiteSemTreinar = Carbon::now()->subDays($diasSemTreinar)->toDateTimeString();
+        $limiteAlunoNovo = Carbon::now()->subDays($diasAlunoNovo)->toDateTimeString();
+        $limiteSemCheckinTs = Carbon::now()->subDays($diasSemCheckin)->toDateTimeString();
+        $limiteSemCheckinData = Carbon::now()->subDays($diasSemCheckin)->toDateString();
+
+        // Os LEFT JOIN LATERAL do original viram joins normais contra tabelas derivadas
+        // pré-agregadas (mesmo efeito, sem depender de suporte a LATERAL no MySQL) —
+        // mesmo padrão já usado em AlunoController::index().
         $kpis = DB::selectOne(
-            <<<SQL
+            <<<'SQL'
             select
                count(*) as total_alunos,
-               count(*) filter (where s.created_at >= date_trunc('month', now())) as novos_no_mes,
-               count(*) filter (
-                 where existe_treino_enviado.enviado
-                   and (ultima_sessao.finished_at is null or ultima_sessao.finished_at < now() - interval '{$diasSemTreinar} days')
-               ) as inativos
+               sum(case when s.created_at >= ? then 1 else 0 end) as novos_no_mes,
+               sum(case when
+                 exists(select 1 from workouts w where w.student_id = s.id and w.status = 'sent')
+                 and (ultima_sessao.finished_at is null or ultima_sessao.finished_at < ?)
+               then 1 else 0 end) as inativos
              from students s
-             left join lateral (
-               select exists(select 1 from workouts w where w.student_id = s.id and w.status = 'sent') as enviado
-             ) existe_treino_enviado on true
-             left join lateral (
-               select max(ts.finished_at) as finished_at
+             left join (
+               select ts.student_id, max(ts.finished_at) as finished_at
                from training_sessions ts
-               where ts.student_id = s.id and ts.status = 'completed'
-             ) ultima_sessao on true
+               where ts.status = 'completed'
+               group by ts.student_id
+             ) ultima_sessao on ultima_sessao.student_id = s.id
              where s.professional_id = ?
             SQL,
-            [$professionalId]
+            [$inicioMes, $limiteSemTreinar, $professionalId]
         );
 
         $retencao = DB::selectOne(
             <<<'SQL'
             with antigos as (
                select id from students
-               where professional_id = ? and created_at < date_trunc('month', now())
+               where professional_id = ? and created_at < ?
              )
              select
                (select count(*) from antigos) as denominador,
                (select count(*) from antigos a
                 where exists (
                   select 1 from training_sessions ts
-                  where ts.student_id = a.id and ts.status = 'completed' and ts.finished_at >= date_trunc('month', now())
+                  where ts.student_id = a.id and ts.status = 'completed' and ts.finished_at >= ?
                 ) or exists (
                   select 1 from checkins c
-                  where c.student_id = a.id and c.checkin_date >= date_trunc('month', now())::date
+                  where c.student_id = a.id and c.checkin_date >= ?
                 )
                ) as numerador
             SQL,
-            [$professionalId]
+            [$professionalId, $inicioMes, $inicioMes, $inicioMesData]
         );
         $denominador = (int) $retencao->denominador;
         $retencaoPct = $denominador > 0 ? (int) round(((int) $retencao->numerador / $denominador) * 100) : null;
@@ -90,43 +101,42 @@ class NegocioController extends Controller
             with base as (
                select
                  s.id, s.name, s.created_at,
-                 extract(day from now() - s.created_at)::int as dias_desde_cadastro,
-                 coalesce(sessoes.total, 0)::int as sessoes_concluidas,
-                 existe_treino_enviado.enviado as tem_treino_enviado,
+                 datediff(?, s.created_at) as dias_desde_cadastro,
+                 coalesce(sessoes.total, 0) as sessoes_concluidas,
+                 exists(select 1 from workouts w where w.student_id = s.id and w.status = 'sent') as tem_treino_enviado,
                  ultima_sessao.finished_at as ultima_sessao_em,
                  ultimo_checkin.checkin_date as ultimo_checkin_em
                from students s
-               left join lateral (
-                 select count(*) as total from training_sessions ts
-                 where ts.student_id = s.id and ts.status = 'completed'
-               ) sessoes on true
-               left join lateral (
-                 select exists(select 1 from workouts w where w.student_id = s.id and w.status = 'sent') as enviado
-               ) existe_treino_enviado on true
-               left join lateral (
-                 select max(ts.finished_at) as finished_at
+               left join (
+                 select ts.student_id, count(*) as total from training_sessions ts
+                 where ts.status = 'completed'
+                 group by ts.student_id
+               ) sessoes on sessoes.student_id = s.id
+               left join (
+                 select ts.student_id, max(ts.finished_at) as finished_at
                  from training_sessions ts
-                 where ts.student_id = s.id and ts.status = 'completed'
-               ) ultima_sessao on true
-               left join lateral (
-                 select max(c.checkin_date) as checkin_date from checkins c where c.student_id = s.id
-               ) ultimo_checkin on true
+                 where ts.status = 'completed'
+                 group by ts.student_id
+               ) ultima_sessao on ultima_sessao.student_id = s.id
+               left join (
+                 select student_id, max(checkin_date) as checkin_date from checkins group by student_id
+               ) ultimo_checkin on ultimo_checkin.student_id = s.id
                where s.professional_id = ?
              ),
              classificado as (
                select
                  id, name, dias_desde_cadastro, sessoes_concluidas, created_at,
                  case when ultima_sessao_em is null then null
-                      else extract(day from now() - ultima_sessao_em)::int end as dias_sem_treinar,
+                      else datediff(?, ultima_sessao_em) end as dias_sem_treinar,
                  case when ultimo_checkin_em is null then null
-                      else (current_date - ultimo_checkin_em)::int end as dias_sem_checkin,
+                      else datediff(?, ultimo_checkin_em) end as dias_sem_checkin,
                  case
-                   when created_at > now() - interval '{$diasAlunoNovo} days' and sessoes_concluidas < {$treinosMinimosAlunoNovo}
+                   when created_at > ? and sessoes_concluidas < {$treinosMinimosAlunoNovo}
                      then 'novo_sem_treinos'
-                   when tem_treino_enviado and (ultima_sessao_em is null or ultima_sessao_em < now() - interval '{$diasSemTreinar} days')
+                   when tem_treino_enviado and (ultima_sessao_em is null or ultima_sessao_em < ?)
                      then 'sem_treinar'
-                   when (ultimo_checkin_em is null and created_at < now() - interval '{$diasSemCheckin} days')
-                     or (ultimo_checkin_em is not null and ultimo_checkin_em < current_date - interval '{$diasSemCheckin} days')
+                   when (ultimo_checkin_em is null and created_at < ?)
+                     or (ultimo_checkin_em is not null and ultimo_checkin_em < ?)
                      then 'sem_checkin'
                    else null
                  end as motivo_codigo
@@ -139,7 +149,11 @@ class NegocioController extends Controller
                case motivo_codigo when 'novo_sem_treinos' then 0 when 'sem_treinar' then 1 else 2 end,
                created_at desc
             SQL,
-            [$professionalId]
+            [
+                $agora, $professionalId,
+                $agora, $agora,
+                $limiteAlunoNovo, $limiteSemTreinar, $limiteSemCheckinTs, $limiteSemCheckinData,
+            ]
         );
 
         return response()->json([
