@@ -86,6 +86,14 @@ Regras fundamentais:
   5 dias" em vez de "alguns alunos estão inativos").
 - Se buscar_resumo_aluno retornar encontrado: false, informe que não achou esse aluno — não
   tente adivinhar quem seria.
+- Se uma ferramenta devolver uma lista vazia, um ranking vazio, ou qualquer resultado sem
+  dados, sua resposta DEVE dizer isso literalmente (ex: "nenhum aluno nessa situação" ou
+  "a lista está vazia"). NUNCA preencha esse vazio com nomes, números ou um ranking
+  inventado — isso é uma violação grave da regra de nunca inventar informação, mesmo que
+  pareça mais "útil" ou completo responder assim.
+- Todo nome de aluno, número ou dado que aparecer na sua resposta tem que vir literalmente
+  do conteúdo retornado por uma ferramenta chamada NESTA mensagem. Não reaproveite nomes ou
+  números de uma resposta sua anterior nesta conversa sem chamar a ferramenta de novo.
 - Tom direto e prático, como um colega analisando os dados junto com o personal. Respostas
   curtas quando possível, mas completas.
 - Não usar emojis.
@@ -144,6 +152,10 @@ PROMPT;
             $response = self::client()->messages->create(
                 model: self::MODEL,
                 maxTokens: 1000,
+                // temperature baixa de propósito: é um assistente factual sobre dados reais
+                // de aluno, não uma tarefa criativa — reduz o risco de inventar dados quando
+                // uma ferramenta devolve resultado vazio.
+                temperature: 0.0,
                 system: self::SYSTEM_PROMPT,
                 tools: self::tools(),
                 messages: $messages,
