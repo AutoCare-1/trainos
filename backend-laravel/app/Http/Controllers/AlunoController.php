@@ -276,12 +276,15 @@ class AlunoController extends Controller
             [$student->id]
         );
 
+        $planoCobranca = StudentBillingPlan::where('student_id', $student->id)->whereNull('ends_on')->first();
+
         return response()->json([
             'student' => $student,
             'workouts' => $workouts,
             'measurements' => $measurements,
             'gamificacao' => $gamificacao,
             'alertasEstagnacao' => $alertasEstagnacao,
+            'billing_plan' => $planoCobranca,
         ]);
     }
 }

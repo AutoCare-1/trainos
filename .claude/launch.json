@@ -18,6 +18,12 @@
       "runtimeExecutable": "bash",
       "runtimeArgs": ["-c", "cd backend-laravel && php artisan serve --port=3003"],
       "port": 3003
+    },
+    {
+      "name": "trainos-frontend-verify",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "frontend", "run", "dev", "--", "-p", "3102"],
+      "port": 3102
     }
   ]
 }

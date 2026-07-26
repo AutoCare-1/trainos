@@ -17,6 +17,24 @@ const LABEL_PRIORIDADE: Record<string, string> = {
   media: 'Atenção',
 }
 
+const LABEL_TIPO_COBRANCA: Record<string, string> = {
+  consultoria: 'Consultoria',
+  presencial: 'Presencial',
+}
+
+function formatarMoeda(valor: number): string {
+  return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+}
+
+function formatarMesReferencia(mes: string): string {
+  const [ano, mesNum] = mes.split('-')
+  const nomes = [
+    'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+    'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro',
+  ]
+  return `${nomes[Number(mesNum) - 1]} de ${ano}`
+}
+
 export default function NegocioPage() {
   const router = useRouter()
   const [dados, setDados] = useState<DashboardNegocio | null>(null)
@@ -47,14 +65,41 @@ export default function NegocioPage() {
 
         {dados && (
           <div className="space-y-8">
-            {/* Visão financeira — placeholder até o billing real ser integrado */}
+            {/* Visão financeira — receita/despesa/resultado do mês corrente */}
             <section>
-              <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-500">Visão financeira</h2>
-              <div className="glass rounded-2xl border-dashed p-8 text-center">
-                <p className="font-medium text-slate-700">Acompanhamento financeiro chegando em breve</p>
-                <p className="mt-1 text-sm text-slate-400">
-                  Receita mensal, inadimplência e projeção vão aparecer aqui assim que a cobrança estiver integrada.
-                </p>
+              <div className="mb-3 flex items-baseline justify-between">
+                <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">Visão financeira</h2>
+                <span className="text-xs text-slate-400">{formatarMesReferencia(dados.financeiro.mes_referencia)}</span>
+              </div>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                <div className="glass rounded-2xl p-4">
+                  <p className="text-xs font-medium uppercase tracking-wider text-slate-500">Receita do mês</p>
+                  <p className="mt-1 text-2xl font-bold text-emerald-600">{formatarMoeda(dados.financeiro.receita.total)}</p>
+                  {Object.keys(dados.financeiro.receita.por_tipo).length > 0 && (
+                    <p className="mt-1 text-xs text-slate-400">
+                      {Object.entries(dados.financeiro.receita.por_tipo)
+                        .map(([tipo, valor]) => `${LABEL_TIPO_COBRANCA[tipo] ?? tipo}: ${formatarMoeda(valor)}`)
+                        .join(' · ')}
+                    </p>
+                  )}
+                </div>
+                <div className="glass rounded-2xl p-4">
+                  <p className="text-xs font-medium uppercase tracking-wider text-slate-500">Despesas do mês</p>
+                  <p className="mt-1 text-2xl font-bold text-rose-500">{formatarMoeda(dados.financeiro.despesas.total)}</p>
+                  <Link href="/gastos" className="mt-1 inline-block text-xs text-[#2648b3]">
+                    Ver despesas →
+                  </Link>
+                </div>
+                <div className="glass rounded-2xl p-4">
+                  <p className="text-xs font-medium uppercase tracking-wider text-slate-500">Resultado líquido</p>
+                  <p
+                    className={`mt-1 text-2xl font-bold ${
+                      dados.financeiro.resultado_liquido >= 0 ? 'text-slate-900' : 'text-rose-600'
+                    }`}
+                  >
+                    {formatarMoeda(dados.financeiro.resultado_liquido)}
+                  </p>
+                </div>
               </div>
             </section>
 

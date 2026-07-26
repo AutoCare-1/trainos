@@ -11,6 +11,8 @@ export interface ParQAnswers {
   pressao_medicacao: boolean
 }
 
+export type TipoCobranca = 'consultoria' | 'presencial'
+
 export interface Student {
   id: string
   name: string
@@ -32,6 +34,28 @@ export interface Student {
   ultima_sessao_em?: string | null
   tem_treino_enviado?: boolean
   exercicios_sem_progresso?: number
+}
+
+/** Plano de cobrança vigente de um aluno — nunca editado in-place, só fechado/recriado (ver GET /alunos/:id). */
+export interface StudentBillingPlan {
+  id: string
+  student_id: string
+  professional_id: string
+  billing_type: TipoCobranca
+  monthly_value: string
+  starts_on: string
+  ends_on: string | null
+}
+
+export interface Expense {
+  id: string
+  professional_id: string
+  description: string
+  amount: string
+  is_recurring: boolean
+  starts_on: string
+  ends_on: string | null
+  previous_expense_id: string | null
 }
 
 export interface BodyPhoto {
@@ -363,8 +387,15 @@ export interface AlunoEmRisco {
   motivo: string
 }
 
+export interface FinanceiroMes {
+  mes_referencia: string
+  receita: { total: number; por_tipo: Record<string, number> }
+  despesas: { total: number }
+  resultado_liquido: number
+}
+
 export interface DashboardNegocio {
-  financeiro: { status: 'em_breve' }
+  financeiro: FinanceiroMes
   kpis: DashboardNegocioKpis
   alunos_em_risco: AlunoEmRisco[]
 }

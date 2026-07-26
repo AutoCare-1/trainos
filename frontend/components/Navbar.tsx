@@ -11,6 +11,7 @@ import { Professional } from '@/lib/types'
 
 function itemAtivo(pathname: string): string {
   if (pathname.startsWith('/negocio')) return 'negocio'
+  if (pathname.startsWith('/gastos')) return 'gastos'
   if (pathname.startsWith('/alunos/novo')) return 'novo-aluno'
   if (pathname.startsWith('/alunos') || pathname === '/dashboard') return 'dashboard'
   if (pathname.startsWith('/desafios')) return 'desafios'
@@ -31,6 +32,7 @@ export default function Navbar() {
 
   const menuItems: MenuItem[] = [
     { id: 'negocio', label: 'Meu Negócio', icon: '', href: '/negocio' },
+    { id: 'gastos', label: 'Meus Gastos', icon: '', href: '/gastos' },
     { id: 'dashboard', label: 'Meus alunos', icon: '', href: '/dashboard' },
     { id: 'desafios', label: 'Desafios', icon: '', href: '/desafios' },
     { id: 'videos', label: 'Vídeos dos exercícios', icon: '', href: '/videos' },

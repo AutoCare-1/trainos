@@ -305,6 +305,12 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
             </p>
           </div>
           <div className="hidden shrink-0 gap-2 sm:flex">
+            <Link
+              href={`/alunos/${studentId}/editar`}
+              className="glass glass-hover rounded-xl px-4 py-2.5 text-sm text-slate-700"
+            >
+              Editar
+            </Link>
             <button
               onClick={() => {
                 navigator.clipboard.writeText(inviteLink)
