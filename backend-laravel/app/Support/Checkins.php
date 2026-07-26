@@ -2,16 +2,21 @@
 
 namespace App\Support;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
 /**
  * Espelha backend/src/services/checkins.ts do Node.
  *
- * Toda a matemática de data roda dentro do Postgres (date_trunc, generate_series)
- * em vez de em PHP, pra evitar bugs de fuso horário na hora de decidir "que dia é
- * hoje" — o mesmo dia que já foi usado pra gravar o check-in (current_date do
- * banco), sem depender do timezone do processo PHP.
+ * O original fazia toda a matemática de data dentro do Postgres (date_trunc,
+ * generate_series) pra evitar bugs de fuso horário. MySQL não tem equivalente
+ * a nenhuma das duas funções, então a matemática de data (início/fim de
+ * semana-mês-ano) foi movida pra PHP via Carbon — mas usando sempre
+ * config('app.timezone') = UTC (mesma convenção já usada no resto do app,
+ * ver Middleware/NormalizeTimestampsToIso8601), então o resultado é o mesmo
+ * "hoje" que o banco usaria. `checkin_date` é coluna DATE pura (sem hora),
+ * comparada sempre por string 'Y-m-d', sem ambiguidade de timezone.
  */
 class Checkins
 {
@@ -20,29 +25,27 @@ class Checkins
     /** @return array{inicio: string, fim: string, dias_com_checkin: int, total_dias: int, grid: array} */
     public static function calcularResumoSemana(string $studentId, ?string $ref): array
     {
+        $inicio = self::referencia($ref)->startOfWeek(Carbon::MONDAY);
+        $fim = $inicio->copy()->addDays(6);
+
         $rows = DB::select(
-            <<<'SQL'
-            select gs::date::text as date,
-                   c.id is not null as checked,
-                   c.comment as comment
-            from generate_series(
-              date_trunc('week', coalesce(?::date, current_date)),
-              date_trunc('week', coalesce(?::date, current_date)) + interval '6 days',
-              interval '1 day'
-            ) as gs
-            left join checkins c on c.student_id = ? and c.checkin_date = gs::date
-            order by gs
-            SQL,
-            [$ref, $ref, $studentId]
+            'select checkin_date, comment from checkins where student_id = ? and checkin_date between ? and ?',
+            [$studentId, $inicio->toDateString(), $fim->toDateString()]
         );
+        $porData = [];
+        foreach ($rows as $r) {
+            $porData[(string) $r->checkin_date] = $r->comment;
+        }
 
         $grid = [];
-        foreach ($rows as $i => $r) {
+        for ($i = 0; $i < 7; $i++) {
+            $data = $inicio->copy()->addDays($i)->toDateString();
+            $checked = array_key_exists($data, $porData);
             $grid[] = [
-                'date' => $r->date,
+                'date' => $data,
                 'label' => self::LABELS_DIA[$i],
-                'checked' => (bool) $r->checked,
-                'comment' => $r->comment,
+                'checked' => $checked,
+                'comment' => $checked ? $porData[$data] : null,
             ];
         }
 
@@ -58,54 +61,35 @@ class Checkins
     /** @return array{ano: int, mes: int, dias_com_checkin: int, total_dias_mes: int, dias_marcados: array} */
     public static function calcularResumoMes(string $studentId, ?string $ref): array
     {
-        $linha = DB::selectOne(
-            <<<'SQL'
-            select
-               extract(year from date_trunc('month', coalesce(?::date, current_date)))::int as ano,
-               extract(month from date_trunc('month', coalesce(?::date, current_date)))::int as mes,
-               extract(day from (
-                 date_trunc('month', coalesce(?::date, current_date)) + interval '1 month' - interval '1 day'
-               ))::int as total_dias_mes,
-               count(c.id) as dias_com_checkin,
-               coalesce(array_agg(extract(day from c.checkin_date)::int order by c.checkin_date) filter (where c.id is not null), '{}') as dias_marcados
-            from (select coalesce(?::date, current_date) as ref) base
-            left join checkins c
-              on c.student_id = ?
-              and c.checkin_date >= date_trunc('month', base.ref)
-              and c.checkin_date < date_trunc('month', base.ref) + interval '1 month'
-            group by base.ref
-            SQL,
-            [$ref, $ref, $ref, $ref, $studentId]
+        $inicioMes = self::referencia($ref)->startOfMonth();
+        $fimMes = $inicioMes->copy()->endOfMonth();
+
+        $rows = DB::select(
+            'select checkin_date from checkins where student_id = ? and checkin_date between ? and ? order by checkin_date',
+            [$studentId, $inicioMes->toDateString(), $fimMes->toDateString()]
         );
 
         return [
-            'ano' => $linha->ano,
-            'mes' => $linha->mes,
-            'total_dias_mes' => $linha->total_dias_mes,
-            'dias_com_checkin' => (int) $linha->dias_com_checkin,
-            'dias_marcados' => self::parsePgIntArray($linha->dias_marcados),
+            'ano' => $inicioMes->year,
+            'mes' => $inicioMes->month,
+            'total_dias_mes' => $inicioMes->daysInMonth,
+            'dias_com_checkin' => count($rows),
+            'dias_marcados' => array_map(fn ($r) => Carbon::parse($r->checkin_date)->day, $rows),
         ];
     }
 
     /** @return array{ano: int, dias_com_checkin: int} */
     public static function calcularResumoAno(string $studentId, ?string $ref): array
     {
-        $linha = DB::selectOne(
-            <<<'SQL'
-            select
-               extract(year from date_trunc('year', coalesce(?::date, current_date)))::int as ano,
-               count(c.id) as dias_com_checkin
-            from (select coalesce(?::date, current_date) as ref) base
-            left join checkins c
-              on c.student_id = ?
-              and c.checkin_date >= date_trunc('year', base.ref)
-              and c.checkin_date < date_trunc('year', base.ref) + interval '1 year'
-            group by base.ref
-            SQL,
-            [$ref, $ref, $studentId]
-        );
+        $inicioAno = self::referencia($ref)->startOfYear();
+        $fimAno = $inicioAno->copy()->endOfYear();
 
-        return ['ano' => $linha->ano, 'dias_com_checkin' => (int) $linha->dias_com_checkin];
+        $diasComCheckin = DB::table('checkins')
+            ->where('student_id', $studentId)
+            ->whereBetween('checkin_date', [$inicioAno->toDateString(), $fimAno->toDateString()])
+            ->count();
+
+        return ['ano' => $inicioAno->year, 'dias_com_checkin' => $diasComCheckin];
     }
 
     /**
@@ -116,29 +100,20 @@ class Checkins
      */
     public static function listarCheckinsPeriodo(string $studentId, string $period, ?string $ref): array
     {
-        // period já vem tipado pelo controller, mas o valor é interpolado direto na query
-        // (date_trunc não aceita parâmetro para a unidade) — trava aqui pra qualquer
-        // chamador futuro não abrir injection.
         if (! in_array($period, ['week', 'month', 'year'], true)) {
             throw new InvalidArgumentException("period inválido: {$period}");
         }
-        $unidade = $period;
-        $intervalo = match ($period) {
-            'week' => '7 days',
-            'month' => '1 month',
-            'year' => '1 year',
+
+        $refDate = self::referencia($ref);
+        [$inicio, $fim] = match ($period) {
+            'week' => [$refDate->copy()->startOfWeek(Carbon::MONDAY), $refDate->copy()->startOfWeek(Carbon::MONDAY)->addDays(6)],
+            'month' => [$refDate->copy()->startOfMonth(), $refDate->copy()->endOfMonth()],
+            'year' => [$refDate->copy()->startOfYear(), $refDate->copy()->endOfYear()],
         };
 
         $rows = DB::select(
-            <<<SQL
-            select id, checkin_date::text as checkin_date, comment
-            from checkins
-            where student_id = ?
-              and checkin_date >= date_trunc('{$unidade}', coalesce(?::date, current_date))
-              and checkin_date < date_trunc('{$unidade}', coalesce(?::date, current_date)) + interval '{$intervalo}'
-            order by checkin_date desc
-            SQL,
-            [$studentId, $ref, $ref]
+            'select id, checkin_date, comment from checkins where student_id = ? and checkin_date between ? and ? order by checkin_date desc',
+            [$studentId, $inicio->toDateString(), $fim->toDateString()]
         );
 
         return array_map(fn ($r) => (array) $r, $rows);
@@ -147,19 +122,15 @@ class Checkins
     public static function existeCheckinHoje(string $studentId): bool
     {
         $row = DB::selectOne(
-            'select 1 as one from checkins where student_id = ? and checkin_date = current_date',
+            'select 1 as one from checkins where student_id = ? and checkin_date = curdate()',
             [$studentId]
         );
 
         return $row !== null;
     }
 
-    private static function parsePgIntArray(?string $raw): array
+    private static function referencia(?string $ref): Carbon
     {
-        if (! $raw || $raw === '{}') {
-            return [];
-        }
-
-        return array_map('intval', explode(',', trim($raw, '{}')));
+        return $ref ? Carbon::parse($ref) : Carbon::now();
     }
 }
