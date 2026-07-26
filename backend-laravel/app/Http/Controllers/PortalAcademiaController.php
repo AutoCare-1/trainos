@@ -71,9 +71,11 @@ class PortalAcademiaController extends Controller
             return response()->json(['error' => 'Submissão não encontrada'], 404);
         }
 
+        // MySQL já ordena NULL antes de qualquer valor em ASC por padrão (comportamento
+        // oposto ao Postgres) — orderBy simples reproduz o "nulls first" do original.
         $assets = DB::table('gym_media_assets')
             ->where('submission_id', $submission->id)
-            ->orderByRaw('frame_index nulls first')
+            ->orderBy('frame_index')
             ->get();
 
         return response()->json([

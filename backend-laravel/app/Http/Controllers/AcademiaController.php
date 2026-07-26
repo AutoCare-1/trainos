@@ -58,8 +58,10 @@ class AcademiaController extends Controller
         // manualmente pra bater com o pg do Node (que já entrega json/jsonb parseado).
         $submission->par_q_answers = $submission->par_q_answers !== null ? json_decode($submission->par_q_answers) : null;
 
+        // MySQL já ordena NULL antes de qualquer valor em ASC por padrão (comportamento
+        // oposto ao Postgres) — orderBy simples reproduz o "nulls first" do original.
         $assets = GymMediaAsset::where('submission_id', $submission->id)
-            ->orderByRaw('frame_index nulls first')
+            ->orderBy('frame_index')
             ->get();
 
         $analysis = GymAnalysisResult::where('submission_id', $submission->id)->first();

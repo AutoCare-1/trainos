@@ -94,8 +94,8 @@ class PortalFormaController extends Controller
                 <<<'SQL'
                 insert into form_feedback_history (id, student_id, exercise_id, feedback_count, last_feedback_at)
                 values (?, ?, ?, 1, now())
-                on conflict (student_id, exercise_id) do update
-                  set feedback_count = form_feedback_history.feedback_count + 1, last_feedback_at = now()
+                on duplicate key update
+                  feedback_count = feedback_count + 1, last_feedback_at = now()
                 SQL,
                 [(string) Str::orderedUuid(), $student->id, $exerciseId]
             );
