@@ -14,7 +14,11 @@ class AuthController extends Controller
     // GET /auth/me — dados do profissional autenticado
     public function me(Request $request): JsonResponse
     {
-        $professional = $request->user();
+        // O middleware de auth só valida o JWT (sem tocar o banco — ver JwtAuthenticate),
+        // então $request->user() aqui só tem o id da claim sub. Essa rota é a única
+        // que precisa dos dados reais, então busca explicitamente — mesmo padrão do
+        // /me do Node (só ele consulta o profissional; requireAuth nunca consultava).
+        $professional = Professional::find($request->user()->id);
         if (! $professional) {
             return response()->json(['error' => 'Profissional não encontrado'], 404);
         }

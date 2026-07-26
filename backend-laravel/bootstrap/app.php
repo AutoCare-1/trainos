@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\JwtAuthenticate;
 use App\Http\Middleware\NormalizeTimestampsToIso8601;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -24,6 +25,11 @@ return Application::configure(basePath: dirname(__DIR__))
         // Normaliza timestamps de qualquer resposta JSON pro mesmo formato ISO 8601
         // que o driver pg do Node sempre entrega — ver a classe pra contexto completo.
         $middleware->append(NormalizeTimestampsToIso8601::class);
+
+        // Substitui o guard padrão do jwt-auth (auth:api) nas rotas do profissional —
+        // ver JwtAuthenticate pra entender por que (consulta ao banco a mais que o
+        // Node nunca fez, e que virava "não autenticado" quando o banco soluçava).
+        $middleware->alias(['auth.jwt' => JwtAuthenticate::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         // Sem prefixo "/api" nas rotas (ver withRouting acima) — este backend só
