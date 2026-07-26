@@ -16,7 +16,7 @@ return new class extends Migration
             $table->text('tempo_assessment')->nullable();
             $table->text('compensations')->nullable();
             $table->text('safety_notes')->nullable();
-            $table->json('three_key_feedback')->default(new \Illuminate\Database\Query\Expression("'[]'"));
+            $table->json('three_key_feedback')->default(new \Illuminate\Database\Query\Expression("('[]')"));
             $table->string('analysis_status')->default('completed');
             $table->timestamp('created_at')->useCurrent();
 
