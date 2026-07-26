@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -30,7 +31,7 @@ class ConsultorFerramentas
         }
 
         $row = DB::selectOne(
-            'select id, name from students where professional_id = ? and name ilike ? order by name limit 1',
+            'select id, name from students where professional_id = ? and name like ? order by name limit 1',
             [$professionalId, "%{$nomeOuId}%"]
         );
 
@@ -47,15 +48,14 @@ class ConsultorFerramentas
             ];
         }
 
+        $inicioSemana = Carbon::now()->startOfWeek(Carbon::MONDAY)->toDateString();
+        $fimSemana = Carbon::now()->startOfWeek(Carbon::MONDAY)->addDays(6)->toDateString();
+
         $semana = DB::selectOne(
-            <<<'SQL'
-            select count(*) as dias_com_checkin, 7 as total_dias
-            from checkins
-            where student_id = ?
-              and checkin_date >= date_trunc('week', current_date)
-              and checkin_date < date_trunc('week', current_date) + interval '7 days'
-            SQL,
-            [$aluno['id']]
+            'select count(*) as dias_com_checkin, 7 as total_dias
+             from checkins
+             where student_id = ? and checkin_date between ? and ?',
+            [$aluno['id'], $inicioSemana, $fimSemana]
         );
 
         $prs = DB::select(
@@ -77,7 +77,7 @@ class ConsultorFerramentas
             select e.name as exercise_name, c.load_kg_done, c.created_at
             from com_max_anterior c
             join exercises e on e.id = c.exercise_id
-            where c.created_at >= now() - interval '14 days'
+            where c.created_at >= now() - interval 14 day
               and c.load_kg_done > coalesce(c.max_anterior, 0)
             order by c.created_at desc
             SQL,
@@ -113,11 +113,11 @@ class ConsultorFerramentas
             where s.professional_id = ?
               and not exists (
                 select 1 from checkins c
-                where c.student_id = s.id and c.checkin_date >= current_date - (?::int - 1)
+                where c.student_id = s.id and c.checkin_date >= date_sub(curdate(), interval ? day)
               )
             order by s.name
             SQL,
-            [$professionalId, $dias]
+            [$professionalId, $dias - 1]
         );
 
         return ['periodo_dias' => $dias, 'alunos_sem_checkin' => array_map(fn ($r) => $r->name, $rows)];
@@ -146,7 +146,7 @@ class ConsultorFerramentas
             from com_max_anterior c
             join students s on s.id = c.student_id
             join exercises e on e.id = c.exercise_id
-            where c.created_at >= now() - (?::int * interval '1 day')
+            where c.created_at >= now() - interval ? day
               and c.load_kg_done > coalesce(c.max_anterior, 0)
             order by c.created_at desc
             SQL,
@@ -198,28 +198,24 @@ class ConsultorFerramentas
 
     public static function listarAlunosMaisConsistentes(string $professionalId): array
     {
+        $inicioSemana = Carbon::now()->startOfWeek(Carbon::MONDAY)->toDateString();
+        $fimSemana = Carbon::now()->startOfWeek(Carbon::MONDAY)->addDays(6)->toDateString();
+        $inicioMes = Carbon::now()->startOfMonth()->toDateString();
+        $fimMes = Carbon::now()->endOfMonth()->toDateString();
+
         $rows = DB::select(
             <<<'SQL'
             select s.name as aluno,
-                   count(c.id) filter (
-                     where c.checkin_date >= date_trunc('week', current_date)
-                     and c.checkin_date < date_trunc('week', current_date) + interval '7 days'
-                   ) as dias_semana_atual,
-                   count(c.id) filter (
-                     where c.checkin_date >= date_trunc('month', current_date)
-                     and c.checkin_date < date_trunc('month', current_date) + interval '1 month'
-                   ) as dias_mes_atual
+                   sum(case when c.checkin_date between ? and ? then 1 else 0 end) as dias_semana_atual,
+                   sum(case when c.checkin_date between ? and ? then 1 else 0 end) as dias_mes_atual
             from students s
             left join checkins c on c.student_id = s.id
             where s.professional_id = ?
             group by s.id, s.name
-            having count(c.id) filter (
-              where c.checkin_date >= date_trunc('month', current_date)
-              and c.checkin_date < date_trunc('month', current_date) + interval '1 month'
-            ) > 0
+            having sum(case when c.checkin_date between ? and ? then 1 else 0 end) > 0
             order by dias_mes_atual desc, dias_semana_atual desc, s.name
             SQL,
-            [$professionalId]
+            [$inicioSemana, $fimSemana, $inicioMes, $fimMes, $professionalId, $inicioMes, $fimMes]
         );
 
         return [
