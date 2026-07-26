@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\NormalizeTimestampsToIso8601;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -19,6 +20,10 @@ return Application::configure(basePath: dirname(__DIR__))
         // App 100% API (sem tela de login web) — nunca redireciona convidado
         // não autenticado, deixa a AuthenticationException virar 401 JSON.
         $middleware->redirectGuestsTo(fn () => null);
+
+        // Normaliza timestamps de qualquer resposta JSON pro mesmo formato ISO 8601
+        // que o driver pg do Node sempre entrega — ver a classe pra contexto completo.
+        $middleware->append(NormalizeTimestampsToIso8601::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         // Sem prefixo "/api" nas rotas (ver withRouting acima) — este backend só
