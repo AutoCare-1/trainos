@@ -14,51 +14,61 @@ class ConsultorIa
 
     private const MAX_RODADAS_TOOL_USE = 5;
 
-    private const TOOLS = [
-        [
-            'name' => 'buscar_resumo_aluno',
-            'description' => 'Busca o resumo de um aluno específico pelo nome (ou id): frequência de check-in da semana atual, recordes pessoais (PR) batidos nos últimos 14 dias, e o último comentário salvo na aba Evolução física dele.',
-            'input_schema' => [
-                'type' => 'object',
-                'properties' => [
-                    'nome_ou_id' => ['type' => 'string', 'description' => 'Nome (ou parte do nome) do aluno, ou o id dele'],
+    /**
+     * Método (não const) porque duas ferramentas não têm parâmetros — precisam de um
+     * stdClass vazio em "properties", não um array `[]`. A API da Anthropic rejeita
+     * `properties: []` com "Input should be an object" (PHP serializa array vazio
+     * associativo como `[]` no JSON, não `{}`), e stdClass não é permitido em
+     * inicializador de const de array.
+     */
+    private static function tools(): array
+    {
+        return [
+            [
+                'name' => 'buscar_resumo_aluno',
+                'description' => 'Busca o resumo de um aluno específico pelo nome (ou id): frequência de check-in da semana atual, recordes pessoais (PR) batidos nos últimos 14 dias, e o último comentário salvo na aba Evolução física dele.',
+                'input_schema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'nome_ou_id' => ['type' => 'string', 'description' => 'Nome (ou parte do nome) do aluno, ou o id dele'],
+                    ],
+                    'required' => ['nome_ou_id'],
                 ],
-                'required' => ['nome_ou_id'],
             ],
-        ],
-        [
-            'name' => 'listar_alunos_sem_checkin',
-            'description' => 'Lista os alunos que NÃO fizeram nenhum check-in de treino nos últimos N dias.',
-            'input_schema' => [
-                'type' => 'object',
-                'properties' => [
-                    'dias' => ['type' => 'number', 'description' => 'Quantidade de dias pra trás a considerar (ex: 7)'],
+            [
+                'name' => 'listar_alunos_sem_checkin',
+                'description' => 'Lista os alunos que NÃO fizeram nenhum check-in de treino nos últimos N dias.',
+                'input_schema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'dias' => ['type' => 'number', 'description' => 'Quantidade de dias pra trás a considerar (ex: 7)'],
+                    ],
+                    'required' => ['dias'],
                 ],
-                'required' => ['dias'],
             ],
-        ],
-        [
-            'name' => 'listar_prs_recentes',
-            'description' => 'Lista os recordes pessoais (PRs) de carga batidos pelos alunos nos últimos N dias, com nome do aluno, exercício e carga.',
-            'input_schema' => [
-                'type' => 'object',
-                'properties' => [
-                    'dias' => ['type' => 'number', 'description' => 'Quantidade de dias pra trás a considerar (ex: 7)'],
+            [
+                'name' => 'listar_prs_recentes',
+                'description' => 'Lista os recordes pessoais (PRs) de carga batidos pelos alunos nos últimos N dias, com nome do aluno, exercício e carga.',
+                'input_schema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'dias' => ['type' => 'number', 'description' => 'Quantidade de dias pra trás a considerar (ex: 7)'],
+                    ],
+                    'required' => ['dias'],
                 ],
-                'required' => ['dias'],
             ],
-        ],
-        [
-            'name' => 'listar_estagnados',
-            'description' => 'Lista os alunos (e o exercício específico) que não aumentaram a carga entre as duas últimas sessões concluídas — sinal de estagnação.',
-            'input_schema' => ['type' => 'object', 'properties' => []],
-        ],
-        [
-            'name' => 'listar_alunos_mais_consistentes',
-            'description' => 'Retorna um ranking dos alunos por consistência de check-in (dias com check-in na semana e no mês atuais), do mais consistente pro menos.',
-            'input_schema' => ['type' => 'object', 'properties' => []],
-        ],
-    ];
+            [
+                'name' => 'listar_estagnados',
+                'description' => 'Lista os alunos (e o exercício específico) que não aumentaram a carga entre as duas últimas sessões concluídas — sinal de estagnação.',
+                'input_schema' => ['type' => 'object', 'properties' => new \stdClass()],
+            ],
+            [
+                'name' => 'listar_alunos_mais_consistentes',
+                'description' => 'Retorna um ranking dos alunos por consistência de check-in (dias com check-in na semana e no mês atuais), do mais consistente pro menos.',
+                'input_schema' => ['type' => 'object', 'properties' => new \stdClass()],
+            ],
+        ];
+    }
 
     private const SYSTEM_PROMPT = <<<'PROMPT'
 Você é o Consultor IA de um app de personal trainer — um assistente que responde perguntas do
@@ -135,7 +145,7 @@ PROMPT;
                 model: self::MODEL,
                 maxTokens: 1000,
                 system: self::SYSTEM_PROMPT,
-                tools: self::TOOLS,
+                tools: self::tools(),
                 messages: $messages,
             );
 
