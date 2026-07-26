@@ -7,6 +7,7 @@ use App\Http\Controllers\ConsultorIaController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\DesafioController;
 use App\Http\Controllers\ExercicioController;
+use App\Http\Controllers\GastoController;
 use App\Http\Controllers\ModeloController;
 use App\Http\Controllers\NegocioController;
 use App\Http\Controllers\PortalAcademiaController;
@@ -80,6 +81,13 @@ Route::middleware('auth.jwt')->group(function () {
     });
 
     Route::get('/negocio', [NegocioController::class, 'index']);
+
+    Route::prefix('gastos')->group(function () {
+        Route::get('/', [GastoController::class, 'index']);
+        Route::post('/', [GastoController::class, 'store']);
+        Route::patch('/{id}', [GastoController::class, 'update']);
+        Route::patch('/{id}/encerrar', [GastoController::class, 'encerrar']);
+    });
 });
 
 // Rotas públicas: autenticadas pelo invite_token do aluno, não por JWT (mesmo
