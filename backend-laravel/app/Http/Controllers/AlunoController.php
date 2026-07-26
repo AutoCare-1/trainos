@@ -93,6 +93,10 @@ class AlunoController extends Controller
 
         $students = $students->map(function ($s) use ($estagnacao) {
             $s->exercicios_sem_progresso = $estagnacao[$s->id] ?? 0;
+            // par_q_answers é coluna json — select('s.*') via DB::table() puro não passa
+            // pelo cast do model Student, então volta como string crua; decodifica manualmente
+            // pra bater com o pg do Node (que já entrega json/jsonb parseado).
+            $s->par_q_answers = $s->par_q_answers !== null ? json_decode($s->par_q_answers) : null;
 
             return $s;
         });

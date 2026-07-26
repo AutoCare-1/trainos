@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DeviceConnection;
+use App\Models\ExternalActivity;
 use App\Models\Student;
 use App\Support\Strava;
 use Illuminate\Http\JsonResponse;
@@ -82,8 +83,9 @@ class StravaController extends Controller
             ->select('provider', 'connected_at')
             ->get();
 
-        $atividades = DB::table('external_activities')
-            ->where('student_id', $student->id)
+        // raw_payload é coluna json — usa o model (com cast pra array) em vez de DB::table()
+        // puro, senão volta como string crua e diverge do pg do Node (que já entrega parseado).
+        $atividades = ExternalActivity::where('student_id', $student->id)
             ->orderByDesc('started_at')
             ->limit(20)
             ->get();

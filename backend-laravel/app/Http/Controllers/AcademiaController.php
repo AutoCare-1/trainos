@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Exercise;
+use App\Models\GymAnalysisResult;
 use App\Models\GymMediaAsset;
 use App\Models\GymMediaSubmission;
 use App\Models\GymWorkoutRecommendation;
@@ -52,12 +53,16 @@ class AcademiaController extends Controller
         if (! $submission) {
             return response()->json(['error' => 'Submissão não encontrada'], 404);
         }
+        // par_q_answers é coluna json — a query acima é DB::table() puro (não passa pelo
+        // cast do model Student), então volta como string crua e precisa ser decodificada
+        // manualmente pra bater com o pg do Node (que já entrega json/jsonb parseado).
+        $submission->par_q_answers = $submission->par_q_answers !== null ? json_decode($submission->par_q_answers) : null;
 
         $assets = GymMediaAsset::where('submission_id', $submission->id)
             ->orderByRaw('frame_index nulls first')
             ->get();
 
-        $analysis = DB::table('gym_analysis_results')->where('submission_id', $submission->id)->first();
+        $analysis = GymAnalysisResult::where('submission_id', $submission->id)->first();
         $recommendation = GymWorkoutRecommendation::where('submission_id', $submission->id)->first();
 
         $items = [];
