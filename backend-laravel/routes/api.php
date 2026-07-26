@@ -38,6 +38,7 @@ Route::middleware('auth.jwt')->group(function () {
         Route::get('/', [AlunoController::class, 'index']);
         Route::post('/', [AlunoController::class, 'store']);
         Route::get('/{id}', [AlunoController::class, 'show']);
+        Route::patch('/{id}', [AlunoController::class, 'update']);
     });
 
     Route::prefix('treinos')->group(function () {

@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreAlunoRequest;
+use App\Http\Requests\UpdateAlunoRequest;
 use App\Models\BodyMeasurement;
 use App\Models\Student;
+use App\Models\StudentBillingPlan;
 use App\Support\Gamification;
+use App\Support\Money;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +16,44 @@ use Illuminate\Support\Str;
 
 class AlunoController extends Controller
 {
+    /**
+     * Aplica a cobrança informada (se veio alguma) sem nunca dar UPDATE em
+     * monthly_value/billing_type — fecha o plano vigente (ends_on = hoje) e cria
+     * um novo (starts_on = hoje) só quando o valor/tipo realmente muda, pra
+     * preservar a receita já calculada de meses anteriores. Reenviar o mesmo
+     * valor não cria linha de histórico redundante.
+     */
+    private function aplicarCobranca(Student $student, ?string $billingType, mixed $monthlyValue): void
+    {
+        if ($billingType === null || $monthlyValue === null) {
+            return;
+        }
+
+        $planoVigente = StudentBillingPlan::where('student_id', $student->id)->whereNull('ends_on')->first();
+
+        $mudou = ! $planoVigente
+            || $planoVigente->billing_type !== $billingType
+            || Money::toCents($planoVigente->monthly_value) !== Money::toCents($monthlyValue);
+
+        if (! $mudou) {
+            return;
+        }
+
+        $hoje = now()->toDateString();
+
+        if ($planoVigente) {
+            $planoVigente->update(['ends_on' => $hoje]);
+        }
+
+        StudentBillingPlan::create([
+            'student_id' => $student->id,
+            'professional_id' => $student->professional_id,
+            'billing_type' => $billingType,
+            'monthly_value' => $monthlyValue,
+            'starts_on' => $hoje,
+        ]);
+    }
+
     // Conta, por aluno, quantos exercícios não tiveram a carga máxima aumentada
     // entre as duas últimas sessões concluídas em que ele registrou peso.
     // Espelha contarEstagnacaoPorAluno() de backend/src/routes/alunos.ts do Node.
@@ -105,29 +147,66 @@ class AlunoController extends Controller
     }
 
     // POST / — cadastra aluno e gera link de convite (token)
-    public function store(Request $request): JsonResponse
+    public function store(StoreAlunoRequest $request): JsonResponse
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string'],
-            'email' => ['nullable', 'string'],
-            'phone' => ['nullable', 'string'],
-            'objective' => ['nullable', 'string'],
-            'weight_kg' => ['nullable', 'numeric'],
-            'height_cm' => ['nullable', 'numeric'],
-        ]);
+        $validated = $request->validated();
+        $professionalId = $request->user()->id;
 
-        $student = Student::create([
-            'professional_id' => $request->user()->id,
-            'name' => trim($validated['name']),
-            'email' => isset($validated['email']) ? trim($validated['email']) ?: null : null,
-            'phone' => isset($validated['phone']) ? trim($validated['phone']) ?: null : null,
-            'objective' => isset($validated['objective']) ? trim($validated['objective']) ?: null : null,
-            'weight_kg' => $validated['weight_kg'] ?? null,
-            'height_cm' => $validated['height_cm'] ?? null,
-            'invite_token' => Str::random(14),
-        ]);
+        $student = DB::transaction(function () use ($validated, $professionalId) {
+            $student = Student::create([
+                'professional_id' => $professionalId,
+                'name' => trim($validated['name']),
+                'email' => isset($validated['email']) ? trim($validated['email']) ?: null : null,
+                'phone' => isset($validated['phone']) ? trim($validated['phone']) ?: null : null,
+                'objective' => isset($validated['objective']) ? trim($validated['objective']) ?: null : null,
+                'weight_kg' => $validated['weight_kg'] ?? null,
+                'height_cm' => $validated['height_cm'] ?? null,
+                'invite_token' => Str::random(14),
+            ]);
+
+            $this->aplicarCobranca($student, $validated['billing_type'] ?? null, $validated['monthly_value'] ?? null);
+
+            return $student;
+        });
 
         return response()->json(['student' => $student], 201);
+    }
+
+    // PATCH /:id — edita dados do aluno (não existia edição até então); aplica a
+    // regra de fechar/criar plano de cobrança se billing_type/monthly_value vierem
+    public function update(UpdateAlunoRequest $request, string $id): JsonResponse
+    {
+        $professionalId = $request->user()->id;
+        $validated = $request->validated();
+
+        $student = Student::where('id', $id)->where('professional_id', $professionalId)->first();
+        if (! $student) {
+            return response()->json(['error' => 'Aluno não encontrado'], 404);
+        }
+
+        DB::transaction(function () use ($student, $validated) {
+            $camposBasicos = collect($validated)->only(['email', 'phone', 'objective', 'weight_kg', 'height_cm'])->all();
+            if (isset($validated['name'])) {
+                $camposBasicos['name'] = trim($validated['name']);
+            }
+            if (array_key_exists('email', $camposBasicos)) {
+                $camposBasicos['email'] = $camposBasicos['email'] ? trim($camposBasicos['email']) ?: null : null;
+            }
+            if (array_key_exists('phone', $camposBasicos)) {
+                $camposBasicos['phone'] = $camposBasicos['phone'] ? trim($camposBasicos['phone']) ?: null : null;
+            }
+            if (array_key_exists('objective', $camposBasicos)) {
+                $camposBasicos['objective'] = $camposBasicos['objective'] ? trim($camposBasicos['objective']) ?: null : null;
+            }
+
+            if (! empty($camposBasicos)) {
+                $student->update($camposBasicos);
+            }
+
+            $this->aplicarCobranca($student, $validated['billing_type'] ?? null, $validated['monthly_value'] ?? null);
+        });
+
+        return response()->json(['student' => $student->fresh()]);
     }
 
     // GET /:id — perfil do aluno + treinos
