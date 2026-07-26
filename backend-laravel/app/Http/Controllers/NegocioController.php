@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\FinanceiroPersonal;
+use App\Support\Money;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -156,8 +158,19 @@ class NegocioController extends Controller
             ]
         );
 
+        $receita = FinanceiroPersonal::calcularReceitaMes($professionalId);
+        $despesas = FinanceiroPersonal::calcularDespesasMes($professionalId);
+        // Subtração em centavos (não receita['total'] - despesas['total'] direto,
+        // que seria float) — mesma cautela usada no resto do cálculo financeiro.
+        $resultadoLiquido = Money::fromCents(Money::toCents($receita['total']) - Money::toCents($despesas['total']));
+
         return response()->json([
-            'financeiro' => ['status' => 'em_breve'],
+            'financeiro' => [
+                'mes_referencia' => Carbon::now()->format('Y-m'),
+                'receita' => $receita,
+                'despesas' => $despesas,
+                'resultado_liquido' => $resultadoLiquido,
+            ],
             'kpis' => [
                 'total_alunos' => (int) $kpis->total_alunos,
                 'novos_no_mes' => (int) $kpis->novos_no_mes,
