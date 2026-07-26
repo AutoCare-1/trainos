@@ -80,4 +80,33 @@ class AlunoControllerBillingTest extends TestCase
 
         $this->assertDatabaseCount('student_billing_plans', 0);
     }
+
+    /**
+     * Sem isso, um aluno que cancela continuaria contando na receita pra sempre —
+     * achado numa segunda rodada de revisão, não estava no pedido original.
+     */
+    public function test_encerrar_cobranca_para_o_plano_de_contar_no_mes_seguinte(): void
+    {
+        [$professional, $headers] = $this->autenticar();
+
+        $studentId = $this->postJson('/alunos', [
+            'name' => 'Aluno Vai Cancelar',
+            'billing_type' => 'consultoria',
+            'monthly_value' => 150,
+        ], $headers)->assertCreated()->json('student.id');
+
+        $this->patchJson("/alunos/{$studentId}/cobranca/encerrar", [], $headers)->assertOk();
+
+        $plano = StudentBillingPlan::where('student_id', $studentId)->first();
+        $this->assertNotNull($plano->ends_on);
+
+        $receitaMesSeguinte = \App\Support\FinanceiroPersonal::calcularReceitaMes(
+            $professional->id,
+            \Illuminate\Support\Carbon::now()->addMonth()
+        );
+        $this->assertSame(0.0, $receitaMesSeguinte['total'], 'aluno com cobrança encerrada não deveria contar no mês seguinte');
+
+        // encerrar de novo (sem plano vigente) deve dar erro, não silenciar
+        $this->patchJson("/alunos/{$studentId}/cobranca/encerrar", [], $headers)->assertStatus(400);
+    }
 }

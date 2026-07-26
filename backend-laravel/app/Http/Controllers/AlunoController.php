@@ -209,6 +209,31 @@ class AlunoController extends Controller
         return response()->json(['student' => $student->fresh()]);
     }
 
+    // PATCH /:id/cobranca/encerrar — para a cobrança do aluno de contar a partir de
+    // hoje (ou da data informada). Sem isso, um plano vigente nunca para de entrar
+    // na receita mensal, mesmo que o aluno cancele/saia — mesmo padrão do
+    // "encerrar" de GastoController.
+    public function encerrarCobranca(Request $request, string $id): JsonResponse
+    {
+        $validated = $request->validate([
+            'ends_on' => ['nullable', 'date'],
+        ]);
+
+        $student = Student::where('id', $id)->where('professional_id', $request->user()->id)->first();
+        if (! $student) {
+            return response()->json(['error' => 'Aluno não encontrado'], 404);
+        }
+
+        $plano = StudentBillingPlan::where('student_id', $student->id)->whereNull('ends_on')->first();
+        if (! $plano) {
+            return response()->json(['error' => 'Este aluno não tem cobrança vigente'], 400);
+        }
+
+        $plano->update(['ends_on' => $validated['ends_on'] ?? now()->toDateString()]);
+
+        return response()->json(['billing_plan' => $plano]);
+    }
+
     // GET /:id — perfil do aluno + treinos
     public function show(Request $request, string $id): JsonResponse
     {

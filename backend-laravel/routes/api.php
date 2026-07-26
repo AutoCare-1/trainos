@@ -40,6 +40,7 @@ Route::middleware('auth.jwt')->group(function () {
         Route::post('/', [AlunoController::class, 'store']);
         Route::get('/{id}', [AlunoController::class, 'show']);
         Route::patch('/{id}', [AlunoController::class, 'update']);
+        Route::patch('/{id}/cobranca/encerrar', [AlunoController::class, 'encerrarCobranca']);
     });
 
     Route::prefix('treinos')->group(function () {

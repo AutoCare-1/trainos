@@ -21,6 +21,8 @@ export default function EditarAlunoClient({ studentId }: { studentId: string }) 
   const [objective, setObjective] = useState('')
   const [billingType, setBillingType] = useState<TipoCobranca | ''>('')
   const [monthlyValue, setMonthlyValue] = useState('')
+  const [temCobrancaVigente, setTemCobrancaVigente] = useState(false)
+  const [encerrando, setEncerrando] = useState(false)
 
   useEffect(() => {
     if (!localStorage.getItem('trainos_token')) {
@@ -39,6 +41,7 @@ export default function EditarAlunoClient({ studentId }: { studentId: string }) 
         if (data.billing_plan) {
           setBillingType(data.billing_plan.billing_type)
           setMonthlyValue(data.billing_plan.monthly_value)
+          setTemCobrancaVigente(true)
         }
       })
       .catch((err) => setErro(err instanceof ApiError ? err.message : 'Erro ao carregar aluno'))
@@ -65,6 +68,24 @@ export default function EditarAlunoClient({ studentId }: { studentId: string }) 
       setErro(err instanceof ApiError ? err.message : 'Erro ao salvar alterações')
     } finally {
       setSalvando(false)
+    }
+  }
+
+  async function encerrarCobranca() {
+    if (!confirm('Encerrar a cobrança deste aluno? A receita já calculada de meses anteriores não muda — só deixa de contar a partir de hoje.')) {
+      return
+    }
+    setEncerrando(true)
+    setErro(null)
+    try {
+      await api.patch(`/alunos/${studentId}/cobranca/encerrar`, {})
+      setTemCobrancaVigente(false)
+      setBillingType('')
+      setMonthlyValue('')
+    } catch (err) {
+      setErro(err instanceof ApiError ? err.message : 'Erro ao encerrar cobrança')
+    } finally {
+      setEncerrando(false)
     }
   }
 
@@ -188,6 +209,18 @@ export default function EditarAlunoClient({ studentId }: { studentId: string }) 
                 className="input-dark w-full rounded-xl px-4 py-2.5 text-sm"
               />
             </div>
+            {temCobrancaVigente && (
+              <div className="col-span-2">
+                <button
+                  type="button"
+                  onClick={encerrarCobranca}
+                  disabled={encerrando}
+                  className="text-xs font-medium text-rose-600 transition hover:underline"
+                >
+                  {encerrando ? 'Encerrando...' : 'Encerrar cobrança (aluno cancelou/saiu)'}
+                </button>
+              </div>
+            )}
           </div>
 
           {erro && <p className="text-sm text-rose-500">{erro}</p>}
