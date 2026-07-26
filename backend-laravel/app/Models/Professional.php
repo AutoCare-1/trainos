@@ -72,6 +72,16 @@ class Professional extends Model implements AuthenticatableContract, JWTSubject
         return $this->hasMany(GymMediaSubmission::class);
     }
 
+    public function billingPlans(): HasMany
+    {
+        return $this->hasMany(StudentBillingPlan::class);
+    }
+
+    public function expenses(): HasMany
+    {
+        return $this->hasMany(ProfessionalExpense::class);
+    }
+
     // JWTSubject — o pacote usa isto como claim `sub`, igual ao gerarToken() do Node
     // (jwt.sign({ sub: professionalId }, ...)).
     public function getJWTIdentifier(): string

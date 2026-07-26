@@ -92,4 +92,9 @@ class Student extends Model
     {
         return $this->hasMany(TrainingSession::class);
     }
+
+    public function billingPlans(): HasMany
+    {
+        return $this->hasMany(StudentBillingPlan::class);
+    }
 }
