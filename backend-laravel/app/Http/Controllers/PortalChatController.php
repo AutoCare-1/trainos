@@ -67,6 +67,13 @@ class PortalChatController extends Controller
 
         $messages = Message::where('student_id', $student->id)->orderBy('created_at')->get();
 
+        // Verdade de "lido" no servidor (pro tipo de notificação mensagem_nao_lida) —
+        // antes disso só existia como localStorage no navegador do aluno.
+        Message::where('student_id', $student->id)
+            ->whereIn('sender', ['ai', 'professional'])
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
+
         return response()->json(['messages' => $messages]);
     }
 

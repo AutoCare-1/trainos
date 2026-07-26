@@ -13,7 +13,11 @@ class SessionEntry extends Model
     public $timestamps = false;
     protected $table = 'session_entries';
 
-    protected $fillable = ['training_session_id', 'workout_exercise_id', 'set_number', 'reps_done', 'load_kg_done', 'notes'];
+    protected $fillable = ['training_session_id', 'workout_exercise_id', 'set_number', 'reps_done', 'load_kg_done', 'notes', 'is_pr'];
+
+    protected $casts = [
+        'is_pr' => 'boolean',
+    ];
 
     public function trainingSession(): BelongsTo
     {

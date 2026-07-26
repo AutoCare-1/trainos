@@ -24,6 +24,18 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["--prefix", "frontend", "run", "dev", "--", "-p", "3102"],
       "port": 3102
+    },
+    {
+      "name": "trainos-backend-laravel-verify",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "cd backend-laravel && php artisan serve --port=$PORT"],
+      "autoPort": true
+    },
+    {
+      "name": "trainos-frontend-verify-laravel",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "cd frontend && NEXT_PUBLIC_API_URL=http://localhost:3000 npm run dev -- -p $PORT"],
+      "autoPort": true
     }
   ]
 }

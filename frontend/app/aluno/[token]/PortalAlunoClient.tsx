@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import AtivarNotificacoesButton from '@/components/AtivarNotificacoesButton'
 import ChatBox from '@/components/ChatBox'
+import InstallBanner from '@/components/InstallBanner'
 import ExerciseAnimation from '@/components/ExerciseAnimation'
 import InstallAppModal from '@/components/InstallAppModal'
 import FormCorrectionModal from '@/components/FormCorrectionModal'
@@ -13,6 +15,7 @@ import WeightChart from '@/components/WeightChart'
 import { api, API_URL, ApiError } from '@/lib/api'
 import { formatarDataCurta, formatarDataLonga, nomeMes, primeiroDiaAno, primeiroDiaMes, somarDias } from '@/lib/checkinDates'
 import { comprimirImagem } from '@/lib/compressImage'
+import { estaInstalado } from '@/lib/push'
 import {
   BodyMeasurement,
   BodyPhoto,
@@ -325,8 +328,11 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   }, [token])
 
   // Pede permissão de notificação do navegador uma vez, sem bloquear o carregamento da página.
+  // Só faz sentido pedir isso pra quem já instalou o app na tela inicial — no
+  // navegador comum (Safari/Chrome sem instalar) o pedido nem funciona de verdade
+  // pra Web Push no iOS, e só incomodaria à toa quem tá só visitando.
   useEffect(() => {
-    if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
+    if (typeof Notification !== 'undefined' && Notification.permission === 'default' && estaInstalado()) {
       Notification.requestPermission().catch(() => {})
     }
   }, [])
@@ -466,26 +472,32 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   const primeiroNome = data.student.name.split(' ')[0]
 
   const cabecalho = (
-    <header className="sticky top-0 z-20 border-b border-black/8 bg-white/90 backdrop-blur-xl">
-      <div className="mx-auto flex w-full max-w-lg items-center gap-3 px-4 py-3">
-        <button
-          onClick={() => setMenuAberto(true)}
-          aria-label="Abrir menu"
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-600 transition hover:bg-slate-900/5"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="4" y1="7" x2="20" y2="7" />
-            <line x1="4" y1="12" x2="20" y2="12" />
-            <line x1="4" y1="17" x2="20" y2="17" />
-          </svg>
-        </button>
-        <div className="min-w-0 flex-1">
-          <p className="text-xs text-slate-500">Olá, {primeiroNome}</p>
-          <p className="truncate font-bold text-slate-900">{data.workout ? data.workout.name : 'Seu espaço de treino'}</p>
+    <>
+      <header className="sticky top-0 z-20 border-b border-black/8 bg-white/90 backdrop-blur-xl">
+        <div className="mx-auto flex w-full max-w-lg items-center gap-3 px-4 py-3">
+          <button
+            onClick={() => setMenuAberto(true)}
+            aria-label="Abrir menu"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-600 transition hover:bg-slate-900/5"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="4" y1="7" x2="20" y2="7" />
+              <line x1="4" y1="12" x2="20" y2="12" />
+              <line x1="4" y1="17" x2="20" y2="17" />
+            </svg>
+          </button>
+          <div className="min-w-0 flex-1">
+            <p className="text-xs text-slate-500">Olá, {primeiroNome}</p>
+            <p className="truncate font-bold text-slate-900">{data.workout ? data.workout.name : 'Seu espaço de treino'}</p>
+          </div>
+          <Image src="/clubemais-icone.png" alt="Clube Mais" width={36} height={36} className="h-9 w-9 shrink-0" />
         </div>
-        <Image src="/clubemais-icone.png" alt="Clube Mais" width={36} height={36} className="h-9 w-9 shrink-0" />
+      </header>
+      <div className="mx-auto w-full max-w-lg px-4 pt-4">
+        <InstallBanner />
+        <AtivarNotificacoesButton caminhoSubscribe={`/portal/${token}/push/subscribe`} />
       </div>
-    </header>
+    </>
   )
 
   if (aba === 'evolucao') {

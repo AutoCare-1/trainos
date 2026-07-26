@@ -399,3 +399,12 @@ export interface DashboardNegocio {
   kpis: DashboardNegocioKpis
   alunos_em_risco: AlunoEmRisco[]
 }
+
+export interface TipoNotificacao {
+  chave: string
+  nome: string
+  descricao: string | null
+  categoria: string
+  publico: 'aluno' | 'personal'
+  enabled: boolean
+}

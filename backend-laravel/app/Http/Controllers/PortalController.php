@@ -244,6 +244,7 @@ class PortalController extends Controller
             'reps_done' => $validated['reps_done'] ?? null,
             'load_kg_done' => $validated['load_kg_done'] ?? null,
             'notes' => $validated['notes'] ?? null,
+            'is_pr' => $isPr,
         ]);
 
         return response()->json(['entry' => $entry, 'isPr' => $isPr], 201);

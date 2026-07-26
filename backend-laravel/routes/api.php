@@ -10,17 +10,22 @@ use App\Http\Controllers\ExercicioController;
 use App\Http\Controllers\GastoController;
 use App\Http\Controllers\ModeloController;
 use App\Http\Controllers\NegocioController;
+use App\Http\Controllers\NotificacaoController;
 use App\Http\Controllers\PortalAcademiaController;
 use App\Http\Controllers\PortalBodyPhotoController;
 use App\Http\Controllers\PortalChatController;
 use App\Http\Controllers\PortalCheckinController;
 use App\Http\Controllers\PortalController;
 use App\Http\Controllers\PortalFormaController;
+use App\Http\Controllers\PortalPushController;
+use App\Http\Controllers\PushSubscriptionController;
 use App\Http\Controllers\StravaController;
 use App\Http\Controllers\TreinoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/health', fn () => response()->json(['status' => 'ok']));
+
+Route::get('/push/vapid-public-key', [PushSubscriptionController::class, 'vapidPublicKey']);
 
 Route::prefix('auth')->group(function () {
     Route::post('/signup', [AuthController::class, 'signup']);
@@ -83,6 +88,16 @@ Route::middleware('auth.jwt')->group(function () {
 
     Route::get('/negocio', [NegocioController::class, 'index']);
 
+    Route::prefix('push')->group(function () {
+        Route::post('/subscribe', [PushSubscriptionController::class, 'subscribe']);
+        Route::delete('/subscribe', [PushSubscriptionController::class, 'unsubscribe']);
+    });
+
+    Route::prefix('notificacoes')->group(function () {
+        Route::get('/tipos', [NotificacaoController::class, 'index']);
+        Route::patch('/tipos/{chave}', [NotificacaoController::class, 'toggle']);
+    });
+
     Route::prefix('gastos')->group(function () {
         Route::get('/', [GastoController::class, 'index']);
         Route::post('/', [GastoController::class, 'store']);
@@ -126,4 +141,7 @@ Route::prefix('portal')->group(function () {
 
     Route::get('/{token}/mensagens', [PortalChatController::class, 'index']);
     Route::post('/{token}/mensagens', [PortalChatController::class, 'store']);
+
+    Route::post('/{token}/push/subscribe', [PortalPushController::class, 'subscribe']);
+    Route::delete('/{token}/push/subscribe', [PortalPushController::class, 'unsubscribe']);
 });

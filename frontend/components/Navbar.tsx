@@ -4,7 +4,9 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
+import AtivarNotificacoesButton from '@/components/AtivarNotificacoesButton'
 import InstallAppModal from '@/components/InstallAppModal'
+import InstallBanner from '@/components/InstallBanner'
 import SideMenu, { MenuItem } from '@/components/SideMenu'
 import { api, clearToken } from '@/lib/api'
 import { Professional } from '@/lib/types'
@@ -20,6 +22,7 @@ function itemAtivo(pathname: string): string {
   if (pathname.startsWith('/academia')) return 'academia'
   if (pathname.startsWith('/conteudo')) return 'conteudo'
   if (pathname.startsWith('/consultor-ia')) return 'consultor-ia'
+  if (pathname.startsWith('/notificacoes')) return 'notificacoes'
   return ''
 }
 
@@ -41,6 +44,7 @@ export default function Navbar() {
     { id: 'conteudo', label: 'Ideias de Conteúdo', icon: '', href: '/conteudo' },
     { id: 'consultor-ia', label: 'Consultor IA', icon: '', href: '/consultor-ia' },
     { id: 'novo-aluno', label: 'Cadastrar aluno', icon: '', href: '/alunos/novo' },
+    { id: 'notificacoes', label: 'Notificações', icon: '', href: '/notificacoes' },
     { id: 'instalar', label: 'Instalar app', icon: '', onClick: () => setInstalarAberto(true) },
   ]
 
@@ -80,6 +84,11 @@ export default function Navbar() {
           <div className="w-9 shrink-0 sm:hidden" />
         </div>
       </header>
+
+      <div className="mx-auto w-full max-w-5xl px-4 pt-4">
+        <InstallBanner />
+        <AtivarNotificacoesButton caminhoSubscribe="/push/subscribe" />
+      </div>
 
       <SideMenu
         open={menuAberto}

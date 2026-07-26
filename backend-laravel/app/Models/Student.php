@@ -6,10 +6,14 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Notifications\Notifiable;
+use NotificationChannels\WebPush\HasPushSubscriptions;
 
 class Student extends Model
 {
     use HasUuids;
+    use Notifiable;
+    use HasPushSubscriptions;
 
     public $timestamps = false;
     protected $table = 'students';

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { estaInstalado } from '@/lib/push'
 
 type Plataforma = 'ios' | 'android' | 'outro'
 
@@ -11,18 +12,13 @@ function detectarPlataforma(): Plataforma {
   return 'outro'
 }
 
-function jaInstalado(): boolean {
-  const standaloneIOS = (window.navigator as Navigator & { standalone?: boolean }).standalone === true
-  return window.matchMedia('(display-mode: standalone)').matches || standaloneIOS
-}
-
 export default function InstallAppInstructions() {
   const [plataforma, setPlataforma] = useState<Plataforma | null>(null)
   const [instalado, setInstalado] = useState(false)
 
   useEffect(() => {
     setPlataforma(detectarPlataforma())
-    setInstalado(jaInstalado())
+    setInstalado(estaInstalado())
   }, [])
 
   if (instalado) {

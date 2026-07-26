@@ -7,12 +7,16 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Notifications\Notifiable;
+use NotificationChannels\WebPush\HasPushSubscriptions;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 class Professional extends Model implements AuthenticatableContract, JWTSubject
 {
     use HasUuids;
     use Authenticatable;
+    use Notifiable;
+    use HasPushSubscriptions;
 
     public $timestamps = false;
     protected $table = 'professionals';
