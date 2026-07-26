@@ -42,7 +42,7 @@ class AlunoController extends Controller
               group by student_id, exercise_id
               having max(case when rn = 2 then carga_max end) is not null
             )
-            select student_id, count(*) filter (where ultima <= anterior) as estagnados
+            select student_id, sum(case when ultima <= anterior then 1 else 0 end) as estagnados
             from comparacao
             group by student_id
             SQL,
