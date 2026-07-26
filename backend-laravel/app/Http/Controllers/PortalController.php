@@ -112,7 +112,7 @@ class PortalController extends Controller
                 ->orderBy('s.name')
                 ->select('s.id as student_id', 's.name', 's.photo_url')
                 ->selectRaw(
-                    "count(ts.id) filter (where ts.status = 'completed' and ts.finished_at::date between ? and ?) as pontos",
+                    "sum(case when ts.status = 'completed' and date(ts.finished_at) between ? and ? then 1 else 0 end) as pontos",
                     [$desafioAtivo->start_date, $desafioAtivo->end_date]
                 )
                 ->get();
