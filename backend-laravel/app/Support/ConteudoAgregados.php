@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -42,7 +43,7 @@ class ConteudoAgregados
             )
             select count(*) as total_prs
             from com_max_anterior
-            where created_at >= now() - interval '7 days'
+            where created_at >= now() - interval 7 day
               and load_kg_done > coalesce(max_anterior, 0)
             SQL,
             [$professionalId]
@@ -52,12 +53,12 @@ class ConteudoAgregados
         // e quantos desses mantiveram pelo menos 3 dos 7 dias (padrão de constância).
         $checkin = DB::selectOne(
             <<<'SQL'
-            select count(*) as ativos, count(*) filter (where dias_semana >= 3) as consistentes
+            select count(*) as ativos, sum(case when dias_semana >= 3 then 1 else 0 end) as consistentes
             from (
               select s.id, count(*) as dias_semana
               from students s
               join checkins c on c.student_id = s.id
-              where s.professional_id = ? and c.checkin_date >= current_date - interval '6 days'
+              where s.professional_id = ? and c.checkin_date >= curdate() - interval 6 day
               group by s.id
             ) por_aluno
             SQL,
@@ -67,14 +68,16 @@ class ConteudoAgregados
         $alunosConsistentes = (int) ($checkin->consistentes ?? 0);
 
         // Uso da aba de evolução física (frequência da feature, nunca o conteúdo das fotos).
+        // date_trunc('month', ...) não existe no MySQL — início do mês calculado em PHP.
+        $inicioMes = Carbon::now()->startOfMonth()->toDateString();
         $alunosComEvolucao = (int) (DB::selectOne(
             <<<'SQL'
             select count(distinct bp.student_id) as total
             from body_photos bp
             join students s on s.id = bp.student_id
-            where s.professional_id = ? and bp.taken_at >= date_trunc('month', current_date)
+            where s.professional_id = ? and bp.taken_at >= ?
             SQL,
-            [$professionalId]
+            [$professionalId, $inicioMes]
         )->total ?? 0);
 
         return "Dados agregados e 100% anônimos da base de alunos deste personal (nenhum nome, foto ou dado identificável — só padrões e contagens):\n".
