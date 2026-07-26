@@ -6,12 +6,25 @@ import Navbar from '@/components/Navbar'
 import { api, ApiError } from '@/lib/api'
 import { Expense } from '@/lib/types'
 
+// Nunca usar toISOString() aqui — ela converte pra UTC, e à noite (fuso do
+// Brasil, UTC-3) isso adianta a data pro dia seguinte. Usa os getters locais.
 function hoje(): string {
-  return new Date().toISOString().slice(0, 10)
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 
 function formatarMoeda(valor: string): string {
   return Number(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+}
+
+// O backend serializa colunas `date` como ISO completo ("2026-07-01T00:00:00Z").
+// new Date(iso).toLocaleDateString() interpretaria isso como meia-noite UTC e
+// mostraria o dia anterior pra quem está num fuso atrás de UTC (Brasil) — mesmo
+// cuidado já documentado em lib/checkinDates.ts. Extrai a data como string, sem
+// nunca passar pelo construtor de Date.
+function formatarData(iso: string): string {
+  const [ano, mes, dia] = iso.slice(0, 10).split('-')
+  return `${dia}/${mes}/${ano}`
 }
 
 export default function GastosPage() {
@@ -78,6 +91,10 @@ export default function GastosPage() {
   }
 
   async function salvarEdicao(id: string) {
+    if (!editDescription.trim() || !editAmount) {
+      setErro('Descrição e valor são obrigatórios')
+      return
+    }
     setSalvandoEdicao(true)
     setErro(null)
     try {
@@ -99,10 +116,10 @@ export default function GastosPage() {
   }
 
   async function encerrar(id: string) {
-    if (!confirm('Encerrar esta despesa recorrente? Ela para de contar a partir de hoje.')) return
+    if (!confirm('Encerrar esta despesa recorrente? Ela continua contando neste mês, mas para a partir do mês que vem.')) return
     try {
-      await api.patch(`/gastos/${id}/encerrar`, {})
-      carregar()
+      const { expense } = await api.patch<{ expense: Expense }>(`/gastos/${id}/encerrar`, {})
+      setExpenses((prev) => prev.map((e) => (e.id === id ? expense : e)))
     } catch (err) {
       setErro(err instanceof ApiError ? err.message : 'Erro ao encerrar despesa')
     }
@@ -191,13 +208,15 @@ export default function GastosPage() {
                 <div className="space-y-3">
                   <input
                     type="text"
+                    required
                     value={editDescription}
                     onChange={(e) => setEditDescription(e.target.value)}
                     className="input-dark w-full rounded-xl px-3 py-2 text-sm"
                   />
                   <input
                     type="number"
-                    min={0}
+                    required
+                    min={0.01}
                     step="0.01"
                     inputMode="decimal"
                     value={editAmount}
@@ -207,7 +226,7 @@ export default function GastosPage() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => salvarEdicao(exp.id)}
-                      disabled={salvandoEdicao}
+                      disabled={salvandoEdicao || !editDescription.trim() || !editAmount}
                       className="btn-primary rounded-xl px-4 py-2 text-sm"
                     >
                       {salvandoEdicao ? 'Salvando...' : 'Salvar'}
@@ -232,11 +251,16 @@ export default function GastosPage() {
                       >
                         {exp.is_recurring ? 'Recorrente' : 'Avulsa'}
                       </span>
+                      {exp.ends_on && (
+                        <span className="shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-700">
+                          Encerrada
+                        </span>
+                      )}
                     </div>
                     <p className="text-sm text-slate-500">
                       {formatarMoeda(exp.amount)}
-                      {exp.is_recurring ? '/mês' : ''} · desde{' '}
-                      {new Date(exp.starts_on).toLocaleDateString('pt-BR')}
+                      {exp.is_recurring ? '/mês' : ''} · desde {formatarData(exp.starts_on)}
+                      {exp.ends_on && <> · última cobrança {formatarData(exp.ends_on)}</>}
                     </p>
                   </div>
                   <div className="flex shrink-0 gap-2">
@@ -246,7 +270,7 @@ export default function GastosPage() {
                     >
                       Editar
                     </button>
-                    {exp.is_recurring && (
+                    {exp.is_recurring && !exp.ends_on && (
                       <button
                         onClick={() => encerrar(exp.id)}
                         className="rounded-xl px-3 py-1.5 text-xs font-medium text-rose-600 transition hover:bg-rose-50"
