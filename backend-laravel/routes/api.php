@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AlunoBodyPhotoController;
+use App\Http\Controllers\AlunoChatController;
+use App\Http\Controllers\AlunoCheckinController;
 use App\Http\Controllers\AlunoController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AcademiaController;
@@ -46,6 +49,21 @@ Route::middleware('auth.jwt')->group(function () {
         Route::get('/{id}', [AlunoController::class, 'show']);
         Route::patch('/{id}', [AlunoController::class, 'update']);
         Route::patch('/{id}/cobranca/encerrar', [AlunoController::class, 'encerrarCobranca']);
+
+        Route::post('/{id}/medicoes', [AlunoController::class, 'postMedicao']);
+        Route::patch('/{id}/avaliacao', [AlunoController::class, 'updateAvaliacao']);
+        Route::post('/{id}/foto', [AlunoController::class, 'uploadFoto']);
+
+        Route::get('/{id}/body-photos', [AlunoBodyPhotoController::class, 'index']);
+        Route::get('/{id}/body-photos/{photoId}/imagem', [AlunoBodyPhotoController::class, 'imagem']);
+
+        Route::get('/{id}/checkins/summary', [AlunoCheckinController::class, 'summary']);
+        Route::get('/{id}/checkins', [AlunoCheckinController::class, 'index']);
+        Route::get('/{id}/checkins/{checkinId}/imagem', [AlunoCheckinController::class, 'imagem']);
+
+        Route::get('/{id}/mensagens', [AlunoChatController::class, 'index']);
+        Route::post('/{id}/mensagens', [AlunoChatController::class, 'store']);
+        Route::patch('/{id}/autopilot', [AlunoChatController::class, 'autopilot']);
     });
 
     Route::prefix('treinos')->group(function () {

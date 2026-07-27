@@ -1,7 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { ativarPush, estaInstalado, precisaEstarInstalado, pushSuportado, statusPermissao } from '@/lib/push'
+import { useState } from 'react'
+import { ativarPush, estaInstalado, precisaEstarInstalado, pushSuportado, statusPermissao, useValorDoNavegador } from '@/lib/push'
+
+function calcularVisibilidadeInicial(): boolean {
+  const podeAtivar = !precisaEstarInstalado() || estaInstalado()
+  return podeAtivar && pushSuportado() && statusPermissao() === 'default'
+}
 
 /**
  * Só aparece quando dá pra ativar de verdade e a permissão ainda não foi
@@ -12,14 +17,11 @@ import { ativarPush, estaInstalado, precisaEstarInstalado, pushSuportado, status
  * que usa o painel em desktop, consegue ativar as notificações de gestão.
  */
 export default function AtivarNotificacoesButton({ caminhoSubscribe }: { caminhoSubscribe: string }) {
-  const [visivel, setVisivel] = useState(false)
+  const visivelNoMount = useValorDoNavegador(calcularVisibilidadeInicial, false)
+  const [visivelForcado, setVisivelForcado] = useState<boolean | null>(null)
+  const visivel = visivelForcado ?? visivelNoMount
   const [ativando, setAtivando] = useState(false)
   const [mensagem, setMensagem] = useState<string | null>(null)
-
-  useEffect(() => {
-    const podeAtivar = !precisaEstarInstalado() || estaInstalado()
-    setVisivel(podeAtivar && pushSuportado() && statusPermissao() === 'default')
-  }, [])
 
   async function ativar() {
     setAtivando(true)
@@ -27,10 +29,10 @@ export default function AtivarNotificacoesButton({ caminhoSubscribe }: { caminho
     const resultado = await ativarPush(caminhoSubscribe)
     setAtivando(false)
     if (resultado.ok) {
-      setVisivel(false)
+      setVisivelForcado(false)
     } else {
       setMensagem(resultado.motivo)
-      setVisivel(statusPermissao() === 'default')
+      setVisivelForcado(statusPermissao() === 'default')
     }
   }
 

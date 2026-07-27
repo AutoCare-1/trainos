@@ -15,7 +15,7 @@ import WeightChart from '@/components/WeightChart'
 import { api, API_URL, ApiError } from '@/lib/api'
 import { formatarDataCurta, formatarDataLonga, nomeMes, primeiroDiaAno, primeiroDiaMes, somarDias } from '@/lib/checkinDates'
 import { comprimirImagem } from '@/lib/compressImage'
-import { estaInstalado } from '@/lib/push'
+import { estaInstalado, useValorDoNavegador } from '@/lib/push'
 import {
   BodyMeasurement,
   BodyPhoto,
@@ -95,7 +95,21 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   // chat
   const [messages, setMessages] = useState<Message[]>([])
   const [aguardandoIa, setAguardandoIa] = useState(false)
-  const [ultimaVistaEm, setUltimaVistaEm] = useState<string | null>(null)
+  const ultimaVistaSalvaInicial = useValorDoNavegador(() => localStorage.getItem(chaveUltimaVista(token)), null)
+  const [ultimaVistaSalvaForcada, setUltimaVistaSalvaForcada] = useState<string | null>(null)
+  const ultimaVistaSalva = ultimaVistaSalvaForcada ?? ultimaVistaSalvaInicial
+  const [abaAnterior, setAbaAnterior] = useState(aba)
+
+  // Enquanto a aba de chat está aberta, "visto até" é sempre a última mensagem
+  // (0 não-lidas ali); fora dela, é o que foi persistido no localStorage. Ao
+  // detectar (durante o render, sem Effect) que acabou de sair da aba de chat,
+  // guarda esse instante como o novo "visto até" salvo.
+  const ultimaMensagem = messages[messages.length - 1]
+  const ultimaVistaEm = aba === 'chat' && ultimaMensagem ? ultimaMensagem.created_at : ultimaVistaSalva
+  if (aba !== abaAnterior) {
+    setAbaAnterior(aba)
+    if (abaAnterior === 'chat' && ultimaMensagem) setUltimaVistaSalvaForcada(ultimaMensagem.created_at)
+  }
 
   const naoLidas = messages.filter(
     (m) => m.sender !== 'student' && (!ultimaVistaEm || new Date(m.created_at) > new Date(ultimaVistaEm))
@@ -307,25 +321,23 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     carregarStrava()
     const params = new URLSearchParams(window.location.search)
     const statusStrava = params.get('strava')
-    if (statusStrava === 'conectado') {
-      setAvisoStrava('Strava conectado com sucesso!')
-      setAba('evolucao')
-    } else if (statusStrava === 'erro') {
-      setAvisoStrava('Não foi possível conectar ao Strava. Tenta de novo?')
-    }
     if (statusStrava) {
+      // Adiado pra fora do corpo síncrono do effect (mesma ideia do setTimeout
+      // de baixo) — processa o parâmetro da URL só uma vez, sem setState direto.
+      queueMicrotask(() => {
+        if (statusStrava === 'conectado') {
+          setAvisoStrava('Strava conectado com sucesso!')
+          setAba('evolucao')
+        } else if (statusStrava === 'erro') {
+          setAvisoStrava('Não foi possível conectar ao Strava. Tenta de novo?')
+        }
+      })
       window.history.replaceState({}, '', window.location.pathname)
       setTimeout(() => setAvisoStrava(null), 5000)
     }
 
     return () => clearInterval(intervalo)
   }, [token, carregarMensagens, carregarStrava, carregarFotosEvolucao, carregarResumoCheckins, carregarSubmissoesAcademia])
-
-  // Restaura de onde o aluno parou de ler o chat (persiste entre visitas).
-  useEffect(() => {
-    const salvo = localStorage.getItem(chaveUltimaVista(token))
-    if (salvo) setUltimaVistaEm(salvo)
-  }, [token])
 
   // Pede permissão de notificação do navegador uma vez, sem bloquear o carregamento da página.
   // Só faz sentido pedir isso pra quem já instalou o app na tela inicial — no
@@ -337,13 +349,12 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     }
   }, [])
 
-  // Marca como lido assim que o aluno abre a aba de mensagens.
+  // Persiste no localStorage assim que o aluno abre a aba de mensagens (o
+  // "visto até" em si já é derivado direto de `aba`/`messages` acima).
   useEffect(() => {
-    if (aba !== 'chat' || messages.length === 0) return
-    const ultima = messages[messages.length - 1]
-    setUltimaVistaEm(ultima.created_at)
-    localStorage.setItem(chaveUltimaVista(token), ultima.created_at)
-  }, [aba, messages, token])
+    if (aba !== 'chat' || !ultimaMensagem) return
+    localStorage.setItem(chaveUltimaVista(token), ultimaMensagem.created_at)
+  }, [aba, ultimaMensagem, token])
 
   // Notifica o aluno quando chega mensagem nova do professor/IA e ele não está na aba de chat.
   const totalMensagensAnterior = useRef(0)

@@ -11,6 +11,7 @@ use App\Models\StudentBillingPlan;
 use App\Support\Estagnacao;
 use App\Support\Gamification;
 use App\Support\Money;
+use App\Support\Uploads;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -274,5 +275,72 @@ class AlunoController extends Controller
             'alertasEstagnacao' => $alertasEstagnacao,
             'billing_plan' => $planoCobranca,
         ]);
+    }
+
+    // POST /:id/medicoes — registra uma nova medição (peso/cintura/quadril/%gordura) do aluno
+    public function postMedicao(Request $request, string $id): JsonResponse
+    {
+        $student = Student::where('id', $id)->where('professional_id', $request->user()->id)->first();
+        if (! $student) {
+            return response()->json(['error' => 'Aluno não encontrado'], 404);
+        }
+
+        $validated = $request->validate([
+            'weight_kg' => ['required', 'numeric'],
+            'waist_cm' => ['nullable', 'numeric'],
+            'hip_cm' => ['nullable', 'numeric'],
+            'body_fat_pct' => ['nullable', 'numeric'],
+            'recorded_at' => ['nullable', 'date'],
+            'notes' => ['nullable', 'string'],
+        ]);
+
+        $measurement = BodyMeasurement::create([
+            'student_id' => $student->id,
+            'recorded_at' => $validated['recorded_at'] ?? now()->toDateString(),
+            'weight_kg' => $validated['weight_kg'],
+            'waist_cm' => $validated['waist_cm'] ?? null,
+            'hip_cm' => $validated['hip_cm'] ?? null,
+            'body_fat_pct' => $validated['body_fat_pct'] ?? null,
+            'notes' => isset($validated['notes']) ? trim($validated['notes']) ?: null : null,
+        ]);
+
+        return response()->json(['measurement' => $measurement], 201);
+    }
+
+    // PATCH /:id/avaliacao — atualiza anamnese de saúde (PAR-Q resumido) do aluno
+    public function updateAvaliacao(Request $request, string $id): JsonResponse
+    {
+        $student = Student::where('id', $id)->where('professional_id', $request->user()->id)->first();
+        if (! $student) {
+            return response()->json(['error' => 'Aluno não encontrado'], 404);
+        }
+
+        $validated = $request->validate([
+            'par_q_answers' => ['nullable', 'array'],
+            'health_notes' => ['nullable', 'string'],
+        ]);
+
+        $student->update([
+            'par_q_answers' => $validated['par_q_answers'] ?? null,
+            'health_notes' => isset($validated['health_notes']) ? trim($validated['health_notes']) ?: null : null,
+        ]);
+
+        return response()->json(['student' => $student->fresh()]);
+    }
+
+    // POST /:id/foto — profissional envia a foto do aluno (fallback, caso o aluno não tenha feito isso)
+    public function uploadFoto(Request $request, string $id): JsonResponse
+    {
+        $student = Student::where('id', $id)->where('professional_id', $request->user()->id)->first();
+        if (! $student) {
+            return response()->json(['error' => 'Aluno não encontrado'], 404);
+        }
+
+        $request->validate(['foto' => ['required', 'file', 'mimetypes:image/*', 'max:10240']]);
+
+        $photoUrl = Uploads::storePublic($request->file('foto'), 'student-photos');
+        $student->update(['photo_url' => $photoUrl]);
+
+        return response()->json(['student' => $student->fresh()]);
     }
 }

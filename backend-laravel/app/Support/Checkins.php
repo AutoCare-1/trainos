@@ -121,9 +121,12 @@ class Checkins
 
     public static function existeCheckinHoje(string $studentId): bool
     {
+        // Data de "hoje" calculada em PHP e bindada como parâmetro (mesmo padrão do
+        // resto da classe) — curdate() é sintaxe exclusiva de MySQL, incompatível
+        // com o SQLite usado nos testes.
         $row = DB::selectOne(
-            'select 1 as one from checkins where student_id = ? and checkin_date = curdate()',
-            [$studentId]
+            'select 1 as one from checkins where student_id = ? and checkin_date = ?',
+            [$studentId, Carbon::now()->toDateString()]
         );
 
         return $row !== null;

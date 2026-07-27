@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import InstallAppModal from '@/components/InstallAppModal'
-import { estaInstalado } from '@/lib/push'
+import { estaInstalado, useValorDoNavegador } from '@/lib/push'
 
 /**
  * Convite discreto pra instalar o app — só existe pra quem ainda está no
@@ -12,13 +12,9 @@ import { estaInstalado } from '@/lib/push'
  * próxima visita enquanto não instalar, sem ser bloqueante no meio tempo.
  */
 export default function InstallBanner() {
-  const [mostrar, setMostrar] = useState(false)
+  const mostrar = useValorDoNavegador(() => !estaInstalado(), false)
   const [fechado, setFechado] = useState(false)
   const [modalAberto, setModalAberto] = useState(false)
-
-  useEffect(() => {
-    setMostrar(!estaInstalado())
-  }, [])
 
   if (!mostrar || fechado) return null
 

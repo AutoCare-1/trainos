@@ -1,4 +1,18 @@
+import { useSyncExternalStore } from 'react'
 import { api } from './api'
+
+const semInscricao = () => () => {}
+
+/**
+ * Lê um valor só disponível no navegador (instalado? suporta push? qual
+ * plataforma? etc.) uma vez, sem o efeito "seta estado no mount" que o eslint
+ * (react-hooks) reprova — mesma saída visual (assume `valorNoServidor` até
+ * hidratar, depois o valor real), só que via useSyncExternalStore em vez de
+ * Effect + setState.
+ */
+export function useValorDoNavegador<T>(ler: () => T, valorNoServidor: T): T {
+  return useSyncExternalStore(semInscricao, ler, () => valorNoServidor)
+}
 
 /**
  * Mesma checagem já usada em InstallAppInstructions — critério oficial pra saber

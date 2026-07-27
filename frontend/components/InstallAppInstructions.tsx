@@ -1,13 +1,13 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { estaInstalado, precisaEstarInstalado } from '@/lib/push'
+import { estaInstalado, precisaEstarInstalado, useValorDoNavegador } from '@/lib/push'
 
 type Plataforma = 'ios' | 'android' | 'outro'
 
 // iOS detectado via precisaEstarInstalado() (mesmo critério usado pro gate de
 // push) — cobre iPhone/iPod por user agent e iPad, que desde o iPadOS 13 se
-// identifica como "Macintosh" no user agent por padrão.
+// identifica como "Macintosh" no user agent por padrão. Só é chamada no
+// navegador (nunca durante SSR).
 function detectarPlataforma(): Plataforma {
   if (precisaEstarInstalado()) return 'ios'
   if (/Android/.test(navigator.userAgent)) return 'android'
@@ -15,13 +15,8 @@ function detectarPlataforma(): Plataforma {
 }
 
 export default function InstallAppInstructions() {
-  const [plataforma, setPlataforma] = useState<Plataforma | null>(null)
-  const [instalado, setInstalado] = useState(false)
-
-  useEffect(() => {
-    setPlataforma(detectarPlataforma())
-    setInstalado(estaInstalado())
-  }, [])
+  const plataforma = useValorDoNavegador<Plataforma | null>(detectarPlataforma, null)
+  const instalado = useValorDoNavegador(estaInstalado, false)
 
   if (instalado) {
     return (

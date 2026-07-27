@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
@@ -25,7 +25,10 @@ export default function DashboardPage() {
   }, [router])
 
   const totalSessoes = students?.reduce((acc, s) => acc + Number(s.sessoes_concluidas ?? 0), 0) ?? 0
-  const agora = useMemo(() => Date.now(), [])
+  // Captura "agora" uma única vez por mount — useState com inicializador
+  // lazy é a forma pura de fazer isso (ao contrário de chamar Date.now() direto
+  // no corpo do render, que quebra a regra de pureza do React).
+  const [agora] = useState(() => Date.now())
 
   function diasSemTreinar(s: Student): number | null {
     if (!s.ultima_sessao_em) return null

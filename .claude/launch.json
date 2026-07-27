@@ -14,22 +14,16 @@
       "port": 3003
     },
     {
-      "name": "trainos-frontend-verify",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "frontend", "run", "dev", "--", "-p", "3102"],
-      "port": 3102
-    },
-    {
       "name": "trainos-backend-verify",
       "runtimeExecutable": "bash",
-      "runtimeArgs": ["-c", "cd backend-laravel && php artisan serve --port=$PORT"],
-      "autoPort": true
+      "runtimeArgs": ["-c", "cd backend-laravel && php artisan serve --port=3013"],
+      "port": 3013
     },
     {
-      "name": "trainos-frontend-verify-laravel",
+      "name": "trainos-frontend-verify",
       "runtimeExecutable": "bash",
-      "runtimeArgs": ["-c", "cd frontend && NEXT_PUBLIC_API_URL=http://localhost:3000 npm run dev -- -p $PORT"],
-      "autoPort": true
+      "runtimeArgs": ["-c", "cd frontend && NEXT_PUBLIC_API_URL=http://localhost:3013 npm run dev -- -p 3112"],
+      "port": 3112
     }
   ]
 }
