@@ -13,6 +13,27 @@ use App\Models\Student;
  */
 readonly class NotificacaoCandidato
 {
+    /**
+     * Item 9 de uma revisão externa: o texto que aparece na tela de bloqueio não
+     * deve expor frequência de treino, dado de saúde ou nome de aluno — um
+     * aparelho pode ser compartilhado/visível a terceiros. Tipos que revelam
+     * isso (sem_treinar_*, avaliacao_pendente, estagnacao_detectada do lado do
+     * aluno; avaliacao_recebida, resumo_semanal_risco, revisao_pendente,
+     * mensagem_sem_resposta do lado do personal) usam esses textos genéricos —
+     * o detalhe completo só aparece depois de abrir o app pelo link da
+     * notificação. Tipos só de celebração (PR, badge, streak, parabéns) e
+     * operacionais sem dado sensível (novo treino, aprovação) continuam com
+     * texto rico — não há nada ali que alguém precise esconder de quem olhar o
+     * aparelho de relance.
+     */
+    public const string TITULO_ALUNO_GENERICO = 'Clube Mais Personal';
+
+    public const string CORPO_ALUNO_GENERICO = 'Você tem uma novidade no app. Toque para ver.';
+
+    public const string TITULO_PERSONAL_GENERICO = 'Clube Mais Personal';
+
+    public const string CORPO_PERSONAL_GENERICO = 'Você tem uma atualização sobre um aluno. Toque para ver.';
+
     public function __construct(
         public Student|Professional $recipient,
         public string $professionalId,

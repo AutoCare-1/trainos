@@ -23,11 +23,13 @@ class StreakEmRiscoRule implements NotificacaoRule
         }
 
         $hoje = now()->toDateString();
+        $inicioHoje = now()->startOfDay();
 
         $rows = DB::table('students as s')
             ->select('s.id', 's.professional_id', 's.invite_token')
             ->whereExists(fn ($q) => $q->select(DB::raw(1))->from('workouts as w')
-                ->whereColumn('w.student_id', 's.id')->where('w.status', 'sent'))
+                ->whereColumn('w.student_id', 's.id')->where('w.status', 'sent')
+                ->where('w.sent_at', '<', $inicioHoje))
             ->whereNotExists(fn ($q) => $q->select(DB::raw(1))->from('training_sessions as ts')
                 ->whereColumn('ts.student_id', 's.id')
                 ->where('ts.status', 'completed')

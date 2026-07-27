@@ -1,12 +1,15 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { ativarPush, estaInstalado, pushSuportado, statusPermissao } from '@/lib/push'
+import { ativarPush, estaInstalado, precisaEstarInstalado, pushSuportado, statusPermissao } from '@/lib/push'
 
 /**
- * Só aparece quando o app está instalado (Web Push não funciona no navegador
- * comum, principalmente no iOS) e a permissão ainda não foi decidida — some
- * sozinho depois de ativado ou negado, sem ficar insistindo.
+ * Só aparece quando dá pra ativar de verdade e a permissão ainda não foi
+ * decidida — some sozinho depois de ativado ou negado, sem ficar insistindo.
+ * No iPhone (precisaEstarInstalado()), exige estar instalado na tela inicial
+ * (restrição do Safari). Em qualquer outra plataforma (desktop, Android), o
+ * botão aparece numa aba comum do navegador mesmo — é assim que o personal,
+ * que usa o painel em desktop, consegue ativar as notificações de gestão.
  */
 export default function AtivarNotificacoesButton({ caminhoSubscribe }: { caminhoSubscribe: string }) {
   const [visivel, setVisivel] = useState(false)
@@ -14,7 +17,8 @@ export default function AtivarNotificacoesButton({ caminhoSubscribe }: { caminho
   const [mensagem, setMensagem] = useState<string | null>(null)
 
   useEffect(() => {
-    setVisivel(estaInstalado() && pushSuportado() && statusPermissao() === 'default')
+    const podeAtivar = !precisaEstarInstalado() || estaInstalado()
+    setVisivel(podeAtivar && pushSuportado() && statusPermissao() === 'default')
   }, [])
 
   async function ativar() {

@@ -8,8 +8,10 @@ use App\Models\TipoNotificacao;
 use App\Notifications\PushNotification;
 use App\Notifications\Rules\NotificacaoCandidato;
 use App\Notifications\Rules\AlertaSextaRule;
+use App\Notifications\Rules\AlunoCadastradoRule;
 use App\Notifications\Rules\AvaliacaoPendenteRule;
 use App\Notifications\Rules\AvaliacaoRecebidaRule;
+use App\Notifications\Rules\ComentarioFotoEvolucaoRule;
 use App\Notifications\Rules\DesafioTerminandoRule;
 use App\Notifications\Rules\EstagnacaoDetectadaRule;
 use App\Notifications\Rules\MarcoTempoTreinandoRule;
@@ -28,15 +30,19 @@ use App\Notifications\Rules\SemTreinarDiasRule;
 use App\Notifications\Rules\SemTreinarHojeRule;
 use App\Notifications\Rules\StreakEmRiscoRule;
 use App\Notifications\Rules\TreinoAcademiaAprovadoRule;
+use App\Support\CoordenadorNotificacoes;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
 /**
  * Roda a cada 15min via Scheduler (routes/console.php). Cada Rule decide sozinha
- * sua própria janela de tempo/limiar — este comando só itera, checa a preferência
- * do personal (toggle ligado/desligado) e garante idempotência via notification_logs
- * antes de despachar o job de envio real (App\Notifications\PushNotification, que
- * implementa ShouldQueue — o envio em si roda na fila, nunca aqui dentro).
+ * sua própria janela de tempo/limiar — este comando coleta os candidatos de
+ * TODAS as Rules, filtra por preferência (toggle ligado/desligado), manda pro
+ * CoordenadorNotificacoes (item 2 de revisão externa: supressão entre regras
+ * que competem pelo mesmo motivo + limite diário por destinatário) e só então
+ * garante idempotência via notification_logs e despacha o job de envio real
+ * (App\Notifications\PushNotification, que implementa ShouldQueue — o envio em
+ * si roda na fila, nunca aqui dentro).
  */
 class ProcessNotifications extends Command
 {
@@ -71,14 +77,17 @@ class ProcessNotifications extends Command
             new AvaliacaoRecebidaRule,
             new RevisaoPendenteRule,
             new MensagemSemRespostaRule,
+            new ComentarioFotoEvolucaoRule,
+            new AlunoCadastradoRule,
         ];
     }
 
     public function handle(): int
     {
         $catalogo = TipoNotificacao::all()->keyBy('chave');
-        $enviados = 0;
-        $pulados = 0;
+
+        /** @var array<int, array{chave: string, candidato: NotificacaoCandidato}> $candidatosLiberados */
+        $candidatosLiberados = [];
 
         foreach ($this->regras() as $regra) {
             $chave = $regra->chave();
@@ -99,19 +108,29 @@ class ProcessNotifications extends Command
             }
 
             foreach ($candidatos as $candidato) {
-                if (! $this->preferenciaLigada($chave, $candidato, $tipo->ativo_por_padrao)) {
-                    continue;
-                }
-
-                if ($this->registrarEDisparar($chave, $candidato)) {
-                    $enviados++;
-                } else {
-                    $pulados++;
+                if ($this->preferenciaLigada($chave, $candidato, $tipo->ativo_por_padrao)) {
+                    $candidatosLiberados[] = ['chave' => $chave, 'candidato' => $candidato];
                 }
             }
         }
 
-        $this->info("Notificações despachadas: {$enviados}. Já haviam sido enviadas (puladas): {$pulados}.");
+        $coordenados = (new CoordenadorNotificacoes)->coordenar($candidatosLiberados);
+        $suprimidosOuLimitados = count($candidatosLiberados) - count($coordenados);
+
+        $enviados = 0;
+        $pulados = 0;
+        foreach ($coordenados as $item) {
+            if ($this->registrarEDisparar($item['chave'], $item['candidato'])) {
+                $enviados++;
+            } else {
+                $pulados++;
+            }
+        }
+
+        $this->info(
+            "Notificações despachadas: {$enviados}. Já haviam sido enviadas (puladas): {$pulados}. ".
+            "Suprimidas/limitadas pela coordenação (supressão de motivo repetido ou limite diário): {$suprimidosOuLimitados}."
+        );
 
         return self::SUCCESS;
     }

@@ -64,8 +64,9 @@ class ResumoSemanalRiscoRule implements NotificacaoRule
             studentId: null,
             dedupKey: "resumo_semanal_risco:{$r->professional_id}:{$hoje}",
             contexto: null,
-            titulo: 'Resumo semanal de alunos em risco',
-            corpo: "Você tem {$r->total_em_risco} aluno".($r->total_em_risco == 1 ? '' : 's')." em risco de abandono. Veja em Meu Negócio.",
+            // Item 9 da revisão: risco de abandono é informação de negócio sensível, não vai na tela de bloqueio.
+            titulo: NotificacaoCandidato::TITULO_PERSONAL_GENERICO,
+            corpo: NotificacaoCandidato::CORPO_PERSONAL_GENERICO,
             url: '/negocio',
         ))->all();
     }

@@ -36,12 +36,14 @@ class NotificationTypesSeeder extends Seeder
             ['mensagem_nao_lida', 'Mensagem não lida', 'Aviso quando uma mensagem do personal ou da Coach IA fica sem abrir por algumas horas.', 'informativo', 'aluno'],
             ['avaliacao_pendente', 'Avaliação pendente', 'Aviso quando o aluno passa 30+ dias sem atualizar as medidas corporais.', 'informativo', 'aluno'],
             ['estagnacao_detectada', 'Estagnação detectada', 'Aviso quando a carga de um exercício não evolui nas últimas sessões.', 'informativo', 'aluno'],
+            ['comentario_foto_evolucao', 'Comentário da Coach IA na foto', 'Aviso quando a Coach IA comenta uma foto de evolução física recém-enviada.', 'informativo', 'aluno'],
 
             // Gestão (personal)
             ['resumo_semanal_risco', 'Resumo semanal de risco', 'Toda segunda, resumo de quantos alunos estão em risco de abandono.', 'gestao', 'personal'],
             ['avaliacao_recebida', 'Avaliação recebida', 'Aviso quando um aluno completa o PAR-Q ou a avaliação física pela primeira vez.', 'gestao', 'personal'],
             ['revisao_pendente', 'Revisão pendente', 'Aviso quando uma análise de academia aguarda aprovação do personal.', 'gestao', 'personal'],
             ['mensagem_sem_resposta', 'Mensagem sem resposta', 'Aviso quando um aluno espera resposta do personal há mais de algumas horas.', 'gestao', 'personal'],
+            ['aluno_cadastrado', 'Novo aluno cadastrado', 'Aviso quando um novo aluno é cadastrado.', 'gestao', 'personal'],
         ];
 
         foreach ($tipos as [$chave, $nome, $descricao, $categoria, $publico]) {

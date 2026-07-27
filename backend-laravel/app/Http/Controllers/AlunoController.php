@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAlunoRequest;
 use App\Http\Requests\UpdateAlunoRequest;
 use App\Models\BodyMeasurement;
+use App\Models\Exercise;
 use App\Models\Student;
 use App\Models\StudentBillingPlan;
+use App\Support\Estagnacao;
 use App\Support\Gamification;
 use App\Support\Money;
 use Illuminate\Http\JsonResponse;
@@ -57,41 +59,21 @@ class AlunoController extends Controller
     // Conta, por aluno, quantos exercícios não tiveram a carga máxima aumentada
     // entre as duas últimas sessões concluídas em que ele registrou peso.
     // Espelha contarEstagnacaoPorAluno() de backend/src/routes/alunos.ts do Node.
+    // Consolidado em App\Support\Estagnacao — mesma fonte de verdade usada pela
+    // notificação push estagnacao_detectada, pra nunca dar veredito divergente.
     private function contarEstagnacaoPorAluno(string $professionalId): array
     {
-        $rows = DB::select(
-            <<<'SQL'
-            with cargas as (
-              select ts.student_id, we.exercise_id, ts.id as session_id, ts.finished_at,
-                     max(se.load_kg_done) as carga_max
-              from session_entries se
-              join training_sessions ts on ts.id = se.training_session_id
-              join workout_exercises we on we.id = se.workout_exercise_id
-              join students s on s.id = ts.student_id
-              where s.professional_id = ? and ts.status = 'completed' and se.load_kg_done is not null
-              group by ts.student_id, we.exercise_id, ts.id, ts.finished_at
-            ),
-            ranked as (
-              select *, row_number() over (partition by student_id, exercise_id order by finished_at desc) as rn
-              from cargas
-            ),
-            comparacao as (
-              select student_id, exercise_id,
-                     max(case when rn = 1 then carga_max end) as ultima,
-                     max(case when rn = 2 then carga_max end) as anterior
-              from ranked
-              where rn <= 2
-              group by student_id, exercise_id
-              having max(case when rn = 2 then carga_max end) is not null
-            )
-            select student_id, sum(case when ultima <= anterior then 1 else 0 end) as estagnados
-            from comparacao
-            group by student_id
-            SQL,
-            [$professionalId]
-        );
+        $comparacoes = Estagnacao::compararUltimasDuasSessoes($professionalId);
 
-        return collect($rows)->mapWithKeys(fn ($r) => [$r->student_id => (int) $r->estagnados])->all();
+        $porAluno = [];
+        foreach ($comparacoes as $c) {
+            $porAluno[$c['student_id']] ??= 0;
+            if ($c['ultima'] <= $c['anterior']) {
+                $porAluno[$c['student_id']]++;
+            }
+        }
+
+        return $porAluno;
     }
 
     // GET / — lista alunos do profissional autenticado, com último treino e status
@@ -268,38 +250,20 @@ class AlunoController extends Controller
             'badges' => Gamification::calcularBadges(count($datas), $streak),
         ];
 
-        $alertasEstagnacao = DB::select(
-            <<<'SQL'
-            with cargas as (
-              select we.exercise_id, ts.id as session_id, ts.finished_at,
-                     max(se.load_kg_done) as carga_max
-              from session_entries se
-              join training_sessions ts on ts.id = se.training_session_id
-              join workout_exercises we on we.id = se.workout_exercise_id
-              where ts.student_id = ? and ts.status = 'completed' and se.load_kg_done is not null
-              group by we.exercise_id, ts.id, ts.finished_at
-            ),
-            ranked as (
-              select *, row_number() over (partition by exercise_id order by finished_at desc) as rn
-              from cargas
-            ),
-            comparacao as (
-              select exercise_id,
-                     max(case when rn = 1 then carga_max end) as ultima,
-                     max(case when rn = 2 then carga_max end) as anterior
-              from ranked
-              where rn <= 2
-              group by exercise_id
-              having max(case when rn = 2 then carga_max end) is not null
-            )
-            select c.exercise_id, e.name as exercise_name, c.ultima, c.anterior
-            from comparacao c
-            join exercises e on e.id = c.exercise_id
-            where c.ultima <= c.anterior
-            order by e.name
-            SQL,
-            [$student->id]
-        );
+        // Mesma fonte de verdade de contarEstagnacaoPorAluno() e da notificação
+        // push estagnacao_detectada — ver App\Support\Estagnacao.
+        $comparacoesEstagnadas = collect(Estagnacao::compararUltimasDuasSessoes($student->professional_id))
+            ->filter(fn ($c) => $c['student_id'] === $student->id && $c['ultima'] <= $c['anterior']);
+        $nomesExercicios = Exercise::whereIn('id', $comparacoesEstagnadas->pluck('exercise_id'))->pluck('name', 'id');
+        $alertasEstagnacao = $comparacoesEstagnadas
+            ->map(fn ($c) => [
+                'exercise_id' => $c['exercise_id'],
+                'exercise_name' => $nomesExercicios[$c['exercise_id']] ?? null,
+                'ultima' => $c['ultima'],
+                'anterior' => $c['anterior'],
+            ])
+            ->sortBy('exercise_name')
+            ->values();
 
         $planoCobranca = StudentBillingPlan::where('student_id', $student->id)->whereNull('ends_on')->first();
 

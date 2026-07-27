@@ -2,15 +2,18 @@
 
 namespace App\Notifications\Rules;
 
-use App\Models\ChallengeRankSnapshot;
+use App\Models\ChallengeParticipant;
 use App\Models\Student;
 use Illuminate\Support\Facades\DB;
 
 /**
  * Leaderboard do desafio (DesafioController::show) é sempre calculado na hora —
- * compara com o snapshot salvo da última checagem pra saber se subiu/desceu.
- * Sem snapshot anterior = primeira observação, não conta como mudança (só grava
- * a posição inicial como base de comparação futura).
+ * compara com a última posição notificada pra saber se subiu/desceu. Sem
+ * posição anterior = primeira observação, não conta como mudança (só grava a
+ * posição inicial como base de comparação futura). Guardada direto em
+ * challenge_participants.ultima_posicao_notificada (item 12 de revisão externa
+ * — antes vivia numa tabela challenge_rank_snapshots dedicada só pra isso, que
+ * não se justificava já existindo a tabela de participação aluno-desafio).
  */
 class MudancaRankingDesafioRule implements NotificacaoRule
 {
@@ -36,9 +39,9 @@ class MudancaRankingDesafioRule implements NotificacaoRule
                     $join->on('ts.workout_id', '=', 'w.id')->on('ts.student_id', '=', 's.id');
                 })
                 ->where('cp.challenge_id', $desafio->id)
-                ->groupBy('s.id', 's.invite_token')
+                ->groupBy('cp.id', 's.id', 's.invite_token', 'cp.ultima_posicao_notificada')
                 ->orderByDesc('pontos')
-                ->select('s.id as student_id', 's.invite_token')
+                ->select('cp.id as participant_id', 's.id as student_id', 's.invite_token', 'cp.ultima_posicao_notificada')
                 ->selectRaw(
                     "sum(case when ts.status = 'completed' and date(ts.finished_at) between ? and ? then 1 else 0 end) as pontos",
                     [$desafio->start_date, $desafio->end_date]
@@ -48,13 +51,10 @@ class MudancaRankingDesafioRule implements NotificacaoRule
 
             foreach ($leaderboard as $index => $participante) {
                 $posicaoAtual = $index + 1;
+                $anterior = $participante->ultima_posicao_notificada;
 
-                $anterior = ChallengeRankSnapshot::where('challenge_id', $desafio->id)
-                    ->where('student_id', $participante->student_id)
-                    ->first();
-
-                if ($anterior && $anterior->posicao !== $posicaoAtual) {
-                    $subiu = $posicaoAtual < $anterior->posicao;
+                if ($anterior !== null && (int) $anterior !== $posicaoAtual) {
+                    $subiu = $posicaoAtual < (int) $anterior;
                     $candidatos[] = new NotificacaoCandidato(
                         recipient: Student::find($participante->student_id),
                         professionalId: $desafio->professional_id,
@@ -67,10 +67,8 @@ class MudancaRankingDesafioRule implements NotificacaoRule
                     );
                 }
 
-                ChallengeRankSnapshot::updateOrCreate(
-                    ['challenge_id' => $desafio->id, 'student_id' => $participante->student_id],
-                    ['posicao' => $posicaoAtual, 'updated_at' => now()]
-                );
+                ChallengeParticipant::where('id', $participante->participant_id)
+                    ->update(['ultima_posicao_notificada' => $posicaoAtual]);
             }
         }
 

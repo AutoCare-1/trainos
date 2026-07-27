@@ -34,8 +34,9 @@ class RevisaoPendenteRule implements NotificacaoRule
             studentId: null,
             dedupKey: "revisao_pendente:{$r->recomendacao_id}:{$hoje}",
             contexto: $r->recomendacao_id,
-            titulo: 'Análise de academia aguardando revisão',
-            corpo: "A recomendação de treino de {$r->aluno} está esperando sua aprovação.",
+            // Item 9 da revisão: nome do aluno não deve ir na tela de bloqueio.
+            titulo: NotificacaoCandidato::TITULO_PERSONAL_GENERICO,
+            corpo: NotificacaoCandidato::CORPO_PERSONAL_GENERICO,
             url: '/academia',
         ))->all();
     }

@@ -20,6 +20,10 @@ return [
     // Dias sem atualizar medidas corporais até avaliacao_pendente.
     'dias_avaliacao_pendente' => (int) env('NOTIF_DIAS_AVALIACAO_PENDENTE', 30),
 
+    // Depois de cruzar o limiar acima, de quantos em quantos dias o lembrete repete
+    // (enquanto continuar pendente) — nunca todo dia.
+    'dias_lembrete_avaliacao_pendente' => (int) env('NOTIF_DIAS_LEMBRETE_AVALIACAO_PENDENTE', 15),
+
     // Janela de antecedência (horas) pra desafio_terminando.
     'horas_desafio_terminando' => (int) env('NOTIF_HORAS_DESAFIO_TERMINANDO', 48),
 ];

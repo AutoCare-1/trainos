@@ -19,9 +19,9 @@ class PushNotification extends Notification implements ShouldQueue
     use Queueable;
 
     public function __construct(
-        private readonly string $titulo,
-        private readonly string $corpo,
-        private readonly ?string $url,
+        public readonly string $titulo,
+        public readonly string $corpo,
+        public readonly ?string $url,
     ) {
     }
 

@@ -5,29 +5,27 @@ namespace App\Notifications\Rules;
 use App\Models\Professional;
 use Illuminate\Support\Facades\DB;
 
-/** students.onboarding_completed_at só é setado uma vez, no primeiro PAR-Q respondido pelo aluno (PortalController::avaliacao). */
-class AvaliacaoRecebidaRule implements NotificacaoRule
+/** Item 13 de uma revisão externa: baixa prioridade, reaproveita a mesma infra. Texto genérico (item 9) — sem nome do aluno na tela de bloqueio. */
+class AlunoCadastradoRule implements NotificacaoRule
 {
     public function chave(): string
     {
-        return 'avaliacao_recebida';
+        return 'aluno_cadastrado';
     }
 
     public function avaliar(): array
     {
         $rows = DB::table('students')
-            ->whereNotNull('onboarding_completed_at')
-            ->where('onboarding_completed_at', '>=', now()->subDay())
-            ->select('id', 'name', 'professional_id')
+            ->where('created_at', '>=', now()->subDay())
+            ->select('id', 'professional_id')
             ->get();
 
         return $rows->map(fn ($r) => new NotificacaoCandidato(
             recipient: Professional::find($r->professional_id),
             professionalId: $r->professional_id,
             studentId: $r->id,
-            dedupKey: "avaliacao_recebida:{$r->id}",
+            dedupKey: "aluno_cadastrado:{$r->id}",
             contexto: null,
-            // Item 9 da revisão: nome do aluno + "saúde" (PAR-Q) não deve ir na tela de bloqueio.
             titulo: NotificacaoCandidato::TITULO_PERSONAL_GENERICO,
             corpo: NotificacaoCandidato::CORPO_PERSONAL_GENERICO,
             url: "/alunos/{$r->id}",

@@ -3,13 +3,18 @@
 namespace App\Notifications\Rules;
 
 use App\Models\Student;
-use Illuminate\Support\Facades\DB;
+use App\Support\Estagnacao;
 
 /**
- * Mesma comparação de AlunoController::contarEstagnacaoPorAluno (carga máxima da
- * última sessão vs. da penúltima), só que aqui por exercício individual, pra virar
- * push. dedup inclui o id da última sessão: se o aluno treinar de novo e continuar
- * estagnado, isso conta como um novo evento (sessão nova), não reenvio do mesmo.
+ * Usa App\Support\Estagnacao — mesma fonte de verdade do alerta in-app
+ * (AlunoController::contarEstagnacaoPorAluno / alertasEstagnacao), pra nunca
+ * ter um veredito de estagnação divergente entre push e in-app pro mesmo
+ * aluno/exercício (item 5/6 de revisão externa). dedup inclui o id da última
+ * sessão: se o aluno treinar de novo e continuar estagnado, isso conta como um
+ * novo evento (sessão nova), não reenvio do mesmo. Texto do payload é
+ * genérico (item 9 da revisão) — não expõe qual exercício nem detalhe de
+ * performance na tela de bloqueio; o nome do exercício continua visível
+ * normalmente dentro do app, só não sai no push.
  */
 class EstagnacaoDetectadaRule implements NotificacaoRule
 {
@@ -20,52 +25,30 @@ class EstagnacaoDetectadaRule implements NotificacaoRule
 
     public function avaliar(): array
     {
-        $rows = DB::select(
-            <<<'SQL'
-            with cargas as (
-              select ts.student_id, we.exercise_id, ts.id as session_id, ts.finished_at,
-                     max(se.load_kg_done) as carga_max
-              from session_entries se
-              join training_sessions ts on ts.id = se.training_session_id
-              join workout_exercises we on we.id = se.workout_exercise_id
-              where ts.status = 'completed' and se.load_kg_done is not null
-              group by ts.student_id, we.exercise_id, ts.id, ts.finished_at
-            ),
-            ranked as (
-              select *, row_number() over (partition by student_id, exercise_id order by finished_at desc) as rn
-              from cargas
-            ),
-            comparacao as (
-              select student_id, exercise_id,
-                     max(case when rn = 1 then carga_max end) as ultima,
-                     max(case when rn = 2 then carga_max end) as anterior,
-                     max(case when rn = 1 then session_id end) as ultima_session_id,
-                     max(case when rn = 1 then finished_at end) as ultima_finished_at
-              from ranked
-              where rn <= 2
-              group by student_id, exercise_id
-              having max(case when rn = 2 then carga_max end) is not null
-            )
-            select c.student_id, c.exercise_id, c.ultima_session_id, e.name as exercicio,
-                   s.professional_id, s.invite_token
-            from comparacao c
-            join students s on s.id = c.student_id
-            join exercises e on e.id = c.exercise_id
-            where c.ultima <= c.anterior
-              and c.ultima_finished_at >= ?
-            SQL,
-            [now()->subDay()]
-        );
+        $ontem = now()->subDay();
 
-        return collect($rows)->map(fn ($r) => new NotificacaoCandidato(
-            recipient: Student::find($r->student_id),
-            professionalId: $r->professional_id,
-            studentId: $r->student_id,
-            dedupKey: "estagnacao_detectada:{$r->student_id}:{$r->exercise_id}:{$r->ultima_session_id}",
-            contexto: $r->exercise_id,
-            titulo: 'Hora de ajustar a carga?',
-            corpo: "Sua carga em {$r->exercicio} não aumentou nas últimas sessões. Vale conversar com seu professor.",
-            url: "/aluno/{$r->invite_token}",
-        ))->all();
+        $estagnados = collect(Estagnacao::compararUltimasDuasSessoes())
+            ->filter(fn ($c) => $c['ultima'] <= $c['anterior'] && $c['finished_at'] >= $ontem);
+
+        if ($estagnados->isEmpty()) {
+            return [];
+        }
+
+        $alunos = Student::whereIn('id', $estagnados->pluck('student_id')->unique())->get()->keyBy('id');
+
+        return $estagnados->map(function ($c) use ($alunos) {
+            $student = $alunos[$c['student_id']];
+
+            return new NotificacaoCandidato(
+                recipient: $student,
+                professionalId: $student->professional_id,
+                studentId: $student->id,
+                dedupKey: "estagnacao_detectada:{$c['student_id']}:{$c['exercise_id']}:{$c['session_id']}",
+                contexto: $c['exercise_id'],
+                titulo: NotificacaoCandidato::TITULO_ALUNO_GENERICO,
+                corpo: NotificacaoCandidato::CORPO_ALUNO_GENERICO,
+                url: "/aluno/{$student->invite_token}",
+            );
+        })->all();
     }
 }

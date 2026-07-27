@@ -37,8 +37,9 @@ class MensagemSemRespostaRule implements NotificacaoRule
             studentId: $r->id,
             dedupKey: "mensagem_sem_resposta:{$r->id}:{$hoje}",
             contexto: null,
-            titulo: 'Mensagem sem resposta',
-            corpo: "{$r->name} está esperando sua resposta no chat.",
+            // Item 9 da revisão: nome do aluno não deve ir na tela de bloqueio.
+            titulo: NotificacaoCandidato::TITULO_PERSONAL_GENERICO,
+            corpo: NotificacaoCandidato::CORPO_PERSONAL_GENERICO,
             url: "/alunos/{$r->id}",
         ))->all();
     }

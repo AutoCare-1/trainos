@@ -3,13 +3,25 @@ import { api } from './api'
 /**
  * Mesma checagem já usada em InstallAppInstructions — critério oficial pra saber
  * se o app está rodando instalado (tela inicial) e não numa aba comum do navegador.
- * iOS só entrega Web Push nesse modo (Safari normal nunca recebe push, mesmo com
- * permissão concedida).
  */
 export function estaInstalado(): boolean {
   if (typeof window === 'undefined') return false
   const standaloneIOS = (window.navigator as Navigator & { standalone?: boolean }).standalone === true
   return window.matchMedia('(display-mode: standalone)').matches || standaloneIOS
+}
+
+/**
+ * SÓ o iOS (iPhone/iPad) exige o app instalado na tela inicial pra Web Push
+ * funcionar — é uma restrição do Safari mobile, não do protocolo Web Push em si.
+ * Desktop (Chrome/Edge/Firefox/Safari) e Android Chrome aceitam push numa aba
+ * comum do navegador, sem precisar "instalar" nada. O personal usa o app em
+ * desktop na prática — exigir instalado ali deixaria as notificações de gestão
+ * praticamente inativáveis. Mesmo regex de detecção já usado em
+ * InstallAppInstructions, pra não divergir de critério dentro do mesmo app.
+ */
+export function precisaEstarInstalado(): boolean {
+  if (typeof navigator === 'undefined') return false
+  return /iPhone|iPad|iPod/.test(navigator.userAgent)
 }
 
 export function pushSuportado(): boolean {
@@ -41,8 +53,8 @@ export async function ativarPush(caminhoSubscribe: string): Promise<ResultadoAti
   if (!pushSuportado()) {
     return { ok: false, motivo: 'Seu navegador não tem suporte a notificações push.' }
   }
-  if (!estaInstalado()) {
-    return { ok: false, motivo: 'Instale o app na tela inicial antes de ativar as notificações.' }
+  if (precisaEstarInstalado() && !estaInstalado()) {
+    return { ok: false, motivo: 'No iPhone, instale o app na tela inicial antes de ativar as notificações.' }
   }
 
   const permissao = await Notification.requestPermission()

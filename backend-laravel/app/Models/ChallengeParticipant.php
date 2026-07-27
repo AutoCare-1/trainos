@@ -13,7 +13,7 @@ class ChallengeParticipant extends Model
     public $timestamps = false;
     protected $table = 'challenge_participants';
 
-    protected $fillable = ['challenge_id', 'student_id'];
+    protected $fillable = ['challenge_id', 'student_id', 'ultima_posicao_notificada'];
 
     public function challenge(): BelongsTo
     {

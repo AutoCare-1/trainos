@@ -88,7 +88,11 @@ Route::middleware('auth.jwt')->group(function () {
 
     Route::get('/negocio', [NegocioController::class, 'index']);
 
-    Route::prefix('push')->group(function () {
+    // throttle:10,1 — endpoint de escrita novo (registra subscription de push),
+    // sem padrão de proteção anterior no projeto pra reaproveitar; 10/min é
+    // generoso pro uso real (ativar/reativar manualmente) e barra abuso de
+    // registro em massa de subscriptions falsas.
+    Route::prefix('push')->middleware('throttle:10,1')->group(function () {
         Route::post('/subscribe', [PushSubscriptionController::class, 'subscribe']);
         Route::delete('/subscribe', [PushSubscriptionController::class, 'unsubscribe']);
     });
@@ -142,6 +146,9 @@ Route::prefix('portal')->group(function () {
     Route::get('/{token}/mensagens', [PortalChatController::class, 'index']);
     Route::post('/{token}/mensagens', [PortalChatController::class, 'store']);
 
-    Route::post('/{token}/push/subscribe', [PortalPushController::class, 'subscribe']);
-    Route::delete('/{token}/push/subscribe', [PortalPushController::class, 'unsubscribe']);
+    // Mesmo throttle do lado do personal — ver comentário acima.
+    Route::middleware('throttle:10,1')->group(function () {
+        Route::post('/{token}/push/subscribe', [PortalPushController::class, 'subscribe']);
+        Route::delete('/{token}/push/subscribe', [PortalPushController::class, 'unsubscribe']);
+    });
 });

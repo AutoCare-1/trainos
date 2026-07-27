@@ -94,6 +94,7 @@ class OnboardingBoasVindasNotificationTest extends TestCase
         Artisan::call('notifications:process');
 
         Notification::assertNothingSent();
+        $this->assertSame(0, NotificationLog::where('tipo_chave', 'onboarding_boas_vindas')->count());
     }
 
     public function test_nao_duplica_ao_rodar_o_comando_duas_vezes(): void
@@ -125,6 +126,9 @@ class OnboardingBoasVindasNotificationTest extends TestCase
 
         Artisan::call('notifications:process');
 
-        Notification::assertNothingSent();
+        // Não usa assertNothingSent() — aluno_cadastrado dispara normalmente aqui
+        // (o aluno foi criado há 1 dia); o que este teste garante é que
+        // onboarding_boas_vindas especificamente respeita o toggle desligado.
+        $this->assertSame(0, NotificationLog::where('tipo_chave', 'onboarding_boas_vindas')->count());
     }
 }

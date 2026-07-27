@@ -5,7 +5,16 @@ namespace App\Notifications\Rules;
 use App\Models\Student;
 use Illuminate\Support\Facades\DB;
 
-/** Dispara exatamente no dia em que o aluno cruza 3, 7 ou 14 dias sem treinar — tom cresce com o limiar, nunca culpa. */
+/**
+ * Dispara exatamente no dia em que o aluno cruza 3, 7 ou 14 dias sem treinar —
+ * tom cresce com o limiar, nunca culpa.
+ *
+ * MENSAGENS fica guardado (não vai mais pro payload do push — ver item 9 de
+ * revisão externa, frequência de treino não deve aparecer na tela de bloqueio
+ * de um aparelho que pode ser compartilhado) como o texto rico pra um futuro
+ * centro de notificações dentro do próprio app, onde mostrar detalhe não tem
+ * o mesmo risco de exposição.
+ */
 class SemTreinarDiasRule implements NotificacaoRule
 {
     private const MENSAGENS = [
@@ -55,8 +64,8 @@ class SemTreinarDiasRule implements NotificacaoRule
                     studentId: $r->id,
                     dedupKey: "sem_treinar_dias:{$r->id}:{$limiar}:{$hoje}",
                     contexto: (string) $limiar,
-                    titulo: "{$limiar} dias sem treinar",
-                    corpo: self::MENSAGENS[$limiar],
+                    titulo: NotificacaoCandidato::TITULO_ALUNO_GENERICO,
+                    corpo: NotificacaoCandidato::CORPO_ALUNO_GENERICO,
                     url: "/aluno/{$r->invite_token}",
                 );
             }

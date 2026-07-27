@@ -109,7 +109,9 @@ class SemTreinarDiasNotificationTest extends TestCase
 
         Artisan::call('notifications:process');
 
-        Notification::assertNothingSent();
+        // Não usa assertNothingSent() — aluno_cadastrado dispara normalmente aqui
+        // (o aluno foi criado "agora" no teste); o que este teste garante é que
+        // sem_treinar_dias especificamente respeita o toggle desligado.
         $this->assertSame(0, NotificationLog::where('tipo_chave', 'sem_treinar_dias')->count());
     }
 }
