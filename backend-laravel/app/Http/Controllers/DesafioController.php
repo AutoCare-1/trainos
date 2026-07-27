@@ -56,7 +56,7 @@ class DesafioController extends Controller
                 'description' => trim($validated['description'] ?? '') ?: null,
                 'start_date' => $validated['start_date'],
                 'end_date' => $validated['end_date'],
-            ]);
+            ])->refresh();
 
             $validStudentIds = Student::where('professional_id', $professionalId)
                 ->whereIn('id', $validated['student_ids'])

@@ -66,7 +66,7 @@ class ContentController extends Controller
             'title' => $ideia['title'],
             'description' => $ideia['description'],
             'caption_suggestion' => $ideia['caption_suggestion'],
-        ]));
+        ])->refresh());
 
         return response()->json(['ideas' => $inseridas], 201);
     }

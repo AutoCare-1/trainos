@@ -193,7 +193,7 @@ class PortalController extends Controller
         $session = TrainingSession::create([
             'workout_id' => $validated['workout_id'],
             'student_id' => $student->id,
-        ]);
+        ])->refresh();
 
         return response()->json(['session' => $session], 201);
     }
@@ -245,7 +245,7 @@ class PortalController extends Controller
             'load_kg_done' => $validated['load_kg_done'] ?? null,
             'notes' => $validated['notes'] ?? null,
             'is_pr' => $isPr,
-        ]);
+        ])->refresh();
 
         return response()->json(['entry' => $entry, 'isPr' => $isPr], 201);
     }

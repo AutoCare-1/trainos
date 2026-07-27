@@ -173,7 +173,7 @@ class PortalAcademiaController extends Controller
                 'coverage_estimate' => $analise['coverage_estimate'],
                 'gaps' => $analise['gaps'],
                 'notes' => $analise['notes'],
-            ]);
+            ])->refresh();
 
             // A recomendação pode ser desligada sozinha (mantendo a detecção de
             // equipamentos) — a submissão fica completa mesmo sem ela; o
@@ -200,7 +200,7 @@ class PortalAcademiaController extends Controller
                     'split_type' => $recomendacao['split_type'],
                     'reasoning' => $recomendacao['reasoning'],
                     'recommended_items' => $recomendacao['items'],
-                ]);
+                ])->refresh();
             }
 
             $submission->update(['status' => 'completed']);

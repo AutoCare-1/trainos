@@ -42,7 +42,7 @@ class ConsultorIaController extends Controller
             'professional_id' => $professionalId,
             'role' => 'personal',
             'content' => $conteudo,
-        ]);
+        ])->refresh();
 
         $historico = ConsultorIaMessage::where('professional_id', $professionalId)
             ->orderByDesc('created_at')
@@ -65,7 +65,7 @@ class ConsultorIaController extends Controller
             'professional_id' => $professionalId,
             'role' => 'ai',
             'content' => $texto,
-        ]);
+        ])->refresh();
 
         return response()->json(['message' => $mensagemPersonal, 'aiReply' => $mensagemIa], 201);
     }

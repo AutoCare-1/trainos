@@ -95,7 +95,7 @@ class PortalChatController extends Controller
             'professional_id' => $student->professional_id,
             'sender' => 'student',
             'content' => $conteudo,
-        ]);
+        ])->refresh();
 
         $respostaIa = null;
         // Enviar a mensagem do aluno nunca pode falhar por causa da IA — se o
@@ -118,7 +118,7 @@ class PortalChatController extends Controller
                     'professional_id' => $student->professional_id,
                     'sender' => 'ai',
                     'content' => $texto,
-                ]);
+                ])->refresh();
             } catch (\Throwable $e) {
                 // IA fora do ar não pode impedir o registro da mensagem do aluno —
                 // o profissional responde manualmente depois.
