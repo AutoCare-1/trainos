@@ -7,14 +7,15 @@ use App\Models\FormAnalysisResult;
 use App\Models\FormCorrectionVideo;
 use App\Models\FormFeedbackHistory;
 use App\Models\TrainingSession;
+use App\Support\ErrorReporting;
 use App\Support\FormAnalyzer;
+use App\Support\KillSwitchIa;
 use App\Support\Uploads;
 use App\Support\VideoProcessor;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class PortalFormaController extends Controller
@@ -36,6 +37,10 @@ class PortalFormaController extends Controller
     // POST /:token/forma — analisa a forma de execução a partir de um vídeo curto (3-15s) de uma série
     public function store(Request $request, string $token): JsonResponse
     {
+        if ($resp = KillSwitchIa::verificar('analisar_forma')) {
+            return $resp;
+        }
+
         $student = $this->buscarAlunoPorToken($token);
         if (! $student) {
             return response()->json(['error' => 'Link inválido'], 404);
@@ -102,7 +107,7 @@ class PortalFormaController extends Controller
 
             return response()->json(['video' => $video, 'analysis' => $analysisResult], 201);
         } catch (\Throwable $e) {
-            Log::error('[Análise de forma] Falha no pipeline: '.$e->getMessage());
+            ErrorReporting::capturarFalhaIa('analisar_forma', $e, ['student_id' => $student->id]);
             $analysisResult = FormAnalysisResult::create([
                 'video_id' => $video->id,
                 'safety_notes' => $e->getMessage(),

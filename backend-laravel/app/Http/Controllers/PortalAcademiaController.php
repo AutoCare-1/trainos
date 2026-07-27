@@ -9,12 +9,13 @@ use App\Models\GymMediaSubmission;
 use App\Models\GymWorkoutRecommendation;
 use App\Support\AcademiaAnalyzer;
 use App\Support\AcademiaRecomendador;
+use App\Support\ErrorReporting;
+use App\Support\KillSwitchIa;
 use App\Support\Uploads;
 use App\Support\VideoProcessor;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class PortalAcademiaController extends Controller
@@ -89,6 +90,14 @@ class PortalAcademiaController extends Controller
     // POST /:token/academia — aluno envia foto(s) ou vídeo da academia; dispara o pipeline completo
     public function store(Request $request, string $token): JsonResponse
     {
+        // Sem detecção de equipamentos não há nada útil a fazer aqui (a
+        // recomendação depende dela) — desliga o endpoint inteiro. Ver o
+        // segundo kill-switch (academia_recomendacao) mais abaixo, que só
+        // pula a etapa de recomendação, mantendo a análise.
+        if ($resp = KillSwitchIa::verificar('academia_analise')) {
+            return $resp;
+        }
+
         $student = $this->buscarAlunoPorToken($token);
         if (! $student) {
             return response()->json(['error' => 'Link inválido'], 404);
@@ -166,27 +175,33 @@ class PortalAcademiaController extends Controller
                 'notes' => $analise['notes'],
             ]);
 
-            $exercicios = Exercise::orderBy('muscle_group')->orderBy('name')
-                ->get(['id', 'name', 'muscle_group', 'equipment'])
-                ->map(fn ($e) => $e->toArray())
-                ->all();
+            // A recomendação pode ser desligada sozinha (mantendo a detecção de
+            // equipamentos) — a submissão fica completa mesmo sem ela; o
+            // personal só não vê um treino sugerido, só a análise.
+            $recommendation = null;
+            if (config('ia_pipelines.academia_recomendacao') !== false) {
+                $exercicios = Exercise::orderBy('muscle_group')->orderBy('name')
+                    ->get(['id', 'name', 'muscle_group', 'equipment'])
+                    ->map(fn ($e) => $e->toArray())
+                    ->all();
 
-            $recomendacao = AcademiaRecomendador::recomendarTreino($analise['machines'], $exercicios, [
-                'nome' => $student->name,
-                'objective' => $student->objective,
-                'healthNotes' => $student->health_notes,
-                'limitacoesParQ' => self::limitacoesParQ($student->par_q_answers),
-                'daysPerWeek' => $daysPerWeek,
-            ]);
+                $recomendacao = AcademiaRecomendador::recomendarTreino($analise['machines'], $exercicios, [
+                    'nome' => $student->name,
+                    'objective' => $student->objective,
+                    'healthNotes' => $student->health_notes,
+                    'limitacoesParQ' => self::limitacoesParQ($student->par_q_answers),
+                    'daysPerWeek' => $daysPerWeek,
+                ]);
 
-            $recommendation = GymWorkoutRecommendation::create([
-                'submission_id' => $submission->id,
-                'analysis_result_id' => $analysisResult->id,
-                'name' => $recomendacao['name'],
-                'split_type' => $recomendacao['split_type'],
-                'reasoning' => $recomendacao['reasoning'],
-                'recommended_items' => $recomendacao['items'],
-            ]);
+                $recommendation = GymWorkoutRecommendation::create([
+                    'submission_id' => $submission->id,
+                    'analysis_result_id' => $analysisResult->id,
+                    'name' => $recomendacao['name'],
+                    'split_type' => $recomendacao['split_type'],
+                    'reasoning' => $recomendacao['reasoning'],
+                    'recommended_items' => $recomendacao['items'],
+                ]);
+            }
 
             $submission->update(['status' => 'completed']);
 
@@ -196,7 +211,7 @@ class PortalAcademiaController extends Controller
                 'recommendation' => $recommendation,
             ], 201);
         } catch (\Throwable $e) {
-            Log::error('[Análise de academia] Falha no pipeline: '.$e->getMessage());
+            ErrorReporting::capturarFalhaIa('academia', $e, ['student_id' => $student->id, 'submission_id' => $submission->id]);
             $submission->update(['status' => 'failed', 'error_message' => $e->getMessage()]);
 
             return response()->json([

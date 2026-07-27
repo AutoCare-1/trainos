@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\ContentIdea;
 use App\Support\ConteudoAgregados;
 use App\Support\ConteudoIdeias;
+use App\Support\ErrorReporting;
+use App\Support\KillSwitchIa;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -28,6 +30,10 @@ class ContentController extends Controller
     // POST / — gera um novo lote de ideias (funde tendência de formato + dado agregado da base)
     public function store(Request $request): JsonResponse
     {
+        if ($resp = KillSwitchIa::verificar('ideias_conteudo')) {
+            return $resp;
+        }
+
         $professionalId = $request->user()->id;
 
         $geracoesHoje = ContentIdea::where('professional_id', $professionalId)
@@ -43,8 +49,14 @@ class ContentController extends Controller
 
         $direcionamento = trim((string) $request->input('direcionamento')) ?: null;
 
-        $resumoAgregado = ConteudoAgregados::montarResumoAgregadoAlunos($professionalId);
-        $ideias = ConteudoIdeias::gerarIdeiasConteudo($resumoAgregado, $direcionamento);
+        try {
+            $resumoAgregado = ConteudoAgregados::montarResumoAgregadoAlunos($professionalId);
+            $ideias = ConteudoIdeias::gerarIdeiasConteudo($resumoAgregado, $direcionamento);
+        } catch (\Throwable $e) {
+            ErrorReporting::capturarFalhaIa('ideias_conteudo', $e, ['professional_id' => $professionalId]);
+
+            return response()->json(['error' => 'Não foi possível gerar ideias agora, tente de novo em instantes.'], 502);
+        }
 
         $batchId = (string) Str::orderedUuid();
         $inseridas = collect($ideias)->map(fn ($ideia) => ContentIdea::create([

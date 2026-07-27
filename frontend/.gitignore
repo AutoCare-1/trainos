@@ -12,6 +12,10 @@
 
 # testing
 /coverage
+/test-results
+/playwright-report
+/blob-report
+/playwright/.cache
 
 # next.js
 /.next/
@@ -30,8 +34,10 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files (arquivos .example ficam de fora do ignore de propósito — são
+# o template que README.md manda copiar, não segredo nenhum)
 .env*
+!.env*.example
 
 # vercel
 .vercel
