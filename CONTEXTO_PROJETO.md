@@ -30,11 +30,13 @@ financeiro, periodização, gamificação, multi-tenant, marca branca — tudo).
 Isso é trabalho de anos. A v0 provou só o **loop essencial**: profissional
 cadastra aluno → monta treino → envia → aluno executa e registra carga → dá
 feedback → profissional acompanha. Depois disso vieram, em ondas seguintes:
-avaliação física, evolução de medidas, modelos de treino, vídeos customizados
-e chat com Coach IA (ver "Estado atual" abaixo). Pagamento, periodização,
-gamificação e app mobile nativo continuam fora de escopo por enquanto.
+avaliação física, evolução de medidas, modelos de treino, vídeos
+customizados, chat com Coach IA, análise de forma/academia por IA, Consultor
+IA, gamificação (desafios), financeiro do personal e notificações push (ver
+"Estado atual" abaixo). Cobrança/plano do próprio personal, periodização e
+app mobile nativo continuam fora de escopo por enquanto.
 
-### 2. Banco de dados é provisório, e não é compartilhado com outros sistemas
+### 2. Banco de dados não é compartilhado com outros sistemas
 A Carol tem outros produtos na área de saúde (AnamneseIA, TriagemAI) que
 rodam ao lado de um sistema de prontuário médico chamado "Consultório na
 Nuvem". Foi decidido explicitamente **não compartilhar banco de dados**
@@ -43,13 +45,9 @@ aluno de academia são domínios/finalidades diferentes, e misturar aumenta o
 raio de impacto de qualquer incidente (mesmo princípio já aplicado antes
 entre AnamneseIA e TriagemAI, que também não compartilham banco entre si).
 
-Por isso: hoje o app roda em **PostgreSQL local** (via Homebrew, não Docker —
-Docker não estava disponível no ambiente de desenvolvimento). Isso é
-propositalmente **provisório**: quando a equipe de TI da Carol assumir a
-infra definitiva, `backend/src/db/schema.sql` + `backend/migrations/` servem
-de referência para a migração. Se no futuro for necessário integrar com outro
-sistema da operação (financeiro, CRM, prontuário), isso deve ser via **API**,
-nunca acesso direto a tabela de outro sistema.
+Se no futuro for necessário integrar com outro sistema da operação
+(financeiro, CRM, prontuário), isso deve ser via **API**, nunca acesso
+direto a tabela de outro sistema.
 
 ### 3. Portal do aluno não tem login/senha — só um link com token
 Mesmo padrão já validado no AnamneseIA: o profissional cadastra o aluno, o
@@ -57,12 +55,19 @@ sistema gera um token único, e o link `/aluno/<token>` dá acesso direto ao
 treino daquele aluno, sem criar conta. Reduz fricção para o aluno (que só
 recebe um link) e foi um padrão que já funcionou bem nesse outro produto.
 
-### 4. Stack: Postgres puro (`pg`), não Supabase
-Os outros projetos da Carol (AnamneseIA, TriagemAI) usam Supabase. Aqui
-optei por Postgres "cru" via driver `pg`, sem depender de nenhuma
-plataforma específica — já que o banco final ainda não está decidido e vai
-ser trocado quando a TI assumir, não faz sentido criar dependência de
-vendor agora.
+### 4. Stack definitiva: Laravel 12 + PHP 8.3 + MySQL
+O app começou como um protótipo em Node/Express + PostgreSQL, rodando local
+via Homebrew, propositalmente provisório até a equipe que ia administrar a
+infra de produção (backup diário, hosting) se definir. Essa equipe (indicada
+pela tia do Filipe) confirmou a stack definitiva: **Laravel 12** (LTS) com
+**PHP ^8.3** e **MySQL**, pra alinhar com quem vai operar o banco. A escolha
+não foi preferência técnica arbitrária — foi pra bater com a stack de quem
+assume a operação depois.
+
+A migração de Node/Postgres para Laravel/MySQL foi concluída: os 13 route
+groups do Node (58 rotas) foram portados com paridade funcional completa,
+incluindo os 7 pipelines de IA. O backend Node antigo foi removido do
+repositório — **hoje só existe o backend Laravel** (`backend-laravel/`).
 
 ## Estado atual (testado e funcionando)
 
@@ -100,9 +105,28 @@ vendor agora.
   forte/sintoma preocupante → orienta procurar o profissional/médico;
   mudança de treino → encaminha ao professor). O profissional vê tudo e pode
   responder manualmente a qualquer momento.
-- Backend: `backend/src/services/chat.ts` (Claude Haiku via
-  `@anthropic-ai/sdk`, precisa de `ANTHROPIC_API_KEY` no `.env`). Se a IA
-  falhar, a mensagem do aluno é registrada mesmo assim.
+- Backend: `app/Http/Controllers/PortalController.php` +
+  `app/Support/` (Claude Haiku via `anthropic-ai/sdk`, precisa de
+  `ANTHROPIC_API_KEY` no `.env`). Se a IA falhar, a mensagem do aluno é
+  registrada mesmo assim.
+
+**Análise de forma, análise de academia, Consultor IA, ideias de conteúdo:**
+- 4 pipelines de IA adicionais, todos com um humano revisando antes de virar
+  ação real (o personal aprova/edita antes de qualquer sugestão da IA virar
+  treino de verdade). Consultor IA tem acesso só a 5 ferramentas
+  pré-definidas — deliberadamente sem SQL livre pra IA.
+
+**Financeiro do personal:**
+- Receita por aluno com histórico real (nunca sobrescreve — fecha o plano
+  vigente e abre um novo quando o valor de cobrança muda), despesas
+  recorrentes/avulsas do personal, resultado líquido calculado em centavos
+  (`App\Support\Money`, nunca float).
+
+**Notificações push:**
+- Web Push via PWA, 20 tipos diferentes (hábito, celebração/gamificação,
+  informativo, gestão), processados por scheduler + fila (`database`, sem
+  Redis), com dedupe por constraint UNIQUE no log de envio. Personal
+  liga/desliga cada tipo.
 
 **Visual:** rebranding para **Clube Mais Personal** — tema claro com cores da
 marca (azul `#2648b3`, lavanda `#8b7fd6`), logo e ícone em
@@ -112,12 +136,13 @@ marca (azul `#2648b3`, lavanda `#8b7fd6`), logo e ícone em
 
 ## Bugfix relevante (histórico)
 
-Depois de puxar as mudanças de avaliação física/modelos/vídeos, uma revisão
-encontrou e corrigiu: `GET /portal/:token` não devolvia quantas séries já
-haviam sido registradas na sessão em andamento. Se o aluno fechasse o app no
-meio do treino e reabrisse o link, a tela reiniciava a contagem do zero, e
-reenviar uma série já feita criava um registro duplicado no banco. Corrigido
-adicionando `registeredCounts` na resposta do endpoint.
+Ainda na época do protótipo em Node, uma revisão encontrou e corrigiu:
+`GET /portal/:token` não devolvia quantas séries já haviam sido registradas
+na sessão em andamento. Se o aluno fechasse o app no meio do treino e
+reabrisse o link, a tela reiniciava a contagem do zero, e reenviar uma série
+já feita criava um registro duplicado no banco. Corrigido adicionando
+`registeredCounts` na resposta do endpoint — comportamento preservado na
+migração pro Laravel.
 
 ## Como rodar
 
@@ -125,14 +150,11 @@ Ver `README.md` na raiz para o passo a passo completo.
 
 ## Deploy (quando for a hora)
 
-Padrão já validado em outro projeto da Carol (AnamneseIA): backend
-Node/Express → Railway, frontend Next.js → Vercel, via CLI. Pontos que
-já causaram problema antes e vale saber de antemão:
-
-- Railway precisa de `railway add --service nome` antes de `railway
-  variables --set`, senão dá erro "Project has no services"
-- Não fixar `PORT` nas env vars do Railway — ele injeta a dele
-- Depois de publicar o frontend na Vercel, **voltar no backend** e atualizar
-  `FRONTEND_URL` com a URL real, senão CORS bloqueia tudo
-- Testar de verdade abrindo o link no navegador (não só `curl`), incluindo
-  uma ação de POST, para garantir que CORS libera todos os métodos
+Ainda não decidido pro backend Laravel. O padrão usado em outro projeto da
+Carol (AnamneseIA) era Node/Express → Railway — específico do Node, não
+necessariamente se aplica a um app PHP/Laravel. Pontos que valem ser
+revisitados quando a hora chegar: onde hospedar o backend PHP (Railway
+suporta, mas o buildpack/setup é diferente do Node), e manter o mesmo
+cuidado já validado antes — atualizar `FRONTEND_URL` depois de publicar o
+frontend, e testar de verdade no navegador (não só `curl`), incluindo POST,
+pra garantir que CORS libera todos os métodos.

@@ -2,19 +2,13 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "trainos-backend",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "backend", "run", "dev"],
-      "port": 3002
-    },
-    {
       "name": "trainos-frontend",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["--prefix", "frontend", "run", "dev"],
       "port": 3101
     },
     {
-      "name": "trainos-backend-laravel",
+      "name": "trainos-backend",
       "runtimeExecutable": "bash",
       "runtimeArgs": ["-c", "cd backend-laravel && php artisan serve --port=3003"],
       "port": 3003
@@ -26,7 +20,7 @@
       "port": 3102
     },
     {
-      "name": "trainos-backend-laravel-verify",
+      "name": "trainos-backend-verify",
       "runtimeExecutable": "bash",
       "runtimeArgs": ["-c", "cd backend-laravel && php artisan serve --port=$PORT"],
       "autoPort": true
