@@ -34,12 +34,16 @@ class MedalhaConquistadaRule implements NotificacaoRule
         $candidatos = [];
 
         foreach (self::MARCOS_TOTAL as $limiar => [$badgeId, $titulo, $corpo]) {
+            // groupBy explícito é obrigatório aqui — sem ele, HAVING sobre uma coluna
+            // derivada (não uma função de agregação direta) filtra certo no MySQL mas
+            // devolve zero linhas no SQLite (usado nos testes), silenciosamente.
             $rows = DB::table('students as s')
                 ->select('s.id', 's.professional_id', 's.invite_token')
                 ->selectRaw(
                     '(select count(*) from training_sessions ts where ts.student_id = s.id and ts.status = ?) as total',
                     ['completed']
                 )
+                ->groupBy('s.id', 's.professional_id', 's.invite_token')
                 ->havingRaw('total = ?', [$limiar])
                 ->get();
 

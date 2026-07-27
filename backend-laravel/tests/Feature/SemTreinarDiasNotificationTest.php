@@ -89,8 +89,13 @@ class SemTreinarDiasNotificationTest extends TestCase
         Artisan::call('notifications:process');
         Artisan::call('notifications:process');
 
-        Notification::assertSentToTimes($aluno, PushNotification::class, 1);
+        // 2, não 1: a única sessão concluída do fixture também é o primeiro treino
+        // do aluno, então medalha_conquistada (primeiro_treino) dispara legitimamente
+        // junto com sem_treinar_dias — o que este teste garante é que rodar o comando
+        // duas vezes não duplica NENHUM dos dois (senão seria 4, não 2).
+        Notification::assertSentToTimes($aluno, PushNotification::class, 2);
         $this->assertSame(1, NotificationLog::where('tipo_chave', 'sem_treinar_dias')->where('student_id', $aluno->id)->count());
+        $this->assertSame(1, NotificationLog::where('tipo_chave', 'medalha_conquistada')->where('student_id', $aluno->id)->count());
     }
 
     public function test_nao_dispara_quando_o_personal_desliga_o_tipo(): void
