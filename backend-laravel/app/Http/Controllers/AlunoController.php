@@ -144,7 +144,7 @@ class AlunoController extends Controller
                 'weight_kg' => $validated['weight_kg'] ?? null,
                 'height_cm' => $validated['height_cm'] ?? null,
                 'invite_token' => Str::random(14),
-            ]);
+            ])->refresh();
 
             $this->aplicarCobranca($student, $validated['billing_type'] ?? null, $validated['monthly_value'] ?? null);
 
@@ -302,7 +302,7 @@ class AlunoController extends Controller
             'hip_cm' => $validated['hip_cm'] ?? null,
             'body_fat_pct' => $validated['body_fat_pct'] ?? null,
             'notes' => isset($validated['notes']) ? trim($validated['notes']) ?: null : null,
-        ]);
+        ])->refresh();
 
         return response()->json(['measurement' => $measurement], 201);
     }

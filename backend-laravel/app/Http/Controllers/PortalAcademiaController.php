@@ -164,7 +164,7 @@ class PortalAcademiaController extends Controller
                 'coverage_estimate' => $analise['coverage_estimate'],
                 'gaps' => $analise['gaps'],
                 'notes' => $analise['notes'],
-            ]);
+            ])->refresh();
 
             $exercicios = Exercise::orderBy('muscle_group')->orderBy('name')
                 ->get(['id', 'name', 'muscle_group', 'equipment'])
@@ -186,7 +186,7 @@ class PortalAcademiaController extends Controller
                 'split_type' => $recomendacao['split_type'],
                 'reasoning' => $recomendacao['reasoning'],
                 'recommended_items' => $recomendacao['items'],
-            ]);
+            ])->refresh();
 
             $submission->update(['status' => 'completed']);
 

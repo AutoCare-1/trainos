@@ -66,7 +66,7 @@ class PortalFormaController extends Controller
             'exercise_id' => $exerciseId,
             'video_file_path' => $videoUrl,
             'video_duration_seconds' => $duracao,
-        ]);
+        ])->refresh();
 
         $dirFrames = Uploads::publicRoot()."/form-frames/{$video->id}";
         try {
@@ -88,7 +88,7 @@ class PortalFormaController extends Controller
                 'safety_notes' => $analise['safety_notes'],
                 'three_key_feedback' => $analise['three_key_feedback'],
                 'analysis_status' => 'completed',
-            ]);
+            ])->refresh();
 
             DB::statement(
                 <<<'SQL'
@@ -108,7 +108,7 @@ class PortalFormaController extends Controller
                 'safety_notes' => $e->getMessage(),
                 'three_key_feedback' => [],
                 'analysis_status' => 'failed',
-            ]);
+            ])->refresh();
 
             return response()->json(['video' => $video, 'analysis' => $analysisResult], 201);
         } finally {

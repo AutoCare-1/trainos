@@ -48,7 +48,7 @@ class ModeloController extends Controller
             $template = WorkoutTemplate::create([
                 'professional_id' => $professionalId,
                 'name' => trim($validated['name']),
-            ]);
+            ])->refresh();
 
             $orderIndex = 0;
             foreach ($validated['items'] as $item) {

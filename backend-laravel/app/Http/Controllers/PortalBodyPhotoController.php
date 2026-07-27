@@ -65,7 +65,7 @@ class PortalBodyPhotoController extends Controller
             'file_path' => $filePath,
             'ai_feedback' => $aiFeedback,
             'compared_to_photo_id' => $anterior?->id,
-        ]);
+        ])->refresh();
 
         return response()->json(['photo' => $photo->makeHidden('file_path')], 201);
     }

@@ -43,7 +43,7 @@ class AlunoChatController extends Controller
             'professional_id' => $request->user()->id,
             'sender' => 'professional',
             'content' => $conteudo,
-        ]);
+        ])->refresh();
 
         return response()->json(['message' => $message], 201);
     }
