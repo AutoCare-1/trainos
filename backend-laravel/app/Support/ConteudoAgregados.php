@@ -43,10 +43,10 @@ class ConteudoAgregados
             )
             select count(*) as total_prs
             from com_max_anterior
-            where created_at >= now() - interval 7 day
+            where created_at >= ?
               and load_kg_done > coalesce(max_anterior, 0)
             SQL,
-            [$professionalId]
+            [$professionalId, Carbon::now()->subDays(7)]
         )->total_prs ?? 0);
 
         // Consistência de check-in: quantos alunos fizeram check-in na última semana,
@@ -58,11 +58,11 @@ class ConteudoAgregados
               select s.id, count(*) as dias_semana
               from students s
               join checkins c on c.student_id = s.id
-              where s.professional_id = ? and c.checkin_date >= curdate() - interval 6 day
+              where s.professional_id = ? and c.checkin_date >= ?
               group by s.id
             ) por_aluno
             SQL,
-            [$professionalId]
+            [$professionalId, Carbon::now()->subDays(6)->toDateString()]
         );
         $alunosComCheckin = (int) ($checkin->ativos ?? 0);
         $alunosConsistentes = (int) ($checkin->consistentes ?? 0);

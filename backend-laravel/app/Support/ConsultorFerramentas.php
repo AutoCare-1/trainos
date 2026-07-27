@@ -77,11 +77,11 @@ class ConsultorFerramentas
             select e.name as exercise_name, c.load_kg_done, c.created_at
             from com_max_anterior c
             join exercises e on e.id = c.exercise_id
-            where c.created_at >= now() - interval 14 day
+            where c.created_at >= ?
               and c.load_kg_done > coalesce(c.max_anterior, 0)
             order by c.created_at desc
             SQL,
-            [$aluno['id']]
+            [$aluno['id'], Carbon::now()->subDays(14)]
         );
 
         $evolucao = DB::selectOne(
@@ -113,11 +113,11 @@ class ConsultorFerramentas
             where s.professional_id = ?
               and not exists (
                 select 1 from checkins c
-                where c.student_id = s.id and c.checkin_date >= date_sub(curdate(), interval ? day)
+                where c.student_id = s.id and c.checkin_date >= ?
               )
             order by s.name
             SQL,
-            [$professionalId, $dias - 1]
+            [$professionalId, Carbon::now()->subDays($dias - 1)->toDateString()]
         );
 
         return ['periodo_dias' => $dias, 'alunos_sem_checkin' => array_map(fn ($r) => $r->name, $rows)];
@@ -146,11 +146,11 @@ class ConsultorFerramentas
             from com_max_anterior c
             join students s on s.id = c.student_id
             join exercises e on e.id = c.exercise_id
-            where c.created_at >= now() - interval ? day
+            where c.created_at >= ?
               and c.load_kg_done > coalesce(c.max_anterior, 0)
             order by c.created_at desc
             SQL,
-            [$professionalId, $dias]
+            [$professionalId, Carbon::now()->subDays($dias)]
         );
 
         return ['periodo_dias' => $dias, 'prs' => $rows];

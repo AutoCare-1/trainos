@@ -19,18 +19,27 @@ class NegocioController extends Controller
 
     private const TREINOS_MINIMOS_ALUNO_NOVO = 3;
 
+    // Diferença em dias de calendário (equivalente ao datediff() do MySQL, que
+    // ignora a hora) — calculado em PHP pra não depender de datediff() no SQL,
+    // que não existe no SQLite (mesmo padrão já usado nas Rule classes de notificação).
+    private static function diasDesde(string $data): int
+    {
+        return (int) Carbon::parse($data)->startOfDay()->diffInDays(Carbon::now()->startOfDay());
+    }
+
     private static function formatarMotivo(object $r): string
     {
         if ($r->motivo_codigo === 'novo_sem_treinos') {
+            $dias = self::diasDesde($r->created_at);
             $sessoes = (int) $r->sessoes_concluidas;
 
-            return "Cadastrado há {$r->dias_desde_cadastro}d, ainda com só {$sessoes} treino".($sessoes === 1 ? '' : 's').' concluído'.($sessoes === 1 ? '' : 's');
+            return "Cadastrado há {$dias}d, ainda com só {$sessoes} treino".($sessoes === 1 ? '' : 's').' concluído'.($sessoes === 1 ? '' : 's');
         }
         if ($r->motivo_codigo === 'sem_treinar') {
-            return is_null($r->dias_sem_treinar) ? 'Nunca completou um treino' : "Sem treinar há {$r->dias_sem_treinar}d";
+            return is_null($r->ultima_sessao_em) ? 'Nunca completou um treino' : 'Sem treinar há '.self::diasDesde($r->ultima_sessao_em).'d';
         }
 
-        return is_null($r->dias_sem_checkin) ? 'Nunca fez um check-in' : "Sem check-in há {$r->dias_sem_checkin}d";
+        return is_null($r->ultimo_checkin_em) ? 'Nunca fez um check-in' : 'Sem check-in há '.self::diasDesde($r->ultimo_checkin_em).'d';
     }
 
     // GET / — visão geral do negócio do personal: KPIs de base de alunos + quem está em risco de abandono
@@ -103,7 +112,6 @@ class NegocioController extends Controller
             with base as (
                select
                  s.id, s.name, s.created_at,
-                 datediff(?, s.created_at) as dias_desde_cadastro,
                  coalesce(sessoes.total, 0) as sessoes_concluidas,
                  exists(select 1 from workouts w where w.student_id = s.id and w.status = 'sent') as tem_treino_enviado,
                  ultima_sessao.finished_at as ultima_sessao_em,
@@ -127,11 +135,7 @@ class NegocioController extends Controller
              ),
              classificado as (
                select
-                 id, name, dias_desde_cadastro, sessoes_concluidas, created_at,
-                 case when ultima_sessao_em is null then null
-                      else datediff(?, ultima_sessao_em) end as dias_sem_treinar,
-                 case when ultimo_checkin_em is null then null
-                      else datediff(?, ultimo_checkin_em) end as dias_sem_checkin,
+                 id, name, sessoes_concluidas, created_at, ultima_sessao_em, ultimo_checkin_em,
                  case
                    when created_at > ? and sessoes_concluidas < {$treinosMinimosAlunoNovo}
                      then 'novo_sem_treinos'
@@ -144,7 +148,7 @@ class NegocioController extends Controller
                  end as motivo_codigo
                from base
              )
-             select id, name, dias_desde_cadastro, sessoes_concluidas, dias_sem_treinar, dias_sem_checkin, motivo_codigo
+             select id, name, sessoes_concluidas, created_at, ultima_sessao_em, ultimo_checkin_em, motivo_codigo
              from classificado
              where motivo_codigo is not null
              order by
@@ -152,8 +156,7 @@ class NegocioController extends Controller
                created_at desc
             SQL,
             [
-                $agora, $professionalId,
-                $agora, $agora,
+                $professionalId,
                 $limiteAlunoNovo, $limiteSemTreinar, $limiteSemCheckinTs, $limiteSemCheckinData,
             ]
         );
