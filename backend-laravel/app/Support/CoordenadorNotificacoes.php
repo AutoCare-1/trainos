@@ -6,25 +6,35 @@ use App\Models\NotificationLog;
 use App\Models\Professional;
 use App\Models\Student;
 use App\Models\TipoNotificacao;
+use App\Notifications\Rules\NotificacaoCandidato;
 use Illuminate\Support\Collection;
 
 /**
- * Item 2 de uma revisão externa: com 20+ Rules independentes, sem coordenação
- * entre elas, o mesmo destinatário podia acumular várias notificações no
- * mesmo dia (ex: sem_treinar_hoje + streak_em_risco disparando juntos pro
- * mesmo aluno; onboarding_boas_vindas + sem_treinar_dias competindo pelo
- * mesmo "motivo" pra aluno novo). Duas camadas, aplicadas em
+ * Item 2 de uma revisão externa (e item 2/3 de uma segunda rodada): com 20+
+ * Rules independentes, sem coordenação entre elas, o mesmo destinatário podia
+ * acumular várias notificações no mesmo dia (ex: sem_treinar_hoje +
+ * streak_em_risco disparando juntos pro mesmo aluno; onboarding_boas_vindas +
+ * sem_treinar_dias competindo pelo mesmo "motivo" pra aluno novo;
+ * aluno_cadastrado + avaliacao_recebida quase sempre no mesmo dia, já que o
+ * PAR-Q é preenchido no primeiro acesso). Três camadas, aplicadas em
  * ProcessNotifications depois de coletar os candidatos de TODAS as Rules e
  * ANTES de despachar qualquer job:
  *
- * 1) Supressão: pares onde uma regra mais específica cobre o mesmo motivo de
- *    uma mais genérica — a genérica é descartada quando as duas batem pro
- *    mesmo destinatário no mesmo ciclo.
- * 2) Limite diário por destinatário: no máximo LIMITE_DIARIO_POR_DESTINATARIO
- *    notificações por dia, escolhendo por prioridade quando sobra candidato —
- *    conta o que JÁ foi enviado em ciclos anteriores do mesmo dia (via
- *    notification_logs), não só o que está sendo decidido agora, senão o
- *    limite "vaza" entre execuções do Scheduler a cada 15min.
+ * 1) Supressão: pares onde uma regra mais específica/mais informativa cobre o
+ *    mesmo motivo de uma mais genérica — a genérica é descartada quando as
+ *    duas batem pro mesmo destinatário E pro mesmo aluno (contexto) no mesmo
+ *    ciclo.
+ * 2) Consolidação: quando sobra mais de uma instância do MESMO tipo pro
+ *    mesmo destinatário no mesmo ciclo (ex: 3 alunos diferentes com
+ *    revisao_pendente), vira UMA notificação só, com contagem — em vez de
+ *    cada instância competir separadamente pelo limite diário e esconder as
+ *    outras.
+ * 3) Limite diário por destinatário: no máximo LIMITE_DIARIO_POR_DESTINATARIO
+ *    notificações (já consolidadas) por dia, escolhendo por prioridade
+ *    quando sobra candidato — conta o que JÁ foi enviado em ciclos
+ *    anteriores do mesmo dia (via notification_logs), não só o que está
+ *    sendo decidido agora, senão o limite "vaza" entre execuções do
+ *    Scheduler a cada 15min.
  */
 class CoordenadorNotificacoes
 {
@@ -32,11 +42,14 @@ class CoordenadorNotificacoes
 
     /** Menor número = maior prioridade. Tipo fora da lista cai no fim (99). */
     private const PRIORIDADE = [
+        // Sinais fortes de perda de cliente — não podem ser suprimidos por
+        // uma celebração no mesmo dia (item 4 de uma segunda revisão).
+        'mensagem_sem_resposta' => 0,
+        'resumo_semanal_risco' => 0,
         // Acionável/transacional — o aluno ou personal precisa saber pra agir.
         'novo_treino_enviado' => 1,
         'treino_academia_aprovado' => 1,
         'mensagem_nao_lida' => 1,
-        'mensagem_sem_resposta' => 1,
         'revisao_pendente' => 1,
         'avaliacao_recebida' => 1,
         // Celebração — reforço positivo, vale a pena preservar mesmo com pouca vaga.
@@ -56,20 +69,39 @@ class CoordenadorNotificacoes
         'alerta_sexta' => 4,
         'avaliacao_pendente' => 4,
         'estagnacao_detectada' => 4,
-        // Resumo/administrativo do personal — menos urgente que os tipos acima.
-        'resumo_semanal_risco' => 5,
+        // Administrativo do personal — menos urgente que os tipos acima.
         'aluno_cadastrado' => 5,
     ];
 
-    /** regra dominante => regras suprimidas quando ambas competem no mesmo ciclo pro mesmo destinatário. */
+    /**
+     * regra dominante => regras suprimidas quando ambas competem no mesmo
+     * ciclo, pro mesmo destinatário E pro mesmo aluno (studentId).
+     * avaliacao_recebida > aluno_cadastrado: cadastro e primeira avaliação
+     * acontecem quase sempre no mesmo dia (PAR-Q é preenchido no primeiro
+     * acesso) — a avaliação é o fato mais informativo dos dois.
+     */
     private const SUPRESSOES = [
         'onboarding_boas_vindas' => ['sem_treinar_dias', 'sem_treinar_hoje'],
         'streak_em_risco' => ['sem_treinar_hoje'],
+        'avaliacao_recebida' => ['aluno_cadastrado'],
     ];
 
     /**
-     * @param  array<int, array{chave: string, candidato: \App\Notifications\Rules\NotificacaoCandidato}>  $itens
-     * @return array<int, array{chave: string, candidato: \App\Notifications\Rules\NotificacaoCandidato}>
+     * Tipos (todos do personal) que consolidam em UMA notificação com
+     * contagem quando há mais de uma instância pro mesmo destinatário no
+     * mesmo ciclo — não tem nome de aluno (mesmo cuidado do payload
+     * genérico), só quantidade, que não expõe identidade nem dado sensível.
+     */
+    private const TEMPLATES_CONSOLIDACAO = [
+        'revisao_pendente' => ['titulo' => 'Análises aguardando revisão', 'corpo' => '%d alunos com análise de academia aguardando sua aprovação.', 'url' => '/academia'],
+        'mensagem_sem_resposta' => ['titulo' => 'Mensagens sem resposta', 'corpo' => '%d alunos esperando sua resposta no chat.', 'url' => '/dashboard'],
+        'avaliacao_recebida' => ['titulo' => 'Novas avaliações recebidas', 'corpo' => '%d alunos completaram a avaliação de saúde.', 'url' => '/dashboard'],
+        'aluno_cadastrado' => ['titulo' => 'Novos alunos cadastrados', 'corpo' => '%d novos alunos cadastrados.', 'url' => '/dashboard'],
+    ];
+
+    /**
+     * @param  array<int, array{chave: string, candidato: NotificacaoCandidato}>  $itens
+     * @return array<int, array{chave: string, candidato: NotificacaoCandidato}>
      */
     public function coordenar(array $itens): array
     {
@@ -86,6 +118,7 @@ class CoordenadorNotificacoes
         $resultado = [];
         foreach ($porDestinatario as $grupo) {
             $grupo = $this->suprimir($grupo->all());
+            $grupo = $this->consolidar($grupo);
             if (empty($grupo)) {
                 continue;
             }
@@ -102,21 +135,73 @@ class CoordenadorNotificacoes
         return $resultado;
     }
 
-    /** @param  array<int, array{chave: string, candidato: \App\Notifications\Rules\NotificacaoCandidato}>  $grupo */
+    /** @param  array<int, array{chave: string, candidato: NotificacaoCandidato}>  $grupo */
     private function suprimir(array $grupo): array
     {
-        $chavesPresentes = array_column($grupo, 'chave');
-
         foreach (self::SUPRESSOES as $dominante => $suprimidas) {
-            if (in_array($dominante, $chavesPresentes, true)) {
-                $grupo = array_values(array_filter(
-                    $grupo,
-                    fn ($item) => ! in_array($item['chave'], $suprimidas, true)
-                ));
+            $alunosComDominante = collect($grupo)
+                ->filter(fn ($item) => $item['chave'] === $dominante)
+                ->map(fn ($item) => $item['candidato']->studentId)
+                ->filter()
+                ->all();
+
+            if (empty($alunosComDominante)) {
+                continue;
             }
+
+            $grupo = array_values(array_filter($grupo, function ($item) use ($suprimidas, $alunosComDominante) {
+                if (! in_array($item['chave'], $suprimidas, true)) {
+                    return true;
+                }
+
+                return ! in_array($item['candidato']->studentId, $alunosComDominante, true);
+            }));
         }
 
         return $grupo;
+    }
+
+    /**
+     * Junta instâncias repetidas do mesmo tipo (mesmo destinatário, mesmo
+     * ciclo) numa notificação só, pros tipos com template de consolidação —
+     * sem isso, N alunos com o mesmo tipo pendente competiam N vezes
+     * separadas pelo limite diário, escondendo itens de ação real do
+     * personal (item 3 de uma segunda revisão).
+     *
+     * @param  array<int, array{chave: string, candidato: NotificacaoCandidato}>  $grupo
+     */
+    private function consolidar(array $grupo): array
+    {
+        $porChave = collect($grupo)->groupBy('chave');
+
+        $resultado = [];
+        foreach ($porChave as $chave => $itensDaChave) {
+            if ($itensDaChave->count() === 1 || ! isset(self::TEMPLATES_CONSOLIDACAO[$chave])) {
+                $resultado = array_merge($resultado, $itensDaChave->all());
+
+                continue;
+            }
+
+            $template = self::TEMPLATES_CONSOLIDACAO[$chave];
+            $primeiro = $itensDaChave->first()['candidato'];
+            $studentIds = $itensDaChave->pluck('candidato.studentId')->filter()->sort()->values()->all();
+
+            $resultado[] = [
+                'chave' => $chave,
+                'candidato' => new NotificacaoCandidato(
+                    recipient: $primeiro->recipient,
+                    professionalId: $primeiro->professionalId,
+                    studentId: null,
+                    dedupKey: "grupo:{$chave}:{$primeiro->professionalId}:".implode(',', $studentIds).':'.now()->toDateString(),
+                    contexto: (string) $itensDaChave->count(),
+                    titulo: $template['titulo'],
+                    corpo: sprintf($template['corpo'], $itensDaChave->count()),
+                    url: $template['url'],
+                ),
+            ];
+        }
+
+        return $resultado;
     }
 
     private function prioridade(string $chave): int

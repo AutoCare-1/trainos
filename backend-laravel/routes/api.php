@@ -146,8 +146,10 @@ Route::prefix('portal')->group(function () {
     Route::get('/{token}/mensagens', [PortalChatController::class, 'index']);
     Route::post('/{token}/mensagens', [PortalChatController::class, 'store']);
 
-    // Mesmo throttle do lado do personal — ver comentário acima.
-    Route::middleware('throttle:10,1')->group(function () {
+    // throttle:push-portal — chaveado pelo token do portal (App\Providers\AppServiceProvider),
+    // não por IP: não penaliza vários usuários legítimos atrás do mesmo IP
+    // (rede de academia/escola) e ainda barra abuso concentrado num token vazado.
+    Route::middleware('throttle:push-portal')->group(function () {
         Route::post('/{token}/push/subscribe', [PortalPushController::class, 'subscribe']);
         Route::delete('/{token}/push/subscribe', [PortalPushController::class, 'unsubscribe']);
     });

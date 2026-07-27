@@ -42,4 +42,25 @@ class PushSubscribeRateLimitTest extends TestCase
 
         $this->postJson('/portal/token-invalido/push/subscribe', $payload)->assertStatus(429);
     }
+
+    /**
+     * Item 8 de uma segunda revisão: o throttle do portal é chaveado pelo
+     * token (App\Providers\AppServiceProvider), não por IP — dois alunos
+     * diferentes (mesmo IP de teste) não compartilham o mesmo limite, e um
+     * token vazado sendo abusado não consome a cota de outros alunos legítimos.
+     */
+    public function test_tokens_diferentes_tem_limites_independentes_mesmo_do_mesmo_ip(): void
+    {
+        $payload = ['endpoint' => 'https://exemplo.com/z', 'keys' => ['p256dh' => 'a', 'auth' => 'b']];
+
+        // Esgota o limite do token-a.
+        for ($i = 0; $i < 10; $i++) {
+            $this->postJson('/portal/token-a/push/subscribe', $payload);
+        }
+        $this->postJson('/portal/token-a/push/subscribe', $payload)->assertStatus(429);
+
+        // token-b não deveria ser afetado, mesmo vindo do mesmo IP de teste.
+        $status = $this->postJson('/portal/token-b/push/subscribe', $payload)->getStatusCode();
+        $this->assertNotSame(429, $status, 'token diferente não deveria compartilhar o limite de outro token');
+    }
 }

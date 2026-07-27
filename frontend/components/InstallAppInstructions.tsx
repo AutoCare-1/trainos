@@ -1,14 +1,16 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { estaInstalado } from '@/lib/push'
+import { estaInstalado, precisaEstarInstalado } from '@/lib/push'
 
 type Plataforma = 'ios' | 'android' | 'outro'
 
+// iOS detectado via precisaEstarInstalado() (mesmo critério usado pro gate de
+// push) — cobre iPhone/iPod por user agent e iPad, que desde o iPadOS 13 se
+// identifica como "Macintosh" no user agent por padrão.
 function detectarPlataforma(): Plataforma {
-  const ua = navigator.userAgent
-  if (/iPhone|iPad|iPod/.test(ua)) return 'ios'
-  if (/Android/.test(ua)) return 'android'
+  if (precisaEstarInstalado()) return 'ios'
+  if (/Android/.test(navigator.userAgent)) return 'android'
   return 'outro'
 }
 

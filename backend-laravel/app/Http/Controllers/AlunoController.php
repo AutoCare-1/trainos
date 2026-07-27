@@ -56,14 +56,13 @@ class AlunoController extends Controller
         ]);
     }
 
-    // Conta, por aluno, quantos exercícios não tiveram a carga máxima aumentada
-    // entre as duas últimas sessões concluídas em que ele registrou peso.
-    // Espelha contarEstagnacaoPorAluno() de backend/src/routes/alunos.ts do Node.
+    // Conta, por aluno, quantos exercícios não bateram o melhor resultado das
+    // últimas sessões (janela de App\Support\Estagnacao::JANELA_PADRAO).
     // Consolidado em App\Support\Estagnacao — mesma fonte de verdade usada pela
     // notificação push estagnacao_detectada, pra nunca dar veredito divergente.
     private function contarEstagnacaoPorAluno(string $professionalId): array
     {
-        $comparacoes = Estagnacao::compararUltimasDuasSessoes($professionalId);
+        $comparacoes = Estagnacao::compararUltimasSessoes($professionalId);
 
         $porAluno = [];
         foreach ($comparacoes as $c) {
@@ -252,7 +251,7 @@ class AlunoController extends Controller
 
         // Mesma fonte de verdade de contarEstagnacaoPorAluno() e da notificação
         // push estagnacao_detectada — ver App\Support\Estagnacao.
-        $comparacoesEstagnadas = collect(Estagnacao::compararUltimasDuasSessoes($student->professional_id))
+        $comparacoesEstagnadas = collect(Estagnacao::compararUltimasSessoes($student->professional_id))
             ->filter(fn ($c) => $c['student_id'] === $student->id && $c['ultima'] <= $c['anterior']);
         $nomesExercicios = Exercise::whereIn('id', $comparacoesEstagnadas->pluck('exercise_id'))->pluck('name', 'id');
         $alertasEstagnacao = $comparacoesEstagnadas

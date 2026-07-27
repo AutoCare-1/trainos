@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\BodyPhoto;
 use App\Models\Professional;
 use App\Models\Student;
 use App\Models\Workout;
@@ -128,6 +129,46 @@ class PayloadPrivacidadeNotificationTest extends TestCase
             $student,
             function (PushNotification $notification) {
                 $this->assertStringContainsString('Treino de Pernas', $notification->corpo);
+
+                return true;
+            }
+        );
+    }
+
+    /**
+     * Item 2b de uma segunda revisão: comentário sobre foto de evolução
+     * corporal é plausivelmente o conteúdo mais sensível do catálogo — já
+     * nasceu usando o payload genérico (criado depois da correção do item 9),
+     * este teste só trava isso.
+     */
+    public function test_comentario_foto_evolucao_nao_expoe_o_comentario_no_payload(): void
+    {
+        Notification::fake();
+        Carbon::setTestNow(Carbon::parse('2026-07-27 12:00:00'));
+
+        $professional = Professional::create([
+            'name' => 'Personal Teste',
+            'email' => uniqid('personal').'@example.com',
+            'password_hash' => bcrypt('senha12345'),
+        ]);
+        $student = Student::create([
+            'professional_id' => $professional->id,
+            'name' => 'Aluno Teste',
+            'invite_token' => uniqid('token'),
+        ]);
+        BodyPhoto::create([
+            'student_id' => $student->id,
+            'file_path' => 'body-photos/teste.jpg',
+            'ai_feedback' => 'Comentário sensível sobre o corpo do aluno que não pode vazar.',
+        ]);
+
+        Artisan::call('notifications:process');
+
+        Notification::assertSentTo(
+            $student,
+            function (PushNotification $notification) {
+                $this->assertStringNotContainsString('corpo do aluno', $notification->corpo);
+                $this->assertSame(NotificacaoCandidato::CORPO_ALUNO_GENERICO, $notification->corpo);
 
                 return true;
             }

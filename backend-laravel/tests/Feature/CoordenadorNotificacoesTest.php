@@ -59,6 +59,24 @@ class CoordenadorNotificacoesTest extends TestCase
         ];
     }
 
+    /** Candidato do lado do personal (recipient=Professional), sobre um aluno específico. */
+    private function candidatoPersonal(Professional $personal, string $chave, Student $sobreAluno, ?string $dedupSufixo = null): array
+    {
+        return [
+            'chave' => $chave,
+            'candidato' => new NotificacaoCandidato(
+                recipient: $personal,
+                professionalId: $personal->id,
+                studentId: $sobreAluno->id,
+                dedupKey: "{$chave}:{$sobreAluno->id}:".($dedupSufixo ?? uniqid()),
+                contexto: null,
+                titulo: 'Título',
+                corpo: 'Corpo',
+                url: null,
+            ),
+        ];
+    }
+
     public function test_onboarding_boas_vindas_suprime_sem_treinar_dias_no_mesmo_ciclo(): void
     {
         $aluno = $this->criarAluno();
@@ -152,5 +170,102 @@ class CoordenadorNotificacoesTest extends TestCase
         $this->assertCount(3, $resultado);
         $chavesAluno2 = array_column(array_filter($resultado, fn ($i) => $i['candidato']->studentId === $aluno2->id), 'chave');
         $this->assertCount(1, $chavesAluno2);
+    }
+
+    // --- Segunda rodada de revisão ---
+
+    public function test_avaliacao_recebida_suprime_aluno_cadastrado_do_mesmo_aluno(): void
+    {
+        $aluno = $this->criarAluno();
+        $personal = $aluno->professional;
+
+        $itens = [
+            $this->candidatoPersonal($personal, 'aluno_cadastrado', $aluno),
+            $this->candidatoPersonal($personal, 'avaliacao_recebida', $aluno),
+        ];
+
+        $resultado = (new CoordenadorNotificacoes)->coordenar($itens);
+
+        $this->assertCount(1, $resultado);
+        $this->assertSame('avaliacao_recebida', $resultado[0]['chave']);
+    }
+
+    public function test_supressao_nao_afeta_aluno_diferente_sem_o_evento_dominante(): void
+    {
+        $alunoA = $this->criarAluno();
+        $personal = $alunoA->professional;
+        $alunoB = Student::create(['professional_id' => $personal->id, 'name' => 'Aluno B', 'invite_token' => uniqid('token')]);
+
+        // avaliacao_recebida só existe pro Aluno A — aluno_cadastrado do Aluno B não tem por que ser suprimido.
+        $itens = [
+            $this->candidatoPersonal($personal, 'avaliacao_recebida', $alunoA),
+            $this->candidatoPersonal($personal, 'aluno_cadastrado', $alunoA),
+            $this->candidatoPersonal($personal, 'aluno_cadastrado', $alunoB),
+        ];
+
+        $resultado = (new CoordenadorNotificacoes)->coordenar($itens);
+
+        $chaves = array_column($resultado, 'chave');
+        $alunosDoResultado = array_column(array_column($resultado, 'candidato'), 'studentId');
+        $this->assertContains('avaliacao_recebida', $chaves);
+        $this->assertContains($alunoB->id, $alunosDoResultado, 'aluno_cadastrado do Aluno B não deveria ser suprimido');
+    }
+
+    public function test_consolida_multiplas_instancias_do_mesmo_tipo_pro_personal(): void
+    {
+        $aluno1 = $this->criarAluno();
+        $personal = $aluno1->professional;
+        $aluno2 = Student::create(['professional_id' => $personal->id, 'name' => 'Aluno 2', 'invite_token' => uniqid('token')]);
+        $aluno3 = Student::create(['professional_id' => $personal->id, 'name' => 'Aluno 3', 'invite_token' => uniqid('token')]);
+
+        $itens = [
+            $this->candidatoPersonal($personal, 'revisao_pendente', $aluno1),
+            $this->candidatoPersonal($personal, 'revisao_pendente', $aluno2),
+            $this->candidatoPersonal($personal, 'revisao_pendente', $aluno3),
+        ];
+
+        $resultado = (new CoordenadorNotificacoes)->coordenar($itens);
+
+        $this->assertCount(1, $resultado, '3 instâncias do mesmo tipo deveriam virar 1 notificação consolidada');
+        $this->assertSame('revisao_pendente', $resultado[0]['chave']);
+        $this->assertStringContainsString('3 alunos', $resultado[0]['candidato']->corpo);
+        // Consolidada não usa mais o limite diário de 2 pra esconder os outros 2 alunos —
+        // conta como 1 notificação só, não 3 instâncias brutas.
+        $this->assertNull($resultado[0]['candidato']->studentId);
+    }
+
+    public function test_nao_consolida_quando_so_tem_uma_instancia(): void
+    {
+        $aluno = $this->criarAluno();
+        $personal = $aluno->professional;
+
+        $itens = [$this->candidatoPersonal($personal, 'revisao_pendente', $aluno)];
+
+        $resultado = (new CoordenadorNotificacoes)->coordenar($itens);
+
+        $this->assertCount(1, $resultado);
+        $this->assertSame($aluno->id, $resultado[0]['candidato']->studentId, 'instância única não deveria virar "consolidada"');
+    }
+
+    public function test_mensagem_sem_resposta_nao_e_suprimida_por_celebracao_no_limite_diario(): void
+    {
+        $aluno = $this->criarAluno();
+        $personal = $aluno->professional;
+        $aluno2 = Student::create(['professional_id' => $personal->id, 'name' => 'Aluno 2', 'invite_token' => uniqid('token')]);
+
+        // 3 candidatos do personal, limite é 2: mensagem_sem_resposta (tier 0) e
+        // avaliacao_recebida (tier 1) devem ganhar de aluno_cadastrado (tier 5).
+        $itens = [
+            $this->candidatoPersonal($personal, 'aluno_cadastrado', $aluno2),
+            $this->candidatoPersonal($personal, 'mensagem_sem_resposta', $aluno),
+            $this->candidatoPersonal($personal, 'avaliacao_recebida', $aluno2),
+        ];
+
+        $resultado = (new CoordenadorNotificacoes)->coordenar($itens);
+
+        $this->assertCount(2, $resultado);
+        $chaves = array_column($resultado, 'chave');
+        $this->assertContains('mensagem_sem_resposta', $chaves);
+        $this->assertContains('avaliacao_recebida', $chaves);
     }
 }

@@ -68,9 +68,17 @@ return [
     | will be used by the PHP date and date-time functions. The timezone
     | is set to "UTC" by default as it is suitable for most use cases.
     |
+    | Item 7 de uma segunda revisão externa: app é 100% Brasil (dedup diário,
+    | teto de notificações/dia, "hora >= 18h" de sem_treinar_hoje, isFriday()/
+    | isMonday() das regras semanais — tudo depende de "que dia/hora é agora"
+    | bater com o relógio de parede do Brasil, não UTC). Ficar em UTC faria
+    | esses limites de dia virarem às 21h do dia anterior (horário de Brasília,
+    | UTC-3) em vez de meia-noite. Ver também config/database.php (timezone da
+    | conexão MySQL) — as duas precisam concordar.
+    |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => env('APP_TIMEZONE', 'America/Sao_Paulo'),
 
     /*
     |--------------------------------------------------------------------------

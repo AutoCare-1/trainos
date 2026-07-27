@@ -27,7 +27,7 @@ class EstagnacaoDetectadaRule implements NotificacaoRule
     {
         $ontem = now()->subDay();
 
-        $estagnados = collect(Estagnacao::compararUltimasDuasSessoes())
+        $estagnados = collect(Estagnacao::compararUltimasSessoes())
             ->filter(fn ($c) => $c['ultima'] <= $c['anterior'] && $c['finished_at'] >= $ontem);
 
         if ($estagnados->isEmpty()) {

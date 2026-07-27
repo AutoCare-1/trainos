@@ -16,12 +16,27 @@ export function estaInstalado(): boolean {
  * Desktop (Chrome/Edge/Firefox/Safari) e Android Chrome aceitam push numa aba
  * comum do navegador, sem precisar "instalar" nada. O personal usa o app em
  * desktop na prática — exigir instalado ali deixaria as notificações de gestão
- * praticamente inativáveis. Mesmo regex de detecção já usado em
- * InstallAppInstructions, pra não divergir de critério dentro do mesmo app.
+ * praticamente inativáveis.
+ *
+ * iPad não é pego só pelo user agent: desde o iPadOS 13, o Safari do iPad se
+ * identifica como "Macintosh" por padrão (mesmo user agent de um Mac de
+ * verdade) — só muda esse comportamento quem ativa manualmente o "modo
+ * desktop" desligado nas configurações, o que não é o padrão de fábrica.
+ * Detecção combinada (mesmo critério em InstallAppInstructions, pra não
+ * divergir dentro do mesmo app): iPhone/iPod continuam pegos pelo regex de
+ * user agent; iPad é pego combinando `navigator.platform === 'MacIntel'` com
+ * `navigator.maxTouchPoints > 1` — um Mac de verdade não tem tela touch,
+ * então essa combinação só é verdadeira em iPad.
  */
 export function precisaEstarInstalado(): boolean {
   if (typeof navigator === 'undefined') return false
-  return /iPhone|iPad|iPod/.test(navigator.userAgent)
+  if (/iPhone|iPod/.test(navigator.userAgent)) return true
+
+  const pareceMac = navigator.platform === 'MacIntel' || /Macintosh/.test(navigator.userAgent)
+  const temTouch = navigator.maxTouchPoints > 1
+  if (pareceMac && temTouch) return true
+
+  return /iPad/.test(navigator.userAgent)
 }
 
 export function pushSuportado(): boolean {

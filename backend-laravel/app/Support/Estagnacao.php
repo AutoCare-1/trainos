@@ -6,28 +6,34 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Fonte única de verdade pra "estagnação de carga": compara a carga máxima da
- * última sessão concluída com a da penúltima, por aluno/exercício. Usada tanto
- * pelo alerta in-app (AlunoController::contarEstagnacaoPorAluno, no perfil do
- * aluno visto pelo personal) quanto pela notificação push
- * (EstagnacaoDetectadaRule) — item 5/6 de uma revisão externa apontou o risco
- * de existir um "veredito" divergente entre os dois lugares se cada um tivesse
- * sua própria cópia da lógica; consolidado aqui pra nunca mais divergir.
+ * sessão mais recente com a de `janela` sessões atrás, por aluno/exercício —
+ * ignorando o que aconteceu nas sessões intermediárias. Usada tanto pelo
+ * alerta in-app (AlunoController::contarEstagnacaoPorAluno / alertasEstagnacao,
+ * no perfil do aluno visto pelo personal) quanto pela notificação push
+ * (EstagnacaoDetectadaRule) — consolidado aqui pra nunca dar veredito
+ * divergente entre os dois lugares.
  *
- * Compara só as duas últimas sessões de propósito (não ampliei pra 3-4 sessões
- * como uma sugestão da revisão pedia): mudar esse critério mudaria o
- * comportamento do alerta in-app já existente, que não foi apontado como
- * problema em si — é uma decisão de produto separada, não uma correção de bug
- * da notificação push.
+ * Janela ampliada de 2 pra 4 sessões (segunda rodada de revisão). O motivo
+ * não é só "suavizar" — é corrigir um falso positivo específico: com janela=2
+ * (última vs penúltima), um pico isolado de desempenho (ex: um dia
+ * excepcionalmente bom 1 sessão atrás) fazia a sessão seguinte, mesmo normal,
+ * parecer "estagnada" só por não superar aquele pico atípico. Comparando com
+ * `janela` sessões atrás (não com a intermediária), um pico isolado no meio
+ * do caminho deixa de distorcer o veredito — o que importa é se, de ponta a
+ * ponta da janela, o aluno progrediu. Como é a mesma fonte usada nos dois
+ * lugares, a mudança propaga automaticamente pro push e pro in-app.
  */
 class Estagnacao
 {
+    public const JANELA_PADRAO = 4;
+
     /**
      * @return array{student_id: string, exercise_id: string, session_id: string, finished_at: string, ultima: float, anterior: float}[]
      */
-    public static function compararUltimasDuasSessoes(?string $professionalId = null): array
+    public static function compararUltimasSessoes(?string $professionalId = null, int $janela = self::JANELA_PADRAO): array
     {
         $rows = DB::select(
-            <<<'SQL'
+            <<<SQL
             with cargas as (
               select ts.student_id, we.exercise_id, ts.id as session_id, ts.finished_at,
                      max(se.load_kg_done) as carga_max
@@ -46,13 +52,16 @@ class Estagnacao
             comparacao as (
               select student_id, exercise_id,
                      max(case when rn = 1 then carga_max end) as ultima,
-                     max(case when rn = 2 then carga_max end) as anterior,
                      max(case when rn = 1 then session_id end) as session_id,
-                     max(case when rn = 1 then finished_at end) as finished_at
+                     max(case when rn = 1 then finished_at end) as finished_at,
+                     max(case when rn = {$janela} then carga_max end) as anterior,
+                     count(*) as total_sessoes
               from ranked
-              where rn <= 2
+              where rn <= {$janela}
               group by student_id, exercise_id
-              having max(case when rn = 2 then carga_max end) is not null
+              -- precisa de `janela` sessões completas pra avaliar — com menos
+              -- histórico que isso não dá pra dizer se estagnou de verdade.
+              having count(*) = {$janela}
             )
             select student_id, exercise_id, session_id, finished_at, ultima, anterior
             from comparacao

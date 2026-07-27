@@ -59,6 +59,14 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
+            // Item 7 de uma segunda revisão externa: sem isso, colunas TIMESTAMP
+            // (que o MySQL converte internamente usando o timezone da SESSÃO, não
+            // um valor fixo) dependiam do timezone 'SYSTEM' do servidor MySQL —
+            // que só "funcionava por acaso" nesta máquina de dev porque o SO já
+            // está configurado pro fuso do Brasil. Em produção isso não teria
+            // garantia nenhuma. Fixo aqui em vez de confiar no relógio do SO —
+            // precisa bater com config('app.timezone') acima.
+            'timezone' => env('DB_TIMEZONE', '-03:00'),
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
