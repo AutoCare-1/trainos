@@ -17,6 +17,7 @@ import { formatarDataCurta, formatarDataLonga, nomeMes, primeiroDiaAno, primeiro
 import { comprimirImagem } from '@/lib/compressImage'
 import { estaInstalado, useValorDoNavegador } from '@/lib/push'
 import {
+  Anamnese,
   BodyMeasurement,
   BodyPhoto,
   Challenge,
@@ -31,6 +32,15 @@ import {
   WorkoutExerciseDetail,
 } from '@/lib/types'
 import { agruparExercicios, rotuloEstrutura } from '@/lib/workoutStructures'
+
+// localStorage pode conter lixo (versão antiga, extensão do navegador,
+// edição manual) — um valor não-parseável não pode fazer a data "vista até"
+// virar Invalid Date, senão a comparação abaixo nunca reconhece mensagem
+// nova nenhuma.
+function timestampValido(iso: string): number | null {
+  const t = new Date(iso).getTime()
+  return Number.isNaN(t) ? null : t
+}
 
 function formatarDuracao(segundos: number | null): string {
   if (!segundos) return ''
@@ -111,9 +121,13 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     if (abaAnterior === 'chat' && ultimaMensagem) setUltimaVistaSalvaForcada(ultimaMensagem.created_at)
   }
 
-  const naoLidas = messages.filter(
-    (m) => m.sender !== 'student' && (!ultimaVistaEm || new Date(m.created_at) > new Date(ultimaVistaEm))
-  ).length
+  const ultimaVistaEmTs = ultimaVistaEm ? timestampValido(ultimaVistaEm) : null
+  const naoLidas = messages.filter((m) => {
+    if (m.sender === 'student') return false
+    if (ultimaVistaEmTs === null) return true
+    const criadaEmTs = timestampValido(m.created_at)
+    return criadaEmTs === null || criadaEmTs > ultimaVistaEmTs
+  }).length
 
   const menuItems: MenuItem[] = [
     { id: 'treino', label: 'Treino', icon: '' },
@@ -268,11 +282,21 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     }
   }
 
+  // Evita empilhar requisições do polling: se o GET anterior ainda não voltou
+  // (rede lenta) quando o próximo setInterval dispara, pula esse ciclo em vez
+  // de deixar duas respostas em voo — a mais lenta poderia resolver por último
+  // e sobrescrever o estado com dado desatualizado.
+  const carregandoMensagensRef = useRef(false)
   const carregarMensagens = useCallback(() => {
+    if (carregandoMensagensRef.current) return
+    carregandoMensagensRef.current = true
     api
       .get<{ messages: Message[] }>(`/portal/${token}/mensagens`)
       .then((d) => setMessages(d.messages))
       .catch(() => {})
+      .finally(() => {
+        carregandoMensagensRef.current = false
+      })
   }, [token])
 
   const carregarStrava = useCallback(() => {
@@ -373,8 +397,19 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     totalMensagensAnterior.current = messages.length
   }, [messages, aba])
 
-  async function enviarAvaliacao(parQ: ParQAnswers, healthNotes: string, foto: File | null) {
-    await api.post(`/portal/${token}/avaliacao`, { par_q_answers: parQ, health_notes: healthNotes })
+  async function enviarAvaliacao(
+    parQ: ParQAnswers,
+    healthNotes: string,
+    foto: File | null,
+    birthDate: string,
+    anamnese: Anamnese
+  ) {
+    await api.post(`/portal/${token}/avaliacao`, {
+      par_q_answers: parQ,
+      health_notes: healthNotes,
+      birth_date: birthDate || null,
+      anamnese,
+    })
 
     let photoUrl: string | null = null
     if (foto) {

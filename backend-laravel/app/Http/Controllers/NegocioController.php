@@ -49,7 +49,10 @@ class NegocioController extends Controller
         $diasSemTreinar = self::DIAS_SEM_TREINAR;
         $diasSemCheckin = self::DIAS_SEM_CHECKIN;
         $diasAlunoNovo = self::DIAS_ALUNO_NOVO;
-        $treinosMinimosAlunoNovo = self::TREINOS_MINIMOS_ALUNO_NOVO;
+        // Interpolada direto num CASE da query (constante da classe, nunca vem de
+        // input) — cast explícito por defesa em profundidade, mesmo padrão de
+        // Estagnacao::compararUltimasSessoes.
+        $treinosMinimosAlunoNovo = (int) self::TREINOS_MINIMOS_ALUNO_NOVO;
 
         // date_trunc/interval não existem no MySQL — limites de data calculados em PHP/Carbon.
         $agora = Carbon::now()->toDateTimeString();

@@ -11,6 +11,56 @@ export interface ParQAnswers {
   pressao_medicacao: boolean
 }
 
+/** Complemento da anamnese inicial (par_q_answers/health_notes já cobrem a parte de
+ * segurança PAR-Q) — perguntas do formulário em papel do personal que ainda não
+ * tinham campo no app. Tudo opcional: cada seção pode ficar em branco. */
+export interface Anamnese {
+  historico_atividade_fisica: {
+    ja_praticou: string
+    pratica_atualmente: string
+    modalidades_favoritas: string
+    modalidades_nao_gosta: string
+    treinou_com_personal: boolean | null
+  }
+  objetivos: {
+    selecionados: string[]
+    outro: string
+    prazo: string
+  }
+  condicoes_saude: {
+    restricao_medica: string
+    doenca_diagnosticada: string
+    lesao: string
+    medicamentos: string
+    suplementos: string
+    alergias: string
+  }
+  estilo_de_vida: {
+    profissao: string
+    nivel_estresse: 'baixo' | 'medio' | 'alto' | null
+    qualidade_sono: 'boa' | 'regular' | 'ruim' | null
+    horas_sono: string
+    alimentacao: string
+    plano_alimentar: string
+    frequencia_alcool: string
+    fumante: boolean | null
+    tempo_fumante: string
+  }
+  motivacao: {
+    motivacao: string
+    obstaculos: string
+    preferencia_intensidade: 'curtos_intensos' | 'longos_moderados' | null
+    preferencia_companhia: 'sozinho' | 'grupo' | 'acompanhamento' | null
+    horario_disponivel: string
+  }
+  disponibilidade: {
+    vezes_por_semana: string
+    tempo_por_treino: string
+    local_treino: string[]
+  }
+  historico_familiar: string
+}
+
 export type TipoCobranca = 'consultoria' | 'presencial'
 
 export interface Student {
@@ -19,6 +69,7 @@ export interface Student {
   email: string | null
   phone: string | null
   objective: string | null
+  birth_date: string | null
   weight_kg: number | null
   height_cm: number | null
   invite_token: string
@@ -26,6 +77,7 @@ export interface Student {
   ai_autopilot: boolean
   par_q_answers: ParQAnswers | null
   health_notes: string | null
+  anamnese: Anamnese | null
   onboarding_completed_at: string | null
   photo_url: string | null
   created_at: string

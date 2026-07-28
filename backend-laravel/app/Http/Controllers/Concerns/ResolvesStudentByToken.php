@@ -9,6 +9,6 @@ trait ResolvesStudentByToken
 {
     protected function buscarAlunoPorToken(string $token): ?Student
     {
-        return Student::where('invite_token', $token)->first();
+        return Student::where('invite_token', $token)->where('status', 'active')->first();
     }
 }

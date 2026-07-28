@@ -125,4 +125,59 @@ class MudancaRankingDesafioNotificationTest extends TestCase
         Notification::assertSentTo($atrasado, PushNotification::class);
         $this->assertSame(1, ChallengeParticipant::where('student_id', $atrasado->id)->first()->ultima_posicao_notificada);
     }
+
+    public function test_mudanca_suprimida_pelo_coordenador_nao_marca_a_posicao_como_notificada(): void
+    {
+        // Chama a Rule direto (sem passar pelo ProcessNotifications) pra isolar
+        // o contrato: a posição só deve ser gravada como "vista" se alguém
+        // realmente confirmar o envio via aoConfirmarEnvio — nunca só por
+        // avaliar() ter rodado. Sem essa correção, ultima_posicao_notificada já
+        // teria sido atualizada aqui embaixo, mesmo sem nenhum push ter saído.
+        Carbon::setTestNow(Carbon::parse('2026-07-27 12:00:00'));
+
+        $professional = Professional::create([
+            'name' => 'Personal Teste', 'email' => uniqid('personal').'@example.com', 'password_hash' => bcrypt('senha12345'),
+        ]);
+        $challenge = Challenge::create([
+            'professional_id' => $professional->id, 'name' => 'Desafio Teste',
+            'start_date' => now()->subDays(3)->toDateString(), 'end_date' => now()->addDays(3)->toDateString(),
+        ]);
+        $atrasado = $this->alunoComSessoesConcluidas($professional, $challenge, 'Atrasado', 1);
+        $this->alunoComSessoesConcluidas($professional, $challenge, 'Na frente', 3);
+
+        // Primeira observação: só grava a posição inicial (2º lugar).
+        (new \App\Notifications\Rules\MudancaRankingDesafioRule)->avaliar();
+        $participante = ChallengeParticipant::where('student_id', $atrasado->id)->first();
+        $this->assertSame(2, $participante->ultima_posicao_notificada);
+
+        // Ultrapassa e vira 1º — segunda avaliação gera um candidato de mudança.
+        $workout = Workout::where('student_id', $atrasado->id)->first();
+        $we = WorkoutExercise::where('workout_id', $workout->id)->first();
+        for ($i = 0; $i < 3; $i++) {
+            $session = TrainingSession::create([
+                'workout_id' => $workout->id, 'student_id' => $atrasado->id, 'status' => 'completed',
+                'started_at' => now()->subMinutes(10), 'finished_at' => now()->subMinutes(5),
+            ]);
+            SessionEntry::create(['training_session_id' => $session->id, 'workout_exercise_id' => $we->id, 'set_number' => 1, 'load_kg_done' => 20]);
+        }
+
+        // Os dois trocaram de lugar entre si — cada um gera seu próprio candidato.
+        $candidatos = (new \App\Notifications\Rules\MudancaRankingDesafioRule)->avaliar();
+        $this->assertCount(2, $candidatos, 'os dois participantes trocaram de posição entre si');
+        $candidatoAtrasado = collect($candidatos)->first(fn ($c) => $c->studentId === $atrasado->id);
+        $this->assertNotNull($candidatoAtrasado->aoConfirmarEnvio, 'candidato de mudança precisa do callback de confirmação');
+
+        // Simula supressão: NUNCA chama aoConfirmarEnvio (equivalente a o
+        // CoordenadorNotificacoes ter descartado este candidato).
+        $participante->refresh();
+        $this->assertSame(
+            2,
+            $participante->ultima_posicao_notificada,
+            'posição não deveria ter sido marcada como notificada sem confirmação de envio'
+        );
+
+        // Confirma que o callback, quando de fato chamado, grava a posição nova.
+        ($candidatoAtrasado->aoConfirmarEnvio)();
+        $this->assertSame(1, $participante->refresh()->ultima_posicao_notificada);
+    }
 }

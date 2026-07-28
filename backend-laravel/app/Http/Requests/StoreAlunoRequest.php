@@ -22,8 +22,8 @@ class StoreAlunoRequest extends FormRequest
             'email' => ['nullable', 'string'],
             'phone' => ['nullable', 'string'],
             'objective' => ['nullable', 'string'],
-            'weight_kg' => ['nullable', 'numeric'],
-            'height_cm' => ['nullable', 'numeric'],
+            'weight_kg' => ['nullable', 'numeric', 'min:0.1'],
+            'height_cm' => ['nullable', 'numeric', 'min:0.1'],
             // Cobrança é opcional no cadastro — mas se um dos dois vier, o outro
             // também precisa vir (não faz sentido tipo sem valor ou valor sem tipo).
             'billing_type' => ['nullable', 'string', Rule::in(StudentBillingPlan::TIPOS_VALIDOS), 'required_with:monthly_value'],

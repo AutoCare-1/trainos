@@ -41,10 +41,17 @@ class ContentController extends Controller
             ], 429);
         }
 
+        $request->validate(['direcionamento' => ['nullable', 'string', 'max:2000']]);
         $direcionamento = trim((string) $request->input('direcionamento')) ?: null;
 
-        $resumoAgregado = ConteudoAgregados::montarResumoAgregadoAlunos($professionalId);
-        $ideias = ConteudoIdeias::gerarIdeiasConteudo($resumoAgregado, $direcionamento);
+        try {
+            $resumoAgregado = ConteudoAgregados::montarResumoAgregadoAlunos($professionalId);
+            $ideias = ConteudoIdeias::gerarIdeiasConteudo($resumoAgregado, $direcionamento);
+        } catch (\Throwable) {
+            return response()->json([
+                'error' => 'Não foi possível gerar ideias agora. Tente novamente em instantes.',
+            ], 503);
+        }
 
         $batchId = (string) Str::orderedUuid();
         $inseridas = collect($ideias)->map(fn ($ideia) => ContentIdea::create([

@@ -3,6 +3,7 @@
 namespace App\Notifications\Rules;
 
 use App\Models\Professional;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -24,12 +25,17 @@ class MensagemSemRespostaRule implements NotificacaoRule
         $limite = now()->subHours(config('notificacoes.horas_mensagem_sem_resposta'));
         $hoje = now()->toDateString();
 
+        // Filtra em PHP em vez de HAVING sobre colunas computadas: HAVING sem
+        // GROUP BY funciona no MySQL (produção) mas quebra no SQLite (suite de
+        // testes) com "HAVING clause on a non-aggregate query".
         $rows = DB::table('students as s')
             ->select('s.id', 's.name', 's.professional_id')
             ->selectRaw('(select max(created_at) from messages m where m.student_id = s.id) as ultima_geral')
             ->selectRaw("(select max(created_at) from messages m where m.student_id = s.id and m.sender = 'student') as ultima_aluno")
-            ->havingRaw('ultima_aluno is not null and ultima_aluno = ultima_geral and ultima_aluno <= ?', [$limite])
-            ->get();
+            ->get()
+            ->filter(fn ($r) => $r->ultima_aluno !== null
+                && $r->ultima_aluno === $r->ultima_geral
+                && Carbon::parse($r->ultima_aluno)->lte($limite));
 
         return $rows->map(fn ($r) => new NotificacaoCandidato(
             recipient: Professional::find($r->professional_id),

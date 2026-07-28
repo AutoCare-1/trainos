@@ -28,11 +28,11 @@ class Gamification
         }
 
         $dias = array_flip(array_map(
-            fn ($d) => CarbonImmutable::parse($d)->utc()->toDateString(),
+            fn ($d) => CarbonImmutable::parse($d)->toDateString(),
             $datasConcluidas
         ));
 
-        $hoje = CarbonImmutable::now('UTC')->startOfDay();
+        $hoje = CarbonImmutable::now()->startOfDay();
         $ontem = $hoje->subDay();
 
         if (isset($dias[$hoje->toDateString()])) {

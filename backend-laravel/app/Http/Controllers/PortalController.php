@@ -6,6 +6,8 @@ use App\Http\Controllers\Concerns\ResolvesStudentByToken;
 use App\Models\Feedback;
 use App\Models\SessionEntry;
 use App\Models\TrainingSession;
+use App\Models\Workout;
+use App\Models\WorkoutExercise;
 use App\Support\Gamification;
 use App\Support\Uploads;
 use Illuminate\Http\JsonResponse;
@@ -145,11 +147,15 @@ class PortalController extends Controller
         $validated = $request->validate([
             'par_q_answers' => ['required', 'array'],
             'health_notes' => ['nullable', 'string'],
+            'birth_date' => ['nullable', 'date'],
+            'anamnese' => ['nullable', 'array'],
         ]);
 
         $student->update([
             'par_q_answers' => $validated['par_q_answers'],
             'health_notes' => trim($validated['health_notes'] ?? '') ?: null,
+            'birth_date' => $validated['birth_date'] ?? null,
+            'anamnese' => $validated['anamnese'] ?? null,
             'onboarding_completed_at' => now(),
         ]);
 
@@ -182,20 +188,36 @@ class PortalController extends Controller
 
         $validated = $request->validate(['workout_id' => ['required', 'string']]);
 
-        $existente = TrainingSession::where('workout_id', $validated['workout_id'])
+        // Confere que o treino é do próprio aluno antes de vincular a sessão a ele
+        // — sem isso, um workout_id de outro aluno seria aceito sem checagem de dono.
+        $donoDoTreino = Workout::where('id', $validated['workout_id'])
             ->where('student_id', $student->id)
-            ->where('status', 'in_progress')
-            ->first();
-        if ($existente) {
-            return response()->json(['session' => $existente]);
+            ->exists();
+        if (! $donoDoTreino) {
+            return response()->json(['error' => 'Treino não encontrado'], 404);
         }
 
-        $session = TrainingSession::create([
-            'workout_id' => $validated['workout_id'],
-            'student_id' => $student->id,
-        ])->refresh();
+        // Lock a nível de linha (dentro de uma transação) fecha a janela entre
+        // checar "já existe sessão em andamento?" e criar uma nova — sem isso,
+        // duas requisições quase simultâneas (dois dispositivos, ou retry de
+        // rede) podiam criar duas sessões in_progress pro mesmo treino.
+        $session = DB::transaction(function () use ($validated, $student) {
+            $existente = TrainingSession::where('workout_id', $validated['workout_id'])
+                ->where('student_id', $student->id)
+                ->where('status', 'in_progress')
+                ->lockForUpdate()
+                ->first();
+            if ($existente) {
+                return $existente;
+            }
 
-        return response()->json(['session' => $session], 201);
+            return TrainingSession::create([
+                'workout_id' => $validated['workout_id'],
+                'student_id' => $student->id,
+            ])->refresh();
+        });
+
+        return response()->json(['session' => $session], $session->wasRecentlyCreated ? 201 : 200);
     }
 
     // POST /:token/sessoes/:sessionId/registros — registra uma série executada
@@ -217,6 +239,28 @@ class PortalController extends Controller
         $session = TrainingSession::where('id', $sessionId)->where('student_id', $student->id)->first();
         if (! $session) {
             return response()->json(['error' => 'Sessão não encontrada'], 404);
+        }
+
+        // Confere que o exercício realmente pertence ao treino desta sessão —
+        // sem isso, um workout_exercise_id de outro treino/aluno seria aceito
+        // sem checagem de dono.
+        $pertenceAoTreino = WorkoutExercise::where('id', $validated['workout_exercise_id'])
+            ->where('workout_id', $session->workout_id)
+            ->exists();
+        if (! $pertenceAoTreino) {
+            return response()->json(['error' => 'Exercício não encontrado neste treino'], 404);
+        }
+
+        // Se a mesma série já foi registrada (double-tap no botão, ou retry de
+        // rede), devolve a entry existente em vez de duplicar — a constraint
+        // única em (training_session_id, workout_exercise_id, set_number)
+        // garante isso mesmo sob concorrência real (duas requisições simultâneas).
+        $existente = SessionEntry::where('training_session_id', $sessionId)
+            ->where('workout_exercise_id', $validated['workout_exercise_id'])
+            ->where('set_number', $validated['set_number'])
+            ->first();
+        if ($existente) {
+            return response()->json(['entry' => $existente, 'isPr' => $existente->is_pr]);
         }
 
         // Checa recorde ANTES de inserir a nova série, comparando com o maior peso

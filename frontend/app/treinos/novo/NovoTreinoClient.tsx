@@ -82,6 +82,10 @@ export default function NovoTreinoClient() {
       setErro('Dê um nome ao treino e adicione pelo menos um exercício antes de salvar como modelo.')
       return
     }
+    if (items.some((i) => i.sets < 1)) {
+      setErro('Todos os exercícios precisam ter pelo menos 1 série.')
+      return
+    }
     setSalvandoModelo(true)
     setErro(null)
     try {
@@ -124,6 +128,10 @@ export default function NovoTreinoClient() {
     setErro(null)
     if (!name.trim() || items.length === 0) {
       setErro('Dê um nome ao treino e adicione pelo menos um exercício.')
+      return
+    }
+    if (items.some((i) => i.sets < 1)) {
+      setErro('Todos os exercícios precisam ter pelo menos 1 série.')
       return
     }
     setSalvando(true)

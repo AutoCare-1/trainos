@@ -22,8 +22,8 @@ class UpdateAlunoRequest extends FormRequest
             'email' => ['nullable', 'string'],
             'phone' => ['nullable', 'string'],
             'objective' => ['nullable', 'string'],
-            'weight_kg' => ['nullable', 'numeric'],
-            'height_cm' => ['nullable', 'numeric'],
+            'weight_kg' => ['nullable', 'numeric', 'min:0.1'],
+            'height_cm' => ['nullable', 'numeric', 'min:0.1'],
             'billing_type' => ['nullable', 'string', Rule::in(StudentBillingPlan::TIPOS_VALIDOS), 'required_with:monthly_value'],
             'monthly_value' => ['nullable', 'numeric', 'min:0', 'required_with:billing_type'],
         ];

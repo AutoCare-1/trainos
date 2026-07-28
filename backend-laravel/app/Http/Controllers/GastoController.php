@@ -98,7 +98,12 @@ class GastoController extends Controller
             return response()->json(['error' => 'Despesa não encontrada'], 404);
         }
 
-        $expense->update(['ends_on' => $validated['ends_on'] ?? now()->toDateString()]);
+        $endsOn = $validated['ends_on'] ?? now()->toDateString();
+        if ($endsOn < $expense->starts_on->toDateString()) {
+            return response()->json(['error' => 'A data de encerramento não pode ser antes do início da despesa'], 422);
+        }
+
+        $expense->update(['ends_on' => $endsOn]);
 
         return response()->json(['expense' => $expense]);
     }

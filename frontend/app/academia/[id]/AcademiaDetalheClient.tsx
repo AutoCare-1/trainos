@@ -185,6 +185,7 @@ export default function AcademiaDetalheClient({ submissionId }: { submissionId: 
                       <span className="min-w-[10rem] flex-1 text-sm font-medium text-slate-800">{item.exercise_name}</span>
                       <input
                         type="number"
+                        min={1}
                         value={item.sets}
                         onChange={(e) => atualizarItem(idx, 'sets', Number(e.target.value))}
                         disabled={detalhe.recommendation!.approval_status !== 'pending'}
@@ -201,6 +202,7 @@ export default function AcademiaDetalheClient({ submissionId }: { submissionId: 
                       />
                       <input
                         type="number"
+                        min={0}
                         value={item.rest_seconds}
                         onChange={(e) => atualizarItem(idx, 'rest_seconds', Number(e.target.value))}
                         disabled={detalhe.recommendation!.approval_status !== 'pending'}

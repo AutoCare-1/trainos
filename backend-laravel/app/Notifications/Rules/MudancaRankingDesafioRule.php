@@ -55,6 +55,7 @@ class MudancaRankingDesafioRule implements NotificacaoRule
 
                 if ($anterior !== null && (int) $anterior !== $posicaoAtual) {
                     $subiu = $posicaoAtual < (int) $anterior;
+                    $participantId = $participante->participant_id;
                     $candidatos[] = new NotificacaoCandidato(
                         recipient: Student::find($participante->student_id),
                         professionalId: $desafio->professional_id,
@@ -64,11 +65,20 @@ class MudancaRankingDesafioRule implements NotificacaoRule
                         titulo: $subiu ? 'Você subiu no ranking!' : 'Sua posição no ranking mudou',
                         corpo: "Agora você está em {$posicaoAtual}º lugar no desafio.",
                         url: "/aluno/{$participante->invite_token}",
+                        // Só grava a nova posição como "vista" se o push realmente sair —
+                        // se for suprimido pelo limite diário/preferência, a mudança
+                        // continua pendente e será candidata de novo na próxima rodada.
+                        aoConfirmarEnvio: function () use ($participantId, $posicaoAtual) {
+                            ChallengeParticipant::where('id', $participantId)
+                                ->update(['ultima_posicao_notificada' => $posicaoAtual]);
+                        },
                     );
+                } else {
+                    // Sem mudança de posição (ou primeira observação): não há push
+                    // condicionado a coordenação nenhuma, pode gravar direto.
+                    ChallengeParticipant::where('id', $participante->participant_id)
+                        ->update(['ultima_posicao_notificada' => $posicaoAtual]);
                 }
-
-                ChallengeParticipant::where('id', $participante->participant_id)
-                    ->update(['ultima_posicao_notificada' => $posicaoAtual]);
             }
         }
 

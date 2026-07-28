@@ -33,6 +33,7 @@ class AlunoChatController extends Controller
             return response()->json(['error' => 'Aluno não encontrado'], 404);
         }
 
+        $request->validate(['content' => ['required', 'string', 'max:4000']]);
         $conteudo = trim((string) $request->input('content'));
         if ($conteudo === '') {
             return response()->json(['error' => 'content é obrigatório'], 400);

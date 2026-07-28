@@ -23,7 +23,7 @@ class ConsultorIaController extends Controller
     public function chat(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'content' => ['required', 'string'],
+            'content' => ['required', 'string', 'max:4000'],
         ]);
         $conteudo = trim($validated['content']);
         if ($conteudo === '') {
@@ -45,7 +45,16 @@ class ConsultorIaController extends Controller
             ->sortBy('created_at')
             ->values();
 
-        $texto = ConsultorIa::responderConsultor($professionalId, $historico);
+        try {
+            $texto = ConsultorIa::responderConsultor($professionalId, $historico);
+        } catch (\Throwable) {
+            // A mensagem do personal já foi salva acima — não perde a pergunta,
+            // só avisa que a IA não respondeu desta vez, em vez de estourar 500.
+            return response()->json([
+                'message' => $mensagemPersonal,
+                'error' => 'O Consultor IA não conseguiu responder agora. Tente de novo em instantes.',
+            ], 503);
+        }
 
         $mensagemIa = ConsultorIaMessage::create([
             'professional_id' => $professionalId,

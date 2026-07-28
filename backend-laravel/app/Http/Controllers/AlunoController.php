@@ -117,10 +117,11 @@ class AlunoController extends Controller
 
         $students = $students->map(function ($s) use ($estagnacao) {
             $s->exercicios_sem_progresso = $estagnacao[$s->id] ?? 0;
-            // par_q_answers é coluna json — select('s.*') via DB::table() puro não passa
-            // pelo cast do model Student, então volta como string crua; decodifica manualmente
-            // pra bater com o pg do Node (que já entrega json/jsonb parseado).
+            // par_q_answers/anamnese são colunas json — select('s.*') via DB::table() puro
+            // não passa pelo cast do model Student, então voltam como string crua;
+            // decodifica manualmente pra bater com o pg do Node (que já entrega json/jsonb parseado).
             $s->par_q_answers = $s->par_q_answers !== null ? json_decode($s->par_q_answers) : null;
+            $s->anamnese = $s->anamnese !== null ? json_decode($s->anamnese) : null;
 
             return $s;
         });
@@ -211,7 +212,12 @@ class AlunoController extends Controller
             return response()->json(['error' => 'Este aluno não tem cobrança vigente'], 400);
         }
 
-        $plano->update(['ends_on' => $validated['ends_on'] ?? now()->toDateString()]);
+        $endsOn = $validated['ends_on'] ?? now()->toDateString();
+        if ($endsOn < $plano->starts_on->toDateString()) {
+            return response()->json(['error' => 'A data de encerramento não pode ser antes do início do plano'], 422);
+        }
+
+        $plano->update(['ends_on' => $endsOn]);
 
         return response()->json(['billing_plan' => $plano]);
     }
@@ -286,10 +292,10 @@ class AlunoController extends Controller
         }
 
         $validated = $request->validate([
-            'weight_kg' => ['required', 'numeric'],
-            'waist_cm' => ['nullable', 'numeric'],
-            'hip_cm' => ['nullable', 'numeric'],
-            'body_fat_pct' => ['nullable', 'numeric'],
+            'weight_kg' => ['required', 'numeric', 'min:0.1'],
+            'waist_cm' => ['nullable', 'numeric', 'min:0.1'],
+            'hip_cm' => ['nullable', 'numeric', 'min:0.1'],
+            'body_fat_pct' => ['nullable', 'numeric', 'min:0.1', 'max:100'],
             'recorded_at' => ['nullable', 'date'],
             'notes' => ['nullable', 'string'],
         ]);
@@ -318,11 +324,15 @@ class AlunoController extends Controller
         $validated = $request->validate([
             'par_q_answers' => ['nullable', 'array'],
             'health_notes' => ['nullable', 'string'],
+            'birth_date' => ['nullable', 'date'],
+            'anamnese' => ['nullable', 'array'],
         ]);
 
         $student->update([
             'par_q_answers' => $validated['par_q_answers'] ?? null,
             'health_notes' => isset($validated['health_notes']) ? trim($validated['health_notes']) ?: null : null,
+            'birth_date' => $validated['birth_date'] ?? null,
+            'anamnese' => $validated['anamnese'] ?? null,
         ]);
 
         return response()->json(['student' => $student->fresh()]);

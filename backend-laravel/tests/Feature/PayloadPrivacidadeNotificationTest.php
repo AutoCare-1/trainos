@@ -4,8 +4,11 @@ namespace Tests\Feature;
 
 use App\Models\BodyPhoto;
 use App\Models\Professional;
+use App\Models\SessionEntry;
 use App\Models\Student;
+use App\Models\TrainingSession;
 use App\Models\Workout;
+use App\Models\WorkoutExercise;
 use App\Notifications\PushNotification;
 use App\Notifications\Rules\NotificacaoCandidato;
 use Database\Seeders\NotificationTypesSeeder;
@@ -129,6 +132,96 @@ class PayloadPrivacidadeNotificationTest extends TestCase
             $student,
             function (PushNotification $notification) {
                 $this->assertStringContainsString('Treino de Pernas', $notification->corpo);
+
+                return true;
+            }
+        );
+    }
+
+    public function test_streak_em_risco_nao_expoe_a_contagem_de_dias_no_payload(): void
+    {
+        Notification::fake();
+        Carbon::setTestNow(Carbon::parse('2026-07-27 19:00:00')); // depois de hora_sem_treinar_hoje (18h)
+
+        $professional = Professional::create([
+            'name' => 'Personal Teste',
+            'email' => uniqid('personal').'@example.com',
+            'password_hash' => bcrypt('senha12345'),
+        ]);
+        $student = Student::create([
+            'professional_id' => $professional->id,
+            'name' => 'Aluno Teste',
+            'invite_token' => uniqid('token'),
+        ]);
+        $workout = Workout::create([
+            'professional_id' => $professional->id, 'student_id' => $student->id,
+            'name' => 'Treino A', 'status' => 'sent', 'sent_at' => now()->subDays(10),
+        ]);
+        $exercise = \App\Models\Exercise::firstOrCreate(['name' => 'Agachamento'], ['muscle_group' => 'pernas']);
+        $we = WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise->id, 'order_index' => 0, 'sets' => 3, 'reps' => '10']);
+
+        // 3 dias consecutivos terminando ontem — streak de 3 dias, ainda não treinou hoje.
+        for ($diasAtras = 1; $diasAtras <= 3; $diasAtras++) {
+            $session = TrainingSession::create([
+                'workout_id' => $workout->id, 'student_id' => $student->id, 'status' => 'completed',
+                'started_at' => now()->subDays($diasAtras)->setTime(10, 0),
+                'finished_at' => now()->subDays($diasAtras)->setTime(10, 30),
+            ]);
+            SessionEntry::create(['training_session_id' => $session->id, 'workout_exercise_id' => $we->id, 'set_number' => 1, 'load_kg_done' => 20]);
+        }
+
+        Artisan::call('notifications:process');
+
+        Notification::assertSentTo(
+            $student,
+            function (PushNotification $notification) {
+                $this->assertStringNotContainsString('sequência', mb_strtolower($notification->titulo));
+                $this->assertSame(NotificacaoCandidato::CORPO_ALUNO_GENERICO, $notification->corpo);
+
+                return true;
+            }
+        );
+    }
+
+    public function test_parabens_fim_de_semana_nao_expoe_a_contagem_de_treinos_no_payload(): void
+    {
+        Notification::fake();
+        Carbon::setTestNow(Carbon::parse('2026-07-27 09:00:00')); // segunda-feira, depois das 8h
+
+        $professional = Professional::create([
+            'name' => 'Personal Teste',
+            'email' => uniqid('personal').'@example.com',
+            'password_hash' => bcrypt('senha12345'),
+        ]);
+        $student = Student::create([
+            'professional_id' => $professional->id,
+            'name' => 'Aluno Teste',
+            'invite_token' => uniqid('token'),
+        ]);
+        $workout = Workout::create([
+            'professional_id' => $professional->id, 'student_id' => $student->id,
+            'name' => 'Treino A', 'status' => 'sent', 'sent_at' => now()->subDays(10),
+        ]);
+        $exercise = \App\Models\Exercise::firstOrCreate(['name' => 'Supino'], ['muscle_group' => 'peito']);
+        $we = WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise->id, 'order_index' => 0, 'sets' => 3, 'reps' => '10']);
+
+        // 3 sessões concluídas nos últimos 7 dias (limiar padrão) — todas antes de hoje.
+        for ($diasAtras = 1; $diasAtras <= 3; $diasAtras++) {
+            $session = TrainingSession::create([
+                'workout_id' => $workout->id, 'student_id' => $student->id, 'status' => 'completed',
+                'started_at' => now()->subDays($diasAtras)->setTime(10, 0),
+                'finished_at' => now()->subDays($diasAtras)->setTime(10, 30),
+            ]);
+            SessionEntry::create(['training_session_id' => $session->id, 'workout_exercise_id' => $we->id, 'set_number' => 1, 'load_kg_done' => 20]);
+        }
+
+        Artisan::call('notifications:process');
+
+        Notification::assertSentTo(
+            $student,
+            function (PushNotification $notification) {
+                $this->assertStringNotContainsString('3 vezes', $notification->corpo);
+                $this->assertSame(NotificacaoCandidato::CORPO_ALUNO_GENERICO, $notification->corpo);
 
                 return true;
             }

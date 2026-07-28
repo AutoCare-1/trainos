@@ -80,17 +80,36 @@ class Chat
         PROMPT;
     }
 
+    /**
+     * Mapeia o histórico para o formato da API: o aluno é "user"; profissional e IA
+     * são "assistant" (ambos falam do lado do treinador). A API exige alternância
+     * estrita de role — professional e ai seguidos geram dois "assistant" em
+     * sequência, o que a Anthropic rejeita — então mensagens consecutivas do
+     * mesmo role são mescladas em uma só.
+     *
+     * @param  Collection<int, MessageModel>  $historico
+     * @return array<int, array{role: string, content: string}>
+     */
+    public static function montarMensagens(Collection $historico): array
+    {
+        $messages = [];
+        foreach ($historico as $m) {
+            $role = $m->sender === 'student' ? 'user' : 'assistant';
+            if ($messages && $messages[count($messages) - 1]['role'] === $role) {
+                $messages[count($messages) - 1]['content'] .= "\n\n".$m->content;
+            } else {
+                $messages[] = ['role' => $role, 'content' => $m->content];
+            }
+        }
+
+        return $messages;
+    }
+
     /** @param  Collection<int, MessageModel>  $historico */
     public static function responderComoPersonal(Collection $historico, array $contexto): string
     {
         $systemPrompt = self::montarSystemPrompt($contexto);
-
-        // Mapeia o histórico para o formato da API: o aluno é "user"; profissional e IA
-        // são "assistant" (ambos falam do lado do treinador).
-        $messages = $historico->map(fn (MessageModel $m) => [
-            'role' => $m->sender === 'student' ? 'user' : 'assistant',
-            'content' => $m->content,
-        ])->values()->all();
+        $messages = self::montarMensagens($historico);
 
         $response = self::client()->messages->create(
             model: self::MODEL,

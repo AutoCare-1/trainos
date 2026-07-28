@@ -181,6 +181,7 @@ class ProcessNotifications extends Command
         }
 
         $candidato->recipient->notify(new PushNotification($candidato->titulo, $candidato->corpo, $candidato->url));
+        $candidato->aoConfirmarEnvio?->call($this);
 
         return true;
     }

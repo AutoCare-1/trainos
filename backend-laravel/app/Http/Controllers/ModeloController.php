@@ -32,8 +32,8 @@ class ModeloController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string'],
             'items' => ['required', 'array', 'min:1'],
-            'items.*.exercise_id' => ['required', 'string'],
-            'items.*.sets' => ['required', 'integer'],
+            'items.*.exercise_id' => ['required', 'string', 'exists:exercises,id'],
+            'items.*.sets' => ['required', 'integer', 'min:1'],
             'items.*.reps' => ['required', 'string'],
             'items.*.load_kg' => ['nullable', 'numeric'],
             'items.*.rest_seconds' => ['nullable', 'integer'],

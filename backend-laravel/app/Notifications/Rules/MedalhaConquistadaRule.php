@@ -34,14 +34,17 @@ class MedalhaConquistadaRule implements NotificacaoRule
         $candidatos = [];
 
         foreach (self::MARCOS_TOTAL as $limiar => [$badgeId, $titulo, $corpo]) {
+            // Filtra em PHP em vez de HAVING sobre a coluna computada: HAVING
+            // sem GROUP BY funciona no MySQL (produção) mas quebra no SQLite
+            // (suite de testes) com "HAVING clause on a non-aggregate query".
             $rows = DB::table('students as s')
                 ->select('s.id', 's.professional_id', 's.invite_token')
                 ->selectRaw(
                     '(select count(*) from training_sessions ts where ts.student_id = s.id and ts.status = ?) as total',
                     ['completed']
                 )
-                ->havingRaw('total = ?', [$limiar])
-                ->get();
+                ->get()
+                ->filter(fn ($r) => (int) $r->total === $limiar);
 
             foreach ($rows as $r) {
                 $candidatos[] = $this->montar($r, $badgeId, $titulo, $corpo);

@@ -134,15 +134,24 @@ class CoordenadorNotificacoesTest extends TestCase
         Carbon::setTestNow(Carbon::parse('2026-07-27 09:00:00'));
         $aluno = $this->criarAluno();
 
-        // Simula 2 notificações já enviadas num ciclo anterior (às 9h).
-        NotificationLog::create([
+        // Simula 2 notificações já enviadas num ciclo anterior (às 9h). enviado_em não
+        // é mass-assignable (proposital, pra ninguém forjar quando um envio real
+        // aconteceu) — create() ignoraria o valor em silêncio e a coluna cairia no
+        // useCurrent() do banco (hora real, não a congelada pelo teste), então seta
+        // e salva à parte.
+        $log1 = NotificationLog::create([
             'tipo_chave' => 'novo_treino_enviado', 'student_id' => $aluno->id, 'professional_id' => $aluno->professional_id,
-            'dedup_key' => 'log-1', 'enviado_em' => now(),
+            'dedup_key' => 'log-1',
         ]);
-        NotificationLog::create([
+        $log1->enviado_em = now();
+        $log1->save();
+
+        $log2 = NotificationLog::create([
             'tipo_chave' => 'novo_recorde_pessoal', 'student_id' => $aluno->id, 'professional_id' => $aluno->professional_id,
-            'dedup_key' => 'log-2', 'enviado_em' => now(),
+            'dedup_key' => 'log-2',
         ]);
+        $log2->enviado_em = now();
+        $log2->save();
 
         // Ciclo seguinte (9h15), mesmo dia: um candidato novo não deveria passar — limite já foi atingido hoje.
         Carbon::setTestNow(Carbon::parse('2026-07-27 09:15:00'));

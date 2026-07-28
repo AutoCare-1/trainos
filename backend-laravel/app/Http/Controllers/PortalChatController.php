@@ -85,6 +85,7 @@ class PortalChatController extends Controller
             return response()->json(['error' => 'Link inválido'], 404);
         }
 
+        $request->validate(['content' => ['required', 'string', 'max:4000']]);
         $conteudo = trim((string) $request->input('content'));
         if ($conteudo === '') {
             return response()->json(['error' => 'content é obrigatório'], 400);

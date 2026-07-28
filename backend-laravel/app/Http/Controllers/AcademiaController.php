@@ -96,9 +96,9 @@ class AcademiaController extends Controller
         $validated = $request->validate([
             'items' => ['nullable', 'array'],
             'items.*.exercise_id' => ['required_with:items', 'string'],
-            'items.*.sets' => ['required_with:items', 'integer'],
+            'items.*.sets' => ['required_with:items', 'integer', 'min:1'],
             'items.*.reps' => ['required_with:items', 'string'],
-            'items.*.rest_seconds' => ['nullable', 'integer'],
+            'items.*.rest_seconds' => ['nullable', 'integer', 'min:0'],
             'items.*.notes' => ['nullable', 'string'],
             'notes' => ['nullable', 'string'],
         ]);

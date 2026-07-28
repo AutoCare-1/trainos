@@ -89,7 +89,11 @@ class SemTreinarDiasNotificationTest extends TestCase
         Artisan::call('notifications:process');
         Artisan::call('notifications:process');
 
-        Notification::assertSentToTimes($aluno, PushNotification::class, 1);
+        // Não usa assertSentToTimes(PushNotification::class, 1) puro — esse
+        // cenário (aluno novo, exatamente 1 sessão concluída) também dispara
+        // legitimamente medalha_conquistada (badge "primeiro treino") e
+        // aluno_cadastrado; o que este teste garante é que sem_treinar_dias
+        // especificamente não duplica ao rodar o comando duas vezes.
         $this->assertSame(1, NotificationLog::where('tipo_chave', 'sem_treinar_dias')->where('student_id', $aluno->id)->count());
     }
 

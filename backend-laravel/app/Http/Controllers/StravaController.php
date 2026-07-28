@@ -17,7 +17,7 @@ class StravaController extends Controller
     // Rotas públicas: autenticadas pelo invite_token do aluno (link do portal), não por JWT.
     private function buscarAlunoPorToken(string $token): ?Student
     {
-        return Student::where('invite_token', $token)->first();
+        return Student::where('invite_token', $token)->where('status', 'active')->first();
     }
 
     // GET /strava/conectar/:token — redireciona o aluno para a tela de autorização do Strava
@@ -54,18 +54,28 @@ class StravaController extends Controller
             return $voltarPara('erro');
         }
 
-        $dados = Strava::trocarCodigoPorToken($code);
+        // O Strava pode chamar este callback mais de uma vez pro mesmo "code"
+        // (usuário atualiza a página, navegador reenvia) — a segunda tentativa
+        // sempre falha porque o code já foi consumido na primeira. Sem captura
+        // aqui, essa exceção derrubava o redirect OAuth com um 500 cru em vez
+        // de voltar pro app com "?strava=erro" (mesmo tratamento já dado aos
+        // outros casos de falha desta rota).
+        try {
+            $dados = Strava::trocarCodigoPorToken($code);
 
-        DeviceConnection::updateOrCreate(
-            ['student_id' => $student->id, 'provider' => 'strava'],
-            [
-                'provider_athlete_id' => (string) ($dados['athlete']['id'] ?? ''),
-                'access_token' => $dados['access_token'],
-                'refresh_token' => $dados['refresh_token'],
-                'expires_at' => Carbon::createFromTimestamp($dados['expires_at']),
-                'scope' => 'activity:read_all',
-            ]
-        );
+            DeviceConnection::updateOrCreate(
+                ['student_id' => $student->id, 'provider' => 'strava'],
+                [
+                    'provider_athlete_id' => (string) ($dados['athlete']['id'] ?? ''),
+                    'access_token' => $dados['access_token'],
+                    'refresh_token' => $dados['refresh_token'],
+                    'expires_at' => Carbon::createFromTimestamp($dados['expires_at']),
+                    'scope' => 'activity:read_all',
+                ]
+            );
+        } catch (\Throwable) {
+            return $voltarPara('erro');
+        }
 
         return $voltarPara('conectado');
     }

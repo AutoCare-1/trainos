@@ -1,4 +1,4 @@
-export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3002'
+export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3003'
 
 /** Uploads salvos pelo backend voltam como caminho relativo (`/uploads/...`); precisam da origem da API pra virar URL válida. */
 export function resolveMediaUrl(url: string): string {
@@ -20,6 +20,20 @@ export function clearToken() {
   localStorage.removeItem('trainos_token')
 }
 
+// Só dispara quando a própria requisição mandou um token (nunca em /auth/login
+// ou /auth/signup, onde 401 é "e-mail ou senha inválidos", não sessão expirada).
+// Sem isso, um token velho/expirado ficava preso no localStorage indefinidamente
+// e todo o dashboard (todas as abas, que compartilham o mesmo localStorage)
+// passava a devolver "Token inválido ou expirado" em toda chamada, sem nenhum
+// jeito de sair desse estado a não ser limpar o storage manualmente.
+function tratarRespostaNaoAutorizada(status: number, tokenEnviado: boolean) {
+  if (status !== 401 || !tokenEnviado || typeof window === 'undefined') return
+  clearToken()
+  if (window.location.pathname !== '/login') {
+    window.location.href = '/login'
+  }
+}
+
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const token = getToken()
   const res = await fetch(`${API_URL}${path}`, {
@@ -33,6 +47,7 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 
   const data = await res.json().catch(() => ({}))
   if (!res.ok) {
+    tratarRespostaNaoAutorizada(res.status, !!token)
     throw new ApiError(data.error ?? `Erro ${res.status}`)
   }
   return data as T
@@ -47,6 +62,7 @@ async function requestFormData<T>(path: string, formData: FormData, method: stri
   })
   const data = await res.json().catch(() => ({}))
   if (!res.ok) {
+    tratarRespostaNaoAutorizada(res.status, !!token)
     throw new ApiError(data.error ?? `Erro ${res.status}`)
   }
   return data as T
@@ -62,7 +78,10 @@ export async function fetchImagemAutenticada(path: string): Promise<string> {
   const res = await fetch(`${API_URL}${path}`, {
     headers: token ? { Authorization: `Bearer ${token}` } : undefined,
   })
-  if (!res.ok) throw new ApiError('Não foi possível carregar a imagem')
+  if (!res.ok) {
+    tratarRespostaNaoAutorizada(res.status, !!token)
+    throw new ApiError('Não foi possível carregar a imagem')
+  }
   const blob = await res.blob()
   return URL.createObjectURL(blob)
 }

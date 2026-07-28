@@ -43,6 +43,16 @@ readonly class NotificacaoCandidato
         public string $titulo,
         public string $corpo,
         public ?string $url,
+        /**
+         * Callback opcional chamado por ProcessNotifications::registrarEDisparar
+         * SÓ quando o envio for realmente confirmado (não suprimido pelo
+         * CoordenadorNotificacoes, não duplicado). Usado por regras que precisam
+         * persistir um "estado visto" que vira base de comparação futura (ex:
+         * MudancaRankingDesafioRule) — gravar esse estado direto em avaliar(),
+         * antes da coordenação decidir se o push realmente sai, marcaria a
+         * mudança como notificada mesmo quando ela foi suprimida.
+         */
+        public ?\Closure $aoConfirmarEnvio = null,
     ) {
     }
 }

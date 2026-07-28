@@ -32,6 +32,11 @@ class Estagnacao
      */
     public static function compararUltimasSessoes(?string $professionalId = null, int $janela = self::JANELA_PADRAO): array
     {
+        // Interpolado direto na query (não dá pra bindar em HAVING/CASE como parâmetro
+        // posicional junto dos outros `?` sem confundir a ordem) — cast explícito aqui,
+        // em vez de confiar só no type-hint do parâmetro, fecha a via de SQL injection
+        // caso um dia isso passe a vir de fora.
+        $janela = (int) $janela;
         $rows = DB::select(
             <<<SQL
             with cargas as (

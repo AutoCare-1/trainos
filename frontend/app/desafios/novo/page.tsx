@@ -51,6 +51,10 @@ export default function NovoDesafioPage() {
       setErro('Selecione pelo menos um aluno')
       return
     }
+    if (endDate < startDate) {
+      setErro('A data de término precisa ser igual ou depois da data de início')
+      return
+    }
     setErro(null)
     setSalvando(true)
     try {

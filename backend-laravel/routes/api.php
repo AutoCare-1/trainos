@@ -31,8 +31,12 @@ Route::get('/health', fn () => response()->json(['status' => 'ok']));
 Route::get('/push/vapid-public-key', [PushSubscriptionController::class, 'vapidPublicKey']);
 
 Route::prefix('auth')->group(function () {
-    Route::post('/signup', [AuthController::class, 'signup']);
-    Route::post('/login', [AuthController::class, 'login']);
+    // throttle:10,1 — mesmo padrão já usado em push/subscribe: sem isso, login
+    // e signup ficam abertos a brute-force de senha e criação em massa de contas.
+    Route::middleware('throttle:10,1')->group(function () {
+        Route::post('/signup', [AuthController::class, 'signup']);
+        Route::post('/login', [AuthController::class, 'login']);
+    });
     Route::middleware('auth.jwt')->get('/me', [AuthController::class, 'me']);
 });
 

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Concerns\ResolvesStudentByToken;
 use App\Models\FormAnalysisResult;
 use App\Models\FormCorrectionVideo;
-use App\Models\FormFeedbackHistory;
 use App\Models\TrainingSession;
 use App\Support\FormAnalyzer;
 use App\Support\Uploads;
@@ -53,7 +52,18 @@ class PortalFormaController extends Controller
         $videoUrl = Uploads::storePublic($request->file('video'), 'form-videos');
         $videoAbsPath = public_path(ltrim($videoUrl, '/'));
 
-        $duracao = VideoProcessor::obterDuracaoVideo($videoAbsPath);
+        // Vídeo corrompido/inválido faz o ffprobe (VideoProcessor) lançar exceção —
+        // antes, isso não era capturado aqui e estourava 500 cru, deixando o
+        // arquivo já movido pra public/uploads/form-videos órfão no disco.
+        try {
+            $duracao = VideoProcessor::obterDuracaoVideo($videoAbsPath);
+        } catch (\Throwable $e) {
+            Log::error('[Análise de forma] Falha ao ler duração do vídeo: '.$e->getMessage());
+            @unlink($videoAbsPath);
+
+            return response()->json(['error' => 'Não foi possível processar esse vídeo. Tente gravar de novo.'], 422);
+        }
+
         if ($duracao < 3 || $duracao > 15) {
             @unlink($videoAbsPath);
 

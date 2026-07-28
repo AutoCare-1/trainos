@@ -9,10 +9,12 @@ import Avatar from '@/components/Avatar'
 import ChatBox from '@/components/ChatBox'
 import WeightChart from '@/components/WeightChart'
 import { api, ApiError, fetchImagemAutenticada } from '@/lib/api'
+import { ANAMNESE_VAZIA, LOCAL_TREINO_OPCOES, normalizarAnamnese, OBJETIVOS_OPCOES } from '@/lib/anamnese'
 import { formatarDataCurta, formatarDataLonga, nomeMes, primeiroDiaAno, primeiroDiaMes, somarDias } from '@/lib/checkinDates'
-import { PAR_Q_PERGUNTAS, PAR_Q_VAZIO } from '@/lib/parq'
+import { PAR_Q_VAZIO } from '@/lib/parq'
 import {
   AlertaEstagnacao,
+  Anamnese,
   BodyMeasurement,
   BodyPhoto,
   Gamificacao,
@@ -23,6 +25,17 @@ import {
   Student,
   Workout,
 } from '@/lib/types'
+
+/** Uma linha de "pergunta: resposta" na anamnese — não mostra nada se a resposta
+ * estiver vazia, pra não poluir a ficha do aluno com campos que ele deixou em branco. */
+function LinhaAnamnese({ pergunta, resposta }: { pergunta: string; resposta: string | null | undefined }) {
+  if (!resposta) return null
+  return (
+    <p className="text-sm text-slate-600">
+      <span className="text-slate-500">{pergunta}:</span> {resposta}
+    </p>
+  )
+}
 
 /** Fotos de evolução física ficam atrás de rota autenticada (JWT) — não dá pra
  * usar <img src> direto, então busca o blob e mantém a object URL local. */
@@ -70,10 +83,12 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
   const [novoQuadril, setNovoQuadril] = useState('')
   const [novaGordura, setNovaGordura] = useState('')
   const [salvandoPeso, setSalvandoPeso] = useState(false)
+  // Só leitura nesta tela agora (o card editável de PAR-Q foi removido por ficar
+  // redundante com a anamnese completa) — mantido pra alimentar o aviso de "respondeu
+  // sim a um item do PAR-Q" logo acima da anamnese.
   const [parQ, setParQ] = useState<ParQAnswers>(PAR_Q_VAZIO)
-  const [healthNotes, setHealthNotes] = useState('')
-  const [salvandoAvaliacao, setSalvandoAvaliacao] = useState(false)
-  const [avaliacaoSalva, setAvaliacaoSalva] = useState(false)
+  const [birthDate, setBirthDate] = useState('')
+  const [anamnese, setAnamnese] = useState<Anamnese>(ANAMNESE_VAZIA)
   const [messages, setMessages] = useState<Message[]>([])
   const [autopilot, setAutopilot] = useState(true)
   const [erro, setErro] = useState<string | null>(null)
@@ -81,7 +96,14 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
   const [enviandoFoto, setEnviandoFoto] = useState(false)
   const fotoInputRef = useRef<HTMLInputElement | null>(null)
 
+  // Evita empilhar requisições do polling: se o GET anterior ainda não voltou
+  // (rede lenta) quando o próximo setInterval dispara, pula esse ciclo em vez
+  // de deixar duas respostas em voo — a mais lenta poderia resolver por último
+  // e sobrescrever o estado com dado desatualizado.
+  const carregandoMensagensRef = useRef(false)
   const carregarMensagens = useCallback(() => {
+    if (carregandoMensagensRef.current) return
+    carregandoMensagensRef.current = true
     api
       .get<{ messages: Message[]; ai_autopilot: boolean }>(`/alunos/${studentId}/mensagens`)
       .then((data) => {
@@ -89,6 +111,9 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
         setAutopilot(data.ai_autopilot)
       })
       .catch(() => {})
+      .finally(() => {
+        carregandoMensagensRef.current = false
+      })
   }, [studentId])
 
   useEffect(() => {
@@ -112,7 +137,8 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
         setAlertasEstagnacao(data.alertasEstagnacao ?? [])
         setAutopilot(data.student.ai_autopilot)
         setParQ(data.student.par_q_answers ?? PAR_Q_VAZIO)
-        setHealthNotes(data.student.health_notes ?? '')
+        setBirthDate(data.student.birth_date ?? '')
+        setAnamnese(normalizarAnamnese(data.student.anamnese))
       })
       .catch((err) => setErro(err instanceof ApiError ? err.message : 'Erro ao carregar aluno'))
 
@@ -186,23 +212,6 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
       setErro(err instanceof ApiError ? err.message : 'Erro ao registrar medição')
     } finally {
       setSalvandoPeso(false)
-    }
-  }
-
-  async function salvarAvaliacao() {
-    setSalvandoAvaliacao(true)
-    try {
-      const { student: atualizado } = await api.patch<{ student: Student }>(`/alunos/${studentId}/avaliacao`, {
-        par_q_answers: parQ,
-        health_notes: healthNotes,
-      })
-      setStudent(atualizado)
-      setAvaliacaoSalva(true)
-      setTimeout(() => setAvaliacaoSalva(false), 2000)
-    } catch (err) {
-      setErro(err instanceof ApiError ? err.message : 'Erro ao salvar avaliação')
-    } finally {
-      setSalvandoAvaliacao(false)
     }
   }
 
@@ -532,52 +541,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
             </div>
           )}
 
-          <div className="grid gap-4 lg:grid-cols-2">
-            {/* Saúde / PAR-Q */}
-            <div className="glass rounded-2xl p-5">
-              <div className="mb-3 flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-slate-900">Saúde (PAR-Q)</h3>
-                <span
-                  className={`rounded-full px-2.5 py-1 text-xs font-medium ${
-                    student.onboarding_completed_at
-                      ? 'bg-emerald-500/15 text-emerald-600'
-                      : 'bg-amber-500/15 text-amber-600'
-                  }`}
-                >
-                  {student.onboarding_completed_at ? 'Preenchido pelo aluno' : 'Aguardando o aluno'}
-                </span>
-              </div>
-              <div className="space-y-2.5">
-                {PAR_Q_PERGUNTAS.map(({ chave, texto }) => (
-                  <label key={chave} className="flex cursor-pointer items-start gap-2.5 text-sm text-slate-600">
-                    <input
-                      type="checkbox"
-                      checked={parQ[chave]}
-                      onChange={(e) => setParQ({ ...parQ, [chave]: e.target.checked })}
-                      className="mt-0.5 h-4 w-4 shrink-0 accent-[#2648b3]"
-                    />
-                    {texto}
-                  </label>
-                ))}
-              </div>
-              <label className="mb-1.5 mt-4 block text-xs text-slate-500">
-                Cirurgias, medicamentos, observações
-              </label>
-              <textarea
-                value={healthNotes}
-                onChange={(e) => setHealthNotes(e.target.value)}
-                rows={2}
-                className="input-dark w-full rounded-xl px-3 py-2 text-sm"
-              />
-              <button
-                onClick={salvarAvaliacao}
-                disabled={salvandoAvaliacao}
-                className="btn-primary mt-3 rounded-xl px-4 py-2 text-sm"
-              >
-                {salvandoAvaliacao ? 'Salvando...' : avaliacaoSalva ? 'Salvo ✓' : 'Salvar avaliação'}
-              </button>
-            </div>
-
+          <div className="grid gap-4">
             {/* Medidas */}
             <div className="glass rounded-2xl p-5">
               <h3 className="mb-3 text-sm font-semibold text-slate-900">Medidas</h3>
@@ -634,6 +598,166 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
             </div>
           </div>
         </section>
+
+        {(birthDate ||
+          anamnese.historico_atividade_fisica.ja_praticou ||
+          anamnese.historico_atividade_fisica.pratica_atualmente ||
+          anamnese.historico_atividade_fisica.modalidades_favoritas ||
+          anamnese.historico_atividade_fisica.modalidades_nao_gosta ||
+          anamnese.historico_atividade_fisica.treinou_com_personal !== null ||
+          anamnese.objetivos.selecionados.length > 0 ||
+          anamnese.objetivos.outro ||
+          anamnese.objetivos.prazo ||
+          anamnese.condicoes_saude.restricao_medica ||
+          anamnese.condicoes_saude.doenca_diagnosticada ||
+          anamnese.condicoes_saude.lesao ||
+          anamnese.condicoes_saude.medicamentos ||
+          anamnese.condicoes_saude.suplementos ||
+          anamnese.condicoes_saude.alergias ||
+          anamnese.estilo_de_vida.profissao ||
+          anamnese.estilo_de_vida.nivel_estresse ||
+          anamnese.estilo_de_vida.qualidade_sono ||
+          anamnese.estilo_de_vida.alimentacao ||
+          anamnese.motivacao.motivacao ||
+          anamnese.motivacao.obstaculos ||
+          anamnese.disponibilidade.vezes_por_semana ||
+          anamnese.disponibilidade.local_treino.length > 0 ||
+          anamnese.historico_familiar) && (
+          <section className="mb-6">
+            <h2 className="mb-3 font-semibold text-slate-900">Anamnese completa</h2>
+            <div className="glass grid gap-x-6 gap-y-4 rounded-2xl p-5 sm:grid-cols-2">
+              {birthDate && (
+                <div>
+                  <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">Dados pessoais</h4>
+                  <LinhaAnamnese pergunta="Data de nascimento" resposta={new Date(`${birthDate}T00:00:00`).toLocaleDateString('pt-BR')} />
+                </div>
+              )}
+
+              <div>
+                <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  Histórico de atividade física
+                </h4>
+                <LinhaAnamnese pergunta="Já praticou" resposta={anamnese.historico_atividade_fisica.ja_praticou} />
+                <LinhaAnamnese pergunta="Pratica atualmente" resposta={anamnese.historico_atividade_fisica.pratica_atualmente} />
+                <LinhaAnamnese pergunta="Gosta de" resposta={anamnese.historico_atividade_fisica.modalidades_favoritas} />
+                <LinhaAnamnese pergunta="Não gosta de" resposta={anamnese.historico_atividade_fisica.modalidades_nao_gosta} />
+                <LinhaAnamnese
+                  pergunta="Já treinou com personal"
+                  resposta={
+                    anamnese.historico_atividade_fisica.treinou_com_personal === null
+                      ? null
+                      : anamnese.historico_atividade_fisica.treinou_com_personal
+                        ? 'Sim'
+                        : 'Não'
+                  }
+                />
+              </div>
+
+              <div>
+                <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">Objetivos</h4>
+                <LinhaAnamnese
+                  pergunta="Selecionados"
+                  resposta={anamnese.objetivos.selecionados
+                    .map((v) => OBJETIVOS_OPCOES.find((o) => o.valor === v)?.label ?? v)
+                    .join(', ')}
+                />
+                <LinhaAnamnese pergunta="Outro" resposta={anamnese.objetivos.outro} />
+                <LinhaAnamnese pergunta="Prazo desejado" resposta={anamnese.objetivos.prazo} />
+              </div>
+
+              <div>
+                <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  Condições de saúde
+                </h4>
+                <LinhaAnamnese pergunta="Restrição médica" resposta={anamnese.condicoes_saude.restricao_medica} />
+                <LinhaAnamnese pergunta="Doença diagnosticada" resposta={anamnese.condicoes_saude.doenca_diagnosticada} />
+                <LinhaAnamnese pergunta="Lesão" resposta={anamnese.condicoes_saude.lesao} />
+                <LinhaAnamnese pergunta="Medicamentos" resposta={anamnese.condicoes_saude.medicamentos} />
+                <LinhaAnamnese pergunta="Suplementos" resposta={anamnese.condicoes_saude.suplementos} />
+                <LinhaAnamnese pergunta="Alergias" resposta={anamnese.condicoes_saude.alergias} />
+              </div>
+
+              <div>
+                <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">Estilo de vida</h4>
+                <LinhaAnamnese pergunta="Profissão" resposta={anamnese.estilo_de_vida.profissao} />
+                <LinhaAnamnese pergunta="Nível de estresse" resposta={anamnese.estilo_de_vida.nivel_estresse} />
+                <LinhaAnamnese
+                  pergunta="Sono"
+                  resposta={
+                    anamnese.estilo_de_vida.qualidade_sono
+                      ? `${anamnese.estilo_de_vida.qualidade_sono}${anamnese.estilo_de_vida.horas_sono ? ` · ${anamnese.estilo_de_vida.horas_sono}h/noite` : ''}`
+                      : null
+                  }
+                />
+                <LinhaAnamnese pergunta="Alimentação" resposta={anamnese.estilo_de_vida.alimentacao} />
+                <LinhaAnamnese pergunta="Plano alimentar" resposta={anamnese.estilo_de_vida.plano_alimentar} />
+                <LinhaAnamnese pergunta="Álcool" resposta={anamnese.estilo_de_vida.frequencia_alcool} />
+                <LinhaAnamnese
+                  pergunta="Fumante"
+                  resposta={
+                    anamnese.estilo_de_vida.fumante === null
+                      ? null
+                      : anamnese.estilo_de_vida.fumante
+                        ? `Sim${anamnese.estilo_de_vida.tempo_fumante ? ` (${anamnese.estilo_de_vida.tempo_fumante})` : ''}`
+                        : 'Não'
+                  }
+                />
+              </div>
+
+              <div>
+                <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  Motivação e preferências
+                </h4>
+                <LinhaAnamnese pergunta="Motivação" resposta={anamnese.motivacao.motivacao} />
+                <LinhaAnamnese pergunta="Obstáculos" resposta={anamnese.motivacao.obstaculos} />
+                <LinhaAnamnese
+                  pergunta="Prefere treinos"
+                  resposta={
+                    anamnese.motivacao.preferencia_intensidade === 'curtos_intensos'
+                      ? 'Curtos e intensos'
+                      : anamnese.motivacao.preferencia_intensidade === 'longos_moderados'
+                        ? 'Longos e moderados'
+                        : null
+                  }
+                />
+                <LinhaAnamnese
+                  pergunta="Prefere treinar"
+                  resposta={
+                    anamnese.motivacao.preferencia_companhia === 'sozinho'
+                      ? 'Sozinho'
+                      : anamnese.motivacao.preferencia_companhia === 'grupo'
+                        ? 'Em grupo'
+                        : anamnese.motivacao.preferencia_companhia === 'acompanhamento'
+                          ? 'Com acompanhamento constante'
+                          : null
+                  }
+                />
+                <LinhaAnamnese pergunta="Melhor horário" resposta={anamnese.motivacao.horario_disponivel} />
+              </div>
+
+              <div>
+                <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">Disponibilidade</h4>
+                <LinhaAnamnese pergunta="Vezes por semana" resposta={anamnese.disponibilidade.vezes_por_semana} />
+                <LinhaAnamnese pergunta="Tempo por treino" resposta={anamnese.disponibilidade.tempo_por_treino} />
+                <LinhaAnamnese
+                  pergunta="Onde treina"
+                  resposta={anamnese.disponibilidade.local_treino
+                    .map((v) => LOCAL_TREINO_OPCOES.find((o) => o.valor === v)?.label ?? v)
+                    .join(', ')}
+                />
+              </div>
+
+              {anamnese.historico_familiar && (
+                <div className="sm:col-span-2">
+                  <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                    Histórico familiar
+                  </h4>
+                  <p className="text-sm text-slate-600">{anamnese.historico_familiar}</p>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
 
         {fotosEvolucao.length > 0 && (
           <section className="mb-6">

@@ -54,8 +54,11 @@ class StreakEmRiscoRule implements NotificacaoRule
                 studentId: $r->id,
                 dedupKey: "streak_em_risco:{$r->id}:{$hoje}",
                 contexto: (string) $streak,
-                titulo: "Sua sequência de {$streak} dias está em risco",
-                corpo: 'Treine hoje pra manter sua sequência viva.',
+                // Texto genérico: revela a mesma informação que sem_treinar_hoje
+                // já esconde (aluno ainda não treinou hoje + contagem de streak)
+                // — visível na tela de bloqueio, sem exigir desbloquear o aparelho.
+                titulo: NotificacaoCandidato::TITULO_ALUNO_GENERICO,
+                corpo: NotificacaoCandidato::CORPO_ALUNO_GENERICO,
                 url: "/aluno/{$r->invite_token}",
             );
         }

@@ -14,6 +14,33 @@ use RuntimeException;
  */
 class Uploads
 {
+    /**
+     * Extensão segura derivada do MIME real do arquivo (detectado por conteúdo,
+     * via finfo) — nunca do nome original enviado pelo cliente. Um arquivo
+     * "foto.jpg" com payload PHP embutido (polyglot) ainda seria detectado como
+     * image/jpeg aqui, mas salva com extensão .jpg (inerte), não .php.
+     */
+    private static function extensaoSegura(UploadedFile $file): string
+    {
+        $extensoesPorMime = [
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/webp' => 'webp',
+            'image/gif' => 'gif',
+            'video/mp4' => 'mp4',
+            'video/quicktime' => 'mov',
+            'video/webm' => 'webm',
+            'video/x-msvideo' => 'avi',
+        ];
+
+        $extensao = $extensoesPorMime[$file->getMimeType()] ?? null;
+        if ($extensao === null) {
+            throw new InvalidArgumentException('Tipo de arquivo não suportado');
+        }
+
+        return $extensao;
+    }
+
     /** Raiz dos arquivos sensíveis — nunca exposta via rota estática pública. */
     public static function privateRoot(): string
     {
@@ -37,7 +64,7 @@ class Uploads
             mkdir($dir, 0755, true);
         }
 
-        $filename = Str::random(20).'.'.$file->getClientOriginalExtension();
+        $filename = Str::random(20).'.'.self::extensaoSegura($file);
         $file->move($dir, $filename);
 
         return "/uploads/{$subdir}/{$filename}";
@@ -66,7 +93,7 @@ class Uploads
             mkdir($dir, 0755, true);
         }
 
-        $filename = Str::random(20).'.'.$file->getClientOriginalExtension();
+        $filename = Str::random(20).'.'.self::extensaoSegura($file);
         $file->move($dir, $filename);
 
         return "{$subdir}/{$chave}/{$filename}";
