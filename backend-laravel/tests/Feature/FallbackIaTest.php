@@ -37,8 +37,7 @@ class FallbackIaTest extends TestCase
 
         $response = $this->postJson('/consultor-ia/chat', ['content' => 'quantos alunos ativos eu tenho?'], $headers);
 
-        $response->assertStatus(503);
-        $this->assertSame('quantos alunos ativos eu tenho?', $response->json('message.content'));
+        $response->assertStatus(502);
 
         // A pergunta do personal foi persistida mesmo com a IA fora do ar.
         $this->assertDatabaseCount('consultor_ia_messages', 1);
@@ -55,7 +54,7 @@ class FallbackIaTest extends TestCase
 
         $response = $this->postJson('/conteudo', ['direcionamento' => 'foco em emagrecimento'], $headers);
 
-        $response->assertStatus(503);
+        $response->assertStatus(502);
         $this->assertDatabaseCount('content_ideas', 0);
     }
 }

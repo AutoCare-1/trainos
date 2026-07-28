@@ -24,17 +24,18 @@ class ParabensFimDeSemanaRule implements NotificacaoRule
         $fim = now()->subDay()->endOfDay();
         $hoje = now()->toDateString();
 
-        // Filtra em PHP em vez de HAVING sobre a coluna computada: HAVING sem
-        // GROUP BY funciona no MySQL (produção) mas quebra no SQLite (suite de
-        // testes) com "HAVING clause on a non-aggregate query".
+        // groupBy explícito é obrigatório aqui — sem ele, HAVING sobre uma coluna
+        // derivada (não uma função de agregação direta) filtra certo no MySQL mas
+        // devolve zero linhas no SQLite (usado nos testes), silenciosamente.
         $rows = DB::table('students as s')
             ->select('s.id', 's.professional_id', 's.invite_token')
             ->selectRaw(
                 '(select count(*) from training_sessions ts where ts.student_id = s.id and ts.status = ? and ts.finished_at between ? and ?) as total',
                 ['completed', $inicio, $fim]
             )
-            ->get()
-            ->filter(fn ($r) => $r->total >= $limiar);
+            ->groupBy('s.id', 's.professional_id', 's.invite_token')
+            ->havingRaw('total >= ?', [$limiar])
+            ->get();
 
         return $rows->map(fn ($r) => new NotificacaoCandidato(
             recipient: Student::find($r->id),

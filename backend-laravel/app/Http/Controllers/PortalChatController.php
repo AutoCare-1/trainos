@@ -6,10 +6,10 @@ use App\Http\Controllers\Concerns\ResolvesStudentByToken;
 use App\Models\Message;
 use App\Models\Student;
 use App\Support\Chat;
+use App\Support\ErrorReporting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class PortalChatController extends Controller
 {
@@ -99,7 +99,10 @@ class PortalChatController extends Controller
         ])->refresh();
 
         $respostaIa = null;
-        if ($student->ai_autopilot) {
+        // Enviar a mensagem do aluno nunca pode falhar por causa da IA — se o
+        // autopilot estiver desligado por kill-switch, só não gera resposta
+        // automática (mesmo efeito de ai_autopilot=false, sem erro nenhum).
+        if ($student->ai_autopilot && config('ia_pipelines.chat_autopilot') !== false) {
             try {
                 $historico = Message::where('student_id', $student->id)
                     ->orderByDesc('created_at')
@@ -120,7 +123,7 @@ class PortalChatController extends Controller
             } catch (\Throwable $e) {
                 // IA fora do ar não pode impedir o registro da mensagem do aluno —
                 // o profissional responde manualmente depois.
-                Log::error('[Chat IA] Falha ao gerar resposta automática: '.$e->getMessage());
+                ErrorReporting::capturarFalhaIa('chat_autopilot', $e, ['student_id' => $student->id]);
             }
         }
 

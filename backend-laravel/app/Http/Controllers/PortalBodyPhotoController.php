@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Concerns\ResolvesStudentByToken;
 use App\Models\BodyPhoto;
+use App\Support\ErrorReporting;
 use App\Support\EvolucaoFisica;
 use App\Support\Uploads;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class PortalBodyPhotoController extends Controller
@@ -47,17 +47,24 @@ class PortalBodyPhotoController extends Controller
             ->orderByDesc('taken_at')
             ->first(['id', 'file_path']);
 
-        try {
-            $aiFeedback = $anterior
-                ? EvolucaoFisica::compararEvolucaoFisica($student->name, Uploads::privateAbsolutePath($anterior->file_path), $caminhoAbsolutoNova)
-                : EvolucaoFisica::comentarPrimeiraFoto($student->name, $caminhoAbsolutoNova);
-        } catch (\Throwable $e) {
-            // A IA fora do ar não pode impedir o registro da foto — o comentário
-            // fica em branco e o aluno vê a foto normalmente.
-            Log::error('[Evolução física] Falha ao gerar comentário da IA: '.$e->getMessage());
-            $aiFeedback = $anterior
-                ? 'Foto registrada! Em breve o comentário da Coach IA aparece por aqui.'
-                : 'Primeira foto registrada! Esse é o seu ponto de partida — daqui pra frente dá pra acompanhar sua evolução de verdade.';
+        $comentarioIndisponivel = $anterior
+            ? 'Foto registrada! Em breve o comentário da Coach IA aparece por aqui.'
+            : 'Primeira foto registrada! Esse é o seu ponto de partida — daqui pra frente dá pra acompanhar sua evolução de verdade.';
+
+        // Registrar a foto nunca pode falhar por causa da IA — nem quando ela está
+        // fora do ar (catch abaixo), nem quando foi desligada de propósito
+        // (kill-switch): os dois casos caem no mesmo comentário-placeholder.
+        if (config('ia_pipelines.evolucao_fisica') === false) {
+            $aiFeedback = $comentarioIndisponivel;
+        } else {
+            try {
+                $aiFeedback = $anterior
+                    ? EvolucaoFisica::compararEvolucaoFisica($student->name, Uploads::privateAbsolutePath($anterior->file_path), $caminhoAbsolutoNova)
+                    : EvolucaoFisica::comentarPrimeiraFoto($student->name, $caminhoAbsolutoNova);
+            } catch (\Throwable $e) {
+                ErrorReporting::capturarFalhaIa('evolucao_fisica', $e, ['student_id' => $student->id]);
+                $aiFeedback = $comentarioIndisponivel;
+            }
         }
 
         $photo = BodyPhoto::create([

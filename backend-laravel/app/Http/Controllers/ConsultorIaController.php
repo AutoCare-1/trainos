@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\ConsultorIaMessage;
 use App\Support\ConsultorIa;
+use App\Support\ErrorReporting;
+use App\Support\KillSwitchIa;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -22,6 +24,10 @@ class ConsultorIaController extends Controller
     // POST /chat — envia uma pergunta e recebe a resposta da IA (com tool use)
     public function chat(Request $request): JsonResponse
     {
+        if ($resp = KillSwitchIa::verificar('consultor_ia')) {
+            return $resp;
+        }
+
         $validated = $request->validate([
             'content' => ['required', 'string', 'max:4000'],
         ]);
@@ -47,13 +53,12 @@ class ConsultorIaController extends Controller
 
         try {
             $texto = ConsultorIa::responderConsultor($professionalId, $historico);
-        } catch (\Throwable) {
-            // A mensagem do personal já foi salva acima — não perde a pergunta,
-            // só avisa que a IA não respondeu desta vez, em vez de estourar 500.
-            return response()->json([
-                'message' => $mensagemPersonal,
-                'error' => 'O Consultor IA não conseguiu responder agora. Tente de novo em instantes.',
-            ], 503);
+        } catch (\Throwable $e) {
+            // A pergunta do personal já ficou salva (fica no histórico pra próxima
+            // vez) — só a resposta em si não saiu; resposta de erro, não 500 cru.
+            ErrorReporting::capturarFalhaIa('consultor_ia', $e, ['professional_id' => $professionalId]);
+
+            return response()->json(['error' => 'Não foi possível falar com o Consultor IA agora, tente de novo em instantes.'], 502);
         }
 
         $mensagemIa = ConsultorIaMessage::create([
