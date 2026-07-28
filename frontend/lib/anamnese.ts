@@ -77,3 +77,15 @@ export function normalizarAnamnese(valor: Partial<Anamnese> | null | undefined):
     historico_familiar: valor?.historico_familiar ?? '',
   }
 }
+
+/** Verifica todas as seções de uma vez (em vez de uma lista manual campo a campo,
+ * que já ficou desatualizada uma vez e escondeu dado real de um aluno que só
+ * respondeu campos "de fora" da lista) — usado pra decidir se a seção "Anamnese
+ * completa" deve aparecer na ficha do aluno. */
+export function anamneseTemConteudo(anamnese: Anamnese): boolean {
+  return Object.values(anamnese).some((secao) => {
+    if (typeof secao === 'string') return secao !== ''
+    if (Array.isArray(secao)) return secao.length > 0
+    return Object.values(secao).some((v) => (Array.isArray(v) ? v.length > 0 : v !== '' && v !== null))
+  })
+}

@@ -478,7 +478,10 @@ export default function OnboardingAvaliacao({
                     name="fumante"
                     checked={anamnese.estilo_de_vida.fumante === false}
                     onChange={() =>
-                      setAnamnese({ ...anamnese, estilo_de_vida: { ...anamnese.estilo_de_vida, fumante: false } })
+                      setAnamnese({
+                        ...anamnese,
+                        estilo_de_vida: { ...anamnese.estilo_de_vida, fumante: false, tempo_fumante: '' },
+                      })
                     }
                     className="accent-[#2648b3]"
                   />

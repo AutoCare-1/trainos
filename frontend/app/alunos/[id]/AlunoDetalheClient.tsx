@@ -9,7 +9,7 @@ import Avatar from '@/components/Avatar'
 import ChatBox from '@/components/ChatBox'
 import WeightChart from '@/components/WeightChart'
 import { api, ApiError, fetchImagemAutenticada } from '@/lib/api'
-import { ANAMNESE_VAZIA, LOCAL_TREINO_OPCOES, normalizarAnamnese, OBJETIVOS_OPCOES } from '@/lib/anamnese'
+import { ANAMNESE_VAZIA, anamneseTemConteudo, LOCAL_TREINO_OPCOES, normalizarAnamnese, OBJETIVOS_OPCOES } from '@/lib/anamnese'
 import { formatarDataCurta, formatarDataLonga, nomeMes, primeiroDiaAno, primeiroDiaMes, somarDias } from '@/lib/checkinDates'
 import { PAR_Q_VAZIO } from '@/lib/parq'
 import {
@@ -599,30 +599,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
           </div>
         </section>
 
-        {(birthDate ||
-          anamnese.historico_atividade_fisica.ja_praticou ||
-          anamnese.historico_atividade_fisica.pratica_atualmente ||
-          anamnese.historico_atividade_fisica.modalidades_favoritas ||
-          anamnese.historico_atividade_fisica.modalidades_nao_gosta ||
-          anamnese.historico_atividade_fisica.treinou_com_personal !== null ||
-          anamnese.objetivos.selecionados.length > 0 ||
-          anamnese.objetivos.outro ||
-          anamnese.objetivos.prazo ||
-          anamnese.condicoes_saude.restricao_medica ||
-          anamnese.condicoes_saude.doenca_diagnosticada ||
-          anamnese.condicoes_saude.lesao ||
-          anamnese.condicoes_saude.medicamentos ||
-          anamnese.condicoes_saude.suplementos ||
-          anamnese.condicoes_saude.alergias ||
-          anamnese.estilo_de_vida.profissao ||
-          anamnese.estilo_de_vida.nivel_estresse ||
-          anamnese.estilo_de_vida.qualidade_sono ||
-          anamnese.estilo_de_vida.alimentacao ||
-          anamnese.motivacao.motivacao ||
-          anamnese.motivacao.obstaculos ||
-          anamnese.disponibilidade.vezes_por_semana ||
-          anamnese.disponibilidade.local_treino.length > 0 ||
-          anamnese.historico_familiar) && (
+        {(birthDate || anamneseTemConteudo(anamnese)) && (
           <section className="mb-6">
             <h2 className="mb-3 font-semibold text-slate-900">Anamnese completa</h2>
             <div className="glass grid gap-x-6 gap-y-4 rounded-2xl p-5 sm:grid-cols-2">

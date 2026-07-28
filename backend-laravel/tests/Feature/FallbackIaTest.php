@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\ConsultorIaMessage;
 use App\Models\Professional;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

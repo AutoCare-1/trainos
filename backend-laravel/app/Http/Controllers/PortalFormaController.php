@@ -63,7 +63,7 @@ class PortalFormaController extends Controller
         try {
             $duracao = VideoProcessor::obterDuracaoVideo($videoAbsPath);
         } catch (\Throwable $e) {
-            ErrorReporting::capturarFalhaIa('analisar_forma_duracao', $e, ['student_id' => $student->id]);
+            ErrorReporting::capturarFalhaIa('analisar_forma', $e, ['student_id' => $student->id]);
             @unlink($videoAbsPath);
 
             return response()->json(['error' => 'Não foi possível processar esse vídeo. Tente gravar de novo.'], 422);
@@ -118,9 +118,11 @@ class PortalFormaController extends Controller
             return response()->json(['video' => $video, 'analysis' => $analysisResult], 201);
         } catch (\Throwable $e) {
             ErrorReporting::capturarFalhaIa('analisar_forma', $e, ['student_id' => $student->id]);
+            // Nunca a mensagem crua da exceção aqui — pode vazar detalhe interno
+            // (path de arquivo, erro de SDK/API) pro aluno, que só vê essa resposta.
             $analysisResult = FormAnalysisResult::create([
                 'video_id' => $video->id,
-                'safety_notes' => $e->getMessage(),
+                'safety_notes' => 'Não foi possível concluir a análise desse vídeo agora.',
                 'three_key_feedback' => [],
                 'analysis_status' => 'failed',
             ])->refresh();

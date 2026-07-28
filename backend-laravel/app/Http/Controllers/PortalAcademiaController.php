@@ -211,8 +211,10 @@ class PortalAcademiaController extends Controller
                 'recommendation' => $recommendation,
             ], 201);
         } catch (\Throwable $e) {
-            ErrorReporting::capturarFalhaIa('academia', $e, ['student_id' => $student->id, 'submission_id' => $submission->id]);
-            $submission->update(['status' => 'failed', 'error_message' => $e->getMessage()]);
+            ErrorReporting::capturarFalhaIa('academia_analise', $e, ['student_id' => $student->id, 'submission_id' => $submission->id]);
+            // Nunca a mensagem crua da exceção aqui — pode vazar detalhe interno
+            // (path de arquivo, erro de SDK/API) pro aluno, que só vê essa resposta.
+            $submission->update(['status' => 'failed', 'error_message' => 'Não foi possível concluir a análise agora.']);
 
             return response()->json([
                 'submission' => $submission,
