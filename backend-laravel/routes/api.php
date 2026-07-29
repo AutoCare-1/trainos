@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlunoBodyPhotoController;
 use App\Http\Controllers\AlunoPosturalController;
+use App\Http\Controllers\AlunoRevisaoController;
 use App\Http\Controllers\AlunoChatController;
 use App\Http\Controllers\AlunoCheckinController;
 use App\Http\Controllers\AlunoController;
@@ -64,6 +65,7 @@ Route::middleware('auth.jwt')->group(function () {
         Route::get('/{id}/body-photos/{photoId}/imagem', [AlunoBodyPhotoController::class, 'imagem']);
         Route::get('/{id}/postural', [AlunoPosturalController::class, 'index']);
         Route::get('/{id}/postural/{assessmentId}/imagem/{angulo}', [AlunoPosturalController::class, 'imagem']);
+        Route::get('/{id}/revisoes', [AlunoRevisaoController::class, 'index']);
 
         Route::get('/{id}/checkins/summary', [AlunoCheckinController::class, 'summary']);
         Route::get('/{id}/checkins', [AlunoCheckinController::class, 'index']);
@@ -157,6 +159,7 @@ Route::prefix('portal')->group(function () {
     Route::get('/{token}/postural', [PortalPosturalController::class, 'index']);
     Route::post('/{token}/postural', [PortalPosturalController::class, 'store']);
     Route::get('/{token}/postural/{id}/imagem/{angulo}', [PortalPosturalController::class, 'imagem']);
+    Route::post('/{token}/revisao', [PortalController::class, 'revisao']);
 
     Route::get('/{token}/checkins/summary', [PortalCheckinController::class, 'summary']);
     Route::get('/{token}/checkins', [PortalCheckinController::class, 'index']);

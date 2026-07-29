@@ -9,6 +9,7 @@ import ExerciseAnimation from '@/components/ExerciseAnimation'
 import InstallAppModal from '@/components/InstallAppModal'
 import FormCorrectionModal from '@/components/FormCorrectionModal'
 import Leaderboard from '@/components/Leaderboard'
+import AnamneseRevisao from '@/components/AnamneseRevisao'
 import OnboardingAvaliacao from '@/components/OnboardingAvaliacao'
 import SideMenu, { MenuItem } from '@/components/SideMenu'
 import WeightChart from '@/components/WeightChart'
@@ -28,6 +29,8 @@ import {
   Message,
   ParQAnswers,
   PosturalAssessment,
+  RespostasRevisao,
+  RevisaoPendente,
   ResumoCheckins,
   Workout,
   WorkoutExerciseDetail,
@@ -76,6 +79,7 @@ interface PortalData {
   gamificacao: Gamificacao
   desafio: Challenge | null
   onboardingCompleted: boolean
+  revisaoPendente: RevisaoPendente | null
 }
 
 function chaveUltimaVista(token: string): string {
@@ -489,6 +493,15 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     )
   }
 
+  async function enviarRevisao(respostas: RespostasRevisao) {
+    if (!data?.revisaoPendente) return
+    await api.post(`/portal/${token}/revisao`, {
+      workout_id: data.revisaoPendente.workout_id,
+      respostas,
+    })
+    setData((prev) => (prev ? { ...prev, revisaoPendente: null } : prev))
+  }
+
   async function enviarMensagem(texto: string) {
     setAguardandoIa(true)
     try {
@@ -572,6 +585,16 @@ export default function PortalAlunoClient({ token }: { token: string }) {
 
   if (!data.onboardingCompleted) {
     return <OnboardingAvaliacao nome={data.student.name} onEnviar={enviarAvaliacao} />
+  }
+
+  if (data.revisaoPendente) {
+    return (
+      <AnamneseRevisao
+        nome={data.student.name}
+        nomeTreino={data.revisaoPendente.workout_name}
+        onEnviar={enviarRevisao}
+      />
+    )
   }
 
   const primeiroNome = data.student.name.split(' ')[0]

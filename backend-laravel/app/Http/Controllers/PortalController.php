@@ -8,10 +8,12 @@ use App\Models\SessionEntry;
 use App\Models\TrainingSession;
 use App\Models\Workout;
 use App\Models\WorkoutExercise;
+use App\Models\WorkoutReview;
 use App\Support\Gamification;
 use App\Support\Uploads;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class PortalController extends Controller
@@ -132,6 +134,22 @@ class PortalController extends Controller
                 ->get();
         }
 
+        // Treino vencido (expires_at já passou), não-arquivado e ainda sem revisão —
+        // bloqueia o portal com a anamnese de revisão até o aluno responder, mesmo
+        // modelo do onboardingCompleted. Arquivar sem revisar (personal decidiu que
+        // não precisa) não conta como pendente.
+        $revisaoPendente = DB::table('workouts as w')
+            ->leftJoin('workout_reviews as wr', 'wr.workout_id', '=', 'w.id')
+            ->where('w.student_id', $student->id)
+            ->where('w.status', 'sent')
+            ->whereNull('w.archived_at')
+            ->whereNotNull('w.expires_at')
+            ->where('w.expires_at', '<=', now()->toDateString())
+            ->whereNull('wr.id')
+            ->orderBy('w.expires_at')
+            ->select('w.id', 'w.name')
+            ->first();
+
         return response()->json([
             'student' => [
                 'id' => $student->id, 'name' => $student->name,
@@ -146,6 +164,7 @@ class PortalController extends Controller
             'gamificacao' => $gamificacao,
             'desafio' => $desafioAtivo ? array_merge((array) $desafioAtivo, ['leaderboard' => $leaderboard]) : null,
             'onboardingCompleted' => $student->onboarding_completed_at !== null,
+            'revisaoPendente' => $revisaoPendente ? ['workout_id' => $revisaoPendente->id, 'workout_name' => $revisaoPendente->name] : null,
         ]);
     }
 
@@ -173,6 +192,45 @@ class PortalController extends Controller
         ]);
 
         return response()->json(['onboardingCompleted' => true], 201);
+    }
+
+    // POST /:token/revisao — o aluno responde a anamnese de revisão quando um
+    // treino com prazo definido vence (ver PortalController::show, revisaoPendente)
+    public function revisao(Request $request, string $token): JsonResponse
+    {
+        $student = $this->buscarAlunoPorToken($token);
+        if (! $student) {
+            return response()->json(['error' => 'Link inválido'], 404);
+        }
+
+        $validated = $request->validate([
+            'workout_id' => ['required', 'string'],
+            'respostas' => ['required', 'array'],
+        ]);
+
+        $workout = Workout::where('id', $validated['workout_id'])
+            ->where('student_id', $student->id)
+            ->first();
+        if (! $workout) {
+            return response()->json(['error' => 'Treino não encontrado'], 404);
+        }
+
+        if (WorkoutReview::where('workout_id', $workout->id)->exists()) {
+            return response()->json(['error' => 'Esse treino já tem uma revisão registrada'], 409);
+        }
+
+        // Student não tem cast de created_at (coluna preenchida pelo useCurrent() do
+        // banco, não pelo Eloquent) — vem como string crua, precisa de parse manual.
+        $semanas = (int) round(Carbon::parse($student->created_at)->diffInDays(now()) / 7);
+
+        $revisao = WorkoutReview::create([
+            'student_id' => $student->id,
+            'workout_id' => $workout->id,
+            'tempo_acompanhamento_semanas' => $semanas,
+            'respostas' => $validated['respostas'],
+        ])->refresh();
+
+        return response()->json(['review' => $revisao], 201);
     }
 
     // POST /:token/foto — o próprio aluno envia sua foto de perfil

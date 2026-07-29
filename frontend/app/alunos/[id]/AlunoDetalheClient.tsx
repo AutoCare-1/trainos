@@ -10,6 +10,7 @@ import ChatBox from '@/components/ChatBox'
 import WeightChart from '@/components/WeightChart'
 import { api, ApiError, fetchImagemAutenticada } from '@/lib/api'
 import { ANAMNESE_VAZIA, anamneseTemConteudo, LOCAL_TREINO_OPCOES, normalizarAnamnese, OBJETIVOS_OPCOES } from '@/lib/anamnese'
+import { ASPECTOS_PROGRESSO_OPCOES } from '@/lib/anamneseRevisao'
 import { formatarDataCurta, formatarDataLonga, nomeMes, primeiroDiaAno, primeiroDiaMes, somarDias } from '@/lib/checkinDates'
 import { PAR_Q_VAZIO } from '@/lib/parq'
 import {
@@ -22,6 +23,7 @@ import {
   Message,
   ParQAnswers,
   PosturalAssessment,
+  WorkoutReview,
   ResumoCheckins,
   Student,
   Workout,
@@ -76,6 +78,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
   const [alertasEstagnacao, setAlertasEstagnacao] = useState<AlertaEstagnacao[]>([])
   const [fotosEvolucao, setFotosEvolucao] = useState<BodyPhoto[]>([])
   const [posturais, setPosturais] = useState<PosturalAssessment[]>([])
+  const [revisoes, setRevisoes] = useState<WorkoutReview[]>([])
   const [resumoCheckins, setResumoCheckins] = useState<ResumoCheckins | null>(null)
   const [periodoCheckins, setPeriodoCheckins] = useState<'week' | 'month' | 'year'>('week')
   const [refCheckins, setRefCheckins] = useState<string | null>(null)
@@ -155,6 +158,11 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
     api
       .get<{ assessments: PosturalAssessment[] }>(`/alunos/${studentId}/postural`)
       .then((data) => setPosturais(data.assessments))
+      .catch(() => {})
+
+    api
+      .get<{ reviews: WorkoutReview[] }>(`/alunos/${studentId}/revisoes`)
+      .then((data) => setRevisoes(data.reviews))
       .catch(() => {})
 
     api
@@ -786,6 +794,70 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
                       {new Date(avaliacao.taken_at).toLocaleDateString('pt-BR')}
                     </p>
                     {avaliacao.ai_feedback && <p className="text-xs text-slate-600">{avaliacao.ai_feedback}</p>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {revisoes.length > 0 && (
+          <section className="mb-6">
+            <h2 className="mb-3 font-semibold text-slate-900">Revisões de treino</h2>
+            <div className="space-y-3">
+              {revisoes.map((rev) => (
+                <div key={rev.id} className="glass rounded-2xl p-5">
+                  <div className="mb-3 flex items-center justify-between">
+                    <p className="font-semibold text-slate-900">{rev.workout_name}</p>
+                    <p className="text-xs text-slate-500">
+                      {new Date(rev.created_at).toLocaleDateString('pt-BR')}
+                      {rev.tempo_acompanhamento_semanas !== null && ` · ${rev.tempo_acompanhamento_semanas} semanas de acompanhamento`}
+                    </p>
+                  </div>
+                  <div className="space-y-1.5 text-sm text-slate-600">
+                    <LinhaAnamnese
+                      pergunta="Avaliação"
+                      resposta={
+                        ({ excelente: 'Excelente', boa: 'Boa', regular: 'Regular', ruim: 'Ruim' } as Record<string, string>)[
+                          rev.respostas.avaliacao_treino
+                        ]
+                      }
+                    />
+                    <LinhaAnamnese pergunta="Gostou mais de" resposta={rev.respostas.gostou_mais} />
+                    <LinhaAnamnese pergunta="Não gostou de" resposta={rev.respostas.nao_gostou} />
+                    <LinhaAnamnese
+                      pergunta="Evolução percebida"
+                      resposta={
+                        (
+                          {
+                            sim_bastante: 'Sim, bastante',
+                            sim_poderia_mais: 'Sim, mas poderia ser mais',
+                            pouco: 'Pouco',
+                            ainda_nao: 'Ainda não',
+                          } as Record<string, string>
+                        )[rev.respostas.percebeu_evolucao]
+                      }
+                    />
+                    <LinhaAnamnese
+                      pergunta="Maior progresso em"
+                      resposta={rev.respostas.aspectos_progresso
+                        .map((v) => ASPECTOS_PROGRESSO_OPCOES.find((o) => o.valor === v)?.label ?? v)
+                        .concat(rev.respostas.aspectos_progresso_outro ? [rev.respostas.aspectos_progresso_outro] : [])
+                        .join(', ')}
+                    />
+                    <LinhaAnamnese
+                      pergunta="Manteve a frequência"
+                      resposta={
+                        ({ sim: 'Sim', parcialmente: 'Parcialmente', nao: 'Não' } as Record<string, string>)[
+                          rev.respostas.manteve_frequencia
+                        ]
+                      }
+                    />
+                    <LinhaAnamnese pergunta="Treinos por semana" resposta={rev.respostas.treinos_por_semana} />
+                    <LinhaAnamnese pergunta="Dificuldade na rotina" resposta={rev.respostas.dificuldade_rotina} />
+                    <LinhaAnamnese pergunta="Sugestão de melhoria" resposta={rev.respostas.sugestao_melhoria} />
+                    <LinhaAnamnese pergunta="Quer incluir" resposta={rev.respostas.sugestao_modalidade} />
+                    <LinhaAnamnese pergunta="Sugestão geral" resposta={rev.respostas.sugestao_geral} />
                   </div>
                 </div>
               ))}

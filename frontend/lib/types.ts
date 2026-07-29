@@ -11,6 +11,38 @@ export interface ParQAnswers {
   pressao_medicacao: boolean
 }
 
+/** Respostas da anamnese de revisão — disparada quando um treino com prazo vence
+ * (ver PortalController::show, revisaoPendente). Um registro por treino vencido. */
+export interface RespostasRevisao {
+  avaliacao_treino: 'excelente' | 'boa' | 'regular' | 'ruim' | ''
+  gostou_mais: string
+  nao_gostou: string
+  percebeu_evolucao: 'sim_bastante' | 'sim_poderia_mais' | 'pouco' | 'ainda_nao' | ''
+  aspectos_progresso: string[]
+  aspectos_progresso_outro: string
+  manteve_frequencia: 'sim' | 'parcialmente' | 'nao' | ''
+  treinos_por_semana: string
+  dificuldade_rotina: string
+  sugestao_melhoria: string
+  sugestao_modalidade: string
+  sugestao_geral: string
+}
+
+export interface WorkoutReview {
+  id: string
+  student_id: string
+  workout_id: string
+  workout_name: string
+  tempo_acompanhamento_semanas: number | null
+  respostas: RespostasRevisao
+  created_at: string
+}
+
+export interface RevisaoPendente {
+  workout_id: string
+  workout_name: string
+}
+
 /** Complemento da anamnese inicial (par_q_answers/health_notes já cobrem a parte de
  * segurança PAR-Q) — perguntas do formulário em papel do personal que ainda não
  * tinham campo no app. Tudo opcional: cada seção pode ficar em branco. */
