@@ -29,5 +29,13 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('push-portal', function (Request $request) {
             return Limit::perMinute(10)->by((string) $request->route('token'));
         });
+
+        // Terceira varredura de bugs: /portal/{token}/postural chama Claude Haiku
+        // com até 6 imagens por request — sem limite, um token vazado gera custo de
+        // IA e gravação em disco em loop. Chaveado pelo token (mesmo motivo do
+        // push-portal), limite mais apertado por ser bem mais caro que um subscribe.
+        RateLimiter::for('postural-portal', function (Request $request) {
+            return Limit::perHour(5)->by((string) $request->route('token'));
+        });
     }
 }

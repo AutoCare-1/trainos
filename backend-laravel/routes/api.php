@@ -158,7 +158,7 @@ Route::prefix('portal')->group(function () {
     Route::post('/{token}/body-photos', [PortalBodyPhotoController::class, 'store']);
     Route::get('/{token}/body-photos/{photoId}/imagem', [PortalBodyPhotoController::class, 'imagem']);
     Route::get('/{token}/postural', [PortalPosturalController::class, 'index']);
-    Route::post('/{token}/postural', [PortalPosturalController::class, 'store']);
+    Route::post('/{token}/postural', [PortalPosturalController::class, 'store'])->middleware('throttle:postural-portal');
     Route::get('/{token}/postural/{id}/imagem/{angulo}', [PortalPosturalController::class, 'imagem']);
     Route::post('/{token}/revisao', [PortalController::class, 'revisao']);
 

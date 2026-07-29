@@ -206,6 +206,19 @@ class PortalController extends Controller
         $validated = $request->validate([
             'workout_id' => ['required', 'string'],
             'respostas' => ['required', 'array'],
+            'respostas.avaliacao_treino' => ['nullable', 'string', 'max:50'],
+            'respostas.gostou_mais' => ['nullable', 'string', 'max:2000'],
+            'respostas.nao_gostou' => ['nullable', 'string', 'max:2000'],
+            'respostas.percebeu_evolucao' => ['nullable', 'string', 'max:50'],
+            'respostas.aspectos_progresso' => ['nullable', 'array'],
+            'respostas.aspectos_progresso.*' => ['string', 'max:50'],
+            'respostas.aspectos_progresso_outro' => ['nullable', 'string', 'max:2000'],
+            'respostas.manteve_frequencia' => ['nullable', 'string', 'max:50'],
+            'respostas.treinos_por_semana' => ['nullable', 'max:20'],
+            'respostas.dificuldade_rotina' => ['nullable', 'string', 'max:2000'],
+            'respostas.sugestao_melhoria' => ['nullable', 'string', 'max:2000'],
+            'respostas.sugestao_modalidade' => ['nullable', 'string', 'max:2000'],
+            'respostas.sugestao_geral' => ['nullable', 'string', 'max:2000'],
         ]);
 
         $workout = Workout::where('id', $validated['workout_id'])

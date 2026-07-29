@@ -33,10 +33,17 @@ class TreinoVencidoAlunoRule implements NotificacaoRule
             )
             ->get();
 
+        // Item 9 da revisão externa (ver NotificacaoCandidato): lembrete de pagamento
+        // é dado financeiro, não deve ir em texto claro numa notificação que pode
+        // ser vista por terceiros na tela de bloqueio — cai no texto genérico
+        // sempre que essa opção está ligada, mesmo abrindo mão de citar o treino.
         return $rows->map(function ($r) {
-            $corpo = "O treino \"{$r->treino}\" venceu. Fale com seu professor sobre o próximo treino.";
             if ($r->lembrar_pagamento_vencimento) {
-                $corpo .= ' Aproveite também para regularizar o pagamento com seu professor.';
+                $titulo = NotificacaoCandidato::TITULO_ALUNO_GENERICO;
+                $corpo = NotificacaoCandidato::CORPO_ALUNO_GENERICO;
+            } else {
+                $titulo = 'Seu treino venceu';
+                $corpo = "O treino \"{$r->treino}\" venceu. Fale com seu professor sobre o próximo treino.";
             }
 
             return new NotificacaoCandidato(
@@ -45,7 +52,7 @@ class TreinoVencidoAlunoRule implements NotificacaoRule
                 studentId: $r->student_id,
                 dedupKey: "treino_vencido_aluno:{$r->workout_id}",
                 contexto: $r->workout_id,
-                titulo: 'Seu treino venceu',
+                titulo: $titulo,
                 corpo: $corpo,
                 url: "/aluno/{$r->invite_token}",
             );

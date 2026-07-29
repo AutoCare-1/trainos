@@ -7,6 +7,7 @@ use App\Models\Professional;
 use App\Models\Student;
 use App\Models\Workout;
 use App\Notifications\PushNotification;
+use App\Notifications\Rules\NotificacaoCandidato;
 use Database\Seeders\NotificationTypesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -63,7 +64,7 @@ class TreinoVencidoNotificationTest extends TestCase
         $this->assertSame(1, NotificationLog::where('tipo_chave', 'treino_vencido_personal')->count());
     }
 
-    public function test_inclui_lembrete_de_pagamento_quando_aluno_tem_a_opcao_ligada(): void
+    public function test_usa_texto_generico_quando_aluno_tem_lembrete_de_pagamento_ligado(): void
     {
         Notification::fake();
         $professional = Professional::create([
@@ -89,10 +90,14 @@ class TreinoVencidoNotificationTest extends TestCase
 
         Artisan::call('notifications:process');
 
+        // Lembrete de pagamento é dado financeiro: não pode ir em texto claro
+        // (nome do treino, valor, etc.) numa notificação vista na tela de bloqueio.
         Notification::assertSentTo(
             $student,
             PushNotification::class,
-            fn ($notification) => str_contains($notification->corpo, 'regularizar o pagamento')
+            fn ($notification) => $notification->corpo === NotificacaoCandidato::CORPO_ALUNO_GENERICO
+                && $notification->titulo === NotificacaoCandidato::TITULO_ALUNO_GENERICO
+                && ! str_contains($notification->corpo, 'Treino de Peito')
         );
     }
 
