@@ -13,6 +13,7 @@ export default function VideosPage() {
   const [exercises, setExercises] = useState<Exercise[] | null>(null)
   const [erro, setErro] = useState<string | null>(null)
   const [enviando, setEnviando] = useState<string | null>(null)
+  const [buscaExercicio, setBuscaExercicio] = useState('')
   const inputsGravar = useRef<Record<string, HTMLInputElement | null>>({})
   const inputsGaleria = useRef<Record<string, HTMLInputElement | null>>({})
 
@@ -64,7 +65,11 @@ export default function VideosPage() {
     }
   }
 
-  const porGrupo = (exercises ?? []).reduce<Record<string, Exercise[]>>((acc, ex) => {
+  const termoBusca = buscaExercicio.trim().toLowerCase()
+  const exerciciosFiltrados = termoBusca
+    ? (exercises ?? []).filter((ex) => ex.name.toLowerCase().includes(termoBusca))
+    : exercises ?? []
+  const porGrupo = exerciciosFiltrados.reduce<Record<string, Exercise[]>>((acc, ex) => {
     acc[ex.muscle_group] = acc[ex.muscle_group] ?? []
     acc[ex.muscle_group].push(ex)
     return acc
@@ -84,7 +89,20 @@ export default function VideosPage() {
         {erro && <p className="mb-4 text-sm text-rose-500">{erro}</p>}
         {exercises === null && !erro && <p className="text-slate-500">Carregando...</p>}
 
+        {exercises !== null && (
+          <input
+            type="text"
+            value={buscaExercicio}
+            onChange={(e) => setBuscaExercicio(e.target.value)}
+            placeholder="Buscar exercício pelo nome..."
+            className="input-dark mb-6 w-full rounded-xl px-4 py-2.5 text-sm"
+          />
+        )}
+
         <div className="space-y-6">
+          {termoBusca && Object.keys(porGrupo).length === 0 && (
+            <p className="text-sm text-slate-500">Nenhum exercício encontrado.</p>
+          )}
           {Object.entries(porGrupo).map(([grupo, itens]) => (
             <div key={grupo}>
               <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">{grupo}</h2>

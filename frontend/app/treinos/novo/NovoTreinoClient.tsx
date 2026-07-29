@@ -25,6 +25,7 @@ export default function NovoTreinoClient() {
   const studentId = searchParams.get('aluno')
 
   const [exercises, setExercises] = useState<Exercise[]>([])
+  const [buscaExercicio, setBuscaExercicio] = useState('')
   const [name, setName] = useState('Treino A')
   const [items, setItems] = useState<ItemTreino[]>([])
   const [duracaoSemanas, setDuracaoSemanas] = useState('')
@@ -149,7 +150,11 @@ export default function NovoTreinoClient() {
     }
   }
 
-  const porGrupo = exercises.reduce<Record<string, Exercise[]>>((acc, ex) => {
+  const termoBusca = buscaExercicio.trim().toLowerCase()
+  const exerciciosFiltrados = termoBusca
+    ? exercises.filter((ex) => ex.name.toLowerCase().includes(termoBusca))
+    : exercises
+  const porGrupo = exerciciosFiltrados.reduce<Record<string, Exercise[]>>((acc, ex) => {
     acc[ex.muscle_group] = acc[ex.muscle_group] ?? []
     acc[ex.muscle_group].push(ex)
     return acc
@@ -221,7 +226,17 @@ export default function NovoTreinoClient() {
               )}
 
               <h2 className="mb-3 mt-6 font-semibold text-slate-900">Biblioteca de exercícios</h2>
+              <input
+                type="text"
+                value={buscaExercicio}
+                onChange={(e) => setBuscaExercicio(e.target.value)}
+                placeholder="Buscar exercício pelo nome..."
+                className="input-dark mb-3 w-full rounded-xl px-4 py-2.5 text-sm"
+              />
               <div className="chat-scroll max-h-[28rem] space-y-4 overflow-y-auto pr-2">
+                {termoBusca && Object.keys(porGrupo).length === 0 && (
+                  <p className="text-sm text-slate-500">Nenhum exercício encontrado.</p>
+                )}
                 {Object.entries(porGrupo).map(([grupo, exs]) => (
                   <div key={grupo}>
                     <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">{grupo}</p>
