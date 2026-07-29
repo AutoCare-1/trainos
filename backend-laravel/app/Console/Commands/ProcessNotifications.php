@@ -32,6 +32,8 @@ use App\Notifications\Rules\StreakEmRiscoRule;
 use App\Notifications\Rules\TreinoAcademiaAprovadoRule;
 use App\Notifications\Rules\TreinoVencendoAlunoRule;
 use App\Notifications\Rules\TreinoVencendoPersonalRule;
+use App\Notifications\Rules\TreinoVencidoAlunoRule;
+use App\Notifications\Rules\TreinoVencidoPersonalRule;
 use App\Support\CoordenadorNotificacoes;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
@@ -74,6 +76,8 @@ class ProcessNotifications extends Command
             new TreinoAcademiaAprovadoRule,
             new TreinoVencendoAlunoRule,
             new TreinoVencendoPersonalRule,
+            new TreinoVencidoAlunoRule,
+            new TreinoVencidoPersonalRule,
             new MensagemNaoLidaRule,
             new AvaliacaoPendenteRule,
             new EstagnacaoDetectadaRule,

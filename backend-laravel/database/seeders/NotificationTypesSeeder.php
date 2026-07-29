@@ -36,6 +36,7 @@ class NotificationTypesSeeder extends Seeder
             ['mensagem_nao_lida', 'Mensagem não lida', 'Aviso quando uma mensagem do personal ou da Coach IA fica sem abrir por algumas horas.', 'informativo', 'aluno'],
             ['avaliacao_pendente', 'Avaliação pendente', 'Aviso quando o aluno passa 30+ dias sem atualizar as medidas corporais.', 'informativo', 'aluno'],
             ['treino_vencendo_aluno', 'Treino vencendo', 'Aviso ao aluno quando falta pouco pra vencer o prazo de validade de um treino.', 'informativo', 'aluno'],
+            ['treino_vencido_aluno', 'Treino vencido', 'Aviso ao aluno quando o prazo de validade de um treino já passou.', 'informativo', 'aluno'],
             ['estagnacao_detectada', 'Estagnação detectada', 'Aviso quando a carga de um exercício não evolui nas últimas sessões.', 'informativo', 'aluno'],
             ['comentario_foto_evolucao', 'Comentário da Coach IA na foto', 'Aviso quando a Coach IA comenta uma foto de evolução física recém-enviada.', 'informativo', 'aluno'],
 
@@ -46,6 +47,7 @@ class NotificationTypesSeeder extends Seeder
             ['mensagem_sem_resposta', 'Mensagem sem resposta', 'Aviso quando um aluno espera resposta do personal há mais de algumas horas.', 'gestao', 'personal'],
             ['aluno_cadastrado', 'Novo aluno cadastrado', 'Aviso quando um novo aluno é cadastrado.', 'gestao', 'personal'],
             ['treino_vencendo_personal', 'Treino vencendo', 'Aviso ao personal quando falta pouco pra vencer o prazo de validade do treino de um aluno.', 'gestao', 'personal'],
+            ['treino_vencido_personal', 'Treino vencido', 'Aviso ao personal quando o prazo de validade do treino de um aluno já passou.', 'gestao', 'personal'],
         ];
 
         foreach ($tipos as [$chave, $nome, $descricao, $categoria, $publico]) {
