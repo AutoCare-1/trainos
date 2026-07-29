@@ -3,7 +3,10 @@
 import { getMovementPattern, MovementPattern } from '@/lib/exercisePatterns'
 import { resolveMediaUrl } from '@/lib/api'
 
-const SIZES = { sm: 40, md: 64, lg: 128 } as const
+// "md" aumentado de 64 pra 112 — é o tamanho usado onde o aluno/personal
+// realmente assiste a demonstração pra executar o exercício certo (treino do
+// aluno, ficha do treino, gestão de vídeos), então precisa ser bem visível.
+const SIZES = { sm: 40, md: 112, lg: 128 } as const
 
 // coordenadas base da figura em pé (viewBox 0 0 100 100)
 const HEAD = { cx: 50, cy: 16, r: 7 }
