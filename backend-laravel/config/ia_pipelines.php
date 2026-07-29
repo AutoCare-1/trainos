@@ -8,6 +8,7 @@ return [
     'academia_analise' => env('IA_ACADEMIA_ANALISE_ATIVO', true),
     'academia_recomendacao' => env('IA_ACADEMIA_RECOMENDACAO_ATIVO', true),
     'evolucao_fisica' => env('IA_EVOLUCAO_FISICA_ATIVO', true),
+    'avaliacao_postural' => env('IA_AVALIACAO_POSTURAL_ATIVO', true),
     'chat_autopilot' => env('IA_CHAT_AUTOPILOT_ATIVO', true),
     'consultor_ia' => env('IA_CONSULTOR_ATIVO', true),
     'ideias_conteudo' => env('IA_CONTEUDO_ATIVO', true),

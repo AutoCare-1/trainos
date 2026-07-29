@@ -119,6 +119,17 @@ export interface BodyPhoto {
   created_at: string
 }
 
+/** Avaliação postural — 3 fotos (frente/lado/costas) num único registro, opcional
+ * e separada da Evolução física (1 foto). Ver PosturalAssessment no backend. */
+export interface PosturalAssessment {
+  id: string
+  student_id: string
+  taken_at: string
+  ai_feedback: string | null
+  compared_to_assessment_id: string | null
+  created_at: string
+}
+
 export interface DiaSemanaCheckin {
   date: string
   label: string

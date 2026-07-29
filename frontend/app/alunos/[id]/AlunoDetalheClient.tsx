@@ -21,6 +21,7 @@ import {
   HistoricoCheckins,
   Message,
   ParQAnswers,
+  PosturalAssessment,
   ResumoCheckins,
   Student,
   Workout,
@@ -74,6 +75,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
   const [gamificacao, setGamificacao] = useState<Gamificacao | null>(null)
   const [alertasEstagnacao, setAlertasEstagnacao] = useState<AlertaEstagnacao[]>([])
   const [fotosEvolucao, setFotosEvolucao] = useState<BodyPhoto[]>([])
+  const [posturais, setPosturais] = useState<PosturalAssessment[]>([])
   const [resumoCheckins, setResumoCheckins] = useState<ResumoCheckins | null>(null)
   const [periodoCheckins, setPeriodoCheckins] = useState<'week' | 'month' | 'year'>('week')
   const [refCheckins, setRefCheckins] = useState<string | null>(null)
@@ -148,6 +150,11 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
     api
       .get<{ photos: BodyPhoto[] }>(`/alunos/${studentId}/body-photos`)
       .then((data) => setFotosEvolucao(data.photos))
+      .catch(() => {})
+
+    api
+      .get<{ assessments: PosturalAssessment[] }>(`/alunos/${studentId}/postural`)
+      .then((data) => setPosturais(data.assessments))
       .catch(() => {})
 
     api
@@ -751,6 +758,34 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
                       {new Date(foto.taken_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                     </p>
                     {foto.ai_feedback && <p className="line-clamp-3 text-xs text-slate-600">{foto.ai_feedback}</p>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {posturais.length > 0 && (
+          <section className="mb-6">
+            <h2 className="mb-3 font-semibold text-slate-900">Avaliação postural</h2>
+            <div className="space-y-3">
+              {posturais.map((avaliacao) => (
+                <div key={avaliacao.id} className="glass overflow-hidden rounded-2xl">
+                  <div className="grid grid-cols-3 gap-0.5">
+                    {(['frente', 'lado', 'costas'] as const).map((angulo) => (
+                      <div key={angulo} className="aspect-[3/4]">
+                        <FotoAutenticada
+                          src={`/alunos/${studentId}/postural/${avaliacao.id}/imagem/${angulo}`}
+                          alt={`Avaliação postural - ${angulo}`}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <div className="p-3">
+                    <p className="mb-1.5 text-[10px] uppercase tracking-wider text-slate-500">
+                      {new Date(avaliacao.taken_at).toLocaleDateString('pt-BR')}
+                    </p>
+                    {avaliacao.ai_feedback && <p className="text-xs text-slate-600">{avaliacao.ai_feedback}</p>}
                   </div>
                 </div>
               ))}

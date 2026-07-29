@@ -27,6 +27,7 @@ import {
   HistoricoCheckins,
   Message,
   ParQAnswers,
+  PosturalAssessment,
   ResumoCheckins,
   Workout,
   WorkoutExerciseDetail,
@@ -158,6 +159,47 @@ export default function PortalAlunoClient({ token }: { token: string }) {
       .then((d) => setFotosEvolucao(d.photos))
       .catch(() => {})
   }, [token])
+
+  // avaliação postural (opcional) — 3 fotos (frente/lado/costas) num único envio
+  const [posturais, setPosturais] = useState<PosturalAssessment[]>([])
+  const [fotosPostural, setFotosPostural] = useState<{ frente: File | null; lado: File | null; costas: File | null }>({
+    frente: null,
+    lado: null,
+    costas: null,
+  })
+  const [enviandoPostural, setEnviandoPostural] = useState(false)
+  const [erroPostural, setErroPostural] = useState<string | null>(null)
+
+  const carregarPosturais = useCallback(() => {
+    api
+      .get<{ assessments: PosturalAssessment[] }>(`/portal/${token}/postural`)
+      .then((d) => setPosturais(d.assessments))
+      .catch(() => {})
+  }, [token])
+
+  async function enviarAvaliacaoPostural() {
+    if (!fotosPostural.frente || !fotosPostural.lado || !fotosPostural.costas) return
+    setEnviandoPostural(true)
+    setErroPostural(null)
+    try {
+      const [frente, lado, costas] = await Promise.all([
+        comprimirImagem(fotosPostural.frente),
+        comprimirImagem(fotosPostural.lado),
+        comprimirImagem(fotosPostural.costas),
+      ])
+      const formData = new FormData()
+      formData.append('foto_frente', frente, 'frente.jpg')
+      formData.append('foto_lado', lado, 'lado.jpg')
+      formData.append('foto_costas', costas, 'costas.jpg')
+      const { assessment } = await api.postFile<{ assessment: PosturalAssessment }>(`/portal/${token}/postural`, formData)
+      setPosturais((prev) => [assessment, ...prev])
+      setFotosPostural({ frente: null, lado: null, costas: null })
+    } catch (err) {
+      setErroPostural(err instanceof ApiError ? err.message : 'Erro ao enviar avaliação postural')
+    } finally {
+      setEnviandoPostural(false)
+    }
+  }
 
   async function enviarFotoEvolucao(file: File) {
     setEnviandoFotoEvolucao(true)
@@ -340,6 +382,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     const intervalo = setInterval(carregarMensagens, 5000)
 
     carregarFotosEvolucao()
+    carregarPosturais()
     carregarResumoCheckins()
     carregarSubmissoesAcademia()
     carregarStrava()
@@ -361,7 +404,15 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     }
 
     return () => clearInterval(intervalo)
-  }, [token, carregarMensagens, carregarStrava, carregarFotosEvolucao, carregarResumoCheckins, carregarSubmissoesAcademia])
+  }, [
+    token,
+    carregarMensagens,
+    carregarStrava,
+    carregarFotosEvolucao,
+    carregarPosturais,
+    carregarResumoCheckins,
+    carregarSubmissoesAcademia,
+  ])
 
   // Pede permissão de notificação do navegador uma vez, sem bloquear o carregamento da página.
   // Só faz sentido pedir isso pra quem já instalou o app na tela inicial — no
@@ -1044,6 +1095,108 @@ export default function PortalAlunoClient({ token }: { token: string }) {
               </div>
             ))}
           </div>
+
+          <div className="glass mt-6 rounded-2xl p-5">
+            <h2 className="mb-1 font-semibold text-slate-900">Avaliação postural (opcional)</h2>
+            <p className="mb-4 text-sm text-slate-500">
+              Envie 3 fotos (frente, lado e costas) pra Coach IA comentar seu alinhamento postural.
+              É opcional — só faça se estiver à vontade.
+            </p>
+
+            <div className="mb-4 rounded-xl bg-slate-900/3 p-4 text-xs leading-relaxed text-slate-600">
+              <p className="mb-1.5 font-medium text-slate-700">Como tirar as fotos:</p>
+              <p className="mb-1.5">
+                Sempre no mesmo lugar, mesma roupa, descalço(a), braços soltos, postura natural — isso
+                ajuda a comparar sua evolução com precisão.
+              </p>
+              <p className="mb-1.5">
+                <strong>Homens:</strong> sem camisa, de shorts/bermuda. <strong>Mulheres:</strong> top
+                esportivo justo + shorts.
+              </p>
+              <p>
+                Peça pra alguém segurar o celular na altura do peito, a uns 2-3 passos de distância,
+                numa parede lisa e clara. Luz natural de frente ajuda bastante.
+              </p>
+            </div>
+
+            {erroPostural && <p className="mb-3 text-sm text-rose-500">{erroPostural}</p>}
+
+            <div className="mb-4 grid grid-cols-3 gap-2">
+              {(
+                [
+                  ['frente', 'De frente'],
+                  ['lado', 'De lado'],
+                  ['costas', 'De costas'],
+                ] as const
+              ).map(([angulo, label]) => (
+                <label
+                  key={angulo}
+                  className="glass glass-hover flex cursor-pointer flex-col items-center gap-1.5 rounded-xl p-3 text-center text-xs text-slate-600"
+                >
+                  <input
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0]
+                      if (file) setFotosPostural((prev) => ({ ...prev, [angulo]: file }))
+                      e.target.value = ''
+                    }}
+                  />
+                  <span className={fotosPostural[angulo] ? 'text-emerald-500' : 'text-slate-400'}>
+                    {fotosPostural[angulo] ? '✓' : '+'}
+                  </span>
+                  {label}
+                </label>
+              ))}
+            </div>
+
+            <button
+              onClick={enviarAvaliacaoPostural}
+              disabled={enviandoPostural || !fotosPostural.frente || !fotosPostural.lado || !fotosPostural.costas}
+              className="btn-primary w-full rounded-xl px-4 py-3 text-sm"
+            >
+              {enviandoPostural ? 'Enviando...' : 'Enviar avaliação postural'}
+            </button>
+          </div>
+
+          {posturais.length > 0 && (
+            <div className="mt-4 space-y-4">
+              {posturais.map((avaliacao) => (
+                <div key={avaliacao.id} className="glass overflow-hidden rounded-2xl">
+                  <div className="grid grid-cols-3 gap-0.5">
+                    {(['frente', 'lado', 'costas'] as const).map((angulo) => (
+                      // eslint-disable-next-line @next/next/no-img-element -- foto vem de rota autenticada do backend, não do next/image
+                      <img
+                        key={angulo}
+                        src={`${API_URL}/portal/${token}/postural/${avaliacao.id}/imagem/${angulo}`}
+                        alt={`Avaliação postural - ${angulo}`}
+                        className="aspect-[3/4] w-full object-cover"
+                      />
+                    ))}
+                  </div>
+                  <div className="p-4">
+                    <p className="mb-2 text-xs uppercase tracking-wider text-slate-500">
+                      {new Date(avaliacao.taken_at).toLocaleDateString('pt-BR', {
+                        day: '2-digit',
+                        month: 'long',
+                        year: 'numeric',
+                      })}
+                    </p>
+                    {avaliacao.ai_feedback && (
+                      <div className="rounded-2xl rounded-bl-md border border-violet-300 bg-violet-50 px-4 py-2.5 text-sm leading-relaxed text-violet-900">
+                        <span className="mb-1 flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-violet-500">
+                          Coach IA
+                        </span>
+                        <p className="whitespace-pre-wrap">{avaliacao.ai_feedback}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </main>
       </div>
     )

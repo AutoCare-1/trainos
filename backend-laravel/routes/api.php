@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlunoBodyPhotoController;
+use App\Http\Controllers\AlunoPosturalController;
 use App\Http\Controllers\AlunoChatController;
 use App\Http\Controllers\AlunoCheckinController;
 use App\Http\Controllers\AlunoController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\NegocioController;
 use App\Http\Controllers\NotificacaoController;
 use App\Http\Controllers\PortalAcademiaController;
 use App\Http\Controllers\PortalBodyPhotoController;
+use App\Http\Controllers\PortalPosturalController;
 use App\Http\Controllers\PortalChatController;
 use App\Http\Controllers\PortalCheckinController;
 use App\Http\Controllers\PortalController;
@@ -60,6 +62,8 @@ Route::middleware('auth.jwt')->group(function () {
 
         Route::get('/{id}/body-photos', [AlunoBodyPhotoController::class, 'index']);
         Route::get('/{id}/body-photos/{photoId}/imagem', [AlunoBodyPhotoController::class, 'imagem']);
+        Route::get('/{id}/postural', [AlunoPosturalController::class, 'index']);
+        Route::get('/{id}/postural/{assessmentId}/imagem/{angulo}', [AlunoPosturalController::class, 'imagem']);
 
         Route::get('/{id}/checkins/summary', [AlunoCheckinController::class, 'summary']);
         Route::get('/{id}/checkins', [AlunoCheckinController::class, 'index']);
@@ -149,6 +153,9 @@ Route::prefix('portal')->group(function () {
     Route::get('/{token}/body-photos', [PortalBodyPhotoController::class, 'index']);
     Route::post('/{token}/body-photos', [PortalBodyPhotoController::class, 'store']);
     Route::get('/{token}/body-photos/{photoId}/imagem', [PortalBodyPhotoController::class, 'imagem']);
+    Route::get('/{token}/postural', [PortalPosturalController::class, 'index']);
+    Route::post('/{token}/postural', [PortalPosturalController::class, 'store']);
+    Route::get('/{token}/postural/{id}/imagem/{angulo}', [PortalPosturalController::class, 'imagem']);
 
     Route::get('/{token}/checkins/summary', [PortalCheckinController::class, 'summary']);
     Route::get('/{token}/checkins', [PortalCheckinController::class, 'index']);
