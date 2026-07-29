@@ -98,7 +98,7 @@ class TreinoController extends Controller
         return response()->json(['workout' => $workout, 'exercises' => $exercises]);
     }
 
-    // POST /:id/enviar — publica o treino para o aluno
+    // POST /:id/enviar — publica o treino para o aluno, com validade opcional (em semanas)
     public function enviar(Request $request, string $id): JsonResponse
     {
         $workout = Workout::where('id', $id)
@@ -108,7 +108,38 @@ class TreinoController extends Controller
             return response()->json(['error' => 'Treino não encontrado'], 404);
         }
 
-        $workout->update(['status' => 'sent', 'sent_at' => now()]);
+        $validated = $request->validate([
+            'duration_weeks' => ['nullable', 'integer', 'min:1'],
+        ]);
+
+        $agora = now();
+        $durationWeeks = $validated['duration_weeks'] ?? null;
+
+        $workout->update([
+            'status' => 'sent',
+            'sent_at' => $agora,
+            'duration_weeks' => $durationWeeks,
+            'expires_at' => $durationWeeks ? $agora->copy()->addWeeks($durationWeeks)->toDateString() : null,
+        ]);
+
+        return response()->json(['workout' => $workout]);
+    }
+
+    // PATCH /:id/arquivar — arquiva ou desarquiva um treino já enviado; decisão manual
+    // do personal (nunca automática por expirar) — só treinos não-arquivados aparecem
+    // pro aluno escolher no portal.
+    public function arquivar(Request $request, string $id): JsonResponse
+    {
+        $workout = Workout::where('id', $id)
+            ->where('professional_id', $request->user()->id)
+            ->first();
+        if (! $workout) {
+            return response()->json(['error' => 'Treino não encontrado'], 404);
+        }
+
+        $validated = $request->validate(['arquivado' => ['required', 'boolean']]);
+
+        $workout->update(['archived_at' => $validated['arquivado'] ? now() : null]);
 
         return response()->json(['workout' => $workout]);
     }

@@ -13,10 +13,15 @@ class Workout extends Model
 
     protected $table = 'workouts';
 
-    protected $fillable = ['professional_id', 'student_id', 'name', 'status', 'sent_at'];
+    protected $fillable = [
+        'professional_id', 'student_id', 'name', 'status', 'sent_at',
+        'duration_weeks', 'expires_at', 'archived_at',
+    ];
 
     protected $casts = [
         'sent_at' => 'datetime',
+        'expires_at' => 'date:Y-m-d',
+        'archived_at' => 'datetime',
     ];
 
     public function professional(): BelongsTo

@@ -261,7 +261,19 @@ export interface Workout {
   name: string
   status: 'draft' | 'sent'
   sent_at: string | null
+  duration_weeks: number | null
+  expires_at: string | null
+  archived_at: string | null
   created_at: string
+}
+
+/** Versão enxuta devolvida em /portal/:token — só o necessário pro aluno escolher
+ * entre os treinos vigentes (não-arquivados). */
+export interface WorkoutResumo {
+  id: string
+  name: string
+  sent_at: string
+  expires_at: string | null
 }
 
 export interface WorkoutExerciseDetail {

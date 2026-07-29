@@ -18,19 +18,31 @@ class PortalController extends Controller
 {
     use ResolvesStudentByToken;
 
-    // GET /:token — dados do aluno + treino mais recente enviado
-    public function show(string $token): JsonResponse
+    // GET /:token — dados do aluno + treino selecionado (?workout_id=, senão o mais
+    // recente não-arquivado) + lista dos treinos disponíveis pro aluno escolher
+    public function show(Request $request, string $token): JsonResponse
     {
         $student = $this->buscarAlunoPorToken($token);
         if (! $student) {
             return response()->json(['error' => 'Link inválido'], 404);
         }
 
-        $workout = DB::table('workouts')
+        // Só treinos não-arquivados entram na lista de escolha — arquivar é decisão
+        // manual do personal (nunca automática por expirar), então um treino vencido
+        // continua escolhível até o personal decidir arquivá-lo.
+        $workoutsDisponiveis = DB::table('workouts')
             ->where('student_id', $student->id)
             ->where('status', 'sent')
+            ->whereNull('archived_at')
             ->orderByDesc('sent_at')
-            ->first();
+            ->get(['id', 'name', 'sent_at', 'expires_at']);
+
+        $workoutIdSelecionado = $request->query('workout_id');
+        $workout = $workoutIdSelecionado
+            ? $workoutsDisponiveis->firstWhere('id', $workoutIdSelecionado)
+            : null;
+        // workout_id inválido/de outro aluno ou nenhum informado -> cai no mais recente.
+        $workout ??= $workoutsDisponiveis->first();
 
         $exercises = [];
         $activeSession = null;
@@ -125,6 +137,7 @@ class PortalController extends Controller
                 'id' => $student->id, 'name' => $student->name,
                 'objective' => $student->objective, 'photo_url' => $student->photo_url,
             ],
+            'workouts' => $workoutsDisponiveis->values(),
             'workout' => $workout,
             'exercises' => $exercises,
             'activeSessionId' => $activeSession->id ?? null,

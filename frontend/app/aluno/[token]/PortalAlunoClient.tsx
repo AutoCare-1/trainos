@@ -31,6 +31,7 @@ import {
   ResumoCheckins,
   Workout,
   WorkoutExerciseDetail,
+  WorkoutResumo,
 } from '@/lib/types'
 import { agruparExercicios, rotuloEstrutura } from '@/lib/workoutStructures'
 
@@ -66,6 +67,7 @@ const NOME_ATIVIDADE: Record<string, string> = {
 
 interface PortalData {
   student: { id: string; name: string; objective: string | null; photo_url: string | null }
+  workouts: WorkoutResumo[]
   workout: Workout | null
   exercises: WorkoutExerciseDetail[]
   activeSessionId: string | null
@@ -363,9 +365,10 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     }
   }
 
-  useEffect(() => {
+  const carregarPortal = useCallback((workoutId?: string) => {
+    const query = workoutId ? `?workout_id=${workoutId}` : ''
     api
-      .get<PortalData>(`/portal/${token}`)
+      .get<PortalData>(`/portal/${token}${query}`)
       .then((d) => {
         setData(d)
         setSessionId(d.activeSessionId)
@@ -377,6 +380,10 @@ export default function PortalAlunoClient({ token }: { token: string }) {
         setInputs(initialInputs)
       })
       .catch((err) => setErro(err instanceof ApiError ? err.message : 'Não foi possível carregar seu treino'))
+  }, [token])
+
+  useEffect(() => {
+    carregarPortal()
 
     carregarMensagens()
     const intervalo = setInterval(carregarMensagens, 5000)
@@ -406,6 +413,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     return () => clearInterval(intervalo)
   }, [
     token,
+    carregarPortal,
     carregarMensagens,
     carregarStrava,
     carregarFotosEvolucao,
@@ -1516,6 +1524,25 @@ export default function PortalAlunoClient({ token }: { token: string }) {
         />
       <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6 pb-24">
         {erro && <p className="mb-4 text-sm text-rose-400">{erro}</p>}
+
+        {data.workouts.length > 1 && (
+          <div className="chat-scroll mb-4 flex gap-2 overflow-x-auto pb-1">
+            {data.workouts.map((w) => (
+              <button
+                key={w.id}
+                onClick={() => carregarPortal(w.id)}
+                disabled={!!sessionId && w.id !== data.workout?.id}
+                className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-40 ${
+                  w.id === data.workout?.id
+                    ? 'bg-gradient-to-r from-[#2648b3] to-[#8b7fd6] text-white'
+                    : 'glass glass-hover text-slate-700'
+                }`}
+              >
+                {w.name}
+              </button>
+            ))}
+          </div>
+        )}
 
         {!sessionId && (
           <button onClick={iniciarTreino} className="btn-primary mb-6 w-full rounded-2xl px-4 py-4 text-base">

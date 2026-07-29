@@ -816,16 +816,30 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
                   href={`/treinos/${w.id}`}
                   className="glass glass-hover flex items-center justify-between rounded-2xl px-5 py-4"
                 >
-                  <p className="font-semibold text-slate-900">{w.name}</p>
-                  <span
-                    className={`rounded-full px-2.5 py-1 text-xs font-medium ${
-                      w.status === 'sent'
-                        ? 'bg-emerald-500/15 text-emerald-600'
-                        : 'bg-slate-900/6 text-slate-500'
-                    }`}
-                  >
-                    {w.status === 'sent' ? 'Enviado' : 'Rascunho'}
-                  </span>
+                  <div>
+                    <p className="font-semibold text-slate-900">{w.name}</p>
+                    {w.expires_at && (
+                      <p className="mt-0.5 text-xs text-slate-500">
+                        Vence em {new Date(`${w.expires_at}T00:00:00`).toLocaleDateString('pt-BR')}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {w.archived_at && (
+                      <span className="rounded-full bg-amber-500/15 px-2.5 py-1 text-xs font-medium text-amber-600">
+                        Arquivado
+                      </span>
+                    )}
+                    <span
+                      className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+                        w.status === 'sent'
+                          ? 'bg-emerald-500/15 text-emerald-600'
+                          : 'bg-slate-900/6 text-slate-500'
+                      }`}
+                    >
+                      {w.status === 'sent' ? 'Enviado' : 'Rascunho'}
+                    </span>
+                  </div>
                 </Link>
               ))}
             </div>

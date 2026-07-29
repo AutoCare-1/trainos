@@ -27,6 +27,7 @@ export default function NovoTreinoClient() {
   const [exercises, setExercises] = useState<Exercise[]>([])
   const [name, setName] = useState('Treino A')
   const [items, setItems] = useState<ItemTreino[]>([])
+  const [duracaoSemanas, setDuracaoSemanas] = useState('')
   const [erro, setErro] = useState<string | null>(null)
   const [salvando, setSalvando] = useState(false)
   const [templates, setTemplates] = useState<WorkoutTemplate[]>([])
@@ -137,7 +138,9 @@ export default function NovoTreinoClient() {
     setSalvando(true)
     try {
       const { workout } = await api.post<{ workout: Workout }>('/treinos', { student_id: studentId, name, items })
-      await api.post(`/treinos/${workout.id}/enviar`)
+      await api.post(`/treinos/${workout.id}/enviar`, {
+        duration_weeks: duracaoSemanas ? Number(duracaoSemanas) : undefined,
+      })
       router.push(`/treinos/${workout.id}`)
     } catch (err) {
       setErro(err instanceof ApiError ? err.message : 'Erro ao salvar treino')
@@ -177,6 +180,26 @@ export default function NovoTreinoClient() {
                 onChange={(e) => setName(e.target.value)}
                 className="input-dark w-full rounded-xl px-4 py-2.5 text-sm"
               />
+
+              <div className="mt-3">
+                <label className="mb-1.5 block text-sm font-medium text-slate-600">
+                  Validade (opcional)
+                </label>
+                <select
+                  value={duracaoSemanas}
+                  onChange={(e) => setDuracaoSemanas(e.target.value)}
+                  className="input-dark w-full rounded-xl px-4 py-2.5 text-sm"
+                >
+                  <option value="">Sem prazo definido</option>
+                  <option value="4">4 semanas</option>
+                  <option value="6">6 semanas</option>
+                  <option value="8">8 semanas</option>
+                  <option value="12">12 semanas</option>
+                </select>
+                <p className="mt-1 text-xs text-slate-500">
+                  Se definir um prazo, você e o aluno recebem um aviso quando faltar 1 semana pra vencer.
+                </p>
+              </div>
 
               {templates.length > 0 && (
                 <div className="mt-3">

@@ -15,6 +15,8 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
   const [exercises, setExercises] = useState<WorkoutExerciseDetail[]>([])
   const [erro, setErro] = useState<string | null>(null)
   const [enviando, setEnviando] = useState(false)
+  const [duracaoSemanas, setDuracaoSemanas] = useState('')
+  const [arquivando, setArquivando] = useState(false)
 
   function carregar() {
     api
@@ -38,12 +40,27 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
   async function enviarTreino() {
     setEnviando(true)
     try {
-      await api.post(`/treinos/${workoutId}/enviar`)
+      await api.post(`/treinos/${workoutId}/enviar`, {
+        duration_weeks: duracaoSemanas ? Number(duracaoSemanas) : undefined,
+      })
       carregar()
     } catch (err) {
       setErro(err instanceof ApiError ? err.message : 'Erro ao enviar treino')
     } finally {
       setEnviando(false)
+    }
+  }
+
+  async function alternarArquivamento() {
+    if (!workout) return
+    setArquivando(true)
+    try {
+      await api.patch(`/treinos/${workoutId}/arquivar`, { arquivado: !workout.archived_at })
+      carregar()
+    } catch (err) {
+      setErro(err instanceof ApiError ? err.message : 'Erro ao arquivar treino')
+    } finally {
+      setArquivando(false)
     }
   }
 
@@ -76,7 +93,7 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
         <BackLink href={`/alunos/${workout.student_id}`} label="Voltar ao aluno" />
 
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">{workout.name}</h1>
             <span
               className={`rounded-full px-2.5 py-1 text-xs font-medium ${
@@ -85,14 +102,48 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
             >
               {workout.status === 'sent' ? 'Enviado ao aluno' : 'Rascunho'}
             </span>
+            {workout.archived_at && (
+              <span className="rounded-full bg-amber-500/15 px-2.5 py-1 text-xs font-medium text-amber-600">
+                Arquivado
+              </span>
+            )}
+            {workout.expires_at && (
+              <span className="text-xs text-slate-500">
+                Vence em {new Date(`${workout.expires_at}T00:00:00`).toLocaleDateString('pt-BR')}
+              </span>
+            )}
           </div>
+
           {workout.status === 'draft' && (
+            <div className="flex items-center gap-3">
+              <select
+                value={duracaoSemanas}
+                onChange={(e) => setDuracaoSemanas(e.target.value)}
+                className="input-dark rounded-xl px-3 py-2.5 text-sm"
+              >
+                <option value="">Sem prazo definido</option>
+                <option value="4">4 semanas</option>
+                <option value="6">6 semanas</option>
+                <option value="8">8 semanas</option>
+                <option value="12">12 semanas</option>
+              </select>
+              <button
+                onClick={enviarTreino}
+                disabled={enviando}
+                className="btn-primary rounded-xl px-5 py-2.5 text-sm"
+              >
+                {enviando ? 'Enviando...' : 'Enviar ao aluno'}
+              </button>
+            </div>
+          )}
+
+          {workout.status === 'sent' && (
             <button
-              onClick={enviarTreino}
-              disabled={enviando}
-              className="btn-primary rounded-xl px-5 py-2.5 text-sm"
+              onClick={alternarArquivamento}
+              disabled={arquivando}
+              className="glass glass-hover rounded-xl px-4 py-2 text-sm font-medium text-slate-700"
             >
-              {enviando ? 'Enviando...' : 'Enviar ao aluno'}
+              {arquivando ? 'Salvando...' : workout.archived_at ? 'Desarquivar' : 'Arquivar'}
             </button>
           )}
         </div>

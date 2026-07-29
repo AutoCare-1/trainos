@@ -30,6 +30,8 @@ use App\Notifications\Rules\SemTreinarDiasRule;
 use App\Notifications\Rules\SemTreinarHojeRule;
 use App\Notifications\Rules\StreakEmRiscoRule;
 use App\Notifications\Rules\TreinoAcademiaAprovadoRule;
+use App\Notifications\Rules\TreinoVencendoAlunoRule;
+use App\Notifications\Rules\TreinoVencendoPersonalRule;
 use App\Support\CoordenadorNotificacoes;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
@@ -70,6 +72,8 @@ class ProcessNotifications extends Command
             new MarcoTempoTreinandoRule,
             new NovoTreinoEnviadoRule,
             new TreinoAcademiaAprovadoRule,
+            new TreinoVencendoAlunoRule,
+            new TreinoVencendoPersonalRule,
             new MensagemNaoLidaRule,
             new AvaliacaoPendenteRule,
             new EstagnacaoDetectadaRule,

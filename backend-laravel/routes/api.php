@@ -78,6 +78,7 @@ Route::middleware('auth.jwt')->group(function () {
         Route::post('/', [TreinoController::class, 'store']);
         Route::get('/{id}', [TreinoController::class, 'show']);
         Route::post('/{id}/enviar', [TreinoController::class, 'enviar']);
+        Route::patch('/{id}/arquivar', [TreinoController::class, 'arquivar']);
     });
 
     Route::prefix('modelos')->group(function () {

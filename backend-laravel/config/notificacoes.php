@@ -26,4 +26,8 @@ return [
 
     // Janela de antecedência (horas) pra desafio_terminando.
     'horas_desafio_terminando' => (int) env('NOTIF_HORAS_DESAFIO_TERMINANDO', 48),
+
+    // Janela de antecedência (dias) pra avisar que um treino com validade está
+    // prestes a vencer (aluno e personal).
+    'dias_aviso_treino_vencendo' => (int) env('NOTIF_DIAS_AVISO_TREINO_VENCENDO', 7),
 ];
