@@ -63,6 +63,39 @@ class TreinoVencidoNotificationTest extends TestCase
         $this->assertSame(1, NotificationLog::where('tipo_chave', 'treino_vencido_personal')->count());
     }
 
+    public function test_inclui_lembrete_de_pagamento_quando_aluno_tem_a_opcao_ligada(): void
+    {
+        Notification::fake();
+        $professional = Professional::create([
+            'name' => 'Personal Teste',
+            'email' => uniqid('personal').'@example.com',
+            'password_hash' => bcrypt('senha12345'),
+        ]);
+        $student = Student::create([
+            'professional_id' => $professional->id,
+            'name' => 'Aluno',
+            'invite_token' => uniqid(),
+            'lembrar_pagamento_vencimento' => true,
+        ]);
+        Workout::create([
+            'professional_id' => $professional->id,
+            'student_id' => $student->id,
+            'name' => 'Treino de Peito',
+            'status' => 'sent',
+            'sent_at' => now(),
+            'duration_weeks' => 6,
+            'expires_at' => now()->subDays(2)->toDateString(),
+        ]);
+
+        Artisan::call('notifications:process');
+
+        Notification::assertSentTo(
+            $student,
+            PushNotification::class,
+            fn ($notification) => str_contains($notification->corpo, 'regularizar o pagamento')
+        );
+    }
+
     public function test_nao_avisa_treino_arquivado(): void
     {
         Notification::fake();

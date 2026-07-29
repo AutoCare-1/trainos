@@ -107,6 +107,7 @@ export interface Student {
   invite_token: string
   status: 'active' | 'inactive'
   ai_autopilot: boolean
+  lembrar_pagamento_vencimento: boolean
   par_q_answers: ParQAnswers | null
   health_notes: string | null
   anamnese: Anamnese | null

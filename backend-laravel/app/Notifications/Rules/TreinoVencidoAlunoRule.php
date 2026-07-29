@@ -27,18 +27,28 @@ class TreinoVencidoAlunoRule implements NotificacaoRule
             ->whereNull('w.archived_at')
             ->whereNotNull('w.expires_at')
             ->where('w.expires_at', '<', $hoje)
-            ->select('w.id as workout_id', 'w.name as treino', 's.id as student_id', 's.professional_id', 's.invite_token')
+            ->select(
+                'w.id as workout_id', 'w.name as treino', 's.id as student_id',
+                's.professional_id', 's.invite_token', 's.lembrar_pagamento_vencimento'
+            )
             ->get();
 
-        return $rows->map(fn ($r) => new NotificacaoCandidato(
-            recipient: Student::find($r->student_id),
-            professionalId: $r->professional_id,
-            studentId: $r->student_id,
-            dedupKey: "treino_vencido_aluno:{$r->workout_id}",
-            contexto: $r->workout_id,
-            titulo: 'Seu treino venceu',
-            corpo: "O treino \"{$r->treino}\" venceu. Fale com seu professor sobre o próximo treino.",
-            url: "/aluno/{$r->invite_token}",
-        ))->all();
+        return $rows->map(function ($r) {
+            $corpo = "O treino \"{$r->treino}\" venceu. Fale com seu professor sobre o próximo treino.";
+            if ($r->lembrar_pagamento_vencimento) {
+                $corpo .= ' Aproveite também para regularizar o pagamento com seu professor.';
+            }
+
+            return new NotificacaoCandidato(
+                recipient: Student::find($r->student_id),
+                professionalId: $r->professional_id,
+                studentId: $r->student_id,
+                dedupKey: "treino_vencido_aluno:{$r->workout_id}",
+                contexto: $r->workout_id,
+                titulo: 'Seu treino venceu',
+                corpo: $corpo,
+                url: "/aluno/{$r->invite_token}",
+            );
+        })->all();
     }
 }

@@ -22,10 +22,12 @@ class Student extends Model
         'professional_id', 'name', 'email', 'phone', 'objective', 'birth_date',
         'weight_kg', 'height_cm', 'invite_token', 'status', 'ai_autopilot',
         'par_q_answers', 'health_notes', 'anamnese', 'onboarding_completed_at', 'photo_url',
+        'lembrar_pagamento_vencimento',
     ];
 
     protected $casts = [
         'ai_autopilot' => 'boolean',
+        'lembrar_pagamento_vencimento' => 'boolean',
         'par_q_answers' => 'array',
         'anamnese' => 'array',
         'birth_date' => 'date:Y-m-d',

@@ -23,6 +23,7 @@ export default function EditarAlunoClient({ studentId }: { studentId: string }) 
   const [monthlyValue, setMonthlyValue] = useState('')
   const [temCobrancaVigente, setTemCobrancaVigente] = useState(false)
   const [encerrando, setEncerrando] = useState(false)
+  const [lembrarPagamento, setLembrarPagamento] = useState(false)
 
   useEffect(() => {
     if (!localStorage.getItem('trainos_token')) {
@@ -38,6 +39,7 @@ export default function EditarAlunoClient({ studentId }: { studentId: string }) 
         setWeight(data.student.weight_kg?.toString() ?? '')
         setHeight(data.student.height_cm?.toString() ?? '')
         setObjective(data.student.objective ?? '')
+        setLembrarPagamento(data.student.lembrar_pagamento_vencimento)
         if (data.billing_plan) {
           setBillingType(data.billing_plan.billing_type)
           setMonthlyValue(data.billing_plan.monthly_value)
@@ -63,6 +65,7 @@ export default function EditarAlunoClient({ studentId }: { studentId: string }) 
         billing_type: billingType || undefined,
         monthly_value: monthlyValue ? Number(monthlyValue) : undefined,
       })
+      await api.patch(`/alunos/${studentId}/lembrete-pagamento`, { enabled: lembrarPagamento })
       router.push(`/alunos/${studentId}`)
     } catch (err) {
       setErro(err instanceof ApiError ? err.message : 'Erro ao salvar alterações')
@@ -221,6 +224,23 @@ export default function EditarAlunoClient({ studentId }: { studentId: string }) 
                 </button>
               </div>
             )}
+            <div className="col-span-2">
+              <label className="flex cursor-pointer items-start gap-2 text-sm text-slate-700">
+                <input
+                  type="checkbox"
+                  checked={lembrarPagamento}
+                  onChange={(e) => setLembrarPagamento(e.target.checked)}
+                  className="mt-0.5 h-4 w-4 shrink-0 accent-[#2648b3]"
+                />
+                <span>
+                  Incluir lembrete de pagamento no aviso de treino vencido
+                  <span className="block text-xs text-slate-400">
+                    Quando o treino desse aluno vencer, a notificação dele vai incluir um lembrete pra regularizar o
+                    pagamento com você.
+                  </span>
+                </span>
+              </label>
+            </div>
           </div>
 
           {erro && <p className="text-sm text-rose-500">{erro}</p>}

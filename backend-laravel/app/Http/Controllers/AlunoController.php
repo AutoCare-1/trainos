@@ -192,6 +192,25 @@ class AlunoController extends Controller
         return response()->json(['student' => $student->fresh()]);
     }
 
+    // PATCH /:id/lembrete-pagamento — liga/desliga o lembrete de pagamento na
+    // notificação de "treino venceu" do aluno (ver TreinoVencidoAlunoRule).
+    // Fica no aluno, não no treino: cobrança e vencimento de treino são sistemas
+    // independentes, então quem decide se faz sentido juntar os dois é o personal.
+    public function lembretePagamento(Request $request, string $id): JsonResponse
+    {
+        $professionalId = $request->user()->id;
+        $student = Student::where('id', $id)->where('professional_id', $professionalId)->first();
+        if (! $student) {
+            return response()->json(['error' => 'Aluno não encontrado'], 404);
+        }
+
+        $validated = $request->validate(['enabled' => ['required', 'boolean']]);
+
+        $student->update(['lembrar_pagamento_vencimento' => $validated['enabled']]);
+
+        return response()->json(['student' => $student->fresh()]);
+    }
+
     // PATCH /:id/cobranca/encerrar — para a cobrança do aluno de contar a partir de
     // hoje (ou da data informada). Sem isso, um plano vigente nunca para de entrar
     // na receita mensal, mesmo que o aluno cancele/saia — mesmo padrão do
