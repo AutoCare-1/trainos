@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { MessageCircle } from 'lucide-react'
+import { MessageCircle, ChevronRight } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import { api, ApiError } from '@/lib/api'
 import { DashboardNegocio } from '@/lib/types'
@@ -88,17 +88,19 @@ export default function NegocioPage() {
                 <div className="glass rounded-2xl p-4">
                   <p className="text-xs font-medium uppercase tracking-wider text-ink-muted">Despesas do mês</p>
                   <p className="stat-number mt-1 text-2xl font-bold text-danger">{formatarMoeda(dados.financeiro.despesas.total)}</p>
-                  <Link href="/gastos" className="mt-1 inline-block text-xs font-medium text-brand">
-                    Ver despesas →
+                  <Link href="/gastos" className="mt-1 flex items-center gap-0.5 text-xs font-medium text-brand">
+                    Ver despesas <ChevronRight size={13} />
                   </Link>
                 </div>
-                <div className="glass-elevated rounded-2xl p-4">
-                  <p className="text-xs font-medium uppercase tracking-wider text-ink-muted">Resultado líquido</p>
-                  <p
-                    className={`stat-number mt-1 text-2xl font-bold ${
-                      dados.financeiro.resultado_liquido >= 0 ? 'text-ink' : 'text-danger'
-                    }`}
-                  >
+                <div
+                  className={`rounded-2xl p-4 ${
+                    dados.financeiro.resultado_liquido >= 0 ? 'stat-hero' : 'bg-danger text-white shadow-lg shadow-danger/30'
+                  }`}
+                >
+                  <p className={`text-xs font-medium uppercase tracking-wider ${dados.financeiro.resultado_liquido >= 0 ? 'stat-hero-label' : 'text-white/75'}`}>
+                    Resultado líquido
+                  </p>
+                  <p className="stat-number mt-1 text-2xl font-bold text-white">
                     {formatarMoeda(dados.financeiro.resultado_liquido)}
                   </p>
                 </div>

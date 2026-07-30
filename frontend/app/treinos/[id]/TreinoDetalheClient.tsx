@@ -69,7 +69,7 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
       <>
         <Navbar />
         <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
-          <p className="text-sm text-rose-400">{erro}</p>
+          <p className="text-sm text-danger">{erro}</p>
         </main>
       </>
     )
@@ -80,7 +80,7 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
       <>
         <Navbar />
         <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
-          <p className="text-slate-500">Carregando...</p>
+          <p className="text-ink-muted">Carregando...</p>
         </main>
       </>
     )
@@ -94,21 +94,21 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
 
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">{workout.name}</h1>
+            <h1 className="font-display text-2xl font-bold tracking-tight text-ink">{workout.name}</h1>
             <span
               className={`rounded-full px-2.5 py-1 text-xs font-medium ${
-                workout.status === 'sent' ? 'bg-emerald-500/15 text-emerald-600' : 'bg-slate-900/6 text-slate-500'
+                workout.status === 'sent' ? 'bg-success/15 text-success' : 'bg-ink/6 text-ink-muted'
               }`}
             >
               {workout.status === 'sent' ? 'Enviado ao aluno' : 'Rascunho'}
             </span>
             {workout.archived_at && (
-              <span className="rounded-full bg-amber-500/15 px-2.5 py-1 text-xs font-medium text-amber-600">
+              <span className="rounded-full bg-warning/15 px-2.5 py-1 text-xs font-medium text-warning">
                 Arquivado
               </span>
             )}
             {workout.expires_at && (
-              <span className="text-xs text-slate-500">
+              <span className="text-xs text-ink-muted">
                 Vence em {new Date(`${workout.expires_at}T00:00:00`).toLocaleDateString('pt-BR')}
               </span>
             )}
@@ -141,7 +141,7 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
             <button
               onClick={alternarArquivamento}
               disabled={arquivando}
-              className="glass glass-hover rounded-xl px-4 py-2 text-sm font-medium text-slate-700"
+              className="glass glass-hover rounded-xl px-4 py-2 text-sm font-medium text-ink-soft"
             >
               {arquivando ? 'Salvando...' : workout.archived_at ? 'Desarquivar' : 'Arquivar'}
             </button>
@@ -155,10 +155,10 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
             return (
               <div
                 key={gIdx}
-                className={emBloco ? 'rounded-2xl border-2 border-dashed border-[#2648b3]/25 p-3' : ''}
+                className={emBloco ? 'rounded-2xl border-2 border-dashed border-brand/25 p-3' : ''}
               >
                 {emBloco && (
-                  <p className="mb-2 px-2 text-xs font-bold uppercase tracking-wider text-[#2648b3]">
+                  <p className="mb-2 px-2 text-xs font-bold uppercase tracking-wider text-brand">
                     {estrutura.label} {grupo.groupLabel}
                   </p>
                 )}
@@ -166,38 +166,38 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
                   {grupo.itens.map((ex, idx) => (
                     <div key={ex.id} className="glass rounded-2xl p-5">
                       <div className="flex items-start gap-4">
-                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#2648b3]/15 to-[#8b7fd6]/15 text-sm font-bold text-[#2648b3]">
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand/15 to-accent/15 text-sm font-bold text-brand">
                           {emBloco ? `${grupo.groupLabel}${idx + 1}` : gIdx + 1}
                         </span>
                         <div className="min-w-[110px] flex-1">
-                          <p className="text-xs uppercase tracking-wider text-slate-500">{ex.muscle_group}</p>
-                          <p className="font-semibold text-slate-900">{ex.exercise_name}</p>
+                          <p className="text-xs uppercase tracking-wider text-ink-muted">{ex.muscle_group}</p>
+                          <p className="font-semibold text-ink">{ex.exercise_name}</p>
                           <div className="mt-2 flex flex-wrap gap-2">
-                            <span className="rounded-lg bg-slate-900/5 px-2.5 py-1 text-xs text-slate-600">
+                            <span className="rounded-lg bg-ink/5 px-2.5 py-1 text-xs text-ink-soft">
                               {ex.sets} séries
                             </span>
-                            <span className="rounded-lg bg-slate-900/5 px-2.5 py-1 text-xs text-slate-600">
+                            <span className="rounded-lg bg-ink/5 px-2.5 py-1 text-xs text-ink-soft">
                               {ex.reps} reps
                             </span>
                             {ex.load_kg && (
-                              <span className="rounded-lg bg-[#2648b3]/10 px-2.5 py-1 text-xs text-[#2648b3]">
+                              <span className="rounded-lg bg-brand/10 px-2.5 py-1 text-xs text-brand">
                                 {ex.load_kg} kg
                               </span>
                             )}
                             {ex.rest_seconds && (
-                              <span className="rounded-lg bg-slate-900/5 px-2.5 py-1 text-xs text-slate-600">
+                              <span className="rounded-lg bg-ink/5 px-2.5 py-1 text-xs text-ink-soft">
                                 {ex.rest_seconds}s descanso
                               </span>
                             )}
                             {!emBloco && estrutura.label !== 'Tradicional' && (
-                              <span className="rounded-lg bg-violet-500/10 px-2.5 py-1 text-xs text-violet-600">
+                              <span className="rounded-lg bg-accent/10 px-2.5 py-1 text-xs text-accent-deep">
                                 {estrutura.label}
                               </span>
                             )}
                           </div>
-                          {ex.instructions && <p className="mt-3 text-sm text-slate-500">{ex.instructions}</p>}
+                          {ex.instructions && <p className="mt-3 text-sm text-ink-muted">{ex.instructions}</p>}
                         </div>
-                        <div className="glass shrink-0 rounded-xl p-1.5 text-[#2648b3]">
+                        <div className="glass shrink-0 rounded-xl p-1.5 text-brand">
                           <ExerciseAnimation
                             name={ex.exercise_name}
                             muscleGroup={ex.muscle_group}

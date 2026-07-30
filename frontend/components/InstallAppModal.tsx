@@ -1,5 +1,6 @@
 'use client'
 
+import { X } from 'lucide-react'
 import InstallAppInstructions from '@/components/InstallAppInstructions'
 
 export default function InstallAppModal({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -12,13 +13,13 @@ export default function InstallAppModal({ open, onClose }: { open: boolean; onCl
         className="max-h-[85vh] w-full max-w-md overflow-y-auto rounded-t-3xl bg-white p-6 shadow-2xl sm:rounded-3xl"
       >
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-slate-900">Instalar na tela inicial</h2>
+          <h2 className="font-display text-lg font-bold text-ink">Instalar na tela inicial</h2>
           <button
             onClick={onClose}
             aria-label="Fechar"
-            className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-900/5 hover:text-slate-600"
+            className="flex h-8 w-8 items-center justify-center rounded-full text-ink-muted transition hover:bg-ink/5 hover:text-ink-soft"
           >
-            ✕
+            <X size={18} />
           </button>
         </div>
         <InstallAppInstructions />

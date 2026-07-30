@@ -130,8 +130,8 @@ export default function GastosPage() {
       <Navbar />
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Meus Gastos</h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <h1 className="font-display text-2xl font-bold tracking-tight text-ink">Meus Gastos</h1>
+          <p className="mt-1 text-sm text-ink-muted">
             Custos de operar o negócio (aluguel, equipamento, software...) — usados pra calcular o resultado
             líquido em &quot;Meu Negócio&quot;.
           </p>
@@ -139,7 +139,7 @@ export default function GastosPage() {
 
         <form onSubmit={criarDespesa} className="glass mb-6 space-y-4 rounded-2xl p-6">
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-600">Descrição</label>
+            <label className="mb-1.5 block text-sm font-medium text-ink-soft">Descrição</label>
             <input
               type="text"
               required
@@ -152,7 +152,7 @@ export default function GastosPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-600">Valor (R$)</label>
+              <label className="mb-1.5 block text-sm font-medium text-ink-soft">Valor (R$)</label>
               <input
                 type="number"
                 required
@@ -165,7 +165,7 @@ export default function GastosPage() {
               />
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-600">A partir de</label>
+              <label className="mb-1.5 block text-sm font-medium text-ink-soft">A partir de</label>
               <input
                 type="date"
                 required
@@ -176,28 +176,28 @@ export default function GastosPage() {
             </div>
           </div>
 
-          <label className="flex cursor-pointer items-center gap-2.5 text-sm text-slate-600">
+          <label className="flex cursor-pointer items-center gap-2.5 text-sm text-ink-soft">
             <input
               type="checkbox"
               checked={isRecurring}
               onChange={(e) => setIsRecurring(e.target.checked)}
-              className="h-4 w-4 accent-[#2648b3]"
+              className="h-4 w-4 accent-brand"
             />
             Recorrente (repete todo mês até eu encerrar)
           </label>
 
-          {erro && <p className="text-sm text-rose-500">{erro}</p>}
+          {erro && <p className="text-sm text-danger">{erro}</p>}
 
           <button type="submit" disabled={criando} className="btn-primary w-full rounded-xl px-4 py-3 text-sm">
             {criando ? 'Salvando...' : 'Adicionar despesa'}
           </button>
         </form>
 
-        {carregando && <p className="text-slate-500">Carregando...</p>}
+        {carregando && <p className="text-ink-muted">Carregando...</p>}
 
         {!carregando && expenses.length === 0 && (
           <div className="glass rounded-2xl border-dashed p-8 text-center">
-            <p className="text-slate-500">Nenhuma despesa cadastrada ainda.</p>
+            <p className="text-ink-muted">Nenhuma despesa cadastrada ainda.</p>
           </div>
         )}
 
@@ -233,7 +233,7 @@ export default function GastosPage() {
                     </button>
                     <button
                       onClick={() => setEditandoId(null)}
-                      className="rounded-xl px-4 py-2 text-sm font-medium text-slate-500"
+                      className="rounded-xl px-4 py-2 text-sm font-medium text-ink-muted"
                     >
                       Cancelar
                     </button>
@@ -243,21 +243,21 @@ export default function GastosPage() {
                 <div className="flex items-center justify-between gap-3">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                      <p className="truncate font-semibold text-slate-900">{exp.description}</p>
+                      <p className="truncate font-semibold text-ink">{exp.description}</p>
                       <span
                         className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
-                          exp.is_recurring ? 'bg-violet-100 text-violet-700' : 'bg-slate-900/6 text-slate-500'
+                          exp.is_recurring ? 'bg-accent/10 text-accent-deep' : 'bg-ink/6 text-ink-muted'
                         }`}
                       >
                         {exp.is_recurring ? 'Recorrente' : 'Avulsa'}
                       </span>
                       {exp.ends_on && (
-                        <span className="shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-700">
+                        <span className="shrink-0 rounded-full bg-warning-soft px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-warning">
                           Encerrada
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm text-ink-muted">
                       {formatarMoeda(exp.amount)}
                       {exp.is_recurring ? '/mês' : ''} · desde {formatarData(exp.starts_on)}
                       {exp.ends_on && <> · última cobrança {formatarData(exp.ends_on)}</>}
@@ -266,14 +266,14 @@ export default function GastosPage() {
                   <div className="flex shrink-0 gap-2">
                     <button
                       onClick={() => comecarEdicao(exp)}
-                      className="glass glass-hover rounded-xl px-3 py-1.5 text-xs font-medium text-slate-700"
+                      className="glass glass-hover rounded-xl px-3 py-1.5 text-xs font-medium text-ink-soft"
                     >
                       Editar
                     </button>
                     {exp.is_recurring && !exp.ends_on && (
                       <button
                         onClick={() => encerrar(exp.id)}
-                        className="rounded-xl px-3 py-1.5 text-xs font-medium text-rose-600 transition hover:bg-rose-50"
+                        className="rounded-xl px-3 py-1.5 text-xs font-medium text-danger transition hover:bg-danger"
                       >
                         Encerrar
                       </button>

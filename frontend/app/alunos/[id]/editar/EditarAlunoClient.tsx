@@ -97,7 +97,7 @@ export default function EditarAlunoClient({ studentId }: { studentId: string }) 
       <>
         <Navbar />
         <main className="mx-auto w-full max-w-lg flex-1 px-4 py-10">
-          <p className="text-slate-500">Carregando...</p>
+          <p className="text-ink-muted">Carregando...</p>
         </main>
       </>
     )
@@ -108,14 +108,14 @@ export default function EditarAlunoClient({ studentId }: { studentId: string }) 
       <Navbar />
       <main className="mx-auto w-full max-w-lg flex-1 px-4 py-10">
         <BackLink href={`/alunos/${studentId}`} label="Voltar ao perfil" />
-        <h1 className="mb-1 text-2xl font-bold tracking-tight text-slate-900">Editar aluno</h1>
-        <p className="mb-6 text-sm text-slate-500">
+        <h1 className="mb-1 font-display text-2xl font-bold tracking-tight text-ink">Editar aluno</h1>
+        <p className="mb-6 text-sm text-ink-muted">
           Mudar o tipo/valor de cobrança não altera meses já calculados — o histórico anterior fica preservado.
         </p>
 
         <form onSubmit={handleSubmit} className="glass space-y-4 rounded-2xl p-6">
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-600">Nome</label>
+            <label className="mb-1.5 block text-sm font-medium text-ink-soft">Nome</label>
             <input
               type="text"
               required
@@ -125,7 +125,7 @@ export default function EditarAlunoClient({ studentId }: { studentId: string }) 
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-600">E-mail (opcional)</label>
+            <label className="mb-1.5 block text-sm font-medium text-ink-soft">E-mail (opcional)</label>
             <input
               type="email"
               value={email}
@@ -134,7 +134,7 @@ export default function EditarAlunoClient({ studentId }: { studentId: string }) 
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-600">Telefone (opcional)</label>
+            <label className="mb-1.5 block text-sm font-medium text-ink-soft">Telefone (opcional)</label>
             <input
               type="text"
               value={phone}
@@ -145,7 +145,7 @@ export default function EditarAlunoClient({ studentId }: { studentId: string }) 
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-600">Peso (kg)</label>
+              <label className="mb-1.5 block text-sm font-medium text-ink-soft">Peso (kg)</label>
               <input
                 type="number"
                 min={0}
@@ -157,7 +157,7 @@ export default function EditarAlunoClient({ studentId }: { studentId: string }) 
               />
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-600">Altura (cm)</label>
+              <label className="mb-1.5 block text-sm font-medium text-ink-soft">Altura (cm)</label>
               <input
                 type="number"
                 min={0}
@@ -171,7 +171,7 @@ export default function EditarAlunoClient({ studentId }: { studentId: string }) 
           </div>
 
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-600">Objetivo</label>
+            <label className="mb-1.5 block text-sm font-medium text-ink-soft">Objetivo</label>
             <textarea
               value={objective}
               onChange={(e) => setObjective(e.target.value)}
@@ -182,14 +182,14 @@ export default function EditarAlunoClient({ studentId }: { studentId: string }) 
 
           <div className="grid grid-cols-2 gap-3 border-t border-black/6 pt-4">
             <div className="col-span-2">
-              <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">Cobrança</p>
-              <p className="text-xs text-slate-400">
+              <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-ink-muted">Cobrança</p>
+              <p className="text-xs text-ink-muted">
                 Mudar aqui fecha o valor atual e passa a valer o novo a partir de hoje — a receita de meses
                 anteriores não muda.
               </p>
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-600">Tipo</label>
+              <label className="mb-1.5 block text-sm font-medium text-ink-soft">Tipo</label>
               <select
                 value={billingType}
                 onChange={(e) => setBillingType(e.target.value as TipoCobranca | '')}
@@ -201,7 +201,7 @@ export default function EditarAlunoClient({ studentId }: { studentId: string }) 
               </select>
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-600">Valor mensal (R$)</label>
+              <label className="mb-1.5 block text-sm font-medium text-ink-soft">Valor mensal (R$)</label>
               <input
                 type="number"
                 min={0}
@@ -218,23 +218,23 @@ export default function EditarAlunoClient({ studentId }: { studentId: string }) 
                   type="button"
                   onClick={encerrarCobranca}
                   disabled={encerrando}
-                  className="text-xs font-medium text-rose-600 transition hover:underline"
+                  className="text-xs font-medium text-danger transition hover:underline"
                 >
                   {encerrando ? 'Encerrando...' : 'Encerrar cobrança (aluno cancelou/saiu)'}
                 </button>
               </div>
             )}
             <div className="col-span-2">
-              <label className="flex cursor-pointer items-start gap-2 text-sm text-slate-700">
+              <label className="flex cursor-pointer items-start gap-2 text-sm text-ink-soft">
                 <input
                   type="checkbox"
                   checked={lembrarPagamento}
                   onChange={(e) => setLembrarPagamento(e.target.checked)}
-                  className="mt-0.5 h-4 w-4 shrink-0 accent-[#2648b3]"
+                  className="mt-0.5 h-4 w-4 shrink-0 accent-brand"
                 />
                 <span>
                   Incluir lembrete de pagamento no aviso de treino vencido
-                  <span className="block text-xs text-slate-400">
+                  <span className="block text-xs text-ink-muted">
                     Quando o treino desse aluno vencer, a notificação dele vai incluir um lembrete pra regularizar o
                     pagamento com você.
                   </span>
@@ -243,7 +243,7 @@ export default function EditarAlunoClient({ studentId }: { studentId: string }) 
             </div>
           </div>
 
-          {erro && <p className="text-sm text-rose-500">{erro}</p>}
+          {erro && <p className="text-sm text-danger">{erro}</p>}
 
           <button type="submit" disabled={salvando} className="btn-primary w-full rounded-xl px-4 py-3 text-sm">
             {salvando ? 'Salvando...' : 'Salvar alterações'}

@@ -33,24 +33,31 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex flex-1 items-center justify-center px-4 py-10">
+    <div className="hero-gradient flex flex-1 items-center justify-center px-4 py-10">
       <div className="w-full max-w-sm">
         <div className="mb-8 flex flex-col items-center text-center">
-          <Image src="/clubemais-logo.png" alt="Clube Mais" width={240} height={67} priority className="h-16 w-auto" />
-          <span className="mt-2 rounded-full bg-[#2648b3]/8 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-[#2648b3]">
+          <Image
+            src="/clubemais-logo.png"
+            alt="Clube Mais"
+            width={240}
+            height={67}
+            priority
+            className="chrome-invert h-16 w-auto"
+          />
+          <span className="mt-3 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white">
             Personal
           </span>
-          <p className="mt-4 text-sm text-slate-500">
+          <p className="mt-4 text-sm text-white/75">
             {modo === 'login'
               ? 'Entre para gerenciar seus alunos e treinos'
               : 'Crie sua conta de profissional'}
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="glass space-y-4 rounded-2xl p-6">
+        <form onSubmit={handleSubmit} className="glass-elevated space-y-4 rounded-2xl p-6">
           {modo === 'signup' && (
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-600">Nome</label>
+              <label className="mb-1.5 block text-sm font-medium text-ink-soft">Nome</label>
               <input
                 type="text"
                 required
@@ -61,7 +68,7 @@ export default function LoginPage() {
             </div>
           )}
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-600">E-mail</label>
+            <label className="mb-1.5 block text-sm font-medium text-ink-soft">E-mail</label>
             <input
               type="email"
               required
@@ -71,7 +78,7 @@ export default function LoginPage() {
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-600">Senha</label>
+            <label className="mb-1.5 block text-sm font-medium text-ink-soft">Senha</label>
             <input
               type="password"
               required
@@ -82,7 +89,7 @@ export default function LoginPage() {
             />
           </div>
 
-          {erro && <p className="text-sm text-rose-400">{erro}</p>}
+          {erro && <p className="text-sm text-danger">{erro}</p>}
 
           <button type="submit" disabled={carregando} className="btn-primary w-full rounded-xl px-4 py-3 text-sm">
             {carregando ? 'Aguarde...' : modo === 'login' ? 'Entrar' : 'Criar conta'}
@@ -92,12 +99,12 @@ export default function LoginPage() {
         <button
           type="button"
           onClick={() => setModo(modo === 'login' ? 'signup' : 'login')}
-          className="mt-5 w-full text-center text-sm text-slate-500 transition hover:text-[#2648b3]"
+          className="mt-5 w-full text-center text-sm text-white/70 transition hover:text-white"
         >
           {modo === 'login' ? (
-            <>Ainda não tem conta? <span className="font-semibold text-[#2648b3]">Criar conta</span></>
+            <>Ainda não tem conta? <span className="font-semibold text-white">Criar conta</span></>
           ) : (
-            <>Já tem conta? <span className="font-semibold text-[#2648b3]">Entrar</span></>
+            <>Já tem conta? <span className="font-semibold text-white">Entrar</span></>
           )}
         </button>
       </div>

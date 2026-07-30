@@ -64,11 +64,9 @@ export default function DashboardPage() {
               <p className="text-xs font-medium uppercase tracking-wider text-ink-muted">Alunos ativos</p>
               <p className="stat-number mt-1 text-2xl font-bold text-ink">{students.length}</p>
             </div>
-            <div className="glass-elevated rounded-2xl p-4">
-              <p className="text-xs font-medium uppercase tracking-wider text-ink-muted">Sessões concluídas</p>
-              <p className="stat-number mt-1 bg-gradient-to-r from-brand to-accent bg-clip-text text-2xl font-bold text-transparent">
-                {totalSessoes}
-              </p>
+            <div className="stat-hero rounded-2xl p-4">
+              <p className="stat-hero-label text-xs font-medium uppercase tracking-wider">Sessões concluídas</p>
+              <p className="stat-number mt-1 text-2xl font-bold text-white">{totalSessoes}</p>
             </div>
             <div className="glass hidden rounded-2xl p-4 sm:block">
               <p className="text-xs font-medium uppercase tracking-wider text-ink-muted">Com treino ativo</p>

@@ -65,7 +65,7 @@ export default function ChatBox({
     <div className="flex flex-col h-full">
       <div className="chat-scroll flex-1 space-y-3 overflow-y-auto p-4">
         {messages.length === 0 && !aguardandoIa && (
-          <p className="py-8 text-center text-sm text-slate-500">{vazioTexto}</p>
+          <p className="py-8 text-center text-sm text-ink-muted">{vazioTexto}</p>
         )}
 
         {messages.map((m) => {
@@ -77,25 +77,25 @@ export default function ChatBox({
                 className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
                   direita
                     ? ehIa
-                      ? 'rounded-br-md border border-violet-300 bg-violet-50 text-violet-900'
-                      : 'rounded-br-md bg-gradient-to-br from-[#2648b3] to-[#5a4fb0] text-white'
+                      ? 'rounded-br-md border border-accent/30 bg-accent/10 text-ink'
+                      : 'rounded-br-md bg-gradient-to-br from-brand to-accent text-white'
                     : ehIa
-                      ? 'rounded-bl-md border border-violet-300 bg-violet-50 text-violet-900'
-                      : 'rounded-bl-md glass text-slate-800'
+                      ? 'rounded-bl-md border border-accent/30 bg-accent/10 text-ink'
+                      : 'rounded-bl-md glass text-ink'
                 }`}
               >
                 {ehIa && (
-                  <span className="mb-1 flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-violet-500">
+                  <span className="mb-1 flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-accent-deep">
                     {nomeIa}
                   </span>
                 )}
                 {!ehIa && m.sender === 'professional' && perspective === 'student' && (
-                  <span className="mb-1 flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-[#2648b3]">
+                  <span className="mb-1 flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-brand">
                     Seu professor
                   </span>
                 )}
                 <p className="whitespace-pre-wrap">{m.content}</p>
-                <p className={`mt-1 text-right text-[10px] ${direita && !ehIa ? 'text-white/60' : 'text-slate-500'}`}>
+                <p className={`mt-1 text-right text-[10px] ${direita && !ehIa ? 'text-white/60' : 'text-ink-muted'}`}>
                   {hora(m.created_at)}
                 </p>
               </div>
@@ -106,9 +106,9 @@ export default function ChatBox({
         {aguardandoIa && (
           <div className="flex justify-start">
             <div className="glass flex items-center gap-1.5 rounded-2xl rounded-bl-md px-4 py-3">
-              <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-violet-300 [animation-delay:0ms]" />
-              <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-violet-300 [animation-delay:150ms]" />
-              <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-violet-300 [animation-delay:300ms]" />
+              <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-accent [animation-delay:0ms]" />
+              <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-accent [animation-delay:150ms]" />
+              <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-accent [animation-delay:300ms]" />
             </div>
           </div>
         )}

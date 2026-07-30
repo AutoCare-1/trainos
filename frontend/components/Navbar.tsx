@@ -80,18 +80,25 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-20 border-b border-line bg-white/85 backdrop-blur-xl">
+      <header className="chrome-gradient sticky top-0 z-20 shadow-[0_4px_20px_rgba(26,53,133,0.18)]">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3">
           <button
             onClick={() => setMenuAberto(true)}
             aria-label="Abrir menu"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-ink-soft transition hover:bg-ink/5"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white transition hover:bg-white/15"
           >
             <Menu size={20} />
           </button>
           <Link href="/dashboard" className="flex flex-1 items-center justify-center gap-2.5 sm:flex-initial sm:justify-start">
-            <Image src="/clubemais-logo.png" alt="Clube Mais" width={140} height={39} priority className="h-7 w-auto" />
-            <span className="hidden items-center border-l border-line pl-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-ink-muted sm:flex">
+            <Image
+              src="/clubemais-logo.png"
+              alt="Clube Mais"
+              width={140}
+              height={39}
+              priority
+              className="chrome-invert h-7 w-auto"
+            />
+            <span className="hidden items-center border-l border-white/25 pl-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-white/80 sm:flex">
               Personal
             </span>
           </Link>

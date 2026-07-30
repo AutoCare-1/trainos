@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { Check } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import BackLink from '@/components/BackLink'
 import ExerciseAnimation from '@/components/ExerciseAnimation'
@@ -165,20 +166,20 @@ export default function NovoTreinoClient() {
       <Navbar />
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
         <BackLink href={studentId ? `/alunos/${studentId}` : '/dashboard'} label="Voltar ao aluno" />
-        <h1 className="mb-1 text-2xl font-bold tracking-tight text-slate-900">Novo treino</h1>
-        <p className="mb-6 text-sm text-slate-500">Monte a prescrição em poucos cliques e envie direto pro aluno.</p>
+        <h1 className="mb-1 font-display text-2xl font-bold tracking-tight text-ink">Novo treino</h1>
+        <p className="mb-6 text-sm text-ink-muted">Monte a prescrição em poucos cliques e envie direto pro aluno.</p>
 
         {!studentId && (
-          <p className="mb-4 text-sm text-rose-400">
+          <p className="mb-4 text-sm text-danger">
             Nenhum aluno selecionado. Volte ao perfil do aluno e clique em &quot;Novo treino&quot;.
           </p>
         )}
-        {erro && <p className="mb-4 text-sm text-rose-400">{erro}</p>}
+        {erro && <p className="mb-4 text-sm text-danger">{erro}</p>}
 
         {studentId && (
           <div className="grid gap-6 md:grid-cols-2">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-600">Nome do treino</label>
+              <label className="mb-1.5 block text-sm font-medium text-ink-soft">Nome do treino</label>
               <input
                 type="text"
                 value={name}
@@ -187,7 +188,7 @@ export default function NovoTreinoClient() {
               />
 
               <div className="mt-3">
-                <label className="mb-1.5 block text-sm font-medium text-slate-600">
+                <label className="mb-1.5 block text-sm font-medium text-ink-soft">
                   Validade (opcional)
                 </label>
                 <select
@@ -201,14 +202,14 @@ export default function NovoTreinoClient() {
                   <option value="8">8 semanas</option>
                   <option value="12">12 semanas</option>
                 </select>
-                <p className="mt-1 text-xs text-slate-500">
+                <p className="mt-1 text-xs text-ink-muted">
                   Se definir um prazo, você e o aluno recebem um aviso quando faltar 1 semana pra vencer.
                 </p>
               </div>
 
               {templates.length > 0 && (
                 <div className="mt-3">
-                  <label className="mb-1.5 block text-sm font-medium text-slate-600">Começar de um modelo</label>
+                  <label className="mb-1.5 block text-sm font-medium text-ink-soft">Começar de um modelo</label>
                   <select
                     onChange={(e) => carregarModelo(e.target.value)}
                     disabled={carregandoModelo}
@@ -225,7 +226,7 @@ export default function NovoTreinoClient() {
                 </div>
               )}
 
-              <h2 className="mb-3 mt-6 font-semibold text-slate-900">Biblioteca de exercícios</h2>
+              <h2 className="mb-3 mt-6 font-semibold text-ink">Biblioteca de exercícios</h2>
               <input
                 type="text"
                 value={buscaExercicio}
@@ -235,11 +236,11 @@ export default function NovoTreinoClient() {
               />
               <div className="chat-scroll max-h-[28rem] space-y-4 overflow-y-auto pr-2">
                 {termoBusca && Object.keys(porGrupo).length === 0 && (
-                  <p className="text-sm text-slate-500">Nenhum exercício encontrado.</p>
+                  <p className="text-sm text-ink-muted">Nenhum exercício encontrado.</p>
                 )}
                 {Object.entries(porGrupo).map(([grupo, exs]) => (
                   <div key={grupo}>
-                    <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">{grupo}</p>
+                    <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-ink-muted">{grupo}</p>
                     <div className="grid gap-2">
                       {exs.map((ex) => {
                         const selecionado = items.some((i) => i.exercise_id === ex.id)
@@ -252,7 +253,7 @@ export default function NovoTreinoClient() {
                             className={`glass flex items-center gap-3 rounded-xl px-3 py-2 text-left text-sm transition ${
                               selecionado
                                 ? 'opacity-35'
-                                : 'glass-hover text-slate-800'
+                                : 'glass-hover text-ink'
                             }`}
                           >
                             <ExerciseAnimation
@@ -262,10 +263,10 @@ export default function NovoTreinoClient() {
                               videoUrl={ex.video_url}
                               imageCredit={ex.image_credit}
                               size="sm"
-                              className="shrink-0 rounded-md text-[#2648b3]"
+                              className="shrink-0 rounded-md text-brand"
                             />
                             <span className="flex-1">{ex.name}</span>
-                            {selecionado && <span className="text-emerald-400">✓</span>}
+                            {selecionado && <Check size={16} className="text-success" />}
                           </button>
                         )
                       })}
@@ -276,14 +277,14 @@ export default function NovoTreinoClient() {
             </div>
 
             <div>
-              <h2 className="mb-3 font-semibold text-slate-900">
+              <h2 className="mb-3 font-semibold text-ink">
                 Exercícios selecionados{' '}
-                <span className="ml-1 rounded-full bg-[#2648b3]/10 px-2 py-0.5 text-xs text-[#2648b3]">
+                <span className="ml-1 rounded-full bg-brand/10 px-2 py-0.5 text-xs text-brand">
                   {items.length}
                 </span>
               </h2>
               {items.length === 0 && (
-                <div className="glass rounded-2xl border-dashed p-8 text-center text-sm text-slate-500">
+                <div className="glass rounded-2xl border-dashed p-8 text-center text-sm text-ink-muted">
                   Clique nos exercícios ao lado para adicionar
                 </div>
               )}
@@ -302,22 +303,22 @@ export default function NovoTreinoClient() {
                               videoUrl={ex.video_url}
                               imageCredit={ex.image_credit}
                               size="sm"
-                              className="shrink-0 rounded-md text-[#8b7fd6]"
+                              className="shrink-0 rounded-md text-accent-deep"
                             />
                           )}
-                          <p className="font-medium text-slate-900">{ex?.name}</p>
+                          <p className="font-medium text-ink">{ex?.name}</p>
                         </div>
                         <button
                           type="button"
                           onClick={() => removerExercicio(item.exercise_id)}
-                          className="text-xs text-rose-400 transition hover:text-rose-300"
+                          className="text-xs text-danger transition hover:text-danger"
                         >
                           Remover
                         </button>
                       </div>
                       <div className="grid grid-cols-2 gap-2">
                         <div>
-                          <label className="mb-1 block text-xs text-slate-500">Séries</label>
+                          <label className="mb-1 block text-xs text-ink-muted">Séries</label>
                           <input
                             type="number"
                             min={1}
@@ -327,7 +328,7 @@ export default function NovoTreinoClient() {
                           />
                         </div>
                         <div>
-                          <label className="mb-1 block text-xs text-slate-500">Reps</label>
+                          <label className="mb-1 block text-xs text-ink-muted">Reps</label>
                           <input
                             type="text"
                             value={item.reps}
@@ -336,7 +337,7 @@ export default function NovoTreinoClient() {
                           />
                         </div>
                         <div>
-                          <label className="mb-1 block text-xs text-slate-500">Carga (kg)</label>
+                          <label className="mb-1 block text-xs text-ink-muted">Carga (kg)</label>
                           <input
                             type="number"
                             min={0}
@@ -346,7 +347,7 @@ export default function NovoTreinoClient() {
                           />
                         </div>
                         <div>
-                          <label className="mb-1 block text-xs text-slate-500">Descanso (s)</label>
+                          <label className="mb-1 block text-xs text-ink-muted">Descanso (s)</label>
                           <input
                             type="number"
                             min={0}
@@ -361,7 +362,7 @@ export default function NovoTreinoClient() {
 
                       <div className="mt-2 grid grid-cols-2 gap-2">
                         <div>
-                          <label className="mb-1 block text-xs text-slate-500">Estrutura</label>
+                          <label className="mb-1 block text-xs text-ink-muted">Estrutura</label>
                           <select
                             value={item.structure_type}
                             onChange={(e) => atualizarItem(item.exercise_id, 'structure_type', e.target.value)}
@@ -376,7 +377,7 @@ export default function NovoTreinoClient() {
                         </div>
                         {ESTRUTURAS.find((e) => e.value === item.structure_type)?.agrupavel && (
                           <div>
-                            <label className="mb-1 block text-xs text-slate-500">Grupo (ex: A)</label>
+                            <label className="mb-1 block text-xs text-ink-muted">Grupo (ex: A)</label>
                             <input
                               type="text"
                               maxLength={2}
@@ -398,9 +399,17 @@ export default function NovoTreinoClient() {
                   type="button"
                   onClick={salvarComoModelo}
                   disabled={salvandoModelo || items.length === 0}
-                  className="glass glass-hover shrink-0 rounded-xl px-4 py-3 text-sm font-medium text-slate-700"
+                  className="glass glass-hover flex shrink-0 items-center gap-1.5 rounded-xl px-4 py-3 text-sm font-medium text-ink-soft"
                 >
-                  {salvandoModelo ? 'Salvando...' : modeloSalvo ? 'Modelo salvo ✓' : 'Salvar como modelo'}
+                  {salvandoModelo ? (
+                    'Salvando...'
+                  ) : modeloSalvo ? (
+                    <>
+                      <Check size={15} className="text-success" /> Modelo salvo
+                    </>
+                  ) : (
+                    'Salvar como modelo'
+                  )}
                 </button>
                 <button
                   type="button"

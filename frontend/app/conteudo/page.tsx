@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { Bookmark } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import { api, ApiError } from '@/lib/api'
 import { ContentFormat, ContentIdea } from '@/lib/types'
@@ -13,26 +14,13 @@ const FORMATO_LABEL: Record<ContentFormat, string> = {
 }
 
 const FORMATO_ESTILO: Record<ContentFormat, string> = {
-  post: 'bg-[#2648b3]/10 text-[#2648b3]',
-  story: 'bg-violet-500/10 text-violet-600',
-  reels: 'bg-emerald-500/10 text-emerald-600',
+  post: 'bg-brand/10 text-brand',
+  story: 'bg-accent/10 text-accent-deep',
+  reels: 'bg-success/10 text-success',
 }
 
 function BookmarkIcon({ preenchido }: { preenchido: boolean }) {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill={preenchido ? 'currentColor' : 'none'}
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-    </svg>
-  )
+  return <Bookmark size={16} fill={preenchido ? 'currentColor' : 'none'} />
 }
 
 export default function ConteudoPage() {
@@ -87,15 +75,15 @@ export default function ConteudoPage() {
       <Navbar />
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
         <div className="mb-6">
-          <h1 className="mb-1 text-2xl font-bold tracking-tight text-slate-900">Ideias de Conteúdo</h1>
-          <p className="text-sm text-slate-500">
+          <h1 className="mb-1 font-display text-2xl font-bold tracking-tight text-ink">Ideias de Conteúdo</h1>
+          <p className="text-sm text-ink-muted">
             Ideias de post, story e reels pro seu Instagram — cada ideia já junta uma tendência de
             formato em alta com um dado real (e anônimo) da sua base de alunos.
           </p>
         </div>
 
         <div className="glass mb-6 rounded-2xl p-5">
-          <label className="mb-1.5 block text-xs text-slate-500">Direcionamento (opcional)</label>
+          <label className="mb-1.5 block text-xs text-ink-muted">Direcionamento (opcional)</label>
           <div className="flex flex-col gap-2 sm:flex-row">
             <input
               type="text"
@@ -112,16 +100,16 @@ export default function ConteudoPage() {
               {gerando ? 'Gerando...' : 'Gerar ideias'}
             </button>
           </div>
-          {erro && <p className="mt-3 text-sm text-rose-500">{erro}</p>}
+          {erro && <p className="mt-3 text-sm text-danger">{erro}</p>}
         </div>
 
-        <div className="mb-4 flex gap-1 rounded-lg bg-slate-900/5 p-1 w-fit">
+        <div className="mb-4 flex gap-1 rounded-lg bg-ink/5 p-1 w-fit">
           {(['todos', 'post', 'story', 'reels'] as const).map((f) => (
             <button
               key={f}
               onClick={() => setFiltroFormato(f)}
               className={`rounded-md px-3 py-1.5 text-xs font-medium transition ${
-                filtroFormato === f ? 'bg-white text-slate-900 shadow' : 'text-slate-500'
+                filtroFormato === f ? 'bg-white text-ink shadow' : 'text-ink-muted'
               }`}
             >
               {f === 'todos' ? 'Todos' : FORMATO_LABEL[f]}
@@ -129,12 +117,12 @@ export default function ConteudoPage() {
           ))}
         </div>
 
-        {ideias === null && !erro && <p className="text-slate-500">Carregando...</p>}
+        {ideias === null && !erro && <p className="text-ink-muted">Carregando...</p>}
 
         {ideias !== null && ideiasFiltradas.length === 0 && (
           <div className="glass rounded-2xl border-dashed p-10 text-center">
-            <p className="text-slate-500">Nenhuma ideia por aqui ainda.</p>
-            <p className="mt-1 text-sm text-slate-400">Clique em &quot;Gerar ideias&quot; pra começar.</p>
+            <p className="text-ink-muted">Nenhuma ideia por aqui ainda.</p>
+            <p className="mt-1 text-sm text-ink-muted">Clique em &quot;Gerar ideias&quot; pra começar.</p>
           </div>
         )}
 
@@ -148,16 +136,16 @@ export default function ConteudoPage() {
                 <button
                   onClick={() => alternarFavorito(idea)}
                   aria-label={idea.saved ? 'Remover dos favoritos' : 'Favoritar'}
-                  className={`shrink-0 transition ${idea.saved ? 'text-amber-500' : 'text-slate-300 hover:text-slate-400'}`}
+                  className={`shrink-0 transition ${idea.saved ? 'text-warning' : 'text-ink-muted hover:text-ink-muted'}`}
                 >
                   <BookmarkIcon preenchido={idea.saved} />
                 </button>
               </div>
-              <h2 className="mb-1.5 font-semibold text-slate-900">{idea.title}</h2>
-              <p className="mb-3 text-sm text-slate-600">{idea.description}</p>
-              <div className="rounded-xl bg-slate-900/3 p-3">
-                <p className="mb-1 text-[10px] uppercase tracking-wider text-slate-400">Legenda sugerida</p>
-                <p className="text-sm text-slate-700">{idea.caption_suggestion}</p>
+              <h2 className="mb-1.5 font-semibold text-ink">{idea.title}</h2>
+              <p className="mb-3 text-sm text-ink-soft">{idea.description}</p>
+              <div className="rounded-xl bg-ink/3 p-3">
+                <p className="mb-1 text-[10px] uppercase tracking-wider text-ink-muted">Legenda sugerida</p>
+                <p className="text-sm text-ink-soft">{idea.caption_suggestion}</p>
               </div>
             </div>
           ))}

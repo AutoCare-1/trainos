@@ -1,5 +1,7 @@
 'use client'
 
+import { ArrowRight } from 'lucide-react'
+
 interface Ponto {
   recorded_at: string
   weight_kg: number | null
@@ -22,7 +24,7 @@ export default function WeightChart({ pontos }: { pontos: Ponto[] }) {
 
   if (validos.length === 0) {
     return (
-      <div className="flex h-[140px] items-center justify-center text-sm text-slate-400">
+      <div className="flex h-[140px] items-center justify-center text-sm text-ink-muted">
         Sem medições registradas ainda.
       </div>
     )
@@ -78,19 +80,20 @@ export default function WeightChart({ pontos }: { pontos: Ponto[] }) {
           </g>
         ))}
 
-        <text x={PAD_X} y={H - 6} fontSize={10} fill="#94a3b8">
+        <text x={PAD_X} y={H - 6} fontSize={10} fill="#726c96">
           {formatarData(primeiro.recorded_at)}
         </text>
-        <text x={W - PAD_X} y={H - 6} fontSize={10} fill="#94a3b8" textAnchor="end">
+        <text x={W - PAD_X} y={H - 6} fontSize={10} fill="#726c96" textAnchor="end">
           {formatarData(ultimo.recorded_at)}
         </text>
       </svg>
       <div className="mt-1 flex items-center justify-between text-sm">
-        <span className="text-slate-500">
-          {primeiro.weight_kg}kg → <span className="font-semibold text-slate-900">{ultimo.weight_kg}kg</span>
+        <span className="flex items-center gap-1 text-ink-muted">
+          {primeiro.weight_kg}kg <ArrowRight size={13} className="shrink-0" />{' '}
+          <span className="font-semibold text-ink">{ultimo.weight_kg}kg</span>
         </span>
         {validos.length > 1 && (
-          <span className="font-semibold text-[#2648b3]">
+          <span className="font-semibold text-brand">
             {delta > 0 ? '+' : ''}
             {delta.toFixed(1)}kg no período
           </span>

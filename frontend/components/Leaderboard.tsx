@@ -11,7 +11,7 @@ export default function Leaderboard({
   highlightId?: string
 }) {
   if (entries.length === 0) {
-    return <p className="text-sm text-slate-400">Ninguém participando ainda.</p>
+    return <p className="text-sm text-ink-muted">Ninguém participando ainda.</p>
   }
 
   return (
@@ -22,16 +22,16 @@ export default function Leaderboard({
           <div
             key={e.student_id}
             className={`flex items-center gap-3 rounded-xl px-3 py-2.5 ${
-              destaque ? 'border border-[#2648b3]/25 bg-[#2648b3]/6' : 'bg-slate-900/3'
+              destaque ? 'border border-brand/25 bg-brand/6' : 'bg-ink/3'
             }`}
           >
-            <span className="w-6 shrink-0 text-center text-sm font-semibold text-slate-500">{i + 1}º</span>
+            <span className="w-6 shrink-0 text-center text-sm font-semibold text-ink-muted">{i + 1}º</span>
             <Avatar nome={e.name} fotoUrl={e.photo_url} tamanho="sm" />
             <span className="flex min-w-0 flex-1 items-baseline gap-1">
-              <span className="truncate text-sm font-medium text-slate-800">{e.name}</span>
-              {destaque && <span className="shrink-0 text-xs text-[#2648b3]">(você)</span>}
+              <span className="truncate text-sm font-medium text-ink">{e.name}</span>
+              {destaque && <span className="shrink-0 text-xs text-brand">(você)</span>}
             </span>
-            <span className="shrink-0 text-sm font-bold text-[#2648b3]">
+            <span className="shrink-0 text-sm font-bold text-brand">
               {e.pontos} {Number(e.pontos) === 1 ? 'treino' : 'treinos'}
             </span>
           </div>

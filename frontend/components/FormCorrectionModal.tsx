@@ -1,19 +1,20 @@
 'use client'
 
 import { useRef, useState } from 'react'
+import { X, Video, Check, ArrowLeft } from 'lucide-react'
 import { api, ApiError } from '@/lib/api'
 import { FormAnalysisResult } from '@/lib/types'
 
 const ESTILO_PRIORIDADE: Record<string, string> = {
-  good: 'border-emerald-400/30 bg-emerald-500/8 text-emerald-700',
-  warning: 'border-amber-400/30 bg-amber-500/8 text-amber-700',
-  critical: 'border-rose-400/30 bg-rose-500/8 text-rose-700',
+  good: 'border-success/30 bg-success/8 text-success',
+  warning: 'border-warning/30 bg-warning/8 text-warning',
+  critical: 'border-danger/30 bg-danger/8 text-danger',
 }
 
-const ICONE_PRIORIDADE: Record<string, string> = {
-  good: '🟢',
-  warning: '🟡',
-  critical: '🔴',
+const DOT_PRIORIDADE: Record<string, string> = {
+  good: 'bg-success',
+  warning: 'bg-warning',
+  critical: 'bg-danger',
 }
 
 export default function FormCorrectionModal({
@@ -74,20 +75,20 @@ export default function FormCorrectionModal({
         className="max-h-[85vh] w-full max-w-md overflow-y-auto rounded-t-3xl bg-white p-6 shadow-2xl sm:rounded-3xl"
       >
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-slate-900">Analisar forma</h2>
+          <h2 className="font-display text-lg font-bold text-ink">Analisar forma</h2>
           <button
             onClick={fechar}
             aria-label="Fechar"
-            className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-900/5 hover:text-slate-600"
+            className="flex h-8 w-8 items-center justify-center rounded-full text-ink-muted transition hover:bg-ink/5 hover:text-ink-soft"
           >
-            ✕
+            <X size={18} />
           </button>
         </div>
 
         {!resultado && (
           <>
-            <p className="mb-4 text-sm text-slate-500">
-              Filme uma série de <strong className="text-slate-900">{exerciseName}</strong> (5 a 15 segundos,
+            <p className="mb-4 text-sm text-ink-muted">
+              Filme uma série de <strong className="text-ink">{exerciseName}</strong> (5 a 15 segundos,
               qualquer ângulo) e a Coach IA analisa amplitude, postura e velocidade.
             </p>
 
@@ -106,12 +107,20 @@ export default function FormCorrectionModal({
             <button
               onClick={() => inputRef.current?.click()}
               disabled={analisando}
-              className="glass glass-hover w-full rounded-xl px-4 py-3 text-sm font-medium text-slate-700"
+              className="glass glass-hover flex w-full items-center justify-center gap-1.5 rounded-xl px-4 py-3 text-sm font-medium text-ink-soft"
             >
-              {videoFile ? `✓ ${videoFile.name}` : '🎥 Selecionar vídeo'}
+              {videoFile ? (
+                <>
+                  <Check size={16} className="text-success" /> {videoFile.name}
+                </>
+              ) : (
+                <>
+                  <Video size={16} /> Selecionar vídeo
+                </>
+              )}
             </button>
 
-            {erro && <p className="mt-3 text-sm text-rose-500">{erro}</p>}
+            {erro && <p className="mt-3 text-sm text-danger">{erro}</p>}
 
             <button
               onClick={analisar}
@@ -128,28 +137,29 @@ export default function FormCorrectionModal({
             <div className="space-y-3">
               {resultado.three_key_feedback.map((item, i) => (
                 <div key={i} className={`rounded-2xl border p-4 ${ESTILO_PRIORIDADE[item.priority] ?? ''}`}>
-                  <p className="mb-1 text-sm font-semibold">
-                    {ICONE_PRIORIDADE[item.priority] ?? ''} {item.title}
+                  <p className="mb-1 flex items-center gap-1.5 text-sm font-semibold">
+                    <span className={`h-2 w-2 shrink-0 rounded-full ${DOT_PRIORIDADE[item.priority] ?? 'bg-ink-muted'}`} />
+                    {item.title}
                   </p>
-                  <p className="text-sm text-slate-700">{item.feedback}</p>
+                  <p className="text-sm text-ink-soft">{item.feedback}</p>
                 </div>
               ))}
             </div>
 
             {resultado.safety_notes && resultado.safety_notes !== 'Seguro' && (
-              <div className="mt-3 rounded-2xl border border-amber-400/30 bg-amber-500/8 p-4">
-                <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-amber-700">
+              <div className="mt-3 rounded-2xl border border-warning/30 bg-warning/8 p-4">
+                <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-warning">
                   Observação de segurança
                 </p>
-                <p className="text-sm text-slate-700">{resultado.safety_notes}</p>
+                <p className="text-sm text-ink-soft">{resultado.safety_notes}</p>
               </div>
             )}
 
             <button
               onClick={() => setResultado(null)}
-              className="glass glass-hover mt-4 w-full rounded-xl px-4 py-3 text-sm font-medium text-slate-700"
+              className="glass glass-hover mt-4 flex w-full items-center justify-center gap-1.5 rounded-xl px-4 py-3 text-sm font-medium text-ink-soft"
             >
-              ← Analisar outro vídeo
+              <ArrowLeft size={16} /> Analisar outro vídeo
             </button>
           </>
         )}

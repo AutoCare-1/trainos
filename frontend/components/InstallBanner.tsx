@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { X } from 'lucide-react'
 import InstallAppModal from '@/components/InstallAppModal'
 import { estaInstalado, useValorDoNavegador } from '@/lib/push'
 
@@ -21,8 +22,8 @@ export default function InstallBanner() {
   return (
     <>
       <div className="glass mb-4 flex items-center justify-between gap-3 rounded-2xl p-3.5">
-        <p className="min-w-0 flex-1 text-sm text-slate-600">
-          <span className="font-semibold text-slate-900">Instale o app</span> na tela inicial pra abrir mais rápido e
+        <p className="min-w-0 flex-1 text-sm text-ink-soft">
+          <span className="font-semibold text-ink">Instale o app</span> na tela inicial pra abrir mais rápido e
           receber notificações.
         </p>
         <div className="flex shrink-0 items-center gap-2">
@@ -32,9 +33,9 @@ export default function InstallBanner() {
           <button
             onClick={() => setFechado(true)}
             aria-label="Fechar"
-            className="flex h-7 w-7 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-900/5 hover:text-slate-600"
+            className="flex h-7 w-7 items-center justify-center rounded-full text-ink-muted transition hover:bg-ink/5 hover:text-ink-soft"
           >
-            ✕
+            <X size={16} />
           </button>
         </div>
       </div>

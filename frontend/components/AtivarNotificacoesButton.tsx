@@ -41,9 +41,9 @@ export default function AtivarNotificacoesButton({ caminhoSubscribe }: { caminho
   return (
     <div className="glass mb-4 flex items-center justify-between gap-3 rounded-2xl p-4">
       <div>
-        <p className="text-sm font-semibold text-slate-900">Ativar notificações</p>
-        <p className="text-xs text-slate-500">Receba avisos de treino, mensagens e conquistas direto no celular.</p>
-        {mensagem && <p className="mt-1 text-xs text-rose-500">{mensagem}</p>}
+        <p className="text-sm font-semibold text-ink">Ativar notificações</p>
+        <p className="text-xs text-ink-muted">Receba avisos de treino, mensagens e conquistas direto no celular.</p>
+        {mensagem && <p className="mt-1 text-xs text-danger">{mensagem}</p>}
       </div>
       <button onClick={ativar} disabled={ativando} className="btn-primary shrink-0 rounded-xl px-4 py-2 text-xs">
         {ativando ? 'Ativando...' : 'Ativar'}

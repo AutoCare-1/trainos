@@ -53,16 +53,16 @@ export default function OnboardingAvaliacao({
   }
 
   const inputCls = 'input-dark w-full rounded-xl px-4 py-2.5 text-sm'
-  const labelCls = 'mb-1.5 block text-sm font-medium text-slate-600'
-  const secaoTituloCls = 'mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500'
+  const labelCls = 'mb-1.5 block text-sm font-medium text-ink-soft'
+  const secaoTituloCls = 'mb-3 text-xs font-semibold uppercase tracking-wider text-ink-muted'
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-4 py-10">
       <div className="w-full max-w-md">
         <div className="mb-6 flex flex-col items-center text-center">
           <Image src="/clubemais-logo.png" alt="Clube Mais" width={200} height={56} priority className="h-12 w-auto" />
-          <h1 className="mt-5 text-xl font-bold text-slate-900">Oi, {nome.split(' ')[0]}!</h1>
-          <p className="mt-2 text-sm text-slate-500">
+          <h1 className="mt-5 text-xl font-bold text-ink">Oi, {nome.split(' ')[0]}!</h1>
+          <p className="mt-2 text-sm text-ink-muted">
             Antes de ver seu treino, responda essa anamnese inicial — leva só alguns minutos e ajuda seu professor a
             montar o treino certo pra você.
           </p>
@@ -79,7 +79,7 @@ export default function OnboardingAvaliacao({
             <button
               type="button"
               onClick={() => fotoInputRef.current?.click()}
-              className="text-xs font-medium text-[#2648b3]"
+              className="text-xs font-medium text-brand"
             >
               {fotoPreview ? 'Trocar foto' : 'Adicionar sua foto (opcional)'}
             </button>
@@ -106,12 +106,12 @@ export default function OnboardingAvaliacao({
             <h2 className={secaoTituloCls}>Saúde</h2>
             <div className="space-y-2.5">
               {PAR_Q_PERGUNTAS.map(({ chave, texto }) => (
-                <label key={chave} className="flex cursor-pointer items-start gap-2.5 text-sm text-slate-700">
+                <label key={chave} className="flex cursor-pointer items-start gap-2.5 text-sm text-ink-soft">
                   <input
                     type="checkbox"
                     checked={parQ[chave]}
                     onChange={(e) => setParQ({ ...parQ, [chave]: e.target.checked })}
-                    className="mt-0.5 h-4 w-4 shrink-0 accent-[#2648b3]"
+                    className="mt-0.5 h-4 w-4 shrink-0 accent-brand"
                   />
                   {texto}
                 </label>
@@ -274,7 +274,7 @@ export default function OnboardingAvaliacao({
             </div>
             <div>
               <span className={labelCls}>Já treinou com personal trainer antes?</span>
-              <div className="flex gap-4 text-sm text-slate-700">
+              <div className="flex gap-4 text-sm text-ink-soft">
                 <label className="flex cursor-pointer items-center gap-1.5">
                   <input
                     type="radio"
@@ -286,7 +286,7 @@ export default function OnboardingAvaliacao({
                         historico_atividade_fisica: { ...anamnese.historico_atividade_fisica, treinou_com_personal: true },
                       })
                     }
-                    className="accent-[#2648b3]"
+                    className="accent-brand"
                   />
                   Sim
                 </label>
@@ -304,7 +304,7 @@ export default function OnboardingAvaliacao({
                         },
                       })
                     }
-                    className="accent-[#2648b3]"
+                    className="accent-brand"
                   />
                   Não
                 </label>
@@ -317,7 +317,7 @@ export default function OnboardingAvaliacao({
             <h2 className={secaoTituloCls}>Objetivos</h2>
             <div className="grid grid-cols-2 gap-2">
               {OBJETIVOS_OPCOES.map(({ valor, label }) => (
-                <label key={valor} className="flex cursor-pointer items-start gap-2 text-sm text-slate-700">
+                <label key={valor} className="flex cursor-pointer items-start gap-2 text-sm text-ink-soft">
                   <input
                     type="checkbox"
                     checked={anamnese.objetivos.selecionados.includes(valor)}
@@ -330,7 +330,7 @@ export default function OnboardingAvaliacao({
                         },
                       })
                     }
-                    className="mt-0.5 h-4 w-4 shrink-0 accent-[#2648b3]"
+                    className="mt-0.5 h-4 w-4 shrink-0 accent-brand"
                   />
                   {label}
                 </label>
@@ -369,7 +369,7 @@ export default function OnboardingAvaliacao({
             </div>
             <div>
               <span className={labelCls}>Nível de estresse</span>
-              <div className="flex gap-4 text-sm text-slate-700">
+              <div className="flex gap-4 text-sm text-ink-soft">
                 {(['baixo', 'medio', 'alto'] as const).map((valor) => (
                   <label key={valor} className="flex cursor-pointer items-center gap-1.5 capitalize">
                     <input
@@ -382,7 +382,7 @@ export default function OnboardingAvaliacao({
                           estilo_de_vida: { ...anamnese.estilo_de_vida, nivel_estresse: valor },
                         })
                       }
-                      className="accent-[#2648b3]"
+                      className="accent-brand"
                     />
                     {valor === 'medio' ? 'Médio' : valor}
                   </label>
@@ -391,7 +391,7 @@ export default function OnboardingAvaliacao({
             </div>
             <div>
               <span className={labelCls}>Qualidade do sono</span>
-              <div className="flex gap-4 text-sm text-slate-700">
+              <div className="flex gap-4 text-sm text-ink-soft">
                 {(['boa', 'regular', 'ruim'] as const).map((valor) => (
                   <label key={valor} className="flex cursor-pointer items-center gap-1.5 capitalize">
                     <input
@@ -404,7 +404,7 @@ export default function OnboardingAvaliacao({
                           estilo_de_vida: { ...anamnese.estilo_de_vida, qualidade_sono: valor },
                         })
                       }
-                      className="accent-[#2648b3]"
+                      className="accent-brand"
                     />
                     {valor}
                   </label>
@@ -459,7 +459,7 @@ export default function OnboardingAvaliacao({
             </div>
             <div>
               <span className={labelCls}>Hábito de fumar?</span>
-              <div className="flex gap-4 text-sm text-slate-700">
+              <div className="flex gap-4 text-sm text-ink-soft">
                 <label className="flex cursor-pointer items-center gap-1.5">
                   <input
                     type="radio"
@@ -468,7 +468,7 @@ export default function OnboardingAvaliacao({
                     onChange={() =>
                       setAnamnese({ ...anamnese, estilo_de_vida: { ...anamnese.estilo_de_vida, fumante: true } })
                     }
-                    className="accent-[#2648b3]"
+                    className="accent-brand"
                   />
                   Sim
                 </label>
@@ -483,7 +483,7 @@ export default function OnboardingAvaliacao({
                         estilo_de_vida: { ...anamnese.estilo_de_vida, fumante: false, tempo_fumante: '' },
                       })
                     }
-                    className="accent-[#2648b3]"
+                    className="accent-brand"
                   />
                   Não
                 </label>
@@ -525,7 +525,7 @@ export default function OnboardingAvaliacao({
             </div>
             <div>
               <span className={labelCls}>Prefere treinos</span>
-              <div className="flex flex-col gap-1.5 text-sm text-slate-700">
+              <div className="flex flex-col gap-1.5 text-sm text-ink-soft">
                 <label className="flex cursor-pointer items-center gap-1.5">
                   <input
                     type="radio"
@@ -537,7 +537,7 @@ export default function OnboardingAvaliacao({
                         motivacao: { ...anamnese.motivacao, preferencia_intensidade: 'curtos_intensos' },
                       })
                     }
-                    className="accent-[#2648b3]"
+                    className="accent-brand"
                   />
                   Curtos e intensos
                 </label>
@@ -552,7 +552,7 @@ export default function OnboardingAvaliacao({
                         motivacao: { ...anamnese.motivacao, preferencia_intensidade: 'longos_moderados' },
                       })
                     }
-                    className="accent-[#2648b3]"
+                    className="accent-brand"
                   />
                   Longos e moderados
                 </label>
@@ -560,7 +560,7 @@ export default function OnboardingAvaliacao({
             </div>
             <div>
               <span className={labelCls}>Prefere treinar</span>
-              <div className="flex flex-col gap-1.5 text-sm text-slate-700">
+              <div className="flex flex-col gap-1.5 text-sm text-ink-soft">
                 {(
                   [
                     ['sozinho', 'Sozinho'],
@@ -579,7 +579,7 @@ export default function OnboardingAvaliacao({
                           motivacao: { ...anamnese.motivacao, preferencia_companhia: valor },
                         })
                       }
-                      className="accent-[#2648b3]"
+                      className="accent-brand"
                     />
                     {label}
                   </label>
@@ -631,7 +631,7 @@ export default function OnboardingAvaliacao({
               <span className={labelCls}>Onde pretende treinar?</span>
               <div className="grid grid-cols-2 gap-2">
                 {LOCAL_TREINO_OPCOES.map(({ valor, label }) => (
-                  <label key={valor} className="flex cursor-pointer items-center gap-2 text-sm text-slate-700">
+                  <label key={valor} className="flex cursor-pointer items-center gap-2 text-sm text-ink-soft">
                     <input
                       type="checkbox"
                       checked={anamnese.disponibilidade.local_treino.includes(valor)}
@@ -644,7 +644,7 @@ export default function OnboardingAvaliacao({
                           },
                         })
                       }
-                      className="h-4 w-4 shrink-0 accent-[#2648b3]"
+                      className="h-4 w-4 shrink-0 accent-brand"
                     />
                     {label}
                   </label>
@@ -667,7 +667,7 @@ export default function OnboardingAvaliacao({
             />
           </div>
 
-          {erro && <p className="text-sm text-rose-500">{erro}</p>}
+          {erro && <p className="text-sm text-danger">{erro}</p>}
 
           <button type="submit" disabled={enviando} className="btn-primary w-full rounded-xl px-4 py-3 text-sm">
             {enviando ? 'Enviando...' : 'Continuar'}

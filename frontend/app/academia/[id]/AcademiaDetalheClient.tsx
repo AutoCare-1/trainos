@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { Check } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import BackLink from '@/components/BackLink'
 import Avatar from '@/components/Avatar'
@@ -96,16 +97,16 @@ export default function AcademiaDetalheClient({ submissionId }: { submissionId: 
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
         <BackLink href="/academia" label="Voltar às análises" />
 
-        {erro && <p className="mb-4 text-sm text-rose-500">{erro}</p>}
-        {!detalhe && !erro && <p className="text-slate-500">Carregando...</p>}
+        {erro && <p className="mb-4 text-sm text-danger">{erro}</p>}
+        {!detalhe && !erro && <p className="text-ink-muted">Carregando...</p>}
 
         {detalhe && (
           <>
             <div className="mb-6 flex items-center gap-4">
               <Avatar nome={detalhe.submission.student_name} fotoUrl={detalhe.submission.student_photo_url} tamanho="lg" />
               <div>
-                <h1 className="text-xl font-bold text-slate-900">{detalhe.submission.student_name}</h1>
-                <p className="text-sm text-slate-500">
+                <h1 className="text-xl font-bold text-ink">{detalhe.submission.student_name}</h1>
+                <p className="text-sm text-ink-muted">
                   {new Date(detalhe.submission.created_at).toLocaleDateString('pt-BR', {
                     day: '2-digit',
                     month: 'long',
@@ -116,17 +117,17 @@ export default function AcademiaDetalheClient({ submissionId }: { submissionId: 
             </div>
 
             {detalhe.submission.status === 'analyzing' && (
-              <div className="glass rounded-2xl p-6 text-center text-slate-500">Ainda analisando essa mídia...</div>
+              <div className="glass rounded-2xl p-6 text-center text-ink-muted">Ainda analisando essa mídia...</div>
             )}
             {detalhe.submission.status === 'failed' && (
-              <div className="glass rounded-2xl border border-rose-200 bg-rose-50 p-6 text-center text-rose-600">
+              <div className="glass rounded-2xl border border-danger/30 bg-danger-soft p-6 text-center text-danger">
                 Falha ao analisar: {detalhe.submission.error_message}
               </div>
             )}
 
             {detalhe.assets.length > 0 && (
               <div className="glass mb-4 rounded-2xl p-5">
-                <h2 className="mb-3 font-semibold text-slate-900">Mídia enviada</h2>
+                <h2 className="mb-3 font-semibold text-ink">Mídia enviada</h2>
                 <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
                   {detalhe.assets.map((a) => (
                     // eslint-disable-next-line @next/next/no-img-element -- foto/frame vem do backend
@@ -143,22 +144,22 @@ export default function AcademiaDetalheClient({ submissionId }: { submissionId: 
 
             {detalhe.analysis && (
               <div className="glass mb-4 rounded-2xl p-5">
-                <h2 className="mb-1 font-semibold text-slate-900">
+                <h2 className="mb-1 font-semibold text-ink">
                   Máquinas detectadas ({detalhe.analysis.total_unique_machines})
                 </h2>
                 {detalhe.analysis.zones_identified.length > 0 && (
-                  <p className="mb-3 text-sm text-slate-500">Zonas: {detalhe.analysis.zones_identified.join(', ')}</p>
+                  <p className="mb-3 text-sm text-ink-muted">Zonas: {detalhe.analysis.zones_identified.join(', ')}</p>
                 )}
                 <div className="space-y-1.5">
                   {detalhe.analysis.machines_json.machines.map((m, i) => (
-                    <div key={i} className="rounded-xl bg-slate-900/3 px-3 py-2 text-sm">
-                      <span className="font-medium text-slate-800">{m.name}</span>
-                      <span className="text-slate-500"> — {m.primary_muscles.join(', ')}</span>
+                    <div key={i} className="rounded-xl bg-ink/3 px-3 py-2 text-sm">
+                      <span className="font-medium text-ink">{m.name}</span>
+                      <span className="text-ink-muted"> — {m.primary_muscles.join(', ')}</span>
                     </div>
                   ))}
                 </div>
                 {detalhe.analysis.gaps.length > 0 && (
-                  <div className="mt-3 rounded-xl border-l-4 border-amber-400 bg-amber-50 px-3 py-2 text-sm text-amber-700">
+                  <div className="mt-3 rounded-xl border-l-4 border-warning bg-warning-soft px-3 py-2 text-sm text-warning">
                     {detalhe.analysis.gaps.join(' · ')}
                   </div>
                 )}
@@ -167,13 +168,13 @@ export default function AcademiaDetalheClient({ submissionId }: { submissionId: 
 
             {detalhe.recommendation && (
               <div className="glass rounded-2xl p-5">
-                <h2 className="mb-1 font-semibold text-slate-900">{detalhe.recommendation.name}</h2>
+                <h2 className="mb-1 font-semibold text-ink">{detalhe.recommendation.name}</h2>
                 {detalhe.recommendation.reasoning && (
-                  <p className="mb-4 text-sm text-slate-500">{detalhe.recommendation.reasoning}</p>
+                  <p className="mb-4 text-sm text-ink-muted">{detalhe.recommendation.reasoning}</p>
                 )}
 
                 {detalhe.recommendation.approval_status !== 'pending' && (
-                  <p className="mb-4 text-sm font-medium text-slate-600">
+                  <p className="mb-4 text-sm font-medium text-ink-soft">
                     Status:{' '}
                     {detalhe.recommendation.approval_status === 'approved' ? 'Aprovado' : 'Rejeitado'}
                   </p>
@@ -181,15 +182,15 @@ export default function AcademiaDetalheClient({ submissionId }: { submissionId: 
 
                 <div className="space-y-2">
                   {itens.map((item, idx) => (
-                    <div key={`${item.exercise_id}-${idx}`} className="flex flex-wrap items-center gap-2 rounded-xl bg-slate-900/3 p-3">
-                      <span className="min-w-[10rem] flex-1 text-sm font-medium text-slate-800">{item.exercise_name}</span>
+                    <div key={`${item.exercise_id}-${idx}`} className="flex flex-wrap items-center gap-2 rounded-xl bg-ink/3 p-3">
+                      <span className="min-w-[10rem] flex-1 text-sm font-medium text-ink">{item.exercise_name}</span>
                       <input
                         type="number"
                         min={1}
                         value={item.sets}
                         onChange={(e) => atualizarItem(idx, 'sets', Number(e.target.value))}
                         disabled={detalhe.recommendation!.approval_status !== 'pending'}
-                        className="w-16 rounded-lg border border-slate-200 px-2 py-1 text-sm"
+                        className="w-16 rounded-lg border border-line px-2 py-1 text-sm"
                         title="Séries"
                       />
                       <input
@@ -197,7 +198,7 @@ export default function AcademiaDetalheClient({ submissionId }: { submissionId: 
                         value={item.reps}
                         onChange={(e) => atualizarItem(idx, 'reps', e.target.value)}
                         disabled={detalhe.recommendation!.approval_status !== 'pending'}
-                        className="w-20 rounded-lg border border-slate-200 px-2 py-1 text-sm"
+                        className="w-20 rounded-lg border border-line px-2 py-1 text-sm"
                         title="Repetições"
                       />
                       <input
@@ -206,13 +207,13 @@ export default function AcademiaDetalheClient({ submissionId }: { submissionId: 
                         value={item.rest_seconds}
                         onChange={(e) => atualizarItem(idx, 'rest_seconds', Number(e.target.value))}
                         disabled={detalhe.recommendation!.approval_status !== 'pending'}
-                        className="w-20 rounded-lg border border-slate-200 px-2 py-1 text-sm"
+                        className="w-20 rounded-lg border border-line px-2 py-1 text-sm"
                         title="Descanso (s)"
                       />
                       {detalhe.recommendation!.approval_status === 'pending' && (
                         <button
                           onClick={() => removerItem(idx)}
-                          className="rounded-lg px-2 py-1 text-xs font-medium text-rose-500 hover:bg-rose-50"
+                          className="rounded-lg px-2 py-1 text-xs font-medium text-danger hover:bg-danger"
                         >
                           Remover
                         </button>
@@ -226,14 +227,20 @@ export default function AcademiaDetalheClient({ submissionId }: { submissionId: 
                     <button
                       onClick={aprovar}
                       disabled={processando}
-                      className="btn-primary flex-1 rounded-xl px-4 py-3 text-sm disabled:opacity-50"
+                      className="btn-primary flex flex-1 items-center justify-center gap-1.5 rounded-xl px-4 py-3 text-sm disabled:opacity-50"
                     >
-                      {processando ? 'Aprovando...' : '✓ Aprovar treino'}
+                      {processando ? (
+                        'Aprovando...'
+                      ) : (
+                        <>
+                          <Check size={16} /> Aprovar treino
+                        </>
+                      )}
                     </button>
                     <button
                       onClick={rejeitar}
                       disabled={processando}
-                      className="glass glass-hover flex-1 rounded-xl px-4 py-3 text-sm font-medium text-rose-600 disabled:opacity-50"
+                      className="glass glass-hover flex-1 rounded-xl px-4 py-3 text-sm font-medium text-danger disabled:opacity-50"
                     >
                       Rejeitar
                     </button>

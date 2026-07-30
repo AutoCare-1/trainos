@@ -60,18 +60,18 @@ export default function NotificacoesPage() {
       <Navbar />
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Notificações</h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <h1 className="font-display text-2xl font-bold tracking-tight text-ink">Notificações</h1>
+          <p className="mt-1 text-sm text-ink-muted">
             Escolha quais avisos os alunos (e você) recebem por push. Isso vale pra todos os alunos por enquanto.
           </p>
         </div>
 
-        {carregando && <p className="text-slate-500">Carregando...</p>}
-        {erro && <p className="text-sm text-rose-500">{erro}</p>}
+        {carregando && <p className="text-ink-muted">Carregando...</p>}
+        {erro && <p className="text-sm text-danger">{erro}</p>}
 
         {categoriasOrdenadas.map((categoria) => (
           <div key={categoria} className="mb-6">
-            <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">
+            <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-ink-muted">
               {ROTULO_CATEGORIA[categoria] ?? categoria}
             </h2>
             <div className="glass divide-y divide-black/6 rounded-2xl">
@@ -79,12 +79,12 @@ export default function NotificacoesPage() {
                 <div key={tipo.chave} className="flex items-center justify-between gap-4 p-4">
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <p className="font-medium text-slate-900">{tipo.nome}</p>
-                      <span className="shrink-0 rounded-full bg-slate-900/6 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+                      <p className="font-medium text-ink">{tipo.nome}</p>
+                      <span className="shrink-0 rounded-full bg-ink/6 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
                         {tipo.publico === 'aluno' ? 'Aluno' : 'Você'}
                       </span>
                     </div>
-                    {tipo.descricao && <p className="mt-0.5 text-sm text-slate-500">{tipo.descricao}</p>}
+                    {tipo.descricao && <p className="mt-0.5 text-sm text-ink-muted">{tipo.descricao}</p>}
                   </div>
                   <button
                     onClick={() => alternar(tipo)}
@@ -92,8 +92,8 @@ export default function NotificacoesPage() {
                     aria-pressed={tipo.enabled}
                     className={`flex shrink-0 items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-medium transition ${
                       tipo.enabled
-                        ? 'border border-violet-300 bg-violet-50 text-violet-700'
-                        : 'border border-black/10 bg-black/4 text-slate-500'
+                        ? 'border border-accent/30 bg-accent/10 text-accent-deep'
+                        : 'border border-black/10 bg-black/4 text-ink-muted'
                     }`}
                   >
                     {tipo.enabled ? 'Ativado' : 'Desativado'}

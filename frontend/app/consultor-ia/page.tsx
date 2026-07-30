@@ -55,18 +55,18 @@ export default function ConsultorIaPage() {
       <Navbar />
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-4 py-8">
         <div className="mb-4">
-          <h1 className="mb-1 text-2xl font-bold tracking-tight text-slate-900">Consultor IA</h1>
-          <p className="text-sm text-slate-500">
+          <h1 className="mb-1 font-display text-2xl font-bold tracking-tight text-ink">Consultor IA</h1>
+          <p className="text-sm text-ink-muted">
             Pergunte sobre sua base de alunos em linguagem natural — ex: &quot;quem não fez check-in essa
             semana?&quot;, &quot;quem bateu PR recentemente?&quot;, &quot;como está o João?&quot;.
           </p>
         </div>
 
-        {erro && <p className="mb-3 text-sm text-rose-500">{erro}</p>}
+        {erro && <p className="mb-3 text-sm text-danger">{erro}</p>}
 
         <div className="glass flex flex-1 flex-col overflow-hidden rounded-2xl" style={{ minHeight: '32rem' }}>
           {carregando ? (
-            <p className="p-6 text-sm text-slate-500">Carregando...</p>
+            <p className="p-6 text-sm text-ink-muted">Carregando...</p>
           ) : (
             <ChatBox
               messages={messages}

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { ChevronUp, ChevronDown } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import BackLink from '@/components/BackLink'
 import ExerciseAnimation from '@/components/ExerciseAnimation'
@@ -61,18 +62,18 @@ export default function ModelosPage() {
       <Navbar />
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
         <BackLink href="/dashboard" label="Voltar ao painel" />
-        <h1 className="mb-1 text-2xl font-bold tracking-tight text-slate-900">Modelos de treino</h1>
-        <p className="mb-6 text-sm text-slate-500">
+        <h1 className="mb-1 font-display text-2xl font-bold tracking-tight text-ink">Modelos de treino</h1>
+        <p className="mb-6 text-sm text-ink-muted">
           Salve um treino como modelo na tela &quot;Novo treino&quot; pra reaproveitar com outros alunos.
         </p>
 
-        {erro && <p className="mb-4 text-sm text-rose-500">{erro}</p>}
-        {templates === null && !erro && <p className="text-slate-500">Carregando...</p>}
+        {erro && <p className="mb-4 text-sm text-danger">{erro}</p>}
+        {templates === null && !erro && <p className="text-ink-muted">Carregando...</p>}
 
         {templates?.length === 0 && (
           <div className="glass rounded-2xl border-dashed p-10 text-center">
-            <p className="text-slate-500">Nenhum modelo salvo ainda.</p>
-            <p className="mt-1 text-sm text-slate-400">
+            <p className="text-ink-muted">Nenhum modelo salvo ainda.</p>
+            <p className="mt-1 text-sm text-ink-muted">
               Monte um treino, clique em &quot;Salvar como modelo&quot; e ele aparece aqui.
             </p>
           </div>
@@ -87,15 +88,17 @@ export default function ModelosPage() {
                   className="flex flex-1 items-center justify-between gap-3 text-left"
                 >
                   <div>
-                    <p className="font-semibold text-slate-900">{t.name}</p>
-                    <p className="text-sm text-slate-500">{t.total_exercicios ?? 0} exercícios</p>
+                    <p className="font-semibold text-ink">{t.name}</p>
+                    <p className="text-sm text-ink-muted">{t.total_exercicios ?? 0} exercícios</p>
                   </div>
-                  <span className="text-slate-400">{aberto === t.id ? '▲' : '▼'}</span>
+                  <span className="text-ink-muted">
+                    {aberto === t.id ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                  </span>
                 </button>
                 <button
                   onClick={() => remover(t.id)}
                   disabled={removendo === t.id}
-                  className="shrink-0 text-xs text-rose-500 transition hover:text-rose-600"
+                  className="shrink-0 text-xs text-danger transition hover:text-danger"
                 >
                   {removendo === t.id ? 'Removendo...' : 'Remover'}
                 </button>
@@ -103,28 +106,28 @@ export default function ModelosPage() {
 
               {aberto === t.id && (
                 <div className="mt-4 space-y-2 border-t border-black/6 pt-4">
-                  {!exercicios[t.id] && <p className="text-sm text-slate-400">Carregando exercícios...</p>}
+                  {!exercicios[t.id] && <p className="text-sm text-ink-muted">Carregando exercícios...</p>}
                   {exercicios[t.id]?.map((ex) => (
-                    <div key={ex.id} className="flex items-center gap-3 rounded-xl bg-slate-900/3 px-3 py-2">
+                    <div key={ex.id} className="flex items-center gap-3 rounded-xl bg-ink/3 px-3 py-2">
                       <ExerciseAnimation
                         name={ex.exercise_name}
                         muscleGroup={ex.muscle_group}
                         imageUrl={ex.image_url}
                         imageCredit={ex.image_credit}
                         size="sm"
-                        className="shrink-0 rounded-lg text-[#2648b3]"
+                        className="shrink-0 rounded-lg text-brand"
                       />
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-slate-800">
+                        <p className="text-sm font-medium text-ink">
                           {ex.exercise_name}
                           {ex.structure_type && ex.structure_type !== 'tradicional' && (
-                            <span className="ml-2 rounded-lg bg-violet-500/10 px-2 py-0.5 text-xs font-normal text-violet-600">
+                            <span className="ml-2 rounded-lg bg-accent/10 px-2 py-0.5 text-xs font-normal text-accent-deep">
                               {rotuloEstrutura(ex.structure_type).label}
                               {ex.group_label ? ` ${ex.group_label}` : ''}
                             </span>
                           )}
                         </p>
-                        <p className="text-xs text-slate-500">
+                        <p className="text-xs text-ink-muted">
                           {ex.sets} séries · {ex.reps} reps{ex.load_kg ? ` · ${ex.load_kg}kg` : ''}
                           {ex.rest_seconds ? ` · ${ex.rest_seconds}s descanso` : ''}
                         </p>

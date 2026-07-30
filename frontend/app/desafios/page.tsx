@@ -9,9 +9,9 @@ import { api, ApiError } from '@/lib/api'
 import { Challenge } from '@/lib/types'
 
 const STATUS_ESTILO: Record<string, string> = {
-  ativo: 'bg-emerald-500/15 text-emerald-600',
-  agendado: 'bg-amber-500/15 text-amber-600',
-  encerrado: 'bg-slate-900/6 text-slate-500',
+  ativo: 'bg-success/15 text-success',
+  agendado: 'bg-warning/15 text-warning',
+  encerrado: 'bg-ink/6 text-ink-muted',
 }
 
 const STATUS_LABEL: Record<string, string> = {
@@ -52,8 +52,8 @@ export default function DesafiosPage() {
         <BackLink href="/dashboard" label="Voltar ao painel" />
         <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="mb-1 text-2xl font-bold tracking-tight text-slate-900">Desafios</h1>
-            <p className="text-sm text-slate-500">
+            <h1 className="mb-1 font-display text-2xl font-bold tracking-tight text-ink">Desafios</h1>
+            <p className="text-sm text-ink-muted">
               Crie um desafio com prazo — pontos vêm de treinos concluídos, não de carga, então todo mundo compete de
               igual pra igual.
             </p>
@@ -63,13 +63,13 @@ export default function DesafiosPage() {
           </Link>
         </div>
 
-        {erro && <p className="mb-4 text-sm text-rose-500">{erro}</p>}
-        {challenges === null && !erro && <p className="text-slate-500">Carregando...</p>}
+        {erro && <p className="mb-4 text-sm text-danger">{erro}</p>}
+        {challenges === null && !erro && <p className="text-ink-muted">Carregando...</p>}
 
         {challenges?.length === 0 && (
           <div className="glass rounded-2xl border-dashed p-10 text-center">
-            <p className="text-slate-500">Nenhum desafio criado ainda.</p>
-            <p className="mt-1 text-sm text-slate-400">Crie um e convide seus alunos pra participar.</p>
+            <p className="text-ink-muted">Nenhum desafio criado ainda.</p>
+            <p className="mt-1 text-sm text-ink-muted">Crie um e convide seus alunos pra participar.</p>
           </div>
         )}
 
@@ -81,8 +81,8 @@ export default function DesafiosPage() {
               className="glass glass-hover flex items-center justify-between gap-3 rounded-2xl p-5"
             >
               <div className="min-w-0">
-                <p className="font-semibold text-slate-900">{c.name}</p>
-                <p className="text-sm text-slate-500">
+                <p className="font-semibold text-ink">{c.name}</p>
+                <p className="text-sm text-ink-muted">
                   {formatarPeriodo(c.start_date, c.end_date)} · {c.total_participantes ?? 0} aluno
                   {c.total_participantes === 1 ? '' : 's'}
                 </p>

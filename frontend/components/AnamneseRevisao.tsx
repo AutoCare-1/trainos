@@ -36,16 +36,16 @@ export default function AnamneseRevisao({
   }
 
   const inputCls = 'input-dark w-full rounded-xl px-4 py-2.5 text-sm'
-  const labelCls = 'mb-1.5 block text-sm font-medium text-slate-600'
-  const secaoTituloCls = 'mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500'
+  const labelCls = 'mb-1.5 block text-sm font-medium text-ink-soft'
+  const secaoTituloCls = 'mb-3 text-xs font-semibold uppercase tracking-wider text-ink-muted'
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-4 py-10">
       <div className="w-full max-w-md">
         <div className="mb-6 flex flex-col items-center text-center">
           <Image src="/clubemais-logo.png" alt="Clube Mais" width={200} height={56} priority className="h-12 w-auto" />
-          <h1 className="mt-5 text-xl font-bold text-slate-900">Oi, {nome.split(' ')[0]}!</h1>
-          <p className="mt-2 text-sm text-slate-500">
+          <h1 className="mt-5 text-xl font-bold text-ink">Oi, {nome.split(' ')[0]}!</h1>
+          <p className="mt-2 text-sm text-ink-muted">
             Seu treino &quot;{nomeTreino}&quot; chegou ao fim do período — antes do próximo, seu professor pediu
             pra você responder essa revisão rápida.
           </p>
@@ -56,7 +56,7 @@ export default function AnamneseRevisao({
             <h2 className={secaoTituloCls}>Avaliação do treino</h2>
             <div>
               <span className={labelCls}>Como você avalia sua experiência com os treinos até agora?</span>
-              <div className="flex flex-wrap gap-4 text-sm text-slate-700">
+              <div className="flex flex-wrap gap-4 text-sm text-ink-soft">
                 {(
                   [
                     ['excelente', 'Excelente'],
@@ -71,7 +71,7 @@ export default function AnamneseRevisao({
                       name="avaliacao_treino"
                       checked={respostas.avaliacao_treino === valor}
                       onChange={() => setRespostas({ ...respostas, avaliacao_treino: valor })}
-                      className="accent-[#2648b3]"
+                      className="accent-brand"
                     />
                     {label}
                   </label>
@@ -98,7 +98,7 @@ export default function AnamneseRevisao({
             </div>
             <div>
               <span className={labelCls}>Você percebeu evolução nos seus objetivos iniciais?</span>
-              <div className="flex flex-col gap-1.5 text-sm text-slate-700">
+              <div className="flex flex-col gap-1.5 text-sm text-ink-soft">
                 {(
                   [
                     ['sim_bastante', 'Sim, bastante'],
@@ -113,7 +113,7 @@ export default function AnamneseRevisao({
                       name="percebeu_evolucao"
                       checked={respostas.percebeu_evolucao === valor}
                       onChange={() => setRespostas({ ...respostas, percebeu_evolucao: valor })}
-                      className="accent-[#2648b3]"
+                      className="accent-brand"
                     />
                     {label}
                   </label>
@@ -124,7 +124,7 @@ export default function AnamneseRevisao({
               <span className={labelCls}>Em quais aspectos você sente maior progresso?</span>
               <div className="grid grid-cols-2 gap-2">
                 {ASPECTOS_PROGRESSO_OPCOES.map(({ valor, label }) => (
-                  <label key={valor} className="flex cursor-pointer items-start gap-2 text-sm text-slate-700">
+                  <label key={valor} className="flex cursor-pointer items-start gap-2 text-sm text-ink-soft">
                     <input
                       type="checkbox"
                       checked={respostas.aspectos_progresso.includes(valor)}
@@ -134,7 +134,7 @@ export default function AnamneseRevisao({
                           aspectos_progresso: alternarNoConjunto(respostas.aspectos_progresso, valor),
                         })
                       }
-                      className="mt-0.5 h-4 w-4 shrink-0 accent-[#2648b3]"
+                      className="mt-0.5 h-4 w-4 shrink-0 accent-brand"
                     />
                     {label}
                   </label>
@@ -153,7 +153,7 @@ export default function AnamneseRevisao({
             <h2 className={secaoTituloCls}>Adesão e rotina</h2>
             <div>
               <span className={labelCls}>Conseguiu manter a frequência planejada?</span>
-              <div className="flex gap-4 text-sm text-slate-700">
+              <div className="flex gap-4 text-sm text-ink-soft">
                 {(
                   [
                     ['sim', 'Sim'],
@@ -167,7 +167,7 @@ export default function AnamneseRevisao({
                       name="manteve_frequencia"
                       checked={respostas.manteve_frequencia === valor}
                       onChange={() => setRespostas({ ...respostas, manteve_frequencia: valor })}
-                      className="accent-[#2648b3]"
+                      className="accent-brand"
                     />
                     {label}
                   </label>
@@ -225,7 +225,7 @@ export default function AnamneseRevisao({
             </div>
           </div>
 
-          {erro && <p className="text-sm text-rose-500">{erro}</p>}
+          {erro && <p className="text-sm text-danger">{erro}</p>}
 
           <button type="submit" disabled={enviando} className="btn-primary w-full rounded-xl px-4 py-3 text-sm">
             {enviando ? 'Enviando...' : 'Enviar revisão'}

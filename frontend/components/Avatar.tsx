@@ -1,12 +1,6 @@
 import { resolveMediaUrl } from '@/lib/api'
 
-const CORES = [
-  'from-emerald-400 to-teal-500',
-  'from-cyan-400 to-blue-500',
-  'from-violet-400 to-purple-500',
-  'from-rose-400 to-pink-500',
-  'from-amber-400 to-orange-500',
-]
+const CORES = ['avatar-1', 'avatar-2', 'avatar-3', 'avatar-4', 'avatar-5']
 
 function iniciais(nome: string): string {
   const partes = nome.trim().split(/\s+/)
@@ -44,7 +38,7 @@ export default function Avatar({
   const idx = nome.length % CORES.length
   return (
     <span
-      className={`flex ${classes} shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${CORES[idx]} font-bold text-[#04110d]`}
+      className={`flex ${classes} shrink-0 items-center justify-center rounded-full ${CORES[idx]} font-bold text-[#04110d]`}
     >
       {iniciais(nome)}
     </span>

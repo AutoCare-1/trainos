@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { Check, MessageCircle } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import BackLink from '@/components/BackLink'
 import { api, ApiError } from '@/lib/api'
@@ -59,16 +60,16 @@ export default function NovoAlunoPage() {
         <Navbar />
         <main className="mx-auto w-full max-w-lg flex-1 px-4 py-10">
           <div className="glass rounded-2xl p-7">
-            <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/15 text-2xl">
-              ✓
+            <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-success-soft text-success">
+              <Check size={24} strokeWidth={2.5} />
             </span>
-            <h1 className="text-xl font-bold text-slate-900">Aluno cadastrado!</h1>
-            <p className="mt-2 text-sm text-slate-500">
-              Envie este link para <strong className="text-slate-900">{criado.name}</strong> acessar o portal, ver os
+            <h1 className="font-display text-xl font-bold text-ink">Aluno cadastrado!</h1>
+            <p className="mt-2 text-sm text-ink-muted">
+              Envie este link para <strong className="text-ink">{criado.name}</strong> acessar o portal, ver os
               treinos e conversar com você:
             </p>
             <div className="mt-4 flex items-center gap-2">
-              <code className="input-dark flex-1 truncate rounded-xl px-4 py-3 text-sm text-[#2648b3]">
+              <code className="input-dark flex-1 truncate rounded-xl px-4 py-3 text-sm text-brand">
                 {link}
               </code>
               <button
@@ -77,9 +78,15 @@ export default function NovoAlunoPage() {
                   setCopiado(true)
                   setTimeout(() => setCopiado(false), 2000)
                 }}
-                className="glass glass-hover rounded-xl px-4 py-3 text-sm text-slate-700"
+                className="glass glass-hover flex items-center gap-1.5 rounded-xl px-4 py-3 text-sm text-ink-soft"
               >
-                {copiado ? 'Copiado ✓' : 'Copiar'}
+                {copiado ? (
+                  <>
+                    <Check size={15} className="text-success" /> Copiado
+                  </>
+                ) : (
+                  'Copiar'
+                )}
               </button>
             </div>
             <a
@@ -90,6 +97,7 @@ export default function NovoAlunoPage() {
               rel="noopener noreferrer"
               className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-[#25D366] px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
             >
+              <MessageCircle size={16} />
               Enviar por WhatsApp
             </a>
             <div className="mt-6 flex gap-3">
@@ -98,7 +106,7 @@ export default function NovoAlunoPage() {
               </Link>
               <Link
                 href="/dashboard"
-                className="rounded-xl px-5 py-2.5 text-sm font-medium text-slate-500 transition hover:text-slate-900"
+                className="rounded-xl px-5 py-2.5 text-sm font-medium text-ink-muted transition hover:text-ink"
               >
                 Voltar ao painel
               </Link>
@@ -114,12 +122,12 @@ export default function NovoAlunoPage() {
       <Navbar />
       <main className="mx-auto w-full max-w-lg flex-1 px-4 py-10">
         <BackLink href="/dashboard" label="Voltar ao painel" />
-        <h1 className="mb-1 text-2xl font-bold tracking-tight text-slate-900">Cadastrar aluno</h1>
-        <p className="mb-6 text-sm text-slate-500">O aluno recebe um link de acesso — sem senha, sem fricção.</p>
+        <h1 className="mb-1 font-display text-2xl font-bold tracking-tight text-ink">Cadastrar aluno</h1>
+        <p className="mb-6 text-sm text-ink-muted">O aluno recebe um link de acesso — sem senha, sem fricção.</p>
 
         <form onSubmit={handleSubmit} className="glass space-y-4 rounded-2xl p-6">
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-600">Nome</label>
+            <label className="mb-1.5 block text-sm font-medium text-ink-soft">Nome</label>
             <input
               type="text"
               required
@@ -129,7 +137,7 @@ export default function NovoAlunoPage() {
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-600">E-mail (opcional)</label>
+            <label className="mb-1.5 block text-sm font-medium text-ink-soft">E-mail (opcional)</label>
             <input
               type="email"
               value={email}
@@ -138,7 +146,7 @@ export default function NovoAlunoPage() {
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-600">Telefone (opcional)</label>
+            <label className="mb-1.5 block text-sm font-medium text-ink-soft">Telefone (opcional)</label>
             <input
               type="text"
               value={phone}
@@ -149,7 +157,7 @@ export default function NovoAlunoPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-600">Peso (kg)</label>
+              <label className="mb-1.5 block text-sm font-medium text-ink-soft">Peso (kg)</label>
               <input
                 type="number"
                 min={0}
@@ -161,7 +169,7 @@ export default function NovoAlunoPage() {
               />
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-600">Altura (cm)</label>
+              <label className="mb-1.5 block text-sm font-medium text-ink-soft">Altura (cm)</label>
               <input
                 type="number"
                 min={0}
@@ -175,7 +183,7 @@ export default function NovoAlunoPage() {
           </div>
 
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-600">Objetivo</label>
+            <label className="mb-1.5 block text-sm font-medium text-ink-soft">Objetivo</label>
             <textarea
               placeholder="Ex: hipertrofia, emagrecimento, condicionamento. Vale contar mais: rotina, restrições, prazo de meta etc — isso ajuda a direcionar o treino."
               value={objective}
@@ -187,15 +195,15 @@ export default function NovoAlunoPage() {
 
           <div className="grid grid-cols-2 gap-3 border-t border-black/6 pt-4">
             <div className="col-span-2">
-              <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">
+              <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-ink-muted">
                 Cobrança (opcional)
               </p>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-ink-muted">
                 Usada só pra calcular sua receita no painel &quot;Meu Negócio&quot; — não gera cobrança nenhuma de verdade.
               </p>
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-600">Tipo</label>
+              <label className="mb-1.5 block text-sm font-medium text-ink-soft">Tipo</label>
               <select
                 value={billingType}
                 onChange={(e) => setBillingType(e.target.value as TipoCobranca | '')}
@@ -207,7 +215,7 @@ export default function NovoAlunoPage() {
               </select>
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-600">Valor mensal (R$)</label>
+              <label className="mb-1.5 block text-sm font-medium text-ink-soft">Valor mensal (R$)</label>
               <input
                 type="number"
                 min={0}
@@ -220,7 +228,7 @@ export default function NovoAlunoPage() {
             </div>
           </div>
 
-          {erro && <p className="text-sm text-rose-500">{erro}</p>}
+          {erro && <p className="text-sm text-danger">{erro}</p>}
 
           <button type="submit" disabled={carregando} className="btn-primary w-full rounded-xl px-4 py-3 text-sm">
             {carregando ? 'Salvando...' : 'Cadastrar aluno'}

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { Check, MessageCircle, Camera, ChevronLeft, ChevronRight } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import BackLink from '@/components/BackLink'
 import Avatar from '@/components/Avatar'
@@ -34,8 +35,8 @@ import {
 function LinhaAnamnese({ pergunta, resposta }: { pergunta: string; resposta: string | null | undefined }) {
   if (!resposta) return null
   return (
-    <p className="text-sm text-slate-600">
-      <span className="text-slate-500">{pergunta}:</span> {resposta}
+    <p className="text-sm text-ink-soft">
+      <span className="text-ink-muted">{pergunta}:</span> {resposta}
     </p>
   )
 }
@@ -63,7 +64,7 @@ function FotoAutenticada({ src, alt }: { src: string; alt: string }) {
   }, [src])
 
   if (!url) {
-    return <div className="flex h-full w-full items-center justify-center bg-slate-900/5 text-xs text-slate-400">Carregando...</div>
+    return <div className="flex h-full w-full items-center justify-center bg-ink/5 text-xs text-ink-muted">Carregando...</div>
   }
   // eslint-disable-next-line @next/next/no-img-element -- imagem vem de rota autenticada, não do next/image
   return <img src={url} alt={alt} className="h-full w-full object-cover" />
@@ -260,7 +261,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
       <>
         <Navbar />
         <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
-          <p className="text-sm text-rose-400">{erro}</p>
+          <p className="text-sm text-danger">{erro}</p>
         </main>
       </>
     )
@@ -271,7 +272,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
       <>
         <Navbar />
         <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
-          <p className="text-slate-500">Carregando...</p>
+          <p className="text-ink-muted">Carregando...</p>
         </main>
       </>
     )
@@ -292,16 +293,9 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
               onClick={() => fotoInputRef.current?.click()}
               disabled={enviandoFoto}
               title="Enviar foto do aluno"
-              className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-white text-xs shadow ring-1 ring-black/10 transition hover:bg-slate-50"
+              className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-white text-xs shadow ring-1 ring-black/10 transition hover:bg-surface-soft"
             >
-              {enviandoFoto ? (
-                '…'
-              ) : (
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-                  <circle cx="12" cy="13" r="4" />
-                </svg>
-              )}
+              {enviandoFoto ? '…' : <Camera size={12} strokeWidth={2} />}
             </button>
             <input
               ref={fotoInputRef}
@@ -316,22 +310,22 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
             />
           </div>
           <div className="min-w-0 flex-1">
-            <h1 className="truncate text-2xl font-bold tracking-tight text-slate-900">{student.name}</h1>
+            <h1 className="truncate font-display text-2xl font-bold tracking-tight text-ink">{student.name}</h1>
             {(student.weight_kg || student.height_cm) && (
-              <p className="mt-0.5 text-sm text-slate-500">
+              <p className="mt-0.5 text-sm text-ink-muted">
                 {student.weight_kg ? `${student.weight_kg} kg` : null}
                 {student.weight_kg && student.height_cm ? ' · ' : null}
                 {student.height_cm ? `${student.height_cm} cm` : null}
               </p>
             )}
-            <p className="mt-1 whitespace-pre-wrap text-sm text-slate-500">
+            <p className="mt-1 whitespace-pre-wrap text-sm text-ink-muted">
               {student.objective || 'Sem objetivo definido'}
             </p>
           </div>
           <div className="hidden shrink-0 gap-2 sm:flex">
             <Link
               href={`/alunos/${studentId}/editar`}
-              className="glass glass-hover rounded-xl px-4 py-2.5 text-sm text-slate-700"
+              className="glass glass-hover rounded-xl px-4 py-2.5 text-sm text-ink-soft"
             >
               Editar
             </Link>
@@ -341,9 +335,15 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
                 setCopiado(true)
                 setTimeout(() => setCopiado(false), 2000)
               }}
-              className="glass glass-hover rounded-xl px-4 py-2.5 text-sm text-slate-700"
+              className="glass glass-hover flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-sm text-ink-soft"
             >
-              {copiado ? 'Link copiado ✓' : 'Copiar link'}
+              {copiado ? (
+                <>
+                  <Check size={15} className="text-success" /> Link copiado
+                </>
+              ) : (
+                'Copiar link'
+              )}
             </button>
             <a
               href={`https://wa.me/?text=${encodeURIComponent(
@@ -353,6 +353,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 rounded-xl bg-[#25D366] px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
             >
+              <MessageCircle size={16} />
               WhatsApp
             </a>
           </div>
@@ -360,32 +361,32 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
 
         {resumoCheckins && (
           <section className="glass mb-6 rounded-2xl p-4">
-            <h2 className="mb-3 font-semibold text-slate-900">Check-in</h2>
+            <h2 className="mb-3 font-semibold text-ink">Check-in</h2>
             <div className="flex flex-wrap items-center gap-5">
               <div>
-                <p className="text-xs uppercase tracking-wider text-slate-500">Semana</p>
-                <p className="text-lg font-bold text-slate-900">
+                <p className="text-xs uppercase tracking-wider text-ink-muted">Semana</p>
+                <p className="text-lg font-bold text-ink">
                   {resumoCheckins.semana.dias_com_checkin}
-                  <span className="text-sm font-normal text-slate-400">/{resumoCheckins.semana.total_dias}</span>
+                  <span className="text-sm font-normal text-ink-muted">/{resumoCheckins.semana.total_dias}</span>
                 </p>
               </div>
               <div>
-                <p className="text-xs uppercase tracking-wider text-slate-500">Mês</p>
-                <p className="text-lg font-bold text-slate-900">
+                <p className="text-xs uppercase tracking-wider text-ink-muted">Mês</p>
+                <p className="text-lg font-bold text-ink">
                   {resumoCheckins.mes.dias_com_checkin}
-                  <span className="text-sm font-normal text-slate-400">/{resumoCheckins.mes.total_dias_mes}</span>
+                  <span className="text-sm font-normal text-ink-muted">/{resumoCheckins.mes.total_dias_mes}</span>
                 </p>
               </div>
               <div>
-                <p className="text-xs uppercase tracking-wider text-slate-500">Ano</p>
-                <p className="text-lg font-bold text-slate-900">{resumoCheckins.ano.dias_com_checkin}</p>
+                <p className="text-xs uppercase tracking-wider text-ink-muted">Ano</p>
+                <p className="text-lg font-bold text-ink">{resumoCheckins.ano.dias_com_checkin}</p>
               </div>
               <div className="flex gap-1.5">
                 {resumoCheckins.semana.grid.map((d) => (
                   <span
                     key={d.date}
                     title={d.comment ? `${d.label}: ${d.comment}` : d.label}
-                    className={`h-2.5 w-2.5 rounded-full ${d.checked ? 'bg-emerald-500' : 'bg-slate-900/10'}`}
+                    className={`h-2.5 w-2.5 rounded-full ${d.checked ? 'bg-success' : 'bg-ink/10'}`}
                   />
                 ))}
               </div>
@@ -395,14 +396,14 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
 
         <section className="glass mb-6 rounded-2xl p-4">
           <div className="mb-3 flex items-center justify-between">
-            <div className="flex gap-1 rounded-lg bg-slate-900/5 p-1">
+            <div className="flex gap-1 rounded-lg bg-ink/5 p-1">
               <button
                 onClick={() => {
                   setPeriodoCheckins('week')
                   setRefCheckins(null)
                 }}
                 className={`rounded-md px-3 py-1 text-xs font-medium transition ${
-                  periodoCheckins === 'week' ? 'bg-white text-slate-900 shadow' : 'text-slate-500'
+                  periodoCheckins === 'week' ? 'bg-white text-ink shadow' : 'text-ink-muted'
                 }`}
               >
                 Semana
@@ -413,7 +414,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
                   setRefCheckins(null)
                 }}
                 className={`rounded-md px-3 py-1 text-xs font-medium transition ${
-                  periodoCheckins === 'month' ? 'bg-white text-slate-900 shadow' : 'text-slate-500'
+                  periodoCheckins === 'month' ? 'bg-white text-ink shadow' : 'text-ink-muted'
                 }`}
               >
                 Mês
@@ -424,7 +425,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
                   setRefCheckins(null)
                 }}
                 className={`rounded-md px-3 py-1 text-xs font-medium transition ${
-                  periodoCheckins === 'year' ? 'bg-white text-slate-900 shadow' : 'text-slate-500'
+                  periodoCheckins === 'year' ? 'bg-white text-ink shadow' : 'text-ink-muted'
                 }`}
               >
                 Ano
@@ -434,48 +435,44 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
               <button
                 onClick={() => irParaPeriodoCheckins(-1)}
                 aria-label="Período anterior"
-                className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-900/5"
+                className="flex h-7 w-7 items-center justify-center rounded-lg text-ink-muted transition hover:bg-ink/5"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="15 18 9 12 15 6" />
-                </svg>
+                <ChevronLeft size={16} />
               </button>
               {refCheckins && (
-                <button onClick={() => setRefCheckins(null)} className="px-1 text-xs font-medium text-[#2648b3]">
+                <button onClick={() => setRefCheckins(null)} className="px-1 text-xs font-medium text-brand">
                   Hoje
                 </button>
               )}
               <button
                 onClick={() => irParaPeriodoCheckins(1)}
                 aria-label="Próximo período"
-                className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-900/5"
+                className="flex h-7 w-7 items-center justify-center rounded-lg text-ink-muted transition hover:bg-ink/5"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="9 18 15 12 9 6" />
-                </svg>
+                <ChevronRight size={16} />
               </button>
             </div>
           </div>
 
           {historicoCheckins?.period === 'week' && historicoCheckins.semana && (
-            <p className="mb-3 text-xs text-slate-500">
+            <p className="mb-3 text-xs text-ink-muted">
               {formatarDataCurta(historicoCheckins.semana.inicio)} a {formatarDataCurta(historicoCheckins.semana.fim)} ·{' '}
               {historicoCheckins.semana.dias_com_checkin} de {historicoCheckins.semana.total_dias} dias
             </p>
           )}
           {historicoCheckins?.period === 'month' && historicoCheckins.mes && (
-            <p className="mb-3 text-xs text-slate-500">
+            <p className="mb-3 text-xs text-ink-muted">
               {nomeMes(historicoCheckins.mes.mes)} de {historicoCheckins.mes.ano} · {historicoCheckins.mes.dias_com_checkin} dias treinados
             </p>
           )}
           {historicoCheckins?.period === 'year' && historicoCheckins.ano && (
-            <p className="mb-3 text-xs text-slate-500">
+            <p className="mb-3 text-xs text-ink-muted">
               {historicoCheckins.ano.dias_com_checkin} dias treinados em {historicoCheckins.ano.ano}
             </p>
           )}
 
           {historicoCheckins && historicoCheckins.fotos.length === 0 && (
-            <p className="text-sm text-slate-500">Nenhum check-in registrado nesse período.</p>
+            <p className="text-sm text-ink-muted">Nenhum check-in registrado nesse período.</p>
           )}
 
           {historicoCheckins && historicoCheckins.fotos.length > 0 && (
@@ -488,8 +485,8 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
                       alt="Foto do check-in"
                     />
                   </div>
-                  <p className="mt-1 truncate text-[10px] text-slate-500">{formatarDataLonga(foto.checkin_date)}</p>
-                  {foto.comment && <p className="line-clamp-2 text-[11px] text-slate-600">{foto.comment}</p>}
+                  <p className="mt-1 truncate text-[10px] text-ink-muted">{formatarDataLonga(foto.checkin_date)}</p>
+                  {foto.comment && <p className="line-clamp-2 text-[11px] text-ink-soft">{foto.comment}</p>}
                 </div>
               ))}
             </div>
@@ -499,26 +496,26 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
         {gamificacao && (
           <section className="glass mb-6 flex flex-wrap items-center gap-5 rounded-2xl p-4">
             <div>
-              <p className="text-xs uppercase tracking-wider text-slate-500">Sequência</p>
-              <p className="text-lg font-bold text-slate-900">
+              <p className="text-xs uppercase tracking-wider text-ink-muted">Sequência</p>
+              <p className="text-lg font-bold text-ink">
                 {gamificacao.streak > 0 ? `${gamificacao.streak} dia${gamificacao.streak === 1 ? '' : 's'}` : '—'}
               </p>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-wider text-slate-500">Treinos concluídos</p>
-              <p className="text-lg font-bold text-slate-900">{gamificacao.total_sessoes}</p>
+              <p className="text-xs uppercase tracking-wider text-ink-muted">Treinos concluídos</p>
+              <p className="text-lg font-bold text-ink">{gamificacao.total_sessoes}</p>
             </div>
             {gamificacao.badges.length > 0 && (
               <div className="flex-1">
-                <p className="mb-1 text-xs uppercase tracking-wider text-slate-500">Medalhas</p>
+                <p className="mb-1 text-xs uppercase tracking-wider text-ink-muted">Medalhas</p>
                 <div className="flex flex-wrap gap-2">
                   {gamificacao.badges.map((b) => (
                     <span
                       key={b.id}
                       title={b.label}
-                      className="flex items-center gap-1 rounded-full bg-slate-900/5 px-2.5 py-1 text-sm"
+                      className="flex items-center gap-1 rounded-full bg-ink/5 px-2.5 py-1 text-sm"
                     >
-                      {b.emoji} <span className="text-xs text-slate-600">{b.label}</span>
+                      {b.emoji} <span className="text-xs text-ink-soft">{b.label}</span>
                     </span>
                   ))}
                 </div>
@@ -528,15 +525,15 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
         )}
 
         {alertasEstagnacao.length > 0 && (
-          <section className="glass mb-6 rounded-2xl border border-orange-200 bg-orange-50 p-4">
-            <p className="mb-2 text-sm font-semibold text-orange-800">
+          <section className="glass mb-6 rounded-2xl border border-warning bg-warning p-4">
+            <p className="mb-2 text-sm font-semibold text-warning">
               Sem aumento de carga nas duas últimas sessões
             </p>
             <div className="flex flex-wrap gap-2">
               {alertasEstagnacao.map((a) => (
                 <span
                   key={a.exercise_id}
-                  className="rounded-lg bg-white px-2.5 py-1 text-xs text-orange-700"
+                  className="rounded-lg bg-white px-2.5 py-1 text-xs text-warning"
                   title={`Última: ${a.ultima}kg · Anterior: ${a.anterior}kg`}
                 >
                   {a.exercise_name} ({a.ultima}kg, era {a.anterior}kg)
@@ -547,10 +544,10 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
         )}
 
         <section className="mb-6">
-          <h2 className="mb-3 font-semibold text-slate-900">Avaliação física</h2>
+          <h2 className="mb-3 font-semibold text-ink">Avaliação física</h2>
 
           {Object.values(parQ).some(Boolean) && (
-            <div className="mb-4 rounded-2xl border border-amber-300 bg-amber-50 px-5 py-3 text-sm text-amber-800">
+            <div className="mb-4 rounded-2xl border border-warning/30 bg-warning-soft px-5 py-3 text-sm text-warning">
               Atenção: {student.name.split(' ')[0]} respondeu <strong>sim</strong> a um ou mais itens do PAR-Q —
               recomende avaliação médica antes de seguir com o treino.
             </div>
@@ -559,7 +556,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
           <div className="grid gap-4">
             {/* Medidas */}
             <div className="glass rounded-2xl p-5">
-              <h3 className="mb-3 text-sm font-semibold text-slate-900">Medidas</h3>
+              <h3 className="mb-3 text-sm font-semibold text-ink">Medidas</h3>
               <WeightChart pontos={measurements} />
               <form onSubmit={registrarPeso} className="mt-4 grid grid-cols-2 gap-2">
                 <input
@@ -616,17 +613,17 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
 
         {(birthDate || anamneseTemConteudo(anamnese)) && (
           <section className="mb-6">
-            <h2 className="mb-3 font-semibold text-slate-900">Anamnese completa</h2>
+            <h2 className="mb-3 font-semibold text-ink">Anamnese completa</h2>
             <div className="glass grid gap-x-6 gap-y-4 rounded-2xl p-5 sm:grid-cols-2">
               {birthDate && (
                 <div>
-                  <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">Dados pessoais</h4>
+                  <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-ink-muted">Dados pessoais</h4>
                   <LinhaAnamnese pergunta="Data de nascimento" resposta={new Date(`${birthDate}T00:00:00`).toLocaleDateString('pt-BR')} />
                 </div>
               )}
 
               <div>
-                <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-ink-muted">
                   Histórico de atividade física
                 </h4>
                 <LinhaAnamnese pergunta="Já praticou" resposta={anamnese.historico_atividade_fisica.ja_praticou} />
@@ -646,7 +643,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
               </div>
 
               <div>
-                <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">Objetivos</h4>
+                <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-ink-muted">Objetivos</h4>
                 <LinhaAnamnese
                   pergunta="Selecionados"
                   resposta={anamnese.objetivos.selecionados
@@ -658,7 +655,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
               </div>
 
               <div>
-                <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-ink-muted">
                   Condições de saúde
                 </h4>
                 <LinhaAnamnese pergunta="Restrição médica" resposta={anamnese.condicoes_saude.restricao_medica} />
@@ -670,7 +667,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
               </div>
 
               <div>
-                <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">Estilo de vida</h4>
+                <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-ink-muted">Estilo de vida</h4>
                 <LinhaAnamnese pergunta="Profissão" resposta={anamnese.estilo_de_vida.profissao} />
                 <LinhaAnamnese pergunta="Nível de estresse" resposta={anamnese.estilo_de_vida.nivel_estresse} />
                 <LinhaAnamnese
@@ -697,7 +694,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
               </div>
 
               <div>
-                <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-ink-muted">
                   Motivação e preferências
                 </h4>
                 <LinhaAnamnese pergunta="Motivação" resposta={anamnese.motivacao.motivacao} />
@@ -728,7 +725,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
               </div>
 
               <div>
-                <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">Disponibilidade</h4>
+                <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-ink-muted">Disponibilidade</h4>
                 <LinhaAnamnese pergunta="Vezes por semana" resposta={anamnese.disponibilidade.vezes_por_semana} />
                 <LinhaAnamnese pergunta="Tempo por treino" resposta={anamnese.disponibilidade.tempo_por_treino} />
                 <LinhaAnamnese
@@ -741,10 +738,10 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
 
               {anamnese.historico_familiar && (
                 <div className="sm:col-span-2">
-                  <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-ink-muted">
                     Histórico familiar
                   </h4>
-                  <p className="text-sm text-slate-600">{anamnese.historico_familiar}</p>
+                  <p className="text-sm text-ink-soft">{anamnese.historico_familiar}</p>
                 </div>
               )}
             </div>
@@ -753,7 +750,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
 
         {fotosEvolucao.length > 0 && (
           <section className="mb-6">
-            <h2 className="mb-3 font-semibold text-slate-900">Evolução (fotos)</h2>
+            <h2 className="mb-3 font-semibold text-ink">Evolução (fotos)</h2>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
               {fotosEvolucao.map((foto) => (
                 <div key={foto.id} className="glass overflow-hidden rounded-2xl">
@@ -761,11 +758,11 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
                     <FotoAutenticada src={`/alunos/${studentId}/body-photos/${foto.id}/imagem`} alt="Foto de evolução do aluno" />
                   </div>
                   <div className="p-3">
-                    <p className="mb-1.5 text-[10px] uppercase tracking-wider text-slate-500">
+                    <p className="mb-1.5 text-[10px] uppercase tracking-wider text-ink-muted">
                       {new Date(foto.taken_at).toLocaleDateString('pt-BR')}{' '}
                       {new Date(foto.taken_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                     </p>
-                    {foto.ai_feedback && <p className="line-clamp-3 text-xs text-slate-600">{foto.ai_feedback}</p>}
+                    {foto.ai_feedback && <p className="line-clamp-3 text-xs text-ink-soft">{foto.ai_feedback}</p>}
                   </div>
                 </div>
               ))}
@@ -775,7 +772,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
 
         {posturais.length > 0 && (
           <section className="mb-6">
-            <h2 className="mb-3 font-semibold text-slate-900">Avaliação postural</h2>
+            <h2 className="mb-3 font-semibold text-ink">Avaliação postural</h2>
             <div className="space-y-3">
               {posturais.map((avaliacao) => (
                 <div key={avaliacao.id} className="glass overflow-hidden rounded-2xl">
@@ -790,10 +787,10 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
                     ))}
                   </div>
                   <div className="p-3">
-                    <p className="mb-1.5 text-[10px] uppercase tracking-wider text-slate-500">
+                    <p className="mb-1.5 text-[10px] uppercase tracking-wider text-ink-muted">
                       {new Date(avaliacao.taken_at).toLocaleDateString('pt-BR')}
                     </p>
-                    {avaliacao.ai_feedback && <p className="text-xs text-slate-600">{avaliacao.ai_feedback}</p>}
+                    {avaliacao.ai_feedback && <p className="text-xs text-ink-soft">{avaliacao.ai_feedback}</p>}
                   </div>
                 </div>
               ))}
@@ -803,18 +800,18 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
 
         {revisoes.length > 0 && (
           <section className="mb-6">
-            <h2 className="mb-3 font-semibold text-slate-900">Revisões de treino</h2>
+            <h2 className="mb-3 font-semibold text-ink">Revisões de treino</h2>
             <div className="space-y-3">
               {revisoes.map((rev) => (
                 <div key={rev.id} className="glass rounded-2xl p-5">
                   <div className="mb-3 flex items-center justify-between">
-                    <p className="font-semibold text-slate-900">{rev.workout_name}</p>
-                    <p className="text-xs text-slate-500">
+                    <p className="font-semibold text-ink">{rev.workout_name}</p>
+                    <p className="text-xs text-ink-muted">
                       {new Date(rev.created_at).toLocaleDateString('pt-BR')}
                       {rev.tempo_acompanhamento_semanas !== null && ` · ${rev.tempo_acompanhamento_semanas} semanas de acompanhamento`}
                     </p>
                   </div>
-                  <div className="space-y-1.5 text-sm text-slate-600">
+                  <div className="space-y-1.5 text-sm text-ink-soft">
                     <LinhaAnamnese
                       pergunta="Avaliação"
                       resposta={
@@ -869,14 +866,14 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
           {/* Coluna: treinos */}
           <section>
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="font-semibold text-slate-900">Treinos</h2>
+              <h2 className="font-semibold text-ink">Treinos</h2>
               <Link href={`/treinos/novo?aluno=${student.id}`} className="btn-primary rounded-xl px-4 py-2 text-sm">
                 + Novo treino
               </Link>
             </div>
 
             {workouts.length === 0 && (
-              <div className="glass rounded-2xl p-8 text-center text-sm text-slate-500">
+              <div className="glass rounded-2xl p-8 text-center text-sm text-ink-muted">
                 Nenhum treino criado ainda.
               </div>
             )}
@@ -889,24 +886,24 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
                   className="glass glass-hover flex items-center justify-between rounded-2xl px-5 py-4"
                 >
                   <div>
-                    <p className="font-semibold text-slate-900">{w.name}</p>
+                    <p className="font-semibold text-ink">{w.name}</p>
                     {w.expires_at && (
-                      <p className="mt-0.5 text-xs text-slate-500">
+                      <p className="mt-0.5 text-xs text-ink-muted">
                         Vence em {new Date(`${w.expires_at}T00:00:00`).toLocaleDateString('pt-BR')}
                       </p>
                     )}
                   </div>
                   <div className="flex items-center gap-2">
                     {w.archived_at && (
-                      <span className="rounded-full bg-amber-500/15 px-2.5 py-1 text-xs font-medium text-amber-600">
+                      <span className="rounded-full bg-warning/15 px-2.5 py-1 text-xs font-medium text-warning">
                         Arquivado
                       </span>
                     )}
                     <span
                       className={`rounded-full px-2.5 py-1 text-xs font-medium ${
                         w.status === 'sent'
-                          ? 'bg-emerald-500/15 text-emerald-600'
-                          : 'bg-slate-900/6 text-slate-500'
+                          ? 'bg-success/15 text-success'
+                          : 'bg-ink/6 text-ink-muted'
                       }`}
                     >
                       {w.status === 'sent' ? 'Enviado' : 'Rascunho'}
@@ -920,18 +917,18 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
           {/* Coluna: chat */}
           <section id="conversa">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="font-semibold text-slate-900">Conversa</h2>
+              <h2 className="font-semibold text-ink">Conversa</h2>
               <button
                 onClick={alternarAutopilot}
                 className={`flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-medium transition ${
                   autopilot
-                    ? 'border border-violet-300 bg-violet-50 text-violet-700'
-                    : 'border border-black/10 bg-black/4 text-slate-500'
+                    ? 'border border-accent/30 bg-accent/10 text-accent-deep'
+                    : 'border border-black/10 bg-black/4 text-ink-muted'
                 }`}
                 title="Quando ligado, a IA responde o aluno automaticamente como assistente do personal"
               >
                 <span
-                  className={`h-2 w-2 rounded-full ${autopilot ? 'bg-violet-400' : 'bg-slate-600'}`}
+                  className={`h-2 w-2 rounded-full ${autopilot ? 'bg-accent' : 'bg-ink-soft'}`}
                 />
                 Coach IA {autopilot ? 'ligado' : 'desligado'}
               </button>
