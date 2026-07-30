@@ -6,7 +6,7 @@ import { resolveMediaUrl } from '@/lib/api'
 export interface MenuItem {
   id: string
   label: string
-  icon: string
+  icon: React.ReactNode
   href?: string
   onClick?: () => void
 }
@@ -45,7 +45,7 @@ export default function SideMenu({
           open ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className="bg-gradient-to-br from-[#2648b3] to-[#8b7fd6] px-6 py-8 text-center text-white">
+        <div className="bg-gradient-to-br from-brand to-accent px-6 py-8 text-center text-white">
           {fotoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element -- foto vem do backend (upload do aluno)
             <img
@@ -63,7 +63,7 @@ export default function SideMenu({
                 .toUpperCase()}
             </div>
           )}
-          <p className="text-lg font-bold uppercase tracking-wide">{nome}</p>
+          <p className="font-display text-lg font-bold uppercase tracking-wide">{nome}</p>
           <p className="mt-0.5 text-xs uppercase tracking-[0.2em] text-white/80">{subtitulo}</p>
         </div>
 
@@ -71,14 +71,20 @@ export default function SideMenu({
           {items.map((item) => {
             const conteudo = (
               <>
-                <span className="text-xl">{item.icon}</span>
-                <span className={`text-sm font-semibold ${ativo === item.id ? 'text-[#2648b3]' : 'text-slate-800'}`}>
+                <span
+                  className={`flex h-5 w-5 shrink-0 items-center justify-center ${
+                    ativo === item.id ? 'text-brand' : 'text-ink-muted'
+                  }`}
+                >
+                  {item.icon}
+                </span>
+                <span className={`text-sm font-semibold ${ativo === item.id ? 'text-brand' : 'text-ink'}`}>
                   {item.label}
                 </span>
               </>
             )
-            const classes = `flex w-full items-center gap-4 border-b border-black/6 px-6 py-4 text-left transition ${
-              ativo === item.id ? 'bg-[#2648b3]/6' : 'hover:bg-slate-900/3'
+            const classes = `flex w-full items-center gap-4 border-b border-line-soft px-6 py-4 text-left transition ${
+              ativo === item.id ? 'bg-brand/6' : 'hover:bg-ink/3'
             }`
 
             if (item.href) {

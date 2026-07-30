@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { ChevronRight, UserPlus } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Avatar from '@/components/Avatar'
 import { api, ApiError } from '@/lib/api'
@@ -47,42 +48,44 @@ export default function DashboardPage() {
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Meus alunos</h1>
-            <p className="mt-1 text-sm text-slate-500">Acompanhe treinos, execuções e conversas</p>
+            <h1 className="font-display text-2xl font-bold tracking-tight text-ink">Meus alunos</h1>
+            <span className="title-accent" />
+            <p className="mt-2 text-sm text-ink-muted">Acompanhe treinos, execuções e conversas</p>
           </div>
-          <Link href="/alunos/novo" className="btn-primary rounded-xl px-5 py-2.5 text-sm">
-            + Cadastrar aluno
+          <Link href="/alunos/novo" className="btn-primary flex items-center gap-1.5 rounded-xl px-5 py-2.5 text-sm">
+            <UserPlus size={16} />
+            Cadastrar aluno
           </Link>
         </div>
 
         {students && students.length > 0 && (
           <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
             <div className="glass rounded-2xl p-4">
-              <p className="text-xs font-medium uppercase tracking-wider text-slate-500">Alunos ativos</p>
-              <p className="mt-1 text-2xl font-bold text-slate-900">{students.length}</p>
+              <p className="text-xs font-medium uppercase tracking-wider text-ink-muted">Alunos ativos</p>
+              <p className="stat-number mt-1 text-2xl font-bold text-ink">{students.length}</p>
             </div>
-            <div className="glass rounded-2xl p-4">
-              <p className="text-xs font-medium uppercase tracking-wider text-slate-500">Sessões concluídas</p>
-              <p className="mt-1 text-2xl font-bold bg-gradient-to-r from-[#2648b3] to-[#8b7fd6] bg-clip-text text-transparent">
+            <div className="glass-elevated rounded-2xl p-4">
+              <p className="text-xs font-medium uppercase tracking-wider text-ink-muted">Sessões concluídas</p>
+              <p className="stat-number mt-1 bg-gradient-to-r from-brand to-accent bg-clip-text text-2xl font-bold text-transparent">
                 {totalSessoes}
               </p>
             </div>
             <div className="glass hidden rounded-2xl p-4 sm:block">
-              <p className="text-xs font-medium uppercase tracking-wider text-slate-500">Com treino ativo</p>
-              <p className="mt-1 text-2xl font-bold text-slate-900">
+              <p className="text-xs font-medium uppercase tracking-wider text-ink-muted">Com treino ativo</p>
+              <p className="stat-number mt-1 text-2xl font-bold text-ink">
                 {students.filter((s) => s.ultimo_treino).length}
               </p>
             </div>
           </div>
         )}
 
-        {erro && <p className="mb-4 text-sm text-rose-400">{erro}</p>}
-        {students === null && !erro && <p className="text-slate-500">Carregando...</p>}
+        {erro && <p className="mb-4 text-sm text-danger">{erro}</p>}
+        {students === null && !erro && <p className="text-ink-muted">Carregando...</p>}
 
         {students?.length === 0 && (
-          <div className="glass rounded-2xl border-dashed p-10 text-center">
-            <p className="text-slate-500">Nenhum aluno cadastrado ainda.</p>
-            <p className="mt-1 text-sm text-slate-400">Comece cadastrando o primeiro — leva menos de um minuto.</p>
+          <div className="glass-flat rounded-2xl border-dashed p-10 text-center">
+            <p className="text-ink-soft">Nenhum aluno cadastrado ainda.</p>
+            <p className="mt-1 text-sm text-ink-muted">Comece cadastrando o primeiro — leva menos de um minuto.</p>
           </div>
         )}
 
@@ -96,31 +99,31 @@ export default function DashboardPage() {
               <Avatar nome={s.name} fotoUrl={s.photo_url} />
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <p className="truncate font-semibold text-slate-900">{s.name}</p>
+                  <p className="truncate font-semibold text-ink">{s.name}</p>
                   {inativo(s) && (
-                    <span className="shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-700">
+                    <span className="shrink-0 rounded-full bg-warning-soft px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-warning">
                       {diasSemTreinar(s) === null ? 'Nunca treinou' : `Sem treinar há ${diasSemTreinar(s)}d`}
                     </span>
                   )}
                   {(s.exercicios_sem_progresso ?? 0) > 0 && (
                     <span
-                      className="shrink-0 rounded-full bg-orange-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-orange-700"
+                      className="shrink-0 rounded-full bg-warning-soft px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-warning"
                       title="Sem aumento de carga entre as duas últimas sessões nesses exercícios"
                     >
                       {s.exercicios_sem_progresso} sem progresso
                     </span>
                   )}
                 </div>
-                <p className="truncate text-sm text-slate-500">{s.objective || 'Sem objetivo definido'}</p>
+                <p className="truncate text-sm text-ink-muted">{s.objective || 'Sem objetivo definido'}</p>
               </div>
               <div className="hidden text-right sm:block">
-                <p className="text-sm text-slate-600">{s.ultimo_treino ?? 'Sem treino'}</p>
-                <p className="text-xs text-slate-500">
+                <p className="text-sm text-ink-soft">{s.ultimo_treino ?? 'Sem treino'}</p>
+                <p className="text-xs text-ink-muted">
                   {Number(s.sessoes_concluidas ?? 0)}{' '}
                   {Number(s.sessoes_concluidas ?? 0) === 1 ? 'sessão concluída' : 'sessões concluídas'}
                 </p>
               </div>
-              <span className="text-slate-600">→</span>
+              <ChevronRight size={18} className="shrink-0 text-ink-muted" />
             </Link>
           ))}
         </div>

@@ -2,6 +2,20 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import {
+  Menu,
+  Dumbbell,
+  CalendarCheck,
+  ClipboardList,
+  TrendingUp,
+  Building2,
+  Trophy,
+  MessageCircle,
+  Download,
+  Check,
+  Video,
+  Star,
+} from 'lucide-react'
 import AtivarNotificacoesButton from '@/components/AtivarNotificacoesButton'
 import ChatBox from '@/components/ChatBox'
 import InstallBanner from '@/components/InstallBanner'
@@ -137,14 +151,14 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   }).length
 
   const menuItems: MenuItem[] = [
-    { id: 'treino', label: 'Treino', icon: '' },
-    { id: 'checkin', label: 'Check-in', icon: '' },
-    { id: 'evolucao', label: 'Avaliação Física', icon: '' },
-    { id: 'fotos', label: 'Evolução', icon: '' },
-    { id: 'academia', label: 'Academia', icon: '' },
-    { id: 'desafio', label: 'Desafio', icon: '' },
-    { id: 'chat', label: naoLidas > 0 ? `Mensagens (${naoLidas})` : 'Mensagens', icon: '' },
-    { id: 'instalar', label: 'Instalar app', icon: '' },
+    { id: 'treino', label: 'Treino', icon: <Dumbbell size={20} /> },
+    { id: 'checkin', label: 'Check-in', icon: <CalendarCheck size={20} /> },
+    { id: 'evolucao', label: 'Avaliação Física', icon: <ClipboardList size={20} /> },
+    { id: 'fotos', label: 'Evolução', icon: <TrendingUp size={20} /> },
+    { id: 'academia', label: 'Academia', icon: <Building2 size={20} /> },
+    { id: 'desafio', label: 'Desafio', icon: <Trophy size={20} /> },
+    { id: 'chat', label: naoLidas > 0 ? `Mensagens (${naoLidas})` : 'Mensagens', icon: <MessageCircle size={20} /> },
+    { id: 'instalar', label: 'Instalar app', icon: <Download size={20} /> },
   ]
 
   // strava
@@ -601,22 +615,18 @@ export default function PortalAlunoClient({ token }: { token: string }) {
 
   const cabecalho = (
     <>
-      <header className="sticky top-0 z-20 border-b border-black/8 bg-white/90 backdrop-blur-xl">
+      <header className="sticky top-0 z-20 border-b border-line bg-white/90 backdrop-blur-xl">
         <div className="mx-auto flex w-full max-w-lg items-center gap-3 px-4 py-3">
           <button
             onClick={() => setMenuAberto(true)}
             aria-label="Abrir menu"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-600 transition hover:bg-slate-900/5"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-ink-soft transition hover:bg-ink/5"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="4" y1="7" x2="20" y2="7" />
-              <line x1="4" y1="12" x2="20" y2="12" />
-              <line x1="4" y1="17" x2="20" y2="17" />
-            </svg>
+            <Menu size={20} />
           </button>
           <div className="min-w-0 flex-1">
-            <p className="text-xs text-slate-500">Olá, {primeiroNome}</p>
-            <p className="truncate font-bold text-slate-900">{data.workout ? data.workout.name : 'Seu espaço de treino'}</p>
+            <p className="text-xs text-ink-muted">Olá, {primeiroNome}</p>
+            <p className="font-display truncate font-bold text-ink">{data.workout ? data.workout.name : 'Seu espaço de treino'}</p>
           </div>
           <Image src="/clubemais-icone.png" alt="Clube Mais" width={36} height={36} className="h-9 w-9 shrink-0" />
         </div>
@@ -1546,7 +1556,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
           workoutId={data.workout?.id}
         />
       <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6 pb-24">
-        {erro && <p className="mb-4 text-sm text-rose-400">{erro}</p>}
+        {erro && <p className="mb-4 text-sm text-danger">{erro}</p>}
 
         {data.workouts.length > 1 && (
           <div className="chat-scroll mb-4 flex gap-2 overflow-x-auto pb-1">
@@ -1557,8 +1567,8 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                 disabled={!!sessionId && w.id !== data.workout?.id}
                 className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-40 ${
                   w.id === data.workout?.id
-                    ? 'bg-gradient-to-r from-[#2648b3] to-[#8b7fd6] text-white'
-                    : 'glass glass-hover text-slate-700'
+                    ? 'bg-gradient-to-r from-brand to-accent text-white'
+                    : 'glass glass-hover text-ink-soft'
                 }`}
               >
                 {w.name}
@@ -1576,14 +1586,14 @@ export default function PortalAlunoClient({ token }: { token: string }) {
         {sessionId && (
           <div className="glass mb-6 rounded-2xl p-4">
             <div className="mb-2 flex items-center justify-between text-sm">
-              <span className="font-medium text-slate-900">Progresso</span>
-              <span className="text-slate-500">
+              <span className="font-medium text-ink">Progresso</span>
+              <span className="stat-number text-ink-muted">
                 {seriesFeitas}/{totalSeries} séries
               </span>
             </div>
-            <div className="h-2 overflow-hidden rounded-full bg-slate-900/8">
+            <div className="h-2 overflow-hidden rounded-full bg-ink/8">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-[#2648b3] to-[#8b7fd6] transition-all duration-500"
+                className="h-full rounded-full bg-gradient-to-r from-brand to-accent transition-all duration-500"
                 style={{ width: `${progresso}%` }}
               />
             </div>
@@ -1595,9 +1605,9 @@ export default function PortalAlunoClient({ token }: { token: string }) {
             const estrutura = rotuloEstrutura(grupo.structureType)
             const emBloco = grupo.groupLabel && grupo.itens.length > 1
             return (
-              <div key={gIdx} className={emBloco ? 'rounded-2xl border-2 border-dashed border-[#2648b3]/25 p-3' : ''}>
+              <div key={gIdx} className={emBloco ? 'rounded-2xl border-2 border-dashed border-brand/25 p-3' : ''}>
                 {emBloco && (
-                  <p className="mb-2 px-1 text-xs font-bold uppercase tracking-wider text-[#2648b3]">
+                  <p className="mb-2 px-1 text-xs font-bold uppercase tracking-wider text-brand">
                     {estrutura.label} {grupo.groupLabel}
                   </p>
                 )}
@@ -1609,37 +1619,37 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                       <div
                         key={ex.id}
                         className={`rounded-2xl border p-5 transition ${
-                          completo ? 'border-emerald-400/30 bg-emerald-500/8' : 'glass'
-                        }`}
+                          completo ? 'border-success/30 [--glass-bg:var(--color-success-soft)]' : ''
+                        } glass`}
                       >
                         <div className="flex items-start gap-3.5">
                           <span
                             className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-sm font-bold ${
-                              completo ? 'bg-emerald-500/15 text-emerald-600' : 'bg-slate-900/6 text-slate-600'
+                              completo ? 'bg-success/15 text-success' : 'bg-ink/6 text-ink-soft'
                             }`}
                           >
-                            {completo ? '✓' : emBloco ? `${grupo.groupLabel}${idx + 1}` : gIdx + 1}
+                            {completo ? <Check size={16} /> : emBloco ? `${grupo.groupLabel}${idx + 1}` : gIdx + 1}
                           </span>
                           <div className="min-w-[90px] flex-1">
-                            <p className="text-xs uppercase tracking-wider text-slate-500">{ex.muscle_group}</p>
-                            <p className="font-semibold text-slate-900">{ex.exercise_name}</p>
-                            <p className="mt-0.5 text-sm text-slate-500">
+                            <p className="text-xs uppercase tracking-wider text-ink-muted">{ex.muscle_group}</p>
+                            <p className="font-semibold text-ink">{ex.exercise_name}</p>
+                            <p className="mt-0.5 text-sm text-ink-muted">
                               {ex.sets} × {ex.reps}
                               {ex.load_kg ? ` · ${ex.load_kg}kg` : ''}
                               {ex.rest_seconds ? ` · ${ex.rest_seconds}s descanso` : ''}
                             </p>
                             {!emBloco && estrutura.label !== 'Tradicional' && (
-                              <span className="mt-1 inline-block rounded-lg bg-violet-500/10 px-2 py-0.5 text-xs text-violet-600">
+                              <span className="mt-1 inline-block rounded-lg bg-accent/10 px-2 py-0.5 text-xs text-accent">
                                 {estrutura.label}
                               </span>
                             )}
                             {recordes[ex.id] && (
-                              <span className="mt-1 ml-1 inline-block rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-700">
+                              <span className="mt-1 ml-1 inline-block rounded-full bg-success-soft px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-success">
                                 Novo recorde
                               </span>
                             )}
                           </div>
-                          <div className="glass shrink-0 rounded-xl p-1.5 text-[#2648b3]">
+                          <div className="glass shrink-0 rounded-xl p-1.5 text-brand">
                             <ExerciseAnimation
                               name={ex.exercise_name}
                               muscleGroup={ex.muscle_group}
@@ -1655,16 +1665,17 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                         {sessionId && (
                           <button
                             onClick={() => setExercicioAnaliseForm({ id: ex.exercise_id, nome: ex.exercise_name })}
-                            className="mt-3 rounded-lg bg-slate-900/5 px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-slate-900/10"
+                            className="mt-3 flex items-center gap-1.5 rounded-lg bg-ink/5 px-3 py-1.5 text-xs font-medium text-ink-soft transition hover:bg-ink/10"
                           >
-                            🎥 Analisar forma
+                            <Video size={14} />
+                            Analisar forma
                           </button>
                         )}
 
                         {sessionId && !completo && (
                           <div className="mt-4 flex items-end gap-2">
                             <div className="flex-1">
-                              <label className="mb-1 block text-xs text-slate-500">Reps</label>
+                              <label className="mb-1 block text-xs text-ink-muted">Reps</label>
                               <input
                                 type="number"
                                 inputMode="numeric"
@@ -1676,7 +1687,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                               />
                             </div>
                             <div className="flex-1">
-                              <label className="mb-1 block text-xs text-slate-500">Carga (kg)</label>
+                              <label className="mb-1 block text-xs text-ink-muted">Carga (kg)</label>
                               <input
                                 type="number"
                                 inputMode="decimal"
@@ -1689,9 +1700,9 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                             </div>
                             <button
                               onClick={() => registrarSerie(ex)}
-                              className="btn-primary shrink-0 rounded-xl px-4 py-2.5 text-sm"
+                              className="btn-primary flex shrink-0 items-center gap-1 rounded-xl px-4 py-2.5 text-sm"
                             >
-                              ✓ {feitas + 1}/{ex.sets}
+                              <Check size={15} /> {feitas + 1}/{ex.sets}
                             </button>
                           </div>
                         )}
@@ -1702,7 +1713,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                               <span
                                 key={i}
                                 className={`h-1.5 flex-1 rounded-full ${
-                                  i < feitas ? 'bg-emerald-400' : 'bg-slate-900/8'
+                                  i < feitas ? 'bg-success' : 'bg-ink/8'
                                 }`}
                               />
                             ))}
@@ -1718,15 +1729,15 @@ export default function PortalAlunoClient({ token }: { token: string }) {
         </div>
 
         {sessionId && (
-          <div className="glass mt-8 rounded-2xl p-5">
-            <h2 className="mb-4 font-semibold text-slate-900">
+          <div className="glass-elevated mt-8 rounded-2xl p-5">
+            <h2 className="font-display mb-4 font-semibold text-ink">
               {todasSeriesFeitas ? 'Como foi o treino?' : 'Finalizar treino'}
             </h2>
             <div className="space-y-4">
               <div>
-                <div className="mb-1 flex justify-between text-xs text-slate-500">
+                <div className="mb-1 flex justify-between text-xs text-ink-muted">
                   <span>Esforço percebido (RPE)</span>
-                  <span className="font-bold text-[#2648b3]">{rpe}</span>
+                  <span className="stat-number font-bold text-brand">{rpe}</span>
                 </div>
                 <input
                   type="range"
@@ -1734,13 +1745,17 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                   max={10}
                   value={rpe}
                   onChange={(e) => setRpe(Number(e.target.value))}
-                  className="w-full accent-[#2648b3]"
+                  className="w-full accent-brand"
                 />
               </div>
               <div>
-                <div className="mb-1 flex justify-between text-xs text-slate-500">
+                <div className="mb-1 flex justify-between text-xs text-ink-muted">
                   <span>Satisfação</span>
-                  <span className="font-bold text-[#2648b3]">{'★'.repeat(satisfacao)}</span>
+                  <span className="flex gap-0.5 text-brand">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star key={i} size={14} fill={i < satisfacao ? 'currentColor' : 'none'} />
+                    ))}
+                  </span>
                 </div>
                 <input
                   type="range"
@@ -1748,11 +1763,11 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                   max={5}
                   value={satisfacao}
                   onChange={(e) => setSatisfacao(Number(e.target.value))}
-                  className="w-full accent-[#2648b3]"
+                  className="w-full accent-brand"
                 />
               </div>
               <div>
-                <label className="mb-1 block text-xs text-slate-500">Sentiu algum desconforto?</label>
+                <label className="mb-1 block text-xs text-ink-muted">Sentiu algum desconforto?</label>
                 <input
                   type="text"
                   value={desconforto}
@@ -1761,7 +1776,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                 />
               </div>
               <div>
-                <label className="mb-1 block text-xs text-slate-500">Comentário (opcional)</label>
+                <label className="mb-1 block text-xs text-ink-muted">Comentário (opcional)</label>
                 <textarea
                   value={comentario}
                   onChange={(e) => setComentario(e.target.value)}

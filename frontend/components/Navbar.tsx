@@ -4,12 +4,30 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
+import {
+  Menu,
+  LogOut,
+  TrendingUp,
+  Wallet,
+  Users,
+  Trophy,
+  Video,
+  ClipboardList,
+  Dumbbell,
+  Sparkles,
+  Bot,
+  UserPlus,
+  Bell,
+  Download,
+} from 'lucide-react'
 import AtivarNotificacoesButton from '@/components/AtivarNotificacoesButton'
 import InstallAppModal from '@/components/InstallAppModal'
 import InstallBanner from '@/components/InstallBanner'
 import SideMenu, { MenuItem } from '@/components/SideMenu'
 import { api, clearToken } from '@/lib/api'
 import { Professional } from '@/lib/types'
+
+const ICON_SIZE = 20
 
 function itemAtivo(pathname: string): string {
   if (pathname.startsWith('/negocio')) return 'negocio'
@@ -34,18 +52,18 @@ export default function Navbar() {
   const [profissional, setProfissional] = useState<Professional | null>(null)
 
   const menuItems: MenuItem[] = [
-    { id: 'negocio', label: 'Meu Negócio', icon: '', href: '/negocio' },
-    { id: 'gastos', label: 'Meus Gastos', icon: '', href: '/gastos' },
-    { id: 'dashboard', label: 'Meus alunos', icon: '', href: '/dashboard' },
-    { id: 'desafios', label: 'Desafios', icon: '', href: '/desafios' },
-    { id: 'videos', label: 'Vídeos dos exercícios', icon: '', href: '/videos' },
-    { id: 'modelos', label: 'Modelos de treino', icon: '', href: '/modelos' },
-    { id: 'academia', label: 'Análises de academia', icon: '', href: '/academia' },
-    { id: 'conteudo', label: 'Ideias de Conteúdo', icon: '', href: '/conteudo' },
-    { id: 'consultor-ia', label: 'Consultor IA', icon: '', href: '/consultor-ia' },
-    { id: 'novo-aluno', label: 'Cadastrar aluno', icon: '', href: '/alunos/novo' },
-    { id: 'notificacoes', label: 'Notificações', icon: '', href: '/notificacoes' },
-    { id: 'instalar', label: 'Instalar app', icon: '', onClick: () => setInstalarAberto(true) },
+    { id: 'negocio', label: 'Meu Negócio', icon: <TrendingUp size={ICON_SIZE} />, href: '/negocio' },
+    { id: 'gastos', label: 'Meus Gastos', icon: <Wallet size={ICON_SIZE} />, href: '/gastos' },
+    { id: 'dashboard', label: 'Meus alunos', icon: <Users size={ICON_SIZE} />, href: '/dashboard' },
+    { id: 'desafios', label: 'Desafios', icon: <Trophy size={ICON_SIZE} />, href: '/desafios' },
+    { id: 'videos', label: 'Vídeos dos exercícios', icon: <Video size={ICON_SIZE} />, href: '/videos' },
+    { id: 'modelos', label: 'Modelos de treino', icon: <ClipboardList size={ICON_SIZE} />, href: '/modelos' },
+    { id: 'academia', label: 'Análises de academia', icon: <Dumbbell size={ICON_SIZE} />, href: '/academia' },
+    { id: 'conteudo', label: 'Ideias de Conteúdo', icon: <Sparkles size={ICON_SIZE} />, href: '/conteudo' },
+    { id: 'consultor-ia', label: 'Consultor IA', icon: <Bot size={ICON_SIZE} />, href: '/consultor-ia' },
+    { id: 'novo-aluno', label: 'Cadastrar aluno', icon: <UserPlus size={ICON_SIZE} />, href: '/alunos/novo' },
+    { id: 'notificacoes', label: 'Notificações', icon: <Bell size={ICON_SIZE} />, href: '/notificacoes' },
+    { id: 'instalar', label: 'Instalar app', icon: <Download size={ICON_SIZE} />, onClick: () => setInstalarAberto(true) },
   ]
 
   useEffect(() => {
@@ -62,22 +80,18 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-20 border-b border-black/8 bg-white/85 backdrop-blur-xl">
+      <header className="sticky top-0 z-20 border-b border-line bg-white/85 backdrop-blur-xl">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3">
           <button
             onClick={() => setMenuAberto(true)}
             aria-label="Abrir menu"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-600 transition hover:bg-slate-900/5"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-ink-soft transition hover:bg-ink/5"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="4" y1="7" x2="20" y2="7" />
-              <line x1="4" y1="12" x2="20" y2="12" />
-              <line x1="4" y1="17" x2="20" y2="17" />
-            </svg>
+            <Menu size={20} />
           </button>
           <Link href="/dashboard" className="flex flex-1 items-center justify-center gap-2.5 sm:flex-initial sm:justify-start">
             <Image src="/clubemais-logo.png" alt="Clube Mais" width={140} height={39} priority className="h-7 w-auto" />
-            <span className="hidden items-center border-l border-black/10 pl-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400 sm:flex">
+            <span className="hidden items-center border-l border-line pl-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-ink-muted sm:flex">
               Personal
             </span>
           </Link>
@@ -100,13 +114,9 @@ export default function Navbar() {
         rodape={
           <button
             onClick={sair}
-            className="flex w-full items-center gap-4 border-t border-black/6 px-6 py-4 text-left text-rose-600 transition hover:bg-rose-50"
+            className="flex w-full items-center gap-4 border-t border-line-soft px-6 py-4 text-left text-danger transition hover:bg-danger-soft"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-              <polyline points="16 17 21 12 16 7" />
-              <line x1="21" y1="12" x2="9" y2="12" />
-            </svg>
+            <LogOut size={20} aria-hidden="true" />
             <span className="text-sm font-semibold">Sair</span>
           </button>
         }
