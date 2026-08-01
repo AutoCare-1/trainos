@@ -23,6 +23,20 @@
   --brand-coral: #ff6a4d;
   --brand-coral-deep: #e8492c;
 
+  /* Acentos decorativos — só pra dar identidade visual a ícones/categorias
+     (menu lateral, chips de seção). Não têm significado de status (isso
+     continua sendo trabalho exclusivo de success/warning/danger, abaixo) —
+     são "cor de assunto", tipo cada seção do app ter sua própria cor, não
+     "cor de risco/erro". */
+  --accent-teal: #0d8a7a;
+  --accent-teal-soft: #dff3f0;
+  --accent-amber: #c47a0a;
+  --accent-amber-soft: #fbedd6;
+  --accent-pink: #c23673;
+  --accent-pink-soft: #fbe4ee;
+  --accent-sky: #0d7ab3;
+  --accent-sky-soft: #dff1fb;
+
   /* Neutros com viés de matiz pra marca (não é o slate genérico do Tailwind) */
   --ink: #1b1350;
   --ink-soft: #4a4370;
@@ -53,6 +67,11 @@
   --color-accent-deep: var(--brand-violet-deep);
   --color-cta: var(--brand-coral);
   --color-cta-deep: var(--brand-coral-deep);
+
+  --color-accent-teal: var(--accent-teal);
+  --color-accent-amber: var(--accent-amber);
+  --color-accent-pink: var(--accent-pink);
+  --color-accent-sky: var(--accent-sky);
 
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
@@ -310,6 +329,38 @@ select:focus-visible,
 .avatar-3 { background-image: linear-gradient(135deg, #a78bfa, #c084fc); }
 .avatar-4 { background-image: linear-gradient(135deg, #fb7185, #f472b6); }
 .avatar-5 { background-image: linear-gradient(135deg, #fbbf24, #fb923c); }
+
+/* Chip de ícone colorido — cada seção do menu ganha sua própria cor
+   (violeta, coral, verde-água, âmbar, rosa, azul-céu) em vez de ícone
+   monocromático repetido. É "cor de assunto" (identidade da seção), não
+   status — por isso não reaproveita success/warning/danger. Item ativo
+   sempre inverte pra preenchimento sólido, pra continuar claro qual página
+   está aberta em meio a tanta cor. */
+.icon-chip {
+  display: flex;
+  height: 2.25rem;
+  width: 2.25rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+}
+.icon-chip-blue { background: rgba(38, 72, 179, 0.12); color: var(--brand-blue); }
+.icon-chip-violet { background: rgba(139, 127, 214, 0.2); color: var(--brand-violet-deep); }
+.icon-chip-coral { background: rgba(255, 106, 77, 0.16); color: var(--brand-coral-deep); }
+.icon-chip-teal { background: var(--accent-teal-soft); color: var(--accent-teal); }
+.icon-chip-amber { background: var(--accent-amber-soft); color: var(--accent-amber); }
+.icon-chip-pink { background: var(--accent-pink-soft); color: var(--accent-pink); }
+.icon-chip-sky { background: var(--accent-sky-soft); color: var(--accent-sky); }
+
+.icon-chip-blue.icon-chip-ativo { background: var(--brand-blue); color: #ffffff; }
+.icon-chip-violet.icon-chip-ativo { background: var(--brand-violet-deep); color: #ffffff; }
+.icon-chip-coral.icon-chip-ativo { background: var(--brand-coral-deep); color: #ffffff; }
+.icon-chip-teal.icon-chip-ativo { background: var(--accent-teal); color: #ffffff; }
+.icon-chip-amber.icon-chip-ativo { background: var(--accent-amber); color: #ffffff; }
+.icon-chip-pink.icon-chip-ativo { background: var(--accent-pink); color: #ffffff; }
+.icon-chip-sky.icon-chip-ativo { background: var(--accent-sky); color: #ffffff; }
 
 /* Scrollbar discreta no chat */
 .chat-scroll::-webkit-scrollbar {

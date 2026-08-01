@@ -3,12 +3,15 @@
 import Link from 'next/link'
 import { resolveMediaUrl } from '@/lib/api'
 
+export type CorMenuItem = 'blue' | 'violet' | 'coral' | 'teal' | 'amber' | 'pink' | 'sky'
+
 export interface MenuItem {
   id: string
   label: string
   icon: React.ReactNode
   href?: string
   onClick?: () => void
+  cor?: CorMenuItem
 }
 
 export default function SideMenu({
@@ -72,9 +75,7 @@ export default function SideMenu({
             const conteudo = (
               <>
                 <span
-                  className={`flex h-5 w-5 shrink-0 items-center justify-center ${
-                    ativo === item.id ? 'text-brand' : 'text-ink-muted'
-                  }`}
+                  className={`icon-chip icon-chip-${item.cor ?? 'blue'} ${ativo === item.id ? 'icon-chip-ativo' : ''}`}
                 >
                   {item.icon}
                 </span>

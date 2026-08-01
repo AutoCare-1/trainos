@@ -52,18 +52,18 @@ export default function Navbar() {
   const [profissional, setProfissional] = useState<Professional | null>(null)
 
   const menuItems: MenuItem[] = [
-    { id: 'negocio', label: 'Meu Negócio', icon: <TrendingUp size={ICON_SIZE} />, href: '/negocio' },
-    { id: 'gastos', label: 'Meus Gastos', icon: <Wallet size={ICON_SIZE} />, href: '/gastos' },
-    { id: 'dashboard', label: 'Meus alunos', icon: <Users size={ICON_SIZE} />, href: '/dashboard' },
-    { id: 'desafios', label: 'Desafios', icon: <Trophy size={ICON_SIZE} />, href: '/desafios' },
-    { id: 'videos', label: 'Vídeos dos exercícios', icon: <Video size={ICON_SIZE} />, href: '/videos' },
-    { id: 'modelos', label: 'Modelos de treino', icon: <ClipboardList size={ICON_SIZE} />, href: '/modelos' },
-    { id: 'academia', label: 'Análises de academia', icon: <Dumbbell size={ICON_SIZE} />, href: '/academia' },
-    { id: 'conteudo', label: 'Ideias de Conteúdo', icon: <Sparkles size={ICON_SIZE} />, href: '/conteudo' },
-    { id: 'consultor-ia', label: 'Consultor IA', icon: <Bot size={ICON_SIZE} />, href: '/consultor-ia' },
-    { id: 'novo-aluno', label: 'Cadastrar aluno', icon: <UserPlus size={ICON_SIZE} />, href: '/alunos/novo' },
-    { id: 'notificacoes', label: 'Notificações', icon: <Bell size={ICON_SIZE} />, href: '/notificacoes' },
-    { id: 'instalar', label: 'Instalar app', icon: <Download size={ICON_SIZE} />, onClick: () => setInstalarAberto(true) },
+    { id: 'negocio', label: 'Meu Negócio', icon: <TrendingUp size={ICON_SIZE} />, href: '/negocio', cor: 'violet' },
+    { id: 'gastos', label: 'Meus Gastos', icon: <Wallet size={ICON_SIZE} />, href: '/gastos', cor: 'amber' },
+    { id: 'dashboard', label: 'Meus alunos', icon: <Users size={ICON_SIZE} />, href: '/dashboard', cor: 'blue' },
+    { id: 'desafios', label: 'Desafios', icon: <Trophy size={ICON_SIZE} />, href: '/desafios', cor: 'coral' },
+    { id: 'videos', label: 'Vídeos dos exercícios', icon: <Video size={ICON_SIZE} />, href: '/videos', cor: 'sky' },
+    { id: 'modelos', label: 'Modelos de treino', icon: <ClipboardList size={ICON_SIZE} />, href: '/modelos', cor: 'teal' },
+    { id: 'academia', label: 'Análises de academia', icon: <Dumbbell size={ICON_SIZE} />, href: '/academia', cor: 'pink' },
+    { id: 'conteudo', label: 'Ideias de Conteúdo', icon: <Sparkles size={ICON_SIZE} />, href: '/conteudo', cor: 'coral' },
+    { id: 'consultor-ia', label: 'Consultor IA', icon: <Bot size={ICON_SIZE} />, href: '/consultor-ia', cor: 'violet' },
+    { id: 'novo-aluno', label: 'Cadastrar aluno', icon: <UserPlus size={ICON_SIZE} />, href: '/alunos/novo', cor: 'teal' },
+    { id: 'notificacoes', label: 'Notificações', icon: <Bell size={ICON_SIZE} />, href: '/notificacoes', cor: 'sky' },
+    { id: 'instalar', label: 'Instalar app', icon: <Download size={ICON_SIZE} />, onClick: () => setInstalarAberto(true), cor: 'blue' },
   ]
 
   useEffect(() => {

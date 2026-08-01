@@ -165,14 +165,14 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   }).length
 
   const menuItems: MenuItem[] = [
-    { id: 'treino', label: 'Treino', icon: <Dumbbell size={20} /> },
-    { id: 'checkin', label: 'Check-in', icon: <CalendarCheck size={20} /> },
-    { id: 'evolucao', label: 'Avaliação Física', icon: <ClipboardList size={20} /> },
-    { id: 'fotos', label: 'Evolução', icon: <TrendingUp size={20} /> },
-    { id: 'academia', label: 'Academia', icon: <Building2 size={20} /> },
-    { id: 'desafio', label: 'Desafio', icon: <Trophy size={20} /> },
-    { id: 'chat', label: naoLidas > 0 ? `Mensagens (${naoLidas})` : 'Mensagens', icon: <MessageCircle size={20} /> },
-    { id: 'instalar', label: 'Instalar app', icon: <Download size={20} /> },
+    { id: 'treino', label: 'Treino', icon: <Dumbbell size={20} />, cor: 'blue' },
+    { id: 'checkin', label: 'Check-in', icon: <CalendarCheck size={20} />, cor: 'teal' },
+    { id: 'evolucao', label: 'Avaliação Física', icon: <ClipboardList size={20} />, cor: 'sky' },
+    { id: 'fotos', label: 'Evolução', icon: <TrendingUp size={20} />, cor: 'violet' },
+    { id: 'academia', label: 'Academia', icon: <Building2 size={20} />, cor: 'pink' },
+    { id: 'desafio', label: 'Desafio', icon: <Trophy size={20} />, cor: 'coral' },
+    { id: 'chat', label: naoLidas > 0 ? `Mensagens (${naoLidas})` : 'Mensagens', icon: <MessageCircle size={20} />, cor: 'amber' },
+    { id: 'instalar', label: 'Instalar app', icon: <Download size={20} />, cor: 'blue' },
   ]
 
   // strava
