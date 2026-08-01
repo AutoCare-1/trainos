@@ -52,7 +52,7 @@ export default function DashboardPage() {
             <span className="title-accent" />
             <p className="mt-2 text-sm text-ink-muted">Acompanhe treinos, execuções e conversas</p>
           </div>
-          <Link href="/alunos/novo" className="btn-primary flex items-center gap-1.5 rounded-xl px-5 py-2.5 text-sm">
+          <Link href="/alunos/novo" className="btn-cta flex items-center gap-1.5 rounded-xl px-5 py-2.5 text-sm">
             <UserPlus size={16} />
             Cadastrar aluno
           </Link>
@@ -82,8 +82,14 @@ export default function DashboardPage() {
 
         {students?.length === 0 && (
           <div className="glass-flat rounded-2xl border-dashed p-10 text-center">
-            <p className="text-ink-soft">Nenhum aluno cadastrado ainda.</p>
+            <span className="icon-chip icon-chip-coral mx-auto mb-3 h-12 w-12 [&>svg]:h-6 [&>svg]:w-6">
+              <UserPlus />
+            </span>
+            <p className="font-semibold text-ink-soft">Nenhum aluno cadastrado ainda.</p>
             <p className="mt-1 text-sm text-ink-muted">Comece cadastrando o primeiro — leva menos de um minuto.</p>
+            <Link href="/alunos/novo" className="btn-cta mt-4 inline-block rounded-xl px-5 py-2.5 text-sm">
+              Cadastrar meu primeiro aluno
+            </Link>
           </div>
         )}
 

@@ -153,7 +153,7 @@ export default function NovoDesafioPage() {
 
           {erro && <p className="text-sm text-danger">{erro}</p>}
 
-          <button type="submit" disabled={salvando} className="btn-primary w-full rounded-xl px-4 py-3 text-sm">
+          <button type="submit" disabled={salvando} className="btn-cta w-full rounded-xl px-4 py-3 text-sm">
             {salvando ? 'Criando...' : 'Criar desafio'}
           </button>
         </form>

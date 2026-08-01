@@ -130,7 +130,7 @@ export default function TreinoDetalheClient({ workoutId }: { workoutId: string }
               <button
                 onClick={enviarTreino}
                 disabled={enviando}
-                className="btn-primary rounded-xl px-5 py-2.5 text-sm"
+                className="btn-cta rounded-xl px-5 py-2.5 text-sm"
               >
                 {enviando ? 'Enviando...' : 'Enviar ao aluno'}
               </button>

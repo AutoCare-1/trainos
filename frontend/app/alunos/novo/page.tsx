@@ -230,7 +230,7 @@ export default function NovoAlunoPage() {
 
           {erro && <p className="text-sm text-danger">{erro}</p>}
 
-          <button type="submit" disabled={carregando} className="btn-primary w-full rounded-xl px-4 py-3 text-sm">
+          <button type="submit" disabled={carregando} className="btn-cta w-full rounded-xl px-4 py-3 text-sm">
             {carregando ? 'Salvando...' : 'Cadastrar aluno'}
           </button>
         </form>

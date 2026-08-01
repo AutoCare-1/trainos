@@ -493,7 +493,7 @@ export default function NovoTreinoClient() {
                   type="button"
                   onClick={salvarEEnviar}
                   disabled={salvando || items.length === 0}
-                  className="btn-primary flex-1 rounded-xl px-4 py-3 text-sm"
+                  className="btn-cta flex-1 rounded-xl px-4 py-3 text-sm"
                 >
                   {salvando ? 'Enviando...' : 'Salvar e enviar ao aluno'}
                 </button>
