@@ -16,6 +16,13 @@
   --brand-violet-deep: #5b4fb0;
   --brand-navy: #1b1350;
 
+  /* Cor de energia — reservada pra ação de conversão (CTA de assinar/criar
+     conta/enviar) e destaques que precisam "chamar o olho" no meio do
+     azul/violeta institucional. Não é usada em chrome/fundo, só em CTA e
+     acento pontual, pra não brigar com a marca. */
+  --brand-coral: #ff6a4d;
+  --brand-coral-deep: #e8492c;
+
   /* Neutros com viés de matiz pra marca (não é o slate genérico do Tailwind) */
   --ink: #1b1350;
   --ink-soft: #4a4370;
@@ -44,6 +51,8 @@
   --color-brand-deep: var(--brand-blue-deep);
   --color-accent: var(--brand-violet);
   --color-accent-deep: var(--brand-violet-deep);
+  --color-cta: var(--brand-coral);
+  --color-cta-deep: var(--brand-coral-deep);
 
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
@@ -99,9 +108,12 @@ body {
 }
 
 /* Fundo de tela cheia pro login — o gradiente da marca como protagonista,
-   não como detalhe. */
+   não como detalhe. Terceiro brilho (coral, bem discreto) só pra tirar o
+   fundo do "duotone" azul/violeta plano — é a primeira tela que qualquer
+   personal/aluno vê, então é onde a primeira impressão de marca mais pesa. */
 .hero-gradient {
   background:
+    radial-gradient(ellipse 55% 40% at 88% 92%, rgba(255, 106, 77, 0.18), transparent 60%),
     radial-gradient(ellipse 90% 60% at 20% -10%, rgba(139, 127, 214, 0.55), transparent 60%),
     radial-gradient(ellipse 70% 50% at 100% 100%, rgba(38, 72, 179, 0.5), transparent 55%),
     linear-gradient(160deg, var(--brand-navy) 0%, var(--brand-blue-deep) 45%, var(--brand-blue) 100%);
@@ -116,6 +128,19 @@ body {
 }
 .stat-hero .stat-hero-label {
   color: rgba(255, 255, 255, 0.75);
+}
+
+/* Variante do stat-hero em coral — pra dar variedade real entre os KPIs de
+   uma mesma tela (nem tudo azul/violeta) sem inventar uma cor nova por
+   card. Reservada pro número que representa urgência/ação (ex: alunos em
+   risco, treinos vencendo), nunca pro número "neutro". */
+.stat-hero-cta {
+  background: linear-gradient(135deg, var(--brand-coral), var(--brand-coral-deep));
+  color: #ffffff;
+  box-shadow: 0 14px 34px rgba(232, 73, 44, 0.32);
+}
+.stat-hero-cta .stat-hero-label {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* Fonte de exibição — só títulos e números em destaque, nunca corpo de texto */
@@ -133,11 +158,11 @@ body {
    recorrente da identidade, pra não virar decoração pesada. */
 .title-accent {
   display: block;
-  width: 2.25rem;
-  height: 3px;
+  width: 2.75rem;
+  height: 4px;
   border-radius: 999px;
   margin-top: 0.5rem;
-  background: linear-gradient(90deg, var(--brand-blue), var(--brand-violet));
+  background: linear-gradient(90deg, var(--brand-blue), var(--brand-violet) 70%, var(--brand-coral));
 }
 
 /* Card — nível 1 (padrão). Sombra e borda discretas, mas com curadoria
@@ -186,19 +211,47 @@ body {
   background: linear-gradient(135deg, var(--brand-blue), var(--brand-violet));
   color: #ffffff;
   font-weight: 600;
-  transition: opacity 0.2s, box-shadow 0.2s, transform 0.1s;
-  box-shadow: 0 4px 16px rgba(38, 72, 179, 0.25);
+  transition: opacity 0.2s, box-shadow 0.2s, transform 0.15s;
+  box-shadow: 0 4px 16px rgba(38, 72, 179, 0.28);
 }
 .btn-primary:hover {
-  opacity: 0.92;
-  box-shadow: 0 6px 22px rgba(38, 72, 179, 0.35);
+  opacity: 0.94;
+  box-shadow: 0 8px 26px rgba(38, 72, 179, 0.4);
+  transform: translateY(-1px);
 }
 .btn-primary:active {
-  transform: scale(0.98);
+  transform: scale(0.98) translateY(0);
 }
 .btn-primary:disabled {
   opacity: 0.4;
   box-shadow: none;
+  transform: none;
+}
+
+/* Botão de conversão — ação de maior intenção da tela (assinar, criar conta,
+   enviar treino pro aluno, confirmar cobrança). Cor de energia própria (não
+   é só um btn-primary mais forte) pra se destacar de ações "administrativas"
+   de mesma hierarquia visual que ele. Usar com parcimônia: no máximo 1 por
+   tela, senão perde o efeito de destaque. */
+.btn-cta {
+  background: linear-gradient(135deg, var(--brand-coral), var(--brand-coral-deep));
+  color: #ffffff;
+  font-weight: 700;
+  transition: opacity 0.2s, box-shadow 0.2s, transform 0.15s;
+  box-shadow: 0 6px 20px rgba(232, 73, 44, 0.35);
+}
+.btn-cta:hover {
+  opacity: 0.94;
+  box-shadow: 0 10px 30px rgba(232, 73, 44, 0.45);
+  transform: translateY(-1px);
+}
+.btn-cta:active {
+  transform: scale(0.98) translateY(0);
+}
+.btn-cta:disabled {
+  opacity: 0.4;
+  box-shadow: none;
+  transform: none;
 }
 
 /* Botão secundário — outline com a cor da marca, distinto de um card estático */

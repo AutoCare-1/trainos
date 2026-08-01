@@ -91,7 +91,11 @@ export default function LoginPage() {
 
           {erro && <p className="text-sm text-danger">{erro}</p>}
 
-          <button type="submit" disabled={carregando} className="btn-primary w-full rounded-xl px-4 py-3 text-sm">
+          <button
+            type="submit"
+            disabled={carregando}
+            className={`w-full rounded-xl px-4 py-3 text-sm ${modo === 'signup' ? 'btn-cta' : 'btn-primary'}`}
+          >
             {carregando ? 'Aguarde...' : modo === 'login' ? 'Entrar' : 'Criar conta'}
           </button>
         </form>
