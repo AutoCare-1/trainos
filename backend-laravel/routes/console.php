@@ -14,3 +14,7 @@ Artisan::command('inspire', function () {
 Schedule::command('notifications:process')
     ->everyFifteenMinutes()
     ->withoutOverlapping();
+
+Schedule::command('assinatura:verificar-carencia')
+    ->daily()
+    ->withoutOverlapping();

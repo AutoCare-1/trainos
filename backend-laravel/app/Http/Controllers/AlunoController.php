@@ -6,8 +6,10 @@ use App\Http\Requests\StoreAlunoRequest;
 use App\Http\Requests\UpdateAlunoRequest;
 use App\Models\BodyMeasurement;
 use App\Models\Exercise;
+use App\Models\Professional;
 use App\Models\Student;
 use App\Models\StudentBillingPlan;
+use App\Support\Assinatura;
 use App\Support\Estagnacao;
 use App\Support\Gamification;
 use App\Support\Money;
@@ -134,6 +136,27 @@ class AlunoController extends Controller
     {
         $validated = $request->validated();
         $professionalId = $request->user()->id;
+
+        // O middleware JWT só decodifica o id (não toca o banco, de propósito —
+        // ver JwtAuthenticate). Aqui precisamos do created_at de verdade pra
+        // calcular teste grátis/carência, então busca o Professional completo
+        // só nesta rota, que é exatamente onde a trava de limite de alunos entra.
+        $professional = Professional::findOrFail($professionalId);
+        $statusAssinatura = Assinatura::status($professional);
+
+        if ($statusAssinatura['limite_alunos'] !== null) {
+            $ativos = Assinatura::alunosAtivos($professional);
+            if ($ativos >= $statusAssinatura['limite_alunos']) {
+                $mensagens = [
+                    Assinatura::MOTIVO_TESTE_EXPIRADO => 'Seu teste grátis acabou. Escolha um plano em "Meu Plano" pra continuar cadastrando alunos.',
+                    Assinatura::MOTIVO_PAGAMENTO_ATRASADO => 'Sua assinatura está com pagamento pendente além do prazo de carência. Regularize em "Meu Plano" pra cadastrar novos alunos.',
+                ];
+                $mensagem = $mensagens[$statusAssinatura['motivo_bloqueio']]
+                    ?? 'Você atingiu o limite de alunos do seu plano atual. Faça upgrade em "Meu Plano" pra cadastrar mais.';
+
+                return response()->json(['error' => $mensagem], 422);
+            }
+        }
 
         $student = DB::transaction(function () use ($validated, $professionalId) {
             $student = Student::create([

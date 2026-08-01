@@ -7,6 +7,8 @@ use App\Http\Controllers\AlunoRevisaoController;
 use App\Http\Controllers\AlunoChatController;
 use App\Http\Controllers\AlunoCheckinController;
 use App\Http\Controllers\AlunoController;
+use App\Http\Controllers\AssinaturaController;
+use App\Http\Controllers\AssinaturaWebhookController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AcademiaController;
 use App\Http\Controllers\ConsultorIaController;
@@ -140,6 +142,14 @@ Route::middleware('auth.jwt')->group(function () {
         Route::patch('/{id}', [GastoController::class, 'update']);
         Route::patch('/{id}/encerrar', [GastoController::class, 'encerrar']);
     });
+
+    // Assinatura do PERSONAL com o TrainOS (cobrança recorrente via Mercado
+    // Pago) — não confundir com /gastos (despesas do negócio do personal) nem
+    // com /alunos/{id}/cobranca (cobrança do aluno pelo personal).
+    Route::prefix('assinatura')->group(function () {
+        Route::get('/', [AssinaturaController::class, 'show']);
+        Route::post('/checkout', [AssinaturaController::class, 'checkout']);
+    });
 });
 
 // Rotas públicas: autenticadas pelo invite_token do aluno, não por JWT (mesmo
@@ -150,6 +160,11 @@ Route::prefix('strava')->group(function () {
     Route::get('/{token}/status', [StravaController::class, 'status']);
     Route::post('/{token}/sincronizar', [StravaController::class, 'sincronizar']);
 });
+
+// Webhook do Mercado Pago — não é autenticado por token de aluno nem por JWT
+// do personal, o provedor não manda nenhum dos dois. A validação de origem
+// vem da assinatura HMAC (x-signature), checada dentro do controller.
+Route::post('/assinatura/webhook', [AssinaturaWebhookController::class, 'handle']);
 
 Route::prefix('portal')->group(function () {
     Route::get('/{token}', [PortalController::class, 'show']);

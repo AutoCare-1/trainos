@@ -48,6 +48,8 @@ class NotificationTypesSeeder extends Seeder
             ['aluno_cadastrado', 'Novo aluno cadastrado', 'Aviso quando um novo aluno é cadastrado.', 'gestao', 'personal'],
             ['treino_vencendo_personal', 'Treino vencendo', 'Aviso ao personal quando falta pouco pra vencer o prazo de validade do treino de um aluno.', 'gestao', 'personal'],
             ['treino_vencido_personal', 'Treino vencido', 'Aviso ao personal quando o prazo de validade do treino de um aluno já passou.', 'gestao', 'personal'],
+            ['assinatura_pagamento_falhou', 'Pagamento da assinatura falhou', 'Aviso quando a cobrança recorrente da assinatura do personal com o TrainOS não é aprovada.', 'gestao', 'personal'],
+            ['assinatura_bloqueada', 'Assinatura suspensa', 'Aviso quando a carência de pagamento esgota e o cadastro de novos alunos é bloqueado.', 'gestao', 'personal'],
         ];
 
         foreach ($tipos as [$chave, $nome, $descricao, $categoria, $publico]) {

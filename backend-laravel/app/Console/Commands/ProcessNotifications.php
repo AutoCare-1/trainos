@@ -9,6 +9,8 @@ use App\Notifications\PushNotification;
 use App\Notifications\Rules\NotificacaoCandidato;
 use App\Notifications\Rules\AlertaSextaRule;
 use App\Notifications\Rules\AlunoCadastradoRule;
+use App\Notifications\Rules\AssinaturaBloqueadaRule;
+use App\Notifications\Rules\AssinaturaPagamentoFalhouRule;
 use App\Notifications\Rules\AvaliacaoPendenteRule;
 use App\Notifications\Rules\AvaliacaoRecebidaRule;
 use App\Notifications\Rules\ComentarioFotoEvolucaoRule;
@@ -78,6 +80,8 @@ class ProcessNotifications extends Command
             new TreinoVencendoPersonalRule,
             new TreinoVencidoAlunoRule,
             new TreinoVencidoPersonalRule,
+            new AssinaturaPagamentoFalhouRule,
+            new AssinaturaBloqueadaRule,
             new MensagemNaoLidaRule,
             new AvaliacaoPendenteRule,
             new EstagnacaoDetectadaRule,

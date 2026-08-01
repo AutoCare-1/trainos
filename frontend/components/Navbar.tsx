@@ -19,7 +19,9 @@ import {
   UserPlus,
   Bell,
   Download,
+  CreditCard,
 } from 'lucide-react'
+import AssinaturaBanner from '@/components/AssinaturaBanner'
 import AtivarNotificacoesButton from '@/components/AtivarNotificacoesButton'
 import InstallAppModal from '@/components/InstallAppModal'
 import InstallBanner from '@/components/InstallBanner'
@@ -41,6 +43,7 @@ function itemAtivo(pathname: string): string {
   if (pathname.startsWith('/conteudo')) return 'conteudo'
   if (pathname.startsWith('/consultor-ia')) return 'consultor-ia'
   if (pathname.startsWith('/notificacoes')) return 'notificacoes'
+  if (pathname.startsWith('/plano')) return 'plano'
   return ''
 }
 
@@ -63,6 +66,7 @@ export default function Navbar() {
     { id: 'consultor-ia', label: 'Consultor IA', icon: <Bot size={ICON_SIZE} />, href: '/consultor-ia', cor: 'violet' },
     { id: 'novo-aluno', label: 'Cadastrar aluno', icon: <UserPlus size={ICON_SIZE} />, href: '/alunos/novo', cor: 'teal' },
     { id: 'notificacoes', label: 'Notificações', icon: <Bell size={ICON_SIZE} />, href: '/notificacoes', cor: 'sky' },
+    { id: 'plano', label: 'Meu Plano', icon: <CreditCard size={ICON_SIZE} />, href: '/plano', cor: 'amber' },
     { id: 'instalar', label: 'Instalar app', icon: <Download size={ICON_SIZE} />, onClick: () => setInstalarAberto(true), cor: 'blue' },
   ]
 
@@ -107,6 +111,7 @@ export default function Navbar() {
       </header>
 
       <div className="mx-auto w-full max-w-5xl px-4 pt-4">
+        <AssinaturaBanner />
         <InstallBanner />
         <AtivarNotificacoesButton caminhoSubscribe="/push/subscribe" />
       </div>

@@ -538,3 +538,31 @@ export interface TipoNotificacao {
   publico: 'aluno' | 'personal'
   enabled: boolean
 }
+
+/** Faixa de plano da assinatura do personal com o TrainOS (config/planos_assinatura.php) —
+ *  não confundir com StudentBillingPlan, que é a cobrança do aluno pelo personal. */
+export interface PlanoAssinatura {
+  nome: string
+  limite_alunos: number
+  valor_mensal: number
+}
+
+export interface FaturaAssinatura {
+  valor: string
+  status: 'aprovado' | 'recusado'
+  pago_em: string | null
+  created_at: string
+}
+
+export interface StatusAssinatura {
+  plano_chave: string | null
+  status: 'pendente' | 'ativa' | 'atrasada' | 'bloqueada' | 'cancelada' | null
+  em_teste: boolean
+  dias_restantes_teste: number
+  dias_restantes_carencia: number | null
+  limite_alunos: number | null
+  alunos_ativos: number
+  proxima_cobranca_em: string | null
+  planos: Record<string, PlanoAssinatura>
+  faturas: FaturaAssinatura[]
+}
