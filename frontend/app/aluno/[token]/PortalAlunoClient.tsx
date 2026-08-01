@@ -123,6 +123,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   // sincronização, e POST /sessoes já é idempotente por treino).
   const [sessaoOffline, setSessaoOffline] = useState(false)
   const [pendentes, setPendentes] = useState(0)
+  const [descartadosNaSincronizacao, setDescartadosNaSincronizacao] = useState(0)
   const online = useEstaOnline()
   const sincronizandoRef = useRef(false)
   const treinoEmAndamento = sessionId !== null || sessaoOffline
@@ -566,6 +567,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
 
       const sessaoDoTreino = new Map<string, string>()
       let despachados = 0
+      let descartados = 0
 
       for (const item of itens) {
         try {
@@ -598,14 +600,20 @@ export default function PortalAlunoClient({ token }: { token: string }) {
           await removerDaFila(item.seq)
           despachados++
         } catch (err) {
-          // 4xx que não seja excesso de requisições é recusa definitiva (treino
-          // arquivado, série já registrada por outro aparelho): reenviar nunca
-          // vai passar e o item travaria a fila pra sempre — descarta e segue.
-          const recusaDefinitiva =
-            err instanceof ApiError && err.status >= 400 && err.status < 500 && err.status !== 429
-          if (recusaDefinitiva) {
+          // 409 é o único 4xx que significa "sem perda": client_entry_id já
+          // registrado por outro aparelho/tentativa anterior — o dado já está
+          // salvo no servidor, só não precisa reenviar. Qualquer outro 4xx
+          // (ex: treino/exercício mudou enquanto o aluno estava offline) É
+          // perda de dado de verdade — reenviar nunca vai passar, então tira
+          // da fila pra não travar o resto, mas avisa o aluno.
+          if (err instanceof ApiError && err.status === 409) {
             await removerDaFila(item.seq)
             despachados++
+            continue
+          }
+          if (err instanceof ApiError && err.status >= 400 && err.status < 500 && err.status !== 429) {
+            await removerDaFila(item.seq)
+            descartados++
             continue
           }
           // Rede caiu de novo (ou o servidor está fora): para aqui e mantém o
@@ -615,6 +623,9 @@ export default function PortalAlunoClient({ token }: { token: string }) {
       }
 
       setPendentes(await contarPendentes(token))
+      if (descartados > 0) {
+        setDescartadosNaSincronizacao((prev) => prev + descartados)
+      }
       if (despachados > 0) {
         setSessaoOffline(false)
         carregarPortal(dataRef.current?.workout?.id)
@@ -1755,6 +1766,22 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                   ? 'Enviando 1 registro que ficou salvo...'
                   : `Enviando ${pendentes} registros que ficaram salvos...`
                 : 'Sem conexão — seus registros serão salvos e enviados quando a internet voltar.'}
+            </p>
+          </div>
+        )}
+
+        {/* client_entry_id que não bate mais com nada no servidor (ex: o
+            personal mudou o treino enquanto o aluno estava offline) não tem
+            como reenviar — precisa aparecer, não sumir em silêncio. */}
+        {descartadosNaSincronizacao > 0 && (
+          <div className="mb-4 flex items-start gap-2.5 rounded-2xl bg-warning-soft px-4 py-3 text-sm text-warning">
+            <span aria-hidden className="mt-0.5">
+              ⚠
+            </span>
+            <p>
+              {descartadosNaSincronizacao === 1
+                ? '1 registro salvo offline não pôde ser enviado (o treino pode ter mudado enquanto você estava sem internet). Confira com seu professor.'
+                : `${descartadosNaSincronizacao} registros salvos offline não puderam ser enviados (o treino pode ter mudado enquanto você estava sem internet). Confira com seu professor.`}
             </p>
           </div>
         )}
