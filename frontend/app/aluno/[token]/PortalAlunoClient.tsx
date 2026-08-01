@@ -17,6 +17,7 @@ import { api, API_URL, ApiError } from '@/lib/api'
 import { formatarDataCurta, formatarDataLonga, nomeMes, primeiroDiaAno, primeiroDiaMes, somarDias } from '@/lib/checkinDates'
 import { comprimirImagem } from '@/lib/compressImage'
 import { registrarServiceWorker, useEstaOnline } from '@/lib/conexao'
+import { repsIniciais } from '@/lib/faixaReps'
 import { contarPendentes, enfileirar, listarFila, novoClientEntryId, removerDaFila } from '@/lib/filaOffline'
 import { estaInstalado, useValorDoNavegador } from '@/lib/push'
 import {
@@ -397,7 +398,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
         setRegistrados(d.registeredCounts ?? {})
         const initialInputs: Record<string, { reps: string; load: string }> = {}
         d.exercises.forEach((ex) => {
-          initialInputs[ex.id] = { reps: ex.reps, load: ex.load_kg ?? '' }
+          initialInputs[ex.id] = { reps: repsIniciais(ex.reps), load: ex.load_kg ?? '' }
         })
         setInputs(initialInputs)
       })
@@ -651,11 +652,19 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     const jaFeitas = registrados[ex.id] ?? 0
     if (jaFeitas >= ex.sets) return
 
-    const valores = inputs[ex.id] ?? { reps: ex.reps, load: ex.load_kg ?? '' }
+    const valores = inputs[ex.id] ?? { reps: repsIniciais(ex.reps), load: ex.load_kg ?? '' }
+
+    // Série sem repetição registrada não serve pra nada — não vira histórico
+    // pro personal nem entra no cálculo de progressão. O botão já fica
+    // desabilitado nesse estado; isto é a segunda tranca (teclado do celular
+    // que envia sozinho, clique repetido antes do re-render).
+    const repsDone = Number(valores.reps)
+    if (!Number.isFinite(repsDone) || repsDone <= 0) return
+
     const serie = {
       workoutExerciseId: ex.id,
       setNumber: jaFeitas + 1,
-      repsDone: Number(valores.reps) || null,
+      repsDone,
       loadKgDone: valores.load ? Number(valores.load) : null,
     }
     // Gerado antes de tentar a rede: se o envio falhar no meio (a resposta pode
@@ -1857,10 +1866,15 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                               <input
                                 type="number"
                                 inputMode="numeric"
+                                required
                                 value={inputs[ex.id]?.reps ?? ''}
                                 onChange={(e) =>
                                   setInputs({ ...inputs, [ex.id]: { ...inputs[ex.id], reps: e.target.value } })
                                 }
+                                // Faixa prescrita ("10-12") não vira valor inicial — o
+                                // aluno informa quantas fez de verdade. O placeholder
+                                // deixa a meta à vista enquanto o campo está vazio.
+                                placeholder={ex.reps}
                                 className="input-dark w-full rounded-xl px-3 py-2.5 text-center text-sm"
                               />
                             </div>
@@ -1878,7 +1892,11 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                             </div>
                             <button
                               onClick={() => registrarSerie(ex)}
-                              className="btn-primary shrink-0 rounded-xl px-4 py-2.5 text-sm"
+                              disabled={!(Number(inputs[ex.id]?.reps) > 0)}
+                              title={
+                                Number(inputs[ex.id]?.reps) > 0 ? undefined : 'Informe quantas repetições você fez'
+                              }
+                              className="btn-primary shrink-0 rounded-xl px-4 py-2.5 text-sm disabled:cursor-not-allowed disabled:opacity-40"
                             >
                               ✓ {feitas + 1}/{ex.sets}
                             </button>
