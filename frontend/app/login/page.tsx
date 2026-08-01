@@ -37,12 +37,12 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         <div className="mb-8 flex flex-col items-center text-center">
           <Image
-            src="/clubemais-logo.png"
+            src="/clubemais-logo-white.png"
             alt="Clube Mais"
             width={240}
             height={67}
             priority
-            className="chrome-invert h-16 w-auto"
+            className="h-16 w-auto"
           />
           <span className="mt-3 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white">
             Personal

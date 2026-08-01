@@ -111,13 +111,6 @@ body {
   color: #ffffff;
 }
 
-/* Vira a logo colorida numa silhueta branca sólida — usada em qualquer fundo
-   escuro/gradiente da marca (chrome do topo, hero do login), não só dentro
-   de um contêiner específico. */
-.chrome-invert {
-  filter: brightness(0) invert(1);
-}
-
 /* Hero de tela — usado atrás do título de página nas telas principais.
    Mesmo gradiente do chrome, só que como bloco de conteúdo (não faixa fixa). */
 .hero-panel {

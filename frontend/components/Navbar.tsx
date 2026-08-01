@@ -91,12 +91,12 @@ export default function Navbar() {
           </button>
           <Link href="/dashboard" className="flex flex-1 items-center justify-center gap-2.5 sm:flex-initial sm:justify-start">
             <Image
-              src="/clubemais-logo.png"
+              src="/clubemais-logo-white.png"
               alt="Clube Mais"
               width={140}
               height={39}
               priority
-              className="chrome-invert h-7 w-auto"
+              className="h-7 w-auto"
             />
             <span className="hidden items-center border-l border-white/25 pl-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-white/80 sm:flex">
               Personal

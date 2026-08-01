@@ -812,11 +812,11 @@ export default function PortalAlunoClient({ token }: { token: string }) {
             <p className="font-display truncate font-bold text-white">{data.workout ? data.workout.name : 'Seu espaço de treino'}</p>
           </div>
           <Image
-            src="/clubemais-icone.png"
+            src="/clubemais-icone-white.png"
             alt="Clube Mais"
             width={36}
             height={36}
-            className="chrome-invert h-9 w-9 shrink-0"
+            className="h-9 w-9 shrink-0"
           />
         </div>
       </header>
