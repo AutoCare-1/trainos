@@ -1,12 +1,81 @@
-// Service Worker do Clube Mais Personal — só cuida de Web Push (sem cache/offline
-// de propósito, pra não complicar o fluxo normal de fetch do Next.js).
+// Service Worker do Clube Mais Personal — Web Push e cache offline do treino
+// do dia. A decisão de "o que pode ser cacheado" mora em sw-cache-policy.js
+// (arquivo separado pra ser testável fora do navegador).
+
+importScripts('/sw-cache-policy.js')
+
+const CACHE = 'clube-mais-v1'
 
 self.addEventListener('install', () => {
   self.skipWaiting()
 })
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil(self.clients.claim())
+  event.waitUntil(
+    caches
+      .keys()
+      .then((nomes) => Promise.all(nomes.filter((n) => n !== CACHE).map((n) => caches.delete(n))))
+      .then(() => self.clients.claim())
+  )
+})
+
+// Assets com hash no nome (/_next/static) e imagens de exercício nunca mudam de
+// conteúdo pra uma mesma URL — servir do cache primeiro deixa a tela abrir sem
+// rede e evita rodada de revalidação na academia com sinal ruim.
+async function cachePrimeiro(requisicao) {
+  const guardado = await caches.match(requisicao)
+  if (guardado) return guardado
+
+  const resposta = await fetch(requisicao)
+  if (resposta.ok) {
+    const cache = await caches.open(CACHE)
+    cache.put(requisicao, resposta.clone())
+  }
+  return resposta
+}
+
+/**
+ * Rede primeiro, cache como rede de segurança: online o aluno sempre vê o dado
+ * atual (treino trocado pelo personal, série registrada em outro aparelho), e
+ * sem rede cai na última versão que ele já tinha aberto.
+ */
+async function redePrimeiro(requisicao, ignorarQueryNoFallback) {
+  try {
+    const resposta = await fetch(requisicao)
+    if (resposta.ok) {
+      const cache = await caches.open(CACHE)
+      cache.put(requisicao, resposta.clone())
+    }
+    return resposta
+  } catch (erro) {
+    // `ignoreSearch` porque o portal é aberto com ?workout_id=... quando o aluno
+    // escolhe entre treinos vigentes — sem isso, trocar de treino e ficar sem
+    // rede não acharia nada no cache, mesmo já tendo o payload guardado.
+    const guardado = await caches.match(requisicao, { ignoreSearch: !!ignorarQueryNoFallback })
+    if (guardado) return guardado
+    throw erro
+  }
+}
+
+self.addEventListener('fetch', (event) => {
+  const requisicao = event.request
+  const politica = self.politicaDeCache({
+    url: requisicao.url,
+    method: requisicao.method,
+    destination: requisicao.destination,
+    mode: requisicao.mode,
+  })
+
+  // Sem política = o Service Worker não se mete: a requisição segue o caminho
+  // normal do navegador, como era antes de existir cache aqui.
+  if (!politica) return
+
+  if (politica === 'estatico') {
+    event.respondWith(cachePrimeiro(requisicao))
+    return
+  }
+
+  event.respondWith(redePrimeiro(requisicao, politica === 'dados' || politica === 'navegacao'))
 })
 
 self.addEventListener('push', (event) => {

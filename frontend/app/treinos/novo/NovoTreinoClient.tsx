@@ -6,8 +6,38 @@ import Navbar from '@/components/Navbar'
 import BackLink from '@/components/BackLink'
 import ExerciseAnimation from '@/components/ExerciseAnimation'
 import { api, ApiError } from '@/lib/api'
-import { Exercise, Workout, WorkoutTemplate, WorkoutTemplateExerciseDetail } from '@/lib/types'
+import { Exercise, SugestaoProgressao, Workout, WorkoutTemplate, WorkoutTemplateExerciseDetail } from '@/lib/types'
 import { ESTRUTURAS } from '@/lib/workoutStructures'
+
+function formatarKg(valor: number): string {
+  // pt-BR e sem casa decimal à toa: 42,5kg, mas 40kg (não "40,0kg").
+  return valor.toLocaleString('pt-BR', { maximumFractionDigits: 2 })
+}
+
+/**
+ * `ultima_sessao_em` é timestamp completo com fuso (o middleware do backend
+ * normaliza pra ISO 8601 com Z), então aqui `new Date` é o caminho certo — ao
+ * contrário das colunas de data pura, que o lib/checkinDates trata sem
+ * construtor justamente pra não deslocar o dia.
+ */
+function formatarDiaDaSessao(iso: string): string {
+  const data = new Date(iso)
+  return Number.isNaN(data.getTime()) ? '' : data.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })
+}
+
+function textoDaSugestao(s: SugestaoProgressao): string {
+  if (s.acao === 'aumentar_reps') {
+    return `Sugestão: ${s.reps_sugeridas} reps (+1)`
+  }
+  if (s.carga_sugerida === null) {
+    return 'Sugestão: manter a carga'
+  }
+  if (s.acao === 'manter') {
+    return `Sugestão: manter ${formatarKg(s.carga_sugerida)}kg`
+  }
+  const sinal = s.delta_kg > 0 ? '+' : '−'
+  return `Sugestão: ${formatarKg(s.carga_sugerida)}kg (${sinal}${formatarKg(Math.abs(s.delta_kg))}kg)`
+}
 
 interface ItemTreino {
   exercise_id: string
@@ -32,6 +62,7 @@ export default function NovoTreinoClient() {
   const [erro, setErro] = useState<string | null>(null)
   const [salvando, setSalvando] = useState(false)
   const [templates, setTemplates] = useState<WorkoutTemplate[]>([])
+  const [sugestoes, setSugestoes] = useState<Record<string, SugestaoProgressao>>({})
   const [carregandoModelo, setCarregandoModelo] = useState(false)
   const [salvandoModelo, setSalvandoModelo] = useState(false)
   const [modeloSalvo, setModeloSalvo] = useState(false)
@@ -49,6 +80,12 @@ export default function NovoTreinoClient() {
     api
       .get<{ templates: WorkoutTemplate[] }>('/modelos')
       .then((data) => setTemplates(data.templates))
+      .catch(() => {})
+    // Sugestão de progressão é um extra em cima da prescrição — se falhar, a
+    // tela continua funcionando exatamente como antes, sem sugestão nenhuma.
+    api
+      .get<{ sugestoes: Record<string, SugestaoProgressao> }>(`/alunos/${studentId}/progressao`)
+      .then((data) => setSugestoes(data.sugestoes))
       .catch(() => {})
   }, [studentId, router])
 
@@ -109,6 +146,21 @@ export default function NovoTreinoClient() {
 
   function removerExercicio(exerciseId: string) {
     setItems(items.filter((i) => i.exercise_id !== exerciseId))
+  }
+
+  // Preenche o campo com o número sugerido — quem confirma a prescrição
+  // continua sendo o personal, no botão de salvar. A sugestão nunca se aplica
+  // sozinha.
+  function aplicarSugestao(sugestao: SugestaoProgressao) {
+    setItems(
+      items.map((i) => {
+        if (i.exercise_id !== sugestao.exercise_id) return i
+        if (sugestao.acao === 'aumentar_reps') {
+          return sugestao.reps_sugeridas ? { ...i, reps: sugestao.reps_sugeridas } : i
+        }
+        return sugestao.carga_sugerida !== null ? { ...i, load_kg: sugestao.carga_sugerida } : i
+      })
+    )
   }
 
   function atualizarItem(exerciseId: string, campo: keyof ItemTreino, valor: string) {
@@ -290,6 +342,10 @@ export default function NovoTreinoClient() {
               <div className="space-y-3">
                 {items.map((item) => {
                   const ex = exercises.find((e) => e.id === item.exercise_id)
+                  const sugestao = sugestoes[item.exercise_id]
+                  const temAlgoPraAplicar =
+                    sugestao &&
+                    (sugestao.acao === 'aumentar_reps' ? !!sugestao.reps_sugeridas : sugestao.carga_sugerida !== null)
                   return (
                     <div key={item.exercise_id} className="glass rounded-2xl p-4">
                       <div className="mb-3 flex items-center justify-between">
@@ -315,6 +371,28 @@ export default function NovoTreinoClient() {
                           Remover
                         </button>
                       </div>
+                      {sugestao && (
+                        <div className="mb-3 rounded-xl bg-[#2648b3]/6 px-3 py-2.5">
+                          <div className="flex items-center justify-between gap-2">
+                            <p className="text-xs font-semibold text-[#2648b3]">{textoDaSugestao(sugestao)}</p>
+                            {temAlgoPraAplicar && (
+                              <button
+                                type="button"
+                                onClick={() => aplicarSugestao(sugestao)}
+                                className="shrink-0 rounded-lg bg-[#2648b3]/12 px-2.5 py-1 text-xs font-medium text-[#2648b3] transition hover:bg-[#2648b3]/20"
+                              >
+                                Aplicar
+                              </button>
+                            )}
+                          </div>
+                          <p className="mt-1 text-xs text-slate-500">
+                            {sugestao.motivo} · última sessão em {formatarDiaDaSessao(sugestao.ultima_sessao_em)} (
+                            {sugestao.series_registradas}×{sugestao.reps_prescritas}
+                            {sugestao.carga_anterior !== null ? ` · ${formatarKg(sugestao.carga_anterior)}kg` : ''})
+                          </p>
+                        </div>
+                      )}
+
                       <div className="grid grid-cols-2 gap-2">
                         <div>
                           <label className="mb-1 block text-xs text-slate-500">Séries</label>

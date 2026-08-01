@@ -13,7 +13,7 @@ class SessionEntry extends Model
     public $timestamps = false;
     protected $table = 'session_entries';
 
-    protected $fillable = ['training_session_id', 'workout_exercise_id', 'set_number', 'reps_done', 'load_kg_done', 'notes', 'is_pr'];
+    protected $fillable = ['training_session_id', 'workout_exercise_id', 'set_number', 'reps_done', 'load_kg_done', 'notes', 'is_pr', 'client_entry_id'];
 
     protected $casts = [
         'is_pr' => 'boolean',

@@ -318,11 +318,32 @@ class PortalController extends Controller
             'reps_done' => ['nullable', 'integer'],
             'load_kg_done' => ['nullable', 'numeric'],
             'notes' => ['nullable', 'string'],
+            'client_entry_id' => ['nullable', 'uuid'],
         ]);
 
         $session = TrainingSession::where('id', $sessionId)->where('student_id', $student->id)->first();
         if (! $session) {
             return response()->json(['error' => 'Sessão não encontrada'], 404);
+        }
+
+        // Série que veio da fila offline: o ID é gerado no cliente, então o
+        // mesmo registro pode ser despachado mais de uma vez (retry depois de
+        // timeout, ou app reaberto no meio da sincronização). Devolver a entry
+        // já gravada mantém a fila idempotente sem depender do set_number —
+        // que offline pode ser recalculado errado se o aluno registrar séries
+        // em dois dispositivos.
+        if (! empty($validated['client_entry_id'])) {
+            $jaEnviada = SessionEntry::where('client_entry_id', $validated['client_entry_id'])->first();
+            if ($jaEnviada) {
+                // Mesmo ID apontando pra outra sessão não é retry — é colisão
+                // (ou cliente adulterado). Não pode sobrescrever nem vazar a
+                // entry de outra sessão.
+                if ($jaEnviada->training_session_id !== $sessionId) {
+                    return response()->json(['error' => 'Registro já usado em outra sessão'], 409);
+                }
+
+                return response()->json(['entry' => $jaEnviada, 'isPr' => $jaEnviada->is_pr]);
+            }
         }
 
         // Confere que o exercício realmente pertence ao treino desta sessão —
@@ -373,6 +394,7 @@ class PortalController extends Controller
             'load_kg_done' => $validated['load_kg_done'] ?? null,
             'notes' => $validated['notes'] ?? null,
             'is_pr' => $isPr,
+            'client_entry_id' => $validated['client_entry_id'] ?? null,
         ])->refresh();
 
         return response()->json(['entry' => $entry, 'isPr' => $isPr], 201);
@@ -397,7 +419,15 @@ class PortalController extends Controller
         if (! $session) {
             return response()->json(['error' => 'Sessão não encontrada'], 404);
         }
-        $session->update(['status' => 'completed', 'finished_at' => now()]);
+
+        // Concluir sessão também entra na fila offline, então pode chegar duas
+        // vezes. Reescrever finished_at no reenvio moveria a sessão pro dia da
+        // sincronização — o que distorce streak, gamificação e a ordenação que
+        // Estagnacao/Progressao usam pra achar "a última sessão". Mantém a data
+        // original; só o feedback continua sendo atualizável.
+        if ($session->status !== 'completed') {
+            $session->update(['status' => 'completed', 'finished_at' => now()]);
+        }
 
         Feedback::updateOrCreate(
             ['training_session_id' => $sessionId],
