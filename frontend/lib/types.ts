@@ -328,6 +328,28 @@ export interface WorkoutExerciseDetail {
   image_credit: string | null
 }
 
+/**
+ * Sugestão de progressão calculada em App\Support\Progressao (determinística,
+ * sem IA). O personal decide se aceita, ignora ou ajusta — nada é aplicado
+ * automaticamente.
+ */
+export interface SugestaoProgressao {
+  exercise_id: string
+  exercise_name: string
+  equipment: string | null
+  ultima_sessao_em: string
+  reps_prescritas: string
+  series_registradas: number
+  series_prescritas: number
+  carga_anterior: number | null
+  carga_sugerida: number | null
+  delta_kg: number
+  reps_sugeridas: string | null
+  acao: 'aumentar_carga' | 'aumentar_reps' | 'manter' | 'reduzir'
+  motivo: string
+  estagnado: boolean
+}
+
 export interface Badge {
   id: string
   emoji: string

@@ -33,6 +33,9 @@ import WeightChart from '@/components/WeightChart'
 import { api, API_URL, ApiError } from '@/lib/api'
 import { formatarDataCurta, formatarDataLonga, nomeMes, primeiroDiaAno, primeiroDiaMes, somarDias } from '@/lib/checkinDates'
 import { comprimirImagem } from '@/lib/compressImage'
+import { registrarServiceWorker, useEstaOnline } from '@/lib/conexao'
+import { repsIniciais } from '@/lib/faixaReps'
+import { contarPendentes, enfileirar, listarFila, novoClientEntryId, removerDaFila } from '@/lib/filaOffline'
 import { estaInstalado, useValorDoNavegador } from '@/lib/push'
 import {
   Anamnese,
@@ -115,6 +118,14 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     else setAba(id as typeof aba)
   }
   const [sessionId, setSessionId] = useState<string | null>(null)
+  // Treino começado sem rede: não existe sessão no servidor ainda, mas o aluno
+  // precisa poder registrar as séries mesmo assim (a sessão é criada na
+  // sincronização, e POST /sessoes já é idempotente por treino).
+  const [sessaoOffline, setSessaoOffline] = useState(false)
+  const [pendentes, setPendentes] = useState(0)
+  const online = useEstaOnline()
+  const sincronizandoRef = useRef(false)
+  const treinoEmAndamento = sessionId !== null || sessaoOffline
   const [exercicioAnaliseForm, setExercicioAnaliseForm] = useState<{ id: string; nome: string } | null>(null)
   const [registrados, setRegistrados] = useState<Record<string, number>>({})
   const [recordes, setRecordes] = useState<Record<string, boolean>>({})
@@ -386,6 +397,14 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     }
   }
 
+  // Espelho do `data` pra sincronização da fila poder recarregar o treino que
+  // está aberto sem virar dependência do callback (o que o recriaria a cada
+  // resposta do servidor e reiniciaria o intervalo de retry).
+  const dataRef = useRef<PortalData | null>(null)
+  useEffect(() => {
+    dataRef.current = data
+  }, [data])
+
   const carregarPortal = useCallback((workoutId?: string) => {
     const query = workoutId ? `?workout_id=${workoutId}` : ''
     api
@@ -396,7 +415,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
         setRegistrados(d.registeredCounts ?? {})
         const initialInputs: Record<string, { reps: string; load: string }> = {}
         d.exercises.forEach((ex) => {
-          initialInputs[ex.id] = { reps: ex.reps, load: ex.load_kg ?? '' }
+          initialInputs[ex.id] = { reps: repsIniciais(ex.reps), load: ex.load_kg ?? '' }
         })
         setInputs(initialInputs)
       })
@@ -531,6 +550,101 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     }
   }
 
+  // Despacha a fila offline em ordem. Cada treino vira uma sessão só (POST
+  // /sessoes devolve a sessão em andamento se já existir), e cada série leva o
+  // client_entry_id gerado quando o aluno registrou — o backend usa isso pra
+  // reconhecer reenvio em vez de duplicar.
+  const sincronizarFila = useCallback(async () => {
+    if (sincronizandoRef.current) return
+    sincronizandoRef.current = true
+    try {
+      const itens = await listarFila(token)
+      if (itens.length === 0) {
+        setPendentes(0)
+        return
+      }
+
+      const sessaoDoTreino = new Map<string, string>()
+      let despachados = 0
+
+      for (const item of itens) {
+        try {
+          let idSessao = sessaoDoTreino.get(item.workoutId)
+          if (!idSessao) {
+            const { session } = await api.post<{ session: { id: string } }>(`/portal/${token}/sessoes`, {
+              workout_id: item.workoutId,
+            })
+            idSessao = session.id
+            sessaoDoTreino.set(item.workoutId, idSessao)
+          }
+
+          if (item.payload.tipo === 'serie') {
+            await api.post(`/portal/${token}/sessoes/${idSessao}/registros`, {
+              client_entry_id: item.clientEntryId,
+              workout_exercise_id: item.payload.workoutExerciseId,
+              set_number: item.payload.setNumber,
+              reps_done: item.payload.repsDone,
+              load_kg_done: item.payload.loadKgDone,
+            })
+          } else {
+            await api.post(`/portal/${token}/sessoes/${idSessao}/concluir`, {
+              effort_rpe: item.payload.effortRpe,
+              satisfaction: item.payload.satisfaction,
+              discomfort: item.payload.discomfort,
+              comment: item.payload.comment,
+            })
+          }
+
+          await removerDaFila(item.seq)
+          despachados++
+        } catch (err) {
+          // 4xx que não seja excesso de requisições é recusa definitiva (treino
+          // arquivado, série já registrada por outro aparelho): reenviar nunca
+          // vai passar e o item travaria a fila pra sempre — descarta e segue.
+          const recusaDefinitiva =
+            err instanceof ApiError && err.status >= 400 && err.status < 500 && err.status !== 429
+          if (recusaDefinitiva) {
+            await removerDaFila(item.seq)
+            despachados++
+            continue
+          }
+          // Rede caiu de novo (ou o servidor está fora): para aqui e mantém o
+          // resto da fila intacto, na ordem, pra próxima tentativa.
+          break
+        }
+      }
+
+      setPendentes(await contarPendentes(token))
+      if (despachados > 0) {
+        setSessaoOffline(false)
+        carregarPortal(dataRef.current?.workout?.id)
+      }
+    } finally {
+      sincronizandoRef.current = false
+    }
+  }, [token, carregarPortal])
+
+  // Registra o Service Worker (cache do treino do dia) e tenta esvaziar o que
+  // tiver sobrado da fila de uma visita anterior.
+  useEffect(() => {
+    registrarServiceWorker()
+    contarPendentes(token).then(setPendentes).catch(() => {})
+  }, [token])
+
+  useEffect(() => {
+    if (!online) return
+    sincronizarFila()
+  }, [online, sincronizarFila])
+
+  // O `online` do navegador é otimista demais pra ser o único gatilho (Wi-Fi de
+  // academia que conecta mas não navega não dispara evento nenhum) — enquanto
+  // houver pendência, tenta de novo de tempos em tempos.
+  useEffect(() => {
+    if (pendentes === 0) return
+    const intervalo = setInterval(sincronizarFila, 30000)
+    return () => clearInterval(intervalo)
+  }, [pendentes, sincronizarFila])
+
   async function iniciarTreino() {
     if (!data?.workout) return
     try {
@@ -539,37 +653,99 @@ export default function PortalAlunoClient({ token }: { token: string }) {
       })
       setSessionId(session.id)
     } catch (err) {
-      setErro(err instanceof ApiError ? err.message : 'Erro ao iniciar treino')
+      // Sem rede o treino começa localmente: a sessão de verdade é criada na
+      // sincronização (POST /sessoes é idempotente por treino, então despachar
+      // a fila depois não cria sessão duplicada).
+      if (err instanceof ApiError) {
+        setErro(err.message)
+        return
+      }
+      setSessaoOffline(true)
     }
   }
 
   async function registrarSerie(ex: WorkoutExerciseDetail) {
-    if (!sessionId) return
+    if (!treinoEmAndamento || !data?.workout) return
     const jaFeitas = registrados[ex.id] ?? 0
     if (jaFeitas >= ex.sets) return
 
-    const valores = inputs[ex.id] ?? { reps: ex.reps, load: ex.load_kg ?? '' }
+    const valores = inputs[ex.id] ?? { reps: repsIniciais(ex.reps), load: ex.load_kg ?? '' }
+
+    // Série sem repetição registrada não serve pra nada — não vira histórico
+    // pro personal nem entra no cálculo de progressão. O botão já fica
+    // desabilitado nesse estado; isto é a segunda tranca (teclado do celular
+    // que envia sozinho, clique repetido antes do re-render).
+    const repsDone = Number(valores.reps)
+    if (!Number.isFinite(repsDone) || repsDone <= 0) return
+
+    const serie = {
+      workoutExerciseId: ex.id,
+      setNumber: jaFeitas + 1,
+      repsDone,
+      loadKgDone: valores.load ? Number(valores.load) : null,
+    }
+    // Gerado antes de tentar a rede: se o envio falhar no meio (a resposta pode
+    // ter chegado no servidor mesmo assim), a série vai pra fila com o mesmo
+    // ID e o backend reconhece como repetição em vez de duplicar.
+    const clientEntryId = novoClientEntryId()
+
+    async function enfileirarSerie() {
+      await enfileirar(token, data!.workout!.id, { tipo: 'serie', ...serie }, clientEntryId)
+      setPendentes(await contarPendentes(token))
+      setRegistrados((prev) => ({ ...prev, [ex.id]: jaFeitas + 1 }))
+    }
+
+    if (!sessionId) {
+      await enfileirarSerie()
+      return
+    }
+
     try {
       const { isPr } = await api.post<{ isPr: boolean }>(`/portal/${token}/sessoes/${sessionId}/registros`, {
+        client_entry_id: clientEntryId,
         workout_exercise_id: ex.id,
-        set_number: jaFeitas + 1,
-        reps_done: Number(valores.reps) || null,
-        load_kg_done: valores.load ? Number(valores.load) : null,
+        set_number: serie.setNumber,
+        reps_done: serie.repsDone,
+        load_kg_done: serie.loadKgDone,
       })
-      setRegistrados({ ...registrados, [ex.id]: jaFeitas + 1 })
+      setRegistrados((prev) => ({ ...prev, [ex.id]: jaFeitas + 1 }))
       if (isPr) {
         setRecordes((prev) => ({ ...prev, [ex.id]: true }))
         setTimeout(() => setRecordes((prev) => ({ ...prev, [ex.id]: false })), 4000)
       }
     } catch (err) {
-      setErro(err instanceof ApiError ? err.message : 'Erro ao registrar série')
+      if (err instanceof ApiError) {
+        setErro(err.message)
+        return
+      }
+      // Caiu a rede no meio da série (o caso comum na academia) — guarda e segue.
+      await enfileirarSerie()
     }
   }
 
   async function concluirTreino() {
-    if (!sessionId) return
+    if (!treinoEmAndamento || !data?.workout) return
     setEnviandoFeedback(true)
+
+    const conclusao = {
+      tipo: 'concluir' as const,
+      effortRpe: rpe,
+      satisfaction: satisfacao,
+      discomfort: desconforto,
+      comment: comentario,
+    }
+
+    async function enfileirarConclusao() {
+      await enfileirar(token, data!.workout!.id, conclusao)
+      setPendentes(await contarPendentes(token))
+      setTreinoConcluido(true)
+    }
+
     try {
+      if (!sessionId) {
+        await enfileirarConclusao()
+        return
+      }
       await api.post(`/portal/${token}/sessoes/${sessionId}/concluir`, {
         effort_rpe: rpe,
         satisfaction: satisfacao,
@@ -578,7 +754,11 @@ export default function PortalAlunoClient({ token }: { token: string }) {
       })
       setTreinoConcluido(true)
     } catch (err) {
-      setErro(err instanceof ApiError ? err.message : 'Erro ao concluir treino')
+      if (err instanceof ApiError) {
+        setErro(err.message)
+        return
+      }
+      await enfileirarConclusao()
     } finally {
       setEnviandoFeedback(false)
     }
@@ -1561,13 +1741,31 @@ export default function PortalAlunoClient({ token }: { token: string }) {
       <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6 pb-24">
         {erro && <p className="mb-4 text-sm text-danger">{erro}</p>}
 
+        {/* Deliberadamente informativo, não alarmante: ficar sem sinal na
+            academia é esperado, e o aluno precisa seguir treinando sabendo que
+            não vai perder nada. Some sozinho quando a fila esvazia. */}
+        {(!online || pendentes > 0) && (
+          <div className="mb-4 flex items-start gap-2.5 rounded-2xl bg-ink/5 px-4 py-3 text-sm text-ink-soft">
+            <span aria-hidden className="mt-0.5">
+              {online ? '↑' : '☁'}
+            </span>
+            <p>
+              {online
+                ? pendentes === 1
+                  ? 'Enviando 1 registro que ficou salvo...'
+                  : `Enviando ${pendentes} registros que ficaram salvos...`
+                : 'Sem conexão — seus registros serão salvos e enviados quando a internet voltar.'}
+            </p>
+          </div>
+        )}
+
         {data.workouts.length > 1 && (
           <div className="chat-scroll mb-4 flex gap-2 overflow-x-auto pb-1">
             {data.workouts.map((w) => (
               <button
                 key={w.id}
                 onClick={() => carregarPortal(w.id)}
-                disabled={!!sessionId && w.id !== data.workout?.id}
+                disabled={treinoEmAndamento && w.id !== data.workout?.id}
                 className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-40 ${
                   w.id === data.workout?.id
                     ? 'bg-gradient-to-r from-brand to-accent text-white'
@@ -1580,13 +1778,13 @@ export default function PortalAlunoClient({ token }: { token: string }) {
           </div>
         )}
 
-        {!sessionId && (
+        {!treinoEmAndamento && (
           <button onClick={iniciarTreino} className="btn-primary mb-6 w-full rounded-2xl px-4 py-4 text-base">
             Iniciar treino
           </button>
         )}
 
-        {sessionId && (
+        {treinoEmAndamento && (
           <div className="glass mb-6 rounded-2xl p-4">
             <div className="mb-2 flex items-center justify-between text-sm">
               <span className="font-medium text-ink">Progresso</span>
@@ -1665,7 +1863,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                           </div>
                         </div>
 
-                        {sessionId && (
+                        {sessionId && online && (
                           <button
                             onClick={() => setExercicioAnaliseForm({ id: ex.exercise_id, nome: ex.exercise_name })}
                             className="mt-3 flex items-center gap-1.5 rounded-lg bg-ink/5 px-3 py-1.5 text-xs font-medium text-ink-soft transition hover:bg-ink/10"
@@ -1675,17 +1873,22 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                           </button>
                         )}
 
-                        {sessionId && !completo && (
+                        {treinoEmAndamento && !completo && (
                           <div className="mt-4 flex items-end gap-2">
                             <div className="flex-1">
                               <label className="mb-1 block text-xs text-ink-muted">Reps</label>
                               <input
                                 type="number"
                                 inputMode="numeric"
+                                required
                                 value={inputs[ex.id]?.reps ?? ''}
                                 onChange={(e) =>
                                   setInputs({ ...inputs, [ex.id]: { ...inputs[ex.id], reps: e.target.value } })
                                 }
+                                // Faixa prescrita ("10-12") não vira valor inicial — o
+                                // aluno informa quantas fez de verdade. O placeholder
+                                // deixa a meta à vista enquanto o campo está vazio.
+                                placeholder={ex.reps}
                                 className="input-dark w-full rounded-xl px-3 py-2.5 text-center text-sm"
                               />
                             </div>
@@ -1703,14 +1906,18 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                             </div>
                             <button
                               onClick={() => registrarSerie(ex)}
-                              className="btn-primary flex shrink-0 items-center gap-1 rounded-xl px-4 py-2.5 text-sm"
+                              disabled={!(Number(inputs[ex.id]?.reps) > 0)}
+                              title={
+                                Number(inputs[ex.id]?.reps) > 0 ? undefined : 'Informe quantas repetições você fez'
+                              }
+                              className="btn-primary flex shrink-0 items-center gap-1 rounded-xl px-4 py-2.5 text-sm disabled:cursor-not-allowed disabled:opacity-40"
                             >
                               <Check size={15} /> {feitas + 1}/{ex.sets}
                             </button>
                           </div>
                         )}
 
-                        {sessionId && (
+                        {treinoEmAndamento && (
                           <div className="mt-3 flex gap-1.5">
                             {Array.from({ length: ex.sets }).map((_, i) => (
                               <span
@@ -1731,9 +1938,10 @@ export default function PortalAlunoClient({ token }: { token: string }) {
           })}
         </div>
 
-        {sessionId && (
+        {treinoEmAndamento && (
           <div className="glass-elevated mt-8 rounded-2xl p-5">
             <h2 className="font-display mb-4 font-semibold text-ink">
+
               {todasSeriesFeitas ? 'Como foi o treino?' : 'Finalizar treino'}
             </h2>
             <div className="space-y-4">

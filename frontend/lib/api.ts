@@ -5,7 +5,20 @@ export function resolveMediaUrl(url: string): string {
   return url.startsWith('/uploads/') ? `${API_URL}${url}` : url
 }
 
-export class ApiError extends Error {}
+/**
+ * `status` existe pra fila offline (lib/filaOffline.ts) conseguir separar
+ * "o servidor recusou de vez" (4xx — reenviar nunca vai passar, descarta o
+ * item) de "deu ruim agora" (5xx/429 — mantém na fila e tenta de novo).
+ * Falha de rede pura nem chega aqui: o fetch rejeita antes, com TypeError.
+ */
+export class ApiError extends Error {
+  constructor(
+    message: string,
+    readonly status: number
+  ) {
+    super(message)
+  }
+}
 
 export function getToken(): string | null {
   if (typeof window === 'undefined') return null
@@ -48,7 +61,7 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const data = await res.json().catch(() => ({}))
   if (!res.ok) {
     tratarRespostaNaoAutorizada(res.status, !!token)
-    throw new ApiError(data.error ?? `Erro ${res.status}`)
+    throw new ApiError(data.error ?? `Erro ${res.status}`, res.status)
   }
   return data as T
 }
@@ -63,7 +76,7 @@ async function requestFormData<T>(path: string, formData: FormData, method: stri
   const data = await res.json().catch(() => ({}))
   if (!res.ok) {
     tratarRespostaNaoAutorizada(res.status, !!token)
-    throw new ApiError(data.error ?? `Erro ${res.status}`)
+    throw new ApiError(data.error ?? `Erro ${res.status}`, res.status)
   }
   return data as T
 }
@@ -80,7 +93,7 @@ export async function fetchImagemAutenticada(path: string): Promise<string> {
   })
   if (!res.ok) {
     tratarRespostaNaoAutorizada(res.status, !!token)
-    throw new ApiError('Não foi possível carregar a imagem')
+    throw new ApiError('Não foi possível carregar a imagem', res.status)
   }
   const blob = await res.blob()
   return URL.createObjectURL(blob)

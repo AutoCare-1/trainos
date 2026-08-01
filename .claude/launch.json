@@ -14,6 +14,12 @@
       "port": 3003
     },
     {
+      "name": "trainos-frontend-prod",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "cd frontend && npm run build && npm run start -- -p 3111"],
+      "port": 3111
+    },
+    {
       "name": "trainos-backend-verify",
       "runtimeExecutable": "bash",
       "runtimeArgs": ["-c", "cd backend-laravel && php artisan serve --port=3013"],

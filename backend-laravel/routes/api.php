@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlunoBodyPhotoController;
 use App\Http\Controllers\AlunoPosturalController;
+use App\Http\Controllers\AlunoProgressaoController;
 use App\Http\Controllers\AlunoRevisaoController;
 use App\Http\Controllers\AlunoChatController;
 use App\Http\Controllers\AlunoCheckinController;
@@ -67,6 +68,7 @@ Route::middleware('auth.jwt')->group(function () {
         Route::get('/{id}/postural', [AlunoPosturalController::class, 'index']);
         Route::get('/{id}/postural/{assessmentId}/imagem/{angulo}', [AlunoPosturalController::class, 'imagem']);
         Route::get('/{id}/revisoes', [AlunoRevisaoController::class, 'index']);
+        Route::get('/{id}/progressao', [AlunoProgressaoController::class, 'index']);
 
         Route::get('/{id}/checkins/summary', [AlunoCheckinController::class, 'summary']);
         Route::get('/{id}/checkins', [AlunoCheckinController::class, 'index']);

@@ -77,5 +77,11 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
+      # Política de cache do Service Worker (o que pode funcionar offline e,
+      # principalmente, o que nunca entra em cache — vídeo e mídia de usuário).
+      # Runner nativo do Node, sem dependência nova.
+      - name: Testes do Service Worker
+        run: npm run test:sw
+
       - name: Build de produção
         run: npm run build
