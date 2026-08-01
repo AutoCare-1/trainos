@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ChevronUp, ChevronDown } from 'lucide-react'
+import { ChevronUp, ChevronDown, ClipboardList } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import BackLink from '@/components/BackLink'
 import ExerciseAnimation from '@/components/ExerciseAnimation'
@@ -72,7 +72,10 @@ export default function ModelosPage() {
 
         {templates?.length === 0 && (
           <div className="glass rounded-2xl border-dashed p-10 text-center">
-            <p className="text-ink-muted">Nenhum modelo salvo ainda.</p>
+            <span className="icon-chip icon-chip-teal mx-auto mb-3 h-12 w-12 [&>svg]:h-6 [&>svg]:w-6">
+              <ClipboardList />
+            </span>
+            <p className="font-semibold text-ink-soft">Nenhum modelo salvo ainda.</p>
             <p className="mt-1 text-sm text-ink-muted">
               Monte um treino, clique em &quot;Salvar como modelo&quot; e ele aparece aqui.
             </p>

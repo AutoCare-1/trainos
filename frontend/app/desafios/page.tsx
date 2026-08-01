@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { Trophy } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import BackLink from '@/components/BackLink'
 import { api, ApiError } from '@/lib/api'
@@ -68,8 +69,14 @@ export default function DesafiosPage() {
 
         {challenges?.length === 0 && (
           <div className="glass rounded-2xl border-dashed p-10 text-center">
-            <p className="text-ink-muted">Nenhum desafio criado ainda.</p>
+            <span className="icon-chip icon-chip-coral mx-auto mb-3 h-12 w-12 [&>svg]:h-6 [&>svg]:w-6">
+              <Trophy />
+            </span>
+            <p className="font-semibold text-ink-soft">Nenhum desafio criado ainda.</p>
             <p className="mt-1 text-sm text-ink-muted">Crie um e convide seus alunos pra participar.</p>
+            <Link href="/desafios/novo" className="btn-cta mt-4 inline-block rounded-xl px-5 py-2.5 text-sm">
+              Criar meu primeiro desafio
+            </Link>
           </div>
         )}
 
