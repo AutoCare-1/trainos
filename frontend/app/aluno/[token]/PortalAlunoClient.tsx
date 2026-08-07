@@ -78,6 +78,11 @@ function formatarDistancia(metros: number | null): string {
   return `${(metros / 1000).toFixed(1)} km`
 }
 
+// Em stand by: ainda não tem conta/app registrado no Strava pra gerar
+// credenciais reais. Backend continua intacto (App\Support\Strava,
+// StravaController) — só a UI fica escondida até virar true de novo.
+const STRAVA_HABILITADO = false
+
 const NOME_ATIVIDADE: Record<string, string> = {
   Run: 'Corrida',
   Ride: 'Pedal',
@@ -377,6 +382,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   }, [token])
 
   const carregarStrava = useCallback(() => {
+    if (!STRAVA_HABILITADO) return
     api
       .get<{ conectado: boolean; atividades: ExternalActivity[] }>(`/strava/${token}/status`)
       .then((d) => {
@@ -435,7 +441,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     carregarSubmissoesAcademia()
     carregarStrava()
     const params = new URLSearchParams(window.location.search)
-    const statusStrava = params.get('strava')
+    const statusStrava = STRAVA_HABILITADO ? params.get('strava') : null
     if (statusStrava) {
       // Adiado pra fora do corpo síncrono do effect (mesma ideia do setTimeout
       // de baixo) — processa o parâmetro da URL só uma vez, sem setState direto.
@@ -856,7 +862,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
         />
         <InstallAppModal open={instalarAberto} onClose={() => setInstalarAberto(false)} />
         <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6">
-          {avisoStrava && (
+          {STRAVA_HABILITADO && avisoStrava && (
             <div className="mb-4 rounded-2xl border border-brand/25 bg-brand/8 px-4 py-3 text-sm text-brand">
               {avisoStrava}
             </div>
@@ -889,6 +895,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
             )}
           </div>
 
+          {STRAVA_HABILITADO && (
           <div className="glass mt-4 rounded-2xl p-5">
             <div className="mb-3 flex items-center justify-between">
               <h2 className="font-semibold text-ink">Atividades (Strava)</h2>
@@ -944,6 +951,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
               </div>
             )}
           </div>
+          )}
         </main>
       </div>
     )
