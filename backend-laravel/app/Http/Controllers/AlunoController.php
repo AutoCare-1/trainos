@@ -215,6 +215,28 @@ class AlunoController extends Controller
         return response()->json(['student' => $student->fresh()]);
     }
 
+    // PATCH /:id/status — desvincula ("ativo: false") ou reativa um aluno.
+    // Desvincular é o jeito do personal parar de treinar um aluno sem apagar o
+    // histórico dele: o aluno perde acesso ao portal na hora (ResolvesStudentByToken
+    // só resolve status=active) e para de contar no limite de alunos do plano
+    // (Assinatura::alunosAtivos só soma status=active), liberando vaga pra outro
+    // aluno — isso importa porque o plano de assinatura é cobrado por quantidade
+    // de alunos. Reativar (ativo: true) devolve o acesso normalmente.
+    public function status(Request $request, string $id): JsonResponse
+    {
+        $professionalId = $request->user()->id;
+        $validated = $request->validate(['ativo' => ['required', 'boolean']]);
+
+        $student = Student::where('id', $id)->where('professional_id', $professionalId)->first();
+        if (! $student) {
+            return response()->json(['error' => 'Aluno não encontrado'], 404);
+        }
+
+        $student->update(['status' => $validated['ativo'] ? 'active' : 'inactive']);
+
+        return response()->json(['student' => $student->fresh()]);
+    }
+
     // PATCH /:id/lembrete-pagamento — liga/desliga o lembrete de pagamento na
     // notificação de "treino venceu" do aluno (ver TreinoVencidoAlunoRule).
     // Fica no aluno, não no treino: cobrança e vencimento de treino são sistemas

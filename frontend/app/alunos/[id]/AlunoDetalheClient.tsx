@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Check, MessageCircle, Camera, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Check, MessageCircle, Camera, ChevronLeft, ChevronRight, UserX, UserCheck } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import BackLink from '@/components/BackLink'
 import Avatar from '@/components/Avatar'
@@ -100,6 +100,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
   const [erro, setErro] = useState<string | null>(null)
   const [copiado, setCopiado] = useState(false)
   const [enviandoFoto, setEnviandoFoto] = useState(false)
+  const [alterandoStatus, setAlterandoStatus] = useState(false)
   const fotoInputRef = useRef<HTMLInputElement | null>(null)
 
   // Evita empilhar requisições do polling: se o GET anterior ainda não voltou
@@ -246,6 +247,35 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
     }
   }
 
+  // Desvincular tira o acesso do aluno ao portal na hora e libera a vaga no
+  // limite de alunos do plano de assinatura (ver App\Support\Assinatura no
+  // backend) — não apaga nada, o histórico continua na ficha, e reativar
+  // devolve o acesso normalmente.
+  async function alternarStatus() {
+    if (!student) return
+    const ativar = student.status === 'inactive'
+    if (
+      !ativar &&
+      !confirm(
+        `Desvincular ${student.name.split(' ')[0]}? O aluno perde o acesso ao portal e deixa de contar no limite de alunos do seu plano. O histórico dele continua salvo e você pode reativar quando quiser.`
+      )
+    ) {
+      return
+    }
+    setAlterandoStatus(true)
+    setErro(null)
+    try {
+      const { student: atualizado } = await api.patch<{ student: Student }>(`/alunos/${studentId}/status`, {
+        ativo: ativar,
+      })
+      setStudent(atualizado)
+    } catch (err) {
+      setErro(err instanceof ApiError ? err.message : 'Erro ao atualizar status do aluno')
+    } finally {
+      setAlterandoStatus(false)
+    }
+  }
+
   async function alternarAutopilot() {
     const novo = !autopilot
     setAutopilot(novo)
@@ -310,7 +340,14 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
             />
           </div>
           <div className="min-w-0 flex-1">
-            <h1 className="truncate font-display text-2xl font-bold tracking-tight text-ink">{student.name}</h1>
+            <div className="flex items-center gap-2">
+              <h1 className="truncate font-display text-2xl font-bold tracking-tight text-ink">{student.name}</h1>
+              {student.status === 'inactive' && (
+                <span className="shrink-0 rounded-full bg-ink/8 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
+                  Desvinculado
+                </span>
+              )}
+            </div>
             {(student.weight_kg || student.height_cm) && (
               <p className="mt-0.5 text-sm text-ink-muted">
                 {student.weight_kg ? `${student.weight_kg} kg` : null}
@@ -356,6 +393,21 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
               <MessageCircle size={16} />
               WhatsApp
             </a>
+            <button
+              onClick={alternarStatus}
+              disabled={alterandoStatus}
+              className="glass glass-hover flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-sm text-ink-soft"
+            >
+              {student.status === 'inactive' ? (
+                <>
+                  <UserCheck size={15} className="text-success" /> Reativar
+                </>
+              ) : (
+                <>
+                  <UserX size={15} className="text-danger" /> Desvincular
+                </>
+              )}
+            </button>
           </div>
         </div>
 

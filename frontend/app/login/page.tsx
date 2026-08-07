@@ -24,7 +24,7 @@ export default function LoginPage() {
       const body = modo === 'login' ? { email, password } : { name, email, password }
       const data = await api.post<{ token: string; professional: Professional }>(path, body)
       setToken(data.token)
-      router.push('/negocio')
+      router.push('/dashboard')
     } catch (err) {
       setErro(err instanceof ApiError ? err.message : 'Erro ao conectar com o servidor')
     } finally {

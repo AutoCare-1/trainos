@@ -55,9 +55,9 @@ export default function Navbar() {
   const [profissional, setProfissional] = useState<Professional | null>(null)
 
   const menuItems: MenuItem[] = [
-    { id: 'negocio', label: 'Meu Negócio', icon: <TrendingUp size={ICON_SIZE} />, href: '/negocio', cor: 'violet' },
-    { id: 'gastos', label: 'Meus Gastos', icon: <Wallet size={ICON_SIZE} />, href: '/gastos', cor: 'amber' },
     { id: 'dashboard', label: 'Meus alunos', icon: <Users size={ICON_SIZE} />, href: '/dashboard', cor: 'blue' },
+    { id: 'gastos', label: 'Meus Gastos', icon: <Wallet size={ICON_SIZE} />, href: '/gastos', cor: 'amber' },
+    { id: 'negocio', label: 'Meu Negócio', icon: <TrendingUp size={ICON_SIZE} />, href: '/negocio', cor: 'violet' },
     { id: 'desafios', label: 'Desafios', icon: <Trophy size={ICON_SIZE} />, href: '/desafios', cor: 'coral' },
     { id: 'videos', label: 'Vídeos dos exercícios', icon: <Video size={ICON_SIZE} />, href: '/videos', cor: 'sky' },
     { id: 'modelos', label: 'Modelos de treino', icon: <ClipboardList size={ICON_SIZE} />, href: '/modelos', cor: 'teal' },

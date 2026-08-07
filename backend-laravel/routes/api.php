@@ -58,6 +58,7 @@ Route::middleware('auth.jwt')->group(function () {
         Route::post('/', [AlunoController::class, 'store']);
         Route::get('/{id}', [AlunoController::class, 'show']);
         Route::patch('/{id}', [AlunoController::class, 'update']);
+        Route::patch('/{id}/status', [AlunoController::class, 'status']);
         Route::patch('/{id}/cobranca/encerrar', [AlunoController::class, 'encerrarCobranca']);
         Route::patch('/{id}/lembrete-pagamento', [AlunoController::class, 'lembretePagamento']);
 

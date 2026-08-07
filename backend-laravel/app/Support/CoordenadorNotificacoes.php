@@ -52,6 +52,10 @@ class CoordenadorNotificacoes
         'mensagem_nao_lida' => 1,
         'revisao_pendente' => 1,
         'avaliacao_recebida' => 1,
+        'treino_vencendo_aluno' => 1,
+        'treino_vencendo_personal' => 1,
+        'treino_vencido_aluno' => 1,
+        'treino_vencido_personal' => 1,
         // Celebração — reforço positivo, vale a pena preservar mesmo com pouca vaga.
         'novo_recorde_pessoal' => 2,
         'medalha_conquistada' => 2,

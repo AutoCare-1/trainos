@@ -104,7 +104,12 @@ export default function DashboardPage() {
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <p className="truncate font-semibold text-ink">{s.name}</p>
-                  {inativo(s) && (
+                  {s.status === 'inactive' && (
+                    <span className="shrink-0 rounded-full bg-ink/8 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
+                      Desvinculado
+                    </span>
+                  )}
+                  {s.status === 'active' && inativo(s) && (
                     <span className="shrink-0 rounded-full bg-warning-soft px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-warning">
                       {diasSemTreinar(s) === null ? 'Nunca treinou' : `Sem treinar há ${diasSemTreinar(s)}d`}
                     </span>
