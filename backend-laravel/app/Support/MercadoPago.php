@@ -32,8 +32,15 @@ class MercadoPago
      * aqui, não num plano cadastrado do lado do Mercado Pago, já que os planos
      * já são curados em config/planos_assinatura.php) e devolve a URL de
      * checkout hospedada pelo Mercado Pago pra redirecionar o personal.
+     *
+     * Devolve também o preapproval_id: sem guardar ele já na criação, o
+     * cancelamento (ver cancelarAssinatura) ficaria refém do webhook chegar
+     * primeiro — e se o personal cancelar antes disso, não teríamos id
+     * nenhum pra mandar o cancelamento pro Mercado Pago.
+     *
+     * @return array{checkout_url: string, preapproval_id: string}
      */
-    public static function criarAssinatura(Professional $professional, string $planoChave, string $subscriptionId): string
+    public static function criarAssinatura(Professional $professional, string $planoChave, string $subscriptionId): array
     {
         $plano = config("planos_assinatura.planos.{$planoChave}");
         if (! $plano) {
@@ -59,11 +66,27 @@ class MercadoPago
         }
 
         $dados = $response->json();
-        if (! isset($dados['init_point'])) {
-            throw new RuntimeException('Mercado Pago não devolveu init_point na criação da assinatura.');
+        if (! isset($dados['init_point'], $dados['id'])) {
+            throw new RuntimeException('Mercado Pago não devolveu init_point/id na criação da assinatura.');
         }
 
-        return $dados['init_point'];
+        return ['checkout_url' => $dados['init_point'], 'preapproval_id' => (string) $dados['id']];
+    }
+
+    /**
+     * Cancela a assinatura do lado do Mercado Pago (PUT /preapproval com
+     * status "cancelled"). Precisa ser chamado antes de marcar a assinatura
+     * como cancelada localmente — só cancelar aqui e deixar o preapproval
+     * vivo no Mercado Pago não impede a cobrança do próximo ciclo.
+     */
+    public static function cancelarAssinatura(string $preapprovalId): void
+    {
+        $response = Http::withToken(self::accessToken())
+            ->put(self::BASE_URL."/preapproval/{$preapprovalId}", ['status' => 'cancelled']);
+
+        if ($response->failed()) {
+            throw new RuntimeException("Mercado Pago rejeitou o cancelamento da assinatura: {$response->status()} {$response->body()}");
+        }
     }
 
     public static function buscarPreapproval(string $preapprovalId): array

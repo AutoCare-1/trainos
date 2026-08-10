@@ -32,6 +32,8 @@ export default function AssinaturaBanner() {
     mensagem = `Pagamento não aprovado — restam ${dias} dia${dias === 1 ? '' : 's'} antes de travar novos cadastros de aluno.`
   } else if (dados.status === 'bloqueada') {
     mensagem = 'Assinatura suspensa — cadastro de novos alunos bloqueado até regularizar o pagamento.'
+  } else if (dados.status === 'cancelada') {
+    mensagem = 'Assinatura cancelada — escolha um plano pra voltar a cadastrar novos alunos.'
   }
 
   if (!mensagem) return null

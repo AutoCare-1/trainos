@@ -28,6 +28,7 @@ export default function PlanoPage() {
   const [dados, setDados] = useState<StatusAssinatura | null>(null)
   const [erro, setErro] = useState<string | null>(null)
   const [assinando, setAssinando] = useState<string | null>(null)
+  const [cancelando, setCancelando] = useState(false)
 
   useEffect(() => {
     if (!localStorage.getItem('trainos_token')) {
@@ -51,6 +52,27 @@ export default function PlanoPage() {
     } catch (err) {
       setErro(err instanceof ApiError ? err.message : 'Não foi possível iniciar o checkout')
       setAssinando(null)
+    }
+  }
+
+  async function cancelar() {
+    if (
+      !confirm(
+        'Cancelar sua assinatura? Você para de ser cobrado a partir de agora, mas perde acesso pra cadastrar novos alunos até escolher um plano de novo.'
+      )
+    ) {
+      return
+    }
+    setErro(null)
+    setCancelando(true)
+    try {
+      await api.post('/assinatura/cancelar', {})
+      const atualizado = await api.get<StatusAssinatura>('/assinatura')
+      setDados(atualizado)
+    } catch (err) {
+      setErro(err instanceof ApiError ? err.message : 'Não foi possível cancelar sua assinatura')
+    } finally {
+      setCancelando(false)
     }
   }
 
@@ -98,6 +120,15 @@ export default function PlanoPage() {
                   </p>
                 )}
               </div>
+              {dados.status && dados.status !== 'cancelada' && (
+                <button
+                  onClick={cancelar}
+                  disabled={cancelando}
+                  className="mt-3 text-xs font-medium text-danger transition hover:underline"
+                >
+                  {cancelando ? 'Cancelando...' : 'Cancelar assinatura'}
+                </button>
+              )}
             </section>
 
             {dados.faturas.length > 0 && (
@@ -119,11 +150,11 @@ export default function PlanoPage() {
 
             <section>
               <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-ink-muted">
-                {dados.plano_chave ? 'Fazer upgrade' : 'Escolha um plano'}
+                {dados.plano_chave && dados.status !== 'cancelada' ? 'Fazer upgrade' : 'Escolha um plano'}
               </h2>
               <div className="grid gap-3 sm:grid-cols-2">
                 {Object.entries(dados.planos).map(([chave, plano]) => {
-                  const ehAtual = chave === dados.plano_chave
+                  const ehAtual = chave === dados.plano_chave && dados.status !== 'cancelada'
                   return (
                     <div key={chave} className={`rounded-2xl p-4 ${ehAtual ? 'glass-elevated' : 'glass'}`}>
                       <p className="font-semibold text-ink">{plano.nome}</p>
@@ -139,7 +170,11 @@ export default function PlanoPage() {
                             chave === 'exclusive' ? 'btn-cta' : 'btn-secondary'
                           }`}
                         >
-                          {assinando === chave ? 'Redirecionando...' : dados.plano_chave ? 'Fazer upgrade' : 'Assinar'}
+                          {assinando === chave
+                            ? 'Redirecionando...'
+                            : dados.plano_chave && dados.status !== 'cancelada'
+                              ? 'Fazer upgrade'
+                              : 'Assinar'}
                         </button>
                       )}
                     </div>

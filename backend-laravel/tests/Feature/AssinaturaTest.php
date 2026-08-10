@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Professional;
 use App\Models\ProfessionalSubscription;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 /**
@@ -142,6 +143,107 @@ class AssinaturaTest extends TestCase
         $this->artisan('assinatura:verificar-carencia');
 
         $this->assertSame(ProfessionalSubscription::STATUS_ATRASADA, $subscription->fresh()->status);
+    }
+
+    public function test_checkout_guarda_preapproval_id_devolvido_pelo_mercado_pago(): void
+    {
+        config(['services.mercado_pago.access_token' => 'token-teste']);
+        Http::fake([
+            'api.mercadopago.com/preapproval' => Http::response([
+                'id' => 'mp-preapproval-123',
+                'init_point' => 'https://mercadopago.com/checkout/mp-preapproval-123',
+            ], 201),
+        ]);
+        [, $headers] = $this->criarPersonal();
+
+        $this->postJson('/assinatura/checkout', ['plano_chave' => 'custom'], $headers)
+            ->assertOk()
+            ->assertJsonPath('checkout_url', 'https://mercadopago.com/checkout/mp-preapproval-123');
+
+        $this->assertSame('mp-preapproval-123', ProfessionalSubscription::first()->mp_preapproval_id);
+    }
+
+    public function test_cancelar_assinatura_ativa_avisa_o_mercado_pago_e_marca_cancelada(): void
+    {
+        config(['services.mercado_pago.access_token' => 'token-teste']);
+        Http::fake([
+            'api.mercadopago.com/preapproval/mp-preapproval-123' => Http::response(['status' => 'cancelled'], 200),
+        ]);
+        [$professional, $headers] = $this->criarPersonal(diasAtras: 10);
+        $subscription = ProfessionalSubscription::create([
+            'professional_id' => $professional->id,
+            'plano_chave' => 'custom',
+            'status' => ProfessionalSubscription::STATUS_ATIVA,
+            'mp_preapproval_id' => 'mp-preapproval-123',
+            'proxima_cobranca_em' => now()->addMonth()->toDateString(),
+        ]);
+
+        $this->postJson('/assinatura/cancelar', [], $headers)->assertOk()->assertJsonPath('ok', true);
+
+        $subscription->refresh();
+        $this->assertSame(ProfessionalSubscription::STATUS_CANCELADA, $subscription->status);
+        $this->assertNull($subscription->proxima_cobranca_em);
+        Http::assertSent(fn ($request) => $request->url() === 'https://api.mercadopago.com/preapproval/mp-preapproval-123'
+            && $request['status'] === 'cancelled');
+    }
+
+    public function test_cancelar_sem_assinatura_devolve_erro(): void
+    {
+        [, $headers] = $this->criarPersonal();
+
+        $this->postJson('/assinatura/cancelar', [], $headers)
+            ->assertStatus(422)
+            ->assertJsonFragment(['error' => 'Você não tem uma assinatura ativa pra cancelar.']);
+    }
+
+    public function test_cancelar_assinatura_ja_cancelada_devolve_erro(): void
+    {
+        [$professional, $headers] = $this->criarPersonal(diasAtras: 10);
+        ProfessionalSubscription::create([
+            'professional_id' => $professional->id,
+            'plano_chave' => 'custom',
+            'status' => ProfessionalSubscription::STATUS_CANCELADA,
+        ]);
+
+        $this->postJson('/assinatura/cancelar', [], $headers)
+            ->assertStatus(422)
+            ->assertJsonFragment(['error' => 'Você não tem uma assinatura ativa pra cancelar.']);
+    }
+
+    public function test_cancelar_assinatura_pendente_sem_preapproval_nao_chama_mercado_pago(): void
+    {
+        [$professional, $headers] = $this->criarPersonal();
+        ProfessionalSubscription::create([
+            'professional_id' => $professional->id,
+            'plano_chave' => 'custom',
+            'status' => ProfessionalSubscription::STATUS_PENDENTE,
+        ]);
+
+        Http::fake();
+
+        $this->postJson('/assinatura/cancelar', [], $headers)->assertOk()->assertJsonPath('ok', true);
+
+        Http::assertNothingSent();
+        $this->assertSame(ProfessionalSubscription::STATUS_CANCELADA, ProfessionalSubscription::first()->status);
+    }
+
+    public function test_cancelar_devolve_erro_quando_mercado_pago_falha_e_nao_marca_local_como_cancelada(): void
+    {
+        config(['services.mercado_pago.access_token' => 'token-teste']);
+        Http::fake([
+            'api.mercadopago.com/preapproval/mp-preapproval-123' => Http::response(['error' => 'not_found'], 404),
+        ]);
+        [$professional, $headers] = $this->criarPersonal(diasAtras: 10);
+        $subscription = ProfessionalSubscription::create([
+            'professional_id' => $professional->id,
+            'plano_chave' => 'custom',
+            'status' => ProfessionalSubscription::STATUS_ATIVA,
+            'mp_preapproval_id' => 'mp-preapproval-123',
+        ]);
+
+        $this->postJson('/assinatura/cancelar', [], $headers)->assertStatus(502);
+
+        $this->assertSame(ProfessionalSubscription::STATUS_ATIVA, $subscription->fresh()->status);
     }
 
     public function test_webhook_rejeita_assinatura_invalida(): void

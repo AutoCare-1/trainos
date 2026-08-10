@@ -150,6 +150,7 @@ Route::middleware('auth.jwt')->group(function () {
     Route::prefix('assinatura')->group(function () {
         Route::get('/', [AssinaturaController::class, 'show']);
         Route::post('/checkout', [AssinaturaController::class, 'checkout']);
+        Route::post('/cancelar', [AssinaturaController::class, 'cancelar']);
     });
 });
 

@@ -52,11 +52,43 @@ class AssinaturaController extends Controller
         )->refresh();
 
         try {
-            $checkoutUrl = MercadoPago::criarAssinatura($professional, $validated['plano_chave'], $subscription->id);
+            $resultado = MercadoPago::criarAssinatura($professional, $validated['plano_chave'], $subscription->id);
         } catch (\Throwable $e) {
             return response()->json(['error' => 'Não foi possível iniciar o checkout. Tente de novo em alguns minutos.'], 502);
         }
 
-        return response()->json(['checkout_url' => $checkoutUrl]);
+        $subscription->update(['mp_preapproval_id' => $resultado['preapproval_id']]);
+
+        return response()->json(['checkout_url' => $resultado['checkout_url']]);
+    }
+
+    // POST /assinatura/cancelar — cancela a assinatura recorrente do personal
+    // com o TrainOS. Cancela primeiro do lado do Mercado Pago; só se isso der
+    // certo (ou se nunca chegou a existir um preapproval de verdade) é que o
+    // status local vira cancelada — assim o personal nunca vê "cancelada" na
+    // tela enquanto o Mercado Pago ainda pode tentar cobrar no próximo ciclo.
+    public function cancelar(Request $request): JsonResponse
+    {
+        $professional = Professional::findOrFail($request->user()->id);
+        $subscription = ProfessionalSubscription::where('professional_id', $professional->id)->first();
+
+        if (! $subscription || $subscription->status === ProfessionalSubscription::STATUS_CANCELADA) {
+            return response()->json(['error' => 'Você não tem uma assinatura ativa pra cancelar.'], 422);
+        }
+
+        if ($subscription->mp_preapproval_id) {
+            try {
+                MercadoPago::cancelarAssinatura($subscription->mp_preapproval_id);
+            } catch (\Throwable $e) {
+                return response()->json(['error' => 'Não foi possível cancelar no Mercado Pago. Tente de novo em alguns minutos.'], 502);
+            }
+        }
+
+        $subscription->update([
+            'status' => ProfessionalSubscription::STATUS_CANCELADA,
+            'proxima_cobranca_em' => null,
+        ]);
+
+        return response()->json(['ok' => true]);
     }
 }
