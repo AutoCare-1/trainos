@@ -112,7 +112,7 @@ class PortalChatController extends Controller
                     ->values();
 
                 $contexto = $this->montarContextoAluno($student);
-                $texto = Chat::responderComoPersonal($historico, $contexto);
+                $texto = Chat::responderComoPersonal($historico, $contexto, $student->professional_id);
 
                 $respostaIa = Message::create([
                     'student_id' => $student->id,

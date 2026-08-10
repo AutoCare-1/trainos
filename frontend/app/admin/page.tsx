@@ -259,8 +259,20 @@ function VisaoGeral({
         <Tile rotulo="Receita recorrente (MRR)" valor={moeda(resumo.mrr)} nota="se ninguém cancelar" />
         <Tile rotulo="Custo de IA" valor={moeda(resumo.custo_ia)} nota={`US$ ${resumo.custo_ia_usd.toFixed(2)} · dólar a ${moeda(dados.cotacao_usd_brl)}`} />
         <Tile rotulo="Custo de plataforma" valor={moeda(resumo.custo_plataforma)} nota="hospedagem e ferramentas" />
-        <Tile rotulo="Assinaturas ativas" valor={String(assinantes.ativas)} nota={`${assinantes.em_teste_gratis} em teste · ${assinantes.total_personais} contas`} />
+        <Tile
+          rotulo="Assinaturas ativas"
+          valor={String(assinantes.ativas)}
+          nota={`${assinantes.em_teste_gratis} em teste · ${assinantes.total_personais} contas`}
+        />
       </section>
+
+      {assinantes.teste_expirado_sem_assinar > 0 && (
+        <p className="text-xs text-ink-muted">
+          <strong className="font-semibold text-ink-soft">{assinantes.teste_expirado_sem_assinar}</strong>{' '}
+          {assinantes.teste_expirado_sem_assinar === 1 ? 'conta testou' : 'contas testaram'} o app, o prazo grátis
+          acabou e nunca chegaram a assinar — bom público pra retomar contato.
+        </p>
+      )}
 
       <section className="glass rounded-2xl p-5">
         <div className="mb-4 flex items-start justify-between gap-3">
@@ -522,7 +534,10 @@ function AbaCustos({ custos, recarregar }: { custos: CrmCusto[]; recarregar: () 
               <span className="font-semibold text-ink [font-variant-numeric:tabular-nums]">
                 {moeda(Number(c.amount))}
               </span>
-              {!c.ends_on && (
+              {/* Só recorrente tem o que encerrar — avulso já conta uma vez só
+                  no mês de starts_on, então "Encerrar" nele seria um botão sem
+                  efeito nenhum no cálculo (mesmo padrão de gastos/page.tsx). */}
+              {c.is_recurring && !c.ends_on && (
                 <button onClick={() => encerrar(c.id)} className="text-xs font-medium text-danger hover:underline">
                   Encerrar
                 </button>

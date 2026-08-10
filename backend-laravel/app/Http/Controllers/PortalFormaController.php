@@ -92,7 +92,7 @@ class PortalFormaController extends Controller
                 ->count();
             $nivel = self::inferirNivelAluno($sessoesConcluidas);
 
-            $analise = FormAnalyzer::analisarForma($frames, $exerciseName, $nivel);
+            $analise = FormAnalyzer::analisarForma($frames, $exerciseName, $nivel, $student->professional_id);
 
             $analysisResult = FormAnalysisResult::create([
                 'video_id' => $video->id,

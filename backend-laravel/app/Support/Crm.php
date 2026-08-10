@@ -87,7 +87,17 @@ class Crm
         return Money::toCents((float) $recorrentes) + Money::toCents((float) $avulsas);
     }
 
-    /** Assinantes por status, e quantos estão em teste grátis. */
+    /**
+     * Assinantes por status, e quantos estão em teste grátis.
+     *
+     * Quem nunca teve nenhuma linha em professional_subscriptions e já passou
+     * do prazo do teste grátis não aparece em nenhum status (não tem
+     * assinatura pra ter status) nem em em_teste_gratis (o teste já acabou) —
+     * por isso entra num balde próprio, teste_expirado_sem_assinar. Sem isso a
+     * soma dos baldes ficava menor que total_personais e esse público (quem
+     * abandonou antes de assinar, o mais relevante pra follow-up) ficava
+     * invisível no CRM.
+     */
     public static function assinantes(): array
     {
         $porStatus = DB::table('professional_subscriptions')
@@ -97,10 +107,11 @@ class Crm
             ->all();
 
         $diasTeste = (int) config('planos_assinatura.dias_teste_gratis');
-        $emTeste = DB::table('professionals')
-            ->whereNotIn('id', DB::table('professional_subscriptions')->select('professional_id'))
-            ->where('created_at', '>=', now()->subDays($diasTeste))
-            ->count();
+        $semAssinatura = DB::table('professionals')
+            ->whereNotIn('id', DB::table('professional_subscriptions')->select('professional_id'));
+
+        $emTeste = (clone $semAssinatura)->where('created_at', '>=', now()->subDays($diasTeste))->count();
+        $testeExpiradoSemAssinar = (clone $semAssinatura)->where('created_at', '<', now()->subDays($diasTeste))->count();
 
         return [
             'ativas' => $porStatus[ProfessionalSubscription::STATUS_ATIVA] ?? 0,
@@ -109,6 +120,7 @@ class Crm
             'canceladas' => $porStatus[ProfessionalSubscription::STATUS_CANCELADA] ?? 0,
             'pendentes' => $porStatus[ProfessionalSubscription::STATUS_PENDENTE] ?? 0,
             'em_teste_gratis' => $emTeste,
+            'teste_expirado_sem_assinar' => $testeExpiradoSemAssinar,
             'total_personais' => DB::table('professionals')->count(),
         ];
     }

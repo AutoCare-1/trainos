@@ -106,7 +106,7 @@ class Chat
     }
 
     /** @param  Collection<int, MessageModel>  $historico */
-    public static function responderComoPersonal(Collection $historico, array $contexto): string
+    public static function responderComoPersonal(Collection $historico, array $contexto, ?string $professionalId = null): string
     {
         $systemPrompt = self::montarSystemPrompt($contexto);
         $messages = self::montarMensagens($historico);
@@ -118,7 +118,7 @@ class Chat
             messages: $messages,
         );
 
-        IaUsage::registrar('chat_autopilot', $response);
+        IaUsage::registrar('chat_autopilot', $response, $professionalId);
 
         $bloco = $response->content[0] ?? null;
 

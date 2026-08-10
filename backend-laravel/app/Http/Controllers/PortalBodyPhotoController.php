@@ -59,8 +59,8 @@ class PortalBodyPhotoController extends Controller
         } else {
             try {
                 $aiFeedback = $anterior
-                    ? EvolucaoFisica::compararEvolucaoFisica($student->name, Uploads::privateAbsolutePath($anterior->file_path), $caminhoAbsolutoNova)
-                    : EvolucaoFisica::comentarPrimeiraFoto($student->name, $caminhoAbsolutoNova);
+                    ? EvolucaoFisica::compararEvolucaoFisica($student->name, Uploads::privateAbsolutePath($anterior->file_path), $caminhoAbsolutoNova, $student->professional_id)
+                    : EvolucaoFisica::comentarPrimeiraFoto($student->name, $caminhoAbsolutoNova, $student->professional_id);
             } catch (\Throwable $e) {
                 ErrorReporting::capturarFalhaIa('evolucao_fisica', $e, ['student_id' => $student->id]);
                 $aiFeedback = $comentarioIndisponivel;

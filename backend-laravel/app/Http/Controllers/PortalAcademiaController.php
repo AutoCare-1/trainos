@@ -163,7 +163,7 @@ class PortalAcademiaController extends Controller
                 ]);
             }
 
-            $analise = AcademiaAnalyzer::analisarMidiaAcademia(array_map(fn ($c) => $c['absoluto'], $caminhosParaAnalise));
+            $analise = AcademiaAnalyzer::analisarMidiaAcademia(array_map(fn ($c) => $c['absoluto'], $caminhosParaAnalise), $student->professional_id);
 
             $analysisResult = GymAnalysisResult::create([
                 'submission_id' => $submission->id,
@@ -191,7 +191,7 @@ class PortalAcademiaController extends Controller
                     'healthNotes' => $student->health_notes,
                     'limitacoesParQ' => self::limitacoesParQ($student->par_q_answers),
                     'daysPerWeek' => $daysPerWeek,
-                ]);
+                ], $student->professional_id);
 
                 $recommendation = GymWorkoutRecommendation::create([
                     'submission_id' => $submission->id,

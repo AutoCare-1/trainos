@@ -101,7 +101,7 @@ PROMPT;
      * @param  array{nome: string, objective: ?string, healthNotes: ?string, limitacoesParQ: string[], daysPerWeek: int}  $contexto
      * @return array{name: string, split_type: string, reasoning: string, items: array}
      */
-    public static function recomendarTreino(array $machines, array $exercicios, array $contexto): array
+    public static function recomendarTreino(array $machines, array $exercicios, array $contexto, ?string $professionalId = null): array
     {
         $response = self::client()->messages->create(
             model: self::MODEL,
@@ -110,7 +110,7 @@ PROMPT;
             messages: [['role' => 'user', 'content' => 'Gere a recomendação conforme as instruções.']],
         );
 
-        IaUsage::registrar('academia_recomendacao', $response);
+        IaUsage::registrar('academia_recomendacao', $response, $professionalId);
 
         $bloco = $response->content[0] ?? null;
         $texto = ($bloco && $bloco->type === 'text') ? $bloco->text : '';

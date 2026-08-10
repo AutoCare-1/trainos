@@ -75,8 +75,9 @@ class PortalPosturalController extends Controller
                         'costas' => Uploads::privateAbsolutePath($anterior->back_photo_path),
                     ],
                     ['frente' => $frenteAbs, 'lado' => $ladoAbs, 'costas' => $costasAbs],
+                    $student->professional_id,
                 )
-                : AvaliacaoPostural::avaliarPrimeira($student->name, $frenteAbs, $ladoAbs, $costasAbs);
+                : AvaliacaoPostural::avaliarPrimeira($student->name, $frenteAbs, $ladoAbs, $costasAbs, $student->professional_id);
         } catch (\Throwable $e) {
             ErrorReporting::capturarFalhaIa('avaliacao_postural', $e, ['student_id' => $student->id]);
             $aiFeedback = $comentarioIndisponivel;

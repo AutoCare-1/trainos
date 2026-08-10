@@ -92,7 +92,7 @@ class FormAnalyzer
      * @param  string[]  $framesPaths
      * @return array{amplitude_assessment: string, posture_assessment: string, tempo_assessment: string, compensations: string, safety_notes: string, three_key_feedback: array}
      */
-    public static function analisarForma(array $framesPaths, string $exerciseName, string $nivelAluno): array
+    public static function analisarForma(array $framesPaths, string $exerciseName, string $nivelAluno, ?string $professionalId = null): array
     {
         $blocos = [];
         foreach ($framesPaths as $caminho) {
@@ -111,7 +111,7 @@ class FormAnalyzer
             messages: [['role' => 'user', 'content' => $blocos]],
         );
 
-        IaUsage::registrar('analisar_forma', $response);
+        IaUsage::registrar('analisar_forma', $response, $professionalId);
 
         $bloco = $response->content[0] ?? null;
         $texto = ($bloco && $bloco->type === 'text') ? $bloco->text : '';

@@ -77,7 +77,7 @@ PROMPT;
      * @param  string[]  $caminhosImagens  caminhos absolutos no disco
      * @return array{machines: array{machines: array}, zones_identified: array, coverage_estimate: ?string, gaps: array, notes: ?string}
      */
-    public static function analisarMidiaAcademia(array $caminhosImagens): array
+    public static function analisarMidiaAcademia(array $caminhosImagens, ?string $professionalId = null): array
     {
         $blocos = [];
         foreach ($caminhosImagens as $caminho) {
@@ -100,7 +100,7 @@ PROMPT;
             messages: [['role' => 'user', 'content' => $blocos]],
         );
 
-        IaUsage::registrar('academia_analise', $response);
+        IaUsage::registrar('academia_analise', $response, $professionalId);
 
         $bloco = $response->content[0] ?? null;
         $texto = ($bloco && $bloco->type === 'text') ? $bloco->text : '';

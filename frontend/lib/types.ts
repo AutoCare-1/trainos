@@ -576,6 +576,7 @@ export interface CrmAssinantes {
   canceladas: number
   pendentes: number
   em_teste_gratis: number
+  teste_expirado_sem_assinar: number
   total_personais: number
 }
 

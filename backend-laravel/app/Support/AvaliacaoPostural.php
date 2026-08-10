@@ -110,7 +110,7 @@ PROMPT.self::REGRAS_SEGURANCA;
     }
 
     /** Primeira avaliação postural do aluno: sem comparação, só as 3 fotos. */
-    public static function avaliarPrimeira(string $nomeAluno, string $frentePath, string $ladoPath, string $costasPath): string
+    public static function avaliarPrimeira(string $nomeAluno, string $frentePath, string $ladoPath, string $costasPath, ?string $professionalId = null): string
     {
         $conteudo = [
             TextBlockParam::with(text: 'Nome do aluno: '.self::primeiroNome($nomeAluno).'. Primeira avaliação postural.'),
@@ -126,7 +126,7 @@ PROMPT.self::REGRAS_SEGURANCA;
             messages: [['role' => 'user', 'content' => $conteudo]],
         );
 
-        IaUsage::registrar('avaliacao_postural', $response);
+        IaUsage::registrar('avaliacao_postural', $response, $professionalId);
 
         $bloco = $response->content[0] ?? null;
 
@@ -141,7 +141,7 @@ PROMPT.self::REGRAS_SEGURANCA;
      * @param  array{frente: string, lado: string, costas: string}  $anterior
      * @param  array{frente: string, lado: string, costas: string}  $novo
      */
-    public static function avaliarComparacao(string $nomeAluno, array $anterior, array $novo): string
+    public static function avaliarComparacao(string $nomeAluno, array $anterior, array $novo, ?string $professionalId = null): string
     {
         $conteudo = [
             TextBlockParam::with(text: 'Nome do aluno: '.self::primeiroNome($nomeAluno).'. Avaliação postural anterior:'),
@@ -161,7 +161,7 @@ PROMPT.self::REGRAS_SEGURANCA;
             messages: [['role' => 'user', 'content' => $conteudo]],
         );
 
-        IaUsage::registrar('avaliacao_postural', $response);
+        IaUsage::registrar('avaliacao_postural', $response, $professionalId);
 
         $bloco = $response->content[0] ?? null;
 

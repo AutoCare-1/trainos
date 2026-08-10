@@ -18,13 +18,17 @@ class AdminCrmTest extends TestCase
 {
     use RefreshDatabase;
 
-    private function criarPersonal(bool $admin = false): array
+    private function criarPersonal(bool $admin = false, int $diasAtras = 0): array
     {
         $professional = Professional::create([
             'name' => 'Dono Teste',
             'email' => uniqid('dono').'@example.com',
             'password_hash' => bcrypt('senha12345'),
         ]);
+        if ($diasAtras > 0) {
+            $professional->created_at = now()->subDays($diasAtras);
+            $professional->save();
+        }
         if ($admin) {
             $professional->forceFill(['is_admin' => true])->save();
         }
@@ -48,6 +52,31 @@ class AdminCrmTest extends TestCase
     public function test_sem_token_o_crm_responde_401(): void
     {
         $this->getJson('/admin/dashboard')->assertStatus(401);
+    }
+
+    public function test_personal_com_teste_expirado_e_sem_assinatura_entra_no_balde_proprio(): void
+    {
+        [, $headers] = $this->criarPersonal(admin: true);
+        // Segundo personal: teste grátis (7 dias por padrão) já passou e nunca
+        // chegou a existir uma linha em professional_subscriptions pra ele —
+        // esse é o "abandonou antes de assinar", o público mais importante
+        // pra um follow-up comercial.
+        $this->criarPersonal(admin: false, diasAtras: 30);
+
+        $resp = $this->getJson('/admin/dashboard', $headers)->assertOk()->json();
+
+        $this->assertSame(1, $resp['assinantes']['teste_expirado_sem_assinar']);
+        // O próprio admin de teste também não tem assinatura e foi criado
+        // "agora" — cai no balde de teste grátis em vigor, não no expirado.
+        $this->assertSame(1, $resp['assinantes']['em_teste_gratis']);
+
+        // A soma de todos os baldes precisa bater com o total de contas —
+        // ninguém pode ficar invisível no resumo.
+        $soma = $resp['assinantes']['ativas'] + $resp['assinantes']['atrasadas']
+            + $resp['assinantes']['bloqueadas'] + $resp['assinantes']['canceladas']
+            + $resp['assinantes']['pendentes'] + $resp['assinantes']['em_teste_gratis']
+            + $resp['assinantes']['teste_expirado_sem_assinar'];
+        $this->assertSame($resp['assinantes']['total_personais'], $soma);
     }
 
     public function test_admin_acessa_o_dashboard(): void
@@ -185,6 +214,30 @@ class AdminCrmTest extends TestCase
         IaUsage::registrar('chat_autopilot', (object) ['model' => 'x']);
 
         $this->assertSame(0, DB::table('ia_usage_logs')->count());
+    }
+
+    public function test_registrar_usa_professional_id_explicito_sem_request_autenticado(): void
+    {
+        // Os pipelines chamados a partir do portal do aluno (chat, evolução física,
+        // academia, forma, avaliação postural) não passam pelo middleware JWT —
+        // não há request()->user() pra resolver o dono. Por isso esses métodos
+        // recebem o professional_id explicitamente (via $student->professional_id
+        // no controller) em vez de depender do fallback de IaUsage::registrar.
+        [$professional] = $this->criarPersonal(admin: false);
+
+        $usage = new \Anthropic\Messages\Usage;
+        $usage->inputTokens = 100;
+        $usage->outputTokens = 50;
+        $usage->cacheCreationInputTokens = null;
+        $usage->cacheReadInputTokens = null;
+
+        $response = (object) ['model' => 'claude-haiku-4-5-20251001', 'usage' => $usage];
+
+        // Sem request HTTP no contexto do teste — o fallback profissionalDoRequest()
+        // devolveria null. O professional_id só chega porque foi passado explícito.
+        IaUsage::registrar('evolucao_fisica', $response, $professional->id);
+
+        $this->assertSame($professional->id, DB::table('ia_usage_logs')->value('professional_id'));
     }
 
     // ---- Divisão de lucro -----------------------------------------------------

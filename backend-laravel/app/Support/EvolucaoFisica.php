@@ -95,7 +95,7 @@ PROMPT;
     }
 
     /** Primeira foto do aluno: sem comparação, só acolhimento e incentivo ao check-in livre. */
-    public static function comentarPrimeiraFoto(string $nomeAluno, string $caminhoFotoAbsoluto): string
+    public static function comentarPrimeiraFoto(string $nomeAluno, string $caminhoFotoAbsoluto, ?string $professionalId = null): string
     {
         $foto = self::lerImagemBase64($caminhoFotoAbsoluto);
 
@@ -112,7 +112,7 @@ PROMPT;
             ]],
         );
 
-        IaUsage::registrar('evolucao_fisica', $response);
+        IaUsage::registrar('evolucao_fisica', $response, $professionalId);
 
         $bloco = $response->content[0] ?? null;
 
@@ -122,7 +122,7 @@ PROMPT;
     }
 
     /** Fotos seguintes: compara com a anterior e comenta a evolução. */
-    public static function compararEvolucaoFisica(string $nomeAluno, string $caminhoFotoAnteriorAbsoluto, string $caminhoFotoNovaAbsoluto): string
+    public static function compararEvolucaoFisica(string $nomeAluno, string $caminhoFotoAnteriorAbsoluto, string $caminhoFotoNovaAbsoluto, ?string $professionalId = null): string
     {
         $anterior = self::lerImagemBase64($caminhoFotoAnteriorAbsoluto);
         $nova = self::lerImagemBase64($caminhoFotoNovaAbsoluto);
@@ -142,7 +142,7 @@ PROMPT;
             ]],
         );
 
-        IaUsage::registrar('evolucao_fisica', $response);
+        IaUsage::registrar('evolucao_fisica', $response, $professionalId);
 
         $bloco = $response->content[0] ?? null;
 
