@@ -75,7 +75,7 @@ export default function GraficoBarras({
           const y0 = i * (ALTURA_BARRA + ESPACO) + ESPACO / 2
           const comp = (item.valor / max) * plotW
           return (
-            <g key={item.rotulo}>
+            <g key={i}>
               <text
                 x={PAD_ESQ - 12}
                 y={y0 + ALTURA_BARRA / 2 + 4}
