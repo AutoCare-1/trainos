@@ -110,6 +110,8 @@ PROMPT;
             messages: [['role' => 'user', 'content' => 'Gere a recomendação conforme as instruções.']],
         );
 
+        IaUsage::registrar('academia_recomendacao', $response);
+
         $bloco = $response->content[0] ?? null;
         $texto = ($bloco && $bloco->type === 'text') ? $bloco->text : '';
         if (! preg_match('/\{[\s\S]*\}/', $texto, $match)) {

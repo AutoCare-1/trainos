@@ -2,6 +2,9 @@ export interface Professional {
   id: string
   name: string
   email: string
+  /** Acesso ao CRM do produto. Só controla a exibição do link no menu — a trava
+   *  de verdade é o middleware AdminOnly no backend. */
+  is_admin?: boolean
 }
 
 export interface ParQAnswers {
@@ -552,6 +555,93 @@ export interface FaturaAssinatura {
   status: 'aprovado' | 'recusado'
   pago_em: string | null
   created_at: string
+}
+
+/** CRM interno do produto (/admin) — financeiro do Clube Mais como empresa.
+ *  Não confundir com DashboardNegocio, que é o financeiro de UM personal. */
+export interface CrmResumo {
+  faturamento: number
+  custo_ia: number
+  custo_ia_usd: number
+  custo_plataforma: number
+  lucro: number
+  margem_pct: number | null
+  mrr: number
+}
+
+export interface CrmAssinantes {
+  ativas: number
+  atrasadas: number
+  bloqueadas: number
+  canceladas: number
+  pendentes: number
+  em_teste_gratis: number
+  total_personais: number
+}
+
+export interface CrmMesSerie {
+  mes: string
+  faturamento: number
+  custo_ia: number
+  custo_plataforma: number
+  lucro: number
+}
+
+export interface CrmPlano {
+  plano_chave: string
+  nome: string
+  assinantes: number
+  mrr: number
+}
+
+export interface CrmCustoPipeline {
+  pipeline: string
+  custo_usd: number
+  custo_brl: number
+  chamadas: number
+  input_tokens: number
+  output_tokens: number
+}
+
+export interface CrmRateio {
+  id: string
+  nome: string
+  percentual: number
+  valor: number
+}
+
+export interface CrmDashboard {
+  mes_referencia: string
+  cotacao_usd_brl: number
+  resumo: CrmResumo
+  assinantes: CrmAssinantes
+  planos: CrmPlano[]
+  serie_mensal: CrmMesSerie[]
+  custo_ia_por_pipeline: CrmCustoPipeline[]
+  rateio_lucro: CrmRateio[]
+  modelos_sem_preco: string[]
+}
+
+export interface CrmCusto {
+  id: string
+  description: string
+  amount: string
+  is_recurring: boolean
+  starts_on: string
+  ends_on: string | null
+}
+
+export interface CrmSocio {
+  id: string
+  nome: string
+  percentual: string
+  starts_on: string
+}
+
+export interface CrmAdmin {
+  id: string
+  name: string
+  email: string
 }
 
 export interface StatusAssinatura {

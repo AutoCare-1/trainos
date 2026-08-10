@@ -161,6 +161,10 @@ PROMPT;
                 messages: $messages,
             );
 
+            // Uma linha por rodada: o loop de tool use faz várias chamadas
+            // cobradas por uma pergunta só, e o CRM precisa ver o custo cheio.
+            IaUsage::registrar('consultor_ia', $response, $professionalId);
+
             if ($response->stopReason !== 'tool_use') {
                 $textos = [];
                 foreach ($response->content as $bloco) {

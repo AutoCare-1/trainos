@@ -24,7 +24,10 @@ class AuthController extends Controller
         }
 
         return response()->json([
-            'professional' => $professional->only(['id', 'name', 'email']),
+            // is_admin vai junto só pra o menu decidir se mostra o CRM. Não é a
+            // trava de acesso — quem manda é o middleware AdminOnly no backend;
+            // forjar esse campo no cliente só revelaria um link que responde 404.
+            'professional' => $professional->only(['id', 'name', 'email', 'is_admin']),
         ]);
     }
 

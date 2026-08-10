@@ -111,6 +111,8 @@ class FormAnalyzer
             messages: [['role' => 'user', 'content' => $blocos]],
         );
 
+        IaUsage::registrar('analisar_forma', $response);
+
         $bloco = $response->content[0] ?? null;
         $texto = ($bloco && $bloco->type === 'text') ? $bloco->text : '';
         if (! preg_match('/\{[\s\S]*\}/', $texto, $match)) {

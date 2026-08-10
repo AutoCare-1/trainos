@@ -20,6 +20,7 @@ import {
   Bell,
   Download,
   CreditCard,
+  Gauge,
 } from 'lucide-react'
 import AssinaturaBanner from '@/components/AssinaturaBanner'
 import AtivarNotificacoesButton from '@/components/AtivarNotificacoesButton'
@@ -44,6 +45,7 @@ function itemAtivo(pathname: string): string {
   if (pathname.startsWith('/consultor-ia')) return 'consultor-ia'
   if (pathname.startsWith('/notificacoes')) return 'notificacoes'
   if (pathname.startsWith('/plano')) return 'plano'
+  if (pathname.startsWith('/admin')) return 'admin'
   return ''
 }
 
@@ -68,6 +70,11 @@ export default function Navbar() {
     { id: 'notificacoes', label: 'Notificações', icon: <Bell size={ICON_SIZE} />, href: '/notificacoes', cor: 'sky' },
     { id: 'plano', label: 'Meu Plano', icon: <CreditCard size={ICON_SIZE} />, href: '/plano', cor: 'amber' },
     { id: 'instalar', label: 'Instalar app', icon: <Download size={ICON_SIZE} />, onClick: () => setInstalarAberto(true), cor: 'blue' },
+    // CRM do produto — só aparece pros donos. A trava real é o middleware
+    // AdminOnly no backend; aqui é só pra não poluir o menu de todo personal.
+    ...(profissional?.is_admin
+      ? [{ id: 'admin', label: 'CRM do produto', icon: <Gauge size={ICON_SIZE} />, href: '/admin', cor: 'violet' as const }]
+      : []),
   ]
 
   useEffect(() => {

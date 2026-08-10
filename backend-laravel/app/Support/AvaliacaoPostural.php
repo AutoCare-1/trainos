@@ -126,6 +126,8 @@ PROMPT.self::REGRAS_SEGURANCA;
             messages: [['role' => 'user', 'content' => $conteudo]],
         );
 
+        IaUsage::registrar('avaliacao_postural', $response);
+
         $bloco = $response->content[0] ?? null;
 
         return ($bloco && $bloco->type === 'text')
@@ -158,6 +160,8 @@ PROMPT.self::REGRAS_SEGURANCA;
             system: self::SYSTEM_COMPARACAO,
             messages: [['role' => 'user', 'content' => $conteudo]],
         );
+
+        IaUsage::registrar('avaliacao_postural', $response);
 
         $bloco = $response->content[0] ?? null;
 

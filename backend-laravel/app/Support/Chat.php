@@ -118,6 +118,8 @@ class Chat
             messages: $messages,
         );
 
+        IaUsage::registrar('chat_autopilot', $response);
+
         $bloco = $response->content[0] ?? null;
 
         return ($bloco && $bloco->type === 'text') ? trim($bloco->text) : 'Recebi sua mensagem! Já já te respondo.';

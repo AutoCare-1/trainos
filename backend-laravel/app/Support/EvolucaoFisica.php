@@ -112,6 +112,8 @@ PROMPT;
             ]],
         );
 
+        IaUsage::registrar('evolucao_fisica', $response);
+
         $bloco = $response->content[0] ?? null;
 
         return ($bloco && $bloco->type === 'text')
@@ -139,6 +141,8 @@ PROMPT;
                 ],
             ]],
         );
+
+        IaUsage::registrar('evolucao_fisica', $response);
 
         $bloco = $response->content[0] ?? null;
 

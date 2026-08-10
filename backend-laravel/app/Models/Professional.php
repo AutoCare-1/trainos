@@ -25,6 +25,11 @@ class Professional extends Model implements AuthenticatableContract, JWTSubject
 
     protected $hidden = ['password_hash'];
 
+    // is_admin fica fora de $fillable de propósito: acesso ao CRM só se concede
+    // por forceFill em AdminCrmController, nunca por mass assignment vindo de um
+    // payload de cadastro/edição de perfil.
+    protected $casts = ['is_admin' => 'boolean'];
+
     // A coluna de senha do schema é password_hash, não password (nome padrão do Laravel).
     public function getAuthPassword(): string
     {

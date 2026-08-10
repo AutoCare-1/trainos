@@ -100,6 +100,8 @@ PROMPT;
             messages: [['role' => 'user', 'content' => $blocos]],
         );
 
+        IaUsage::registrar('academia_analise', $response);
+
         $bloco = $response->content[0] ?? null;
         $texto = ($bloco && $bloco->type === 'text') ? $bloco->text : '';
         if (! preg_match('/\{[\s\S]*\}/', $texto, $match)) {

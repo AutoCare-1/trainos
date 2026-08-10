@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminCrmController;
 use App\Http\Controllers\AlunoBodyPhotoController;
 use App\Http\Controllers\AlunoPosturalController;
 use App\Http\Controllers\AlunoProgressaoController;
@@ -151,6 +152,27 @@ Route::middleware('auth.jwt')->group(function () {
         Route::get('/', [AssinaturaController::class, 'show']);
         Route::post('/checkout', [AssinaturaController::class, 'checkout']);
         Route::post('/cancelar', [AssinaturaController::class, 'cancelar']);
+    });
+
+    // CRM interno do produto — financeiro do Clube Mais como empresa (faturamento,
+    // custo de IA, lucro, rateio entre sócios). Restrito a is_admin; quem não é
+    // recebe 404 e não descobre que essas rotas existem (ver AdminOnly).
+    Route::prefix('admin')->middleware('admin')->group(function () {
+        Route::get('/dashboard', [AdminCrmController::class, 'dashboard']);
+        Route::get('/uso-ia', [AdminCrmController::class, 'usoIa']);
+
+        Route::get('/custos', [AdminCrmController::class, 'listarCustos']);
+        Route::post('/custos', [AdminCrmController::class, 'criarCusto']);
+        Route::patch('/custos/{id}/encerrar', [AdminCrmController::class, 'encerrarCusto']);
+
+        Route::get('/socios', [AdminCrmController::class, 'listarSocios']);
+        Route::post('/socios', [AdminCrmController::class, 'criarSocio']);
+        Route::patch('/socios/{id}', [AdminCrmController::class, 'atualizarSocio']);
+        Route::delete('/socios/{id}', [AdminCrmController::class, 'removerSocio']);
+
+        Route::get('/admins', [AdminCrmController::class, 'listarAdmins']);
+        Route::post('/admins', [AdminCrmController::class, 'promoverAdmin']);
+        Route::delete('/admins/{id}', [AdminCrmController::class, 'revogarAdmin']);
     });
 });
 

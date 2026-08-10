@@ -71,6 +71,29 @@ PROMPT;
     }
 
     /**
+     * Quantas buscas a tool web_search realmente executou nesta resposta.
+     * A API expõe isso em usage->serverToolUse->webSearchRequests; o fallback
+     * conta os blocos server_tool_use pra não zerar o custo caso o campo não
+     * venha preenchido.
+     */
+    private static function contarBuscasWeb(object $response): int
+    {
+        $doUsage = $response->usage->serverToolUse->webSearchRequests ?? null;
+        if (is_int($doUsage)) {
+            return $doUsage;
+        }
+
+        $buscas = 0;
+        foreach ($response->content ?? [] as $bloco) {
+            if (($bloco->type ?? null) === 'server_tool_use' && ($bloco->name ?? null) === 'web_search') {
+                $buscas++;
+            }
+        }
+
+        return $buscas;
+    }
+
+    /**
      * Chamada CARA (usa busca na web) — só roda quando o cache expira. Foca só em
      * FORMATO/tendência, nunca em dado de aluno (isso entra na chamada barata depois).
      */
@@ -95,6 +118,11 @@ PROMPT;
                 TEXT,
             ]],
         );
+
+        // web_search é cobrada por busca executada, não por token — conta os
+        // blocos de uso da tool na resposta em vez de assumir o max_uses (o
+        // modelo pode usar menos que o teto, e aí cobrar 3 inflaria o custo).
+        IaUsage::registrar('ideias_conteudo', $response, webSearches: self::contarBuscasWeb($response));
 
         $texto = self::extrairTexto($response->content);
 
@@ -143,6 +171,8 @@ PROMPT;
             system: self::SYSTEM_GERAR_IDEIAS,
             messages: [['role' => 'user', 'content' => $mensagemUsuario]],
         );
+
+        IaUsage::registrar('ideias_conteudo', $response);
 
         $texto = self::extrairTexto($response->content);
         $jsonLimpo = trim(preg_replace(['/^```json\s*/i', '/```$/'], '', $texto));
