@@ -65,6 +65,35 @@ class Crm
     }
 
     /**
+     * Custo de IA por personal no período — mostra quem está pesando na conta.
+     * Chamadas sem professional_id (portal do aluno, autenticado por
+     * invite_token) caem no grupo "sem dono" — custo real, mas sem personal
+     * específico pra atribuir.
+     */
+    public static function custoIaPorProfissional(Carbon $inicio, Carbon $fim): array
+    {
+        return DB::table('ia_usage_logs as l')
+            ->leftJoin('professionals as p', 'p.id', '=', 'l.professional_id')
+            ->whereBetween('l.created_at', [$inicio->startOfDay(), $fim->endOfDay()])
+            ->groupBy('l.professional_id', 'p.name')
+            ->orderByDesc('custo_total')
+            ->get([
+                'l.professional_id',
+                'p.name as nome',
+                DB::raw('sum(l.custo_usd) as custo_total'),
+                DB::raw('count(*) as chamadas'),
+            ])
+            ->map(fn ($l) => [
+                'professional_id' => $l->professional_id,
+                'nome' => $l->nome ?? 'Sem personal (portal do aluno)',
+                'custo_usd' => round((float) $l->custo_total, 6),
+                'chamadas' => (int) $l->chamadas,
+            ])
+            ->values()
+            ->all();
+    }
+
+    /**
      * Custos de infraestrutura do mês. Mesma regra de professional_expenses:
      * recorrente conta em todo mês em que esteve vigente ao menos um dia;
      * avulsa só no mês de starts_on.

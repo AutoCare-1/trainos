@@ -67,6 +67,7 @@ export default function AdminCrmPage() {
   const [erro, setErro] = useState<string | null>(null)
   const [tabelaSerie, setTabelaSerie] = useState(false)
   const [tabelaCusto, setTabelaCusto] = useState(false)
+  const [tabelaProfissional, setTabelaProfissional] = useState(false)
 
   const [custos, setCustos] = useState<CrmCusto[]>([])
   const [socios, setSocios] = useState<CrmSocio[]>([])
@@ -161,6 +162,8 @@ export default function AdminCrmPage() {
             setTabelaSerie={setTabelaSerie}
             tabelaCusto={tabelaCusto}
             setTabelaCusto={setTabelaCusto}
+            tabelaProfissional={tabelaProfissional}
+            setTabelaProfissional={setTabelaProfissional}
           />
         )}
 
@@ -193,6 +196,7 @@ export default function AdminCrmPage() {
 function VisaoGeral({
   dados, serie, meses, setMeses, carregando,
   tabelaSerie, setTabelaSerie, tabelaCusto, setTabelaCusto,
+  tabelaProfissional, setTabelaProfissional,
 }: {
   dados: CrmDashboard
   serie: { rotulo: string; faturamento: number; custo: number; lucro: number }[]
@@ -203,6 +207,8 @@ function VisaoGeral({
   setTabelaSerie: (v: boolean) => void
   tabelaCusto: boolean
   setTabelaCusto: (v: boolean) => void
+  tabelaProfissional: boolean
+  setTabelaProfissional: (v: boolean) => void
 }) {
   const { resumo, assinantes } = dados
   const custoTotal = resumo.custo_ia + resumo.custo_plataforma
@@ -211,6 +217,12 @@ function VisaoGeral({
     rotulo: LABEL_PIPELINE[p.pipeline] ?? p.pipeline,
     valor: p.custo_brl,
     detalhe: `${p.chamadas.toLocaleString('pt-BR')} chamada${p.chamadas === 1 ? '' : 's'} · ${(p.input_tokens + p.output_tokens).toLocaleString('pt-BR')} tokens`,
+  }))
+
+  const profissionais = dados.custo_ia_por_profissional.map((p) => ({
+    rotulo: p.nome,
+    valor: p.custo_brl,
+    detalhe: `${p.chamadas.toLocaleString('pt-BR')} chamada${p.chamadas === 1 ? '' : 's'}`,
   }))
 
   return (
@@ -323,6 +335,27 @@ function VisaoGeral({
         )}
       </section>
 
+      <section className="glass rounded-2xl p-5">
+        <div className="mb-4 flex items-start justify-between gap-3">
+          <div>
+            <h2 className="font-display text-base font-semibold text-ink">Custo de IA por personal</h2>
+            <p className="mt-0.5 text-xs text-ink-muted">Neste mês, convertido para reais</p>
+          </div>
+          <BotaoTabela ativo={tabelaProfissional} onClick={() => setTabelaProfissional(!tabelaProfissional)} />
+        </div>
+
+        {tabelaProfissional ? (
+          <TabelaProfissional itens={dados.custo_ia_por_profissional} />
+        ) : (
+          <GraficoBarras
+            itens={profissionais}
+            cor={COR_CUSTO}
+            formatarValor={moeda}
+            rotuloAcessivel="Custo de IA por personal"
+          />
+        )}
+      </section>
+
       {dados.planos.length > 0 && (
         <section className="glass rounded-2xl p-5">
           <h2 className="mb-4 font-display text-base font-semibold text-ink">Receita por plano</h2>
@@ -431,6 +464,32 @@ function TabelaCusto({ itens }: { itens: CrmDashboard['custo_ia_por_pipeline'] }
               <td className="py-2 pr-3 text-ink-soft">{LABEL_PIPELINE[p.pipeline] ?? p.pipeline}</td>
               <td className="py-2 pr-3 text-right text-ink">{p.chamadas.toLocaleString('pt-BR')}</td>
               <td className="py-2 pr-3 text-right text-ink">{(p.input_tokens + p.output_tokens).toLocaleString('pt-BR')}</td>
+              <td className="py-2 text-right font-semibold text-ink">{moeda(p.custo_brl)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+function TabelaProfissional({ itens }: { itens: CrmDashboard['custo_ia_por_profissional'] }) {
+  if (itens.length === 0) return <p className="py-6 text-center text-sm text-ink-muted">Nenhuma chamada neste mês.</p>
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full min-w-[380px] text-sm [font-variant-numeric:tabular-nums]">
+        <thead>
+          <tr className="border-b border-line text-left text-xs uppercase tracking-wider text-ink-muted">
+            <th className="py-2 pr-3 font-medium">Personal</th>
+            <th className="py-2 pr-3 text-right font-medium">Chamadas</th>
+            <th className="py-2 text-right font-medium">Custo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {itens.map((p) => (
+            <tr key={p.professional_id ?? 'sem-dono'} className="border-b border-line-soft last:border-0">
+              <td className="py-2 pr-3 text-ink-soft">{p.nome}</td>
+              <td className="py-2 pr-3 text-right text-ink">{p.chamadas.toLocaleString('pt-BR')}</td>
               <td className="py-2 text-right font-semibold text-ink">{moeda(p.custo_brl)}</td>
             </tr>
           ))}

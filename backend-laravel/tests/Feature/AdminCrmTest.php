@@ -207,6 +207,50 @@ class AdminCrmTest extends TestCase
             ->assertJsonPath('modelos_sem_preco', ['modelo-inexistente']);
     }
 
+    public function test_custo_de_ia_agrupa_por_profissional_incluindo_chamadas_sem_dono(): void
+    {
+        [$professional, $headers] = $this->criarPersonal(admin: true);
+        config(['ia_precos.usd_brl' => 5.0]);
+
+        DB::table('ia_usage_logs')->insert([
+            [
+                'id' => (string) Str::uuid(),
+                'professional_id' => $professional->id,
+                'pipeline' => 'consultor_ia',
+                'model' => 'claude-haiku-4-5-20251001',
+                'custo_usd' => 1.0,
+                'created_at' => now(),
+            ],
+            [
+                'id' => (string) Str::uuid(),
+                'professional_id' => $professional->id,
+                'pipeline' => 'chat_autopilot',
+                'model' => 'claude-haiku-4-5-20251001',
+                'custo_usd' => 0.5,
+                'created_at' => now(),
+            ],
+            // Chamada do portal do aluno, sem professional_id — precisa contar
+            // no total sem sumir da quebra por personal.
+            [
+                'id' => (string) Str::uuid(),
+                'professional_id' => null,
+                'pipeline' => 'evolucao_fisica',
+                'model' => 'claude-haiku-4-5-20251001',
+                'custo_usd' => 0.25,
+                'created_at' => now(),
+            ],
+        ]);
+
+        $resp = $this->getJson('/admin/dashboard', $headers)->assertOk()->json();
+
+        $this->assertSame($professional->name, $resp['custo_ia_por_profissional'][0]['nome']);
+        $this->assertSame(7.5, $resp['custo_ia_por_profissional'][0]['custo_brl']);
+        $this->assertSame(2, $resp['custo_ia_por_profissional'][0]['chamadas']);
+
+        $this->assertSame('Sem personal (portal do aluno)', $resp['custo_ia_por_profissional'][1]['nome']);
+        $this->assertSame(1.25, $resp['custo_ia_por_profissional'][1]['custo_brl']);
+    }
+
     public function test_registrar_nunca_propaga_erro(): void
     {
         // Resposta sem ->usage: não deve lançar nada (a resposta da IA já foi

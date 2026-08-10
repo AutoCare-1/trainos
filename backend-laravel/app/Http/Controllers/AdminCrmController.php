@@ -61,6 +61,10 @@ class AdminCrmController extends Controller
                 ...$p,
                 'custo_brl' => round($p['custo_usd'] * $cotacao, 2),
             ], Crm::custoIaPorPipeline($inicio, $fim)),
+            'custo_ia_por_profissional' => array_map(fn ($p) => [
+                ...$p,
+                'custo_brl' => round($p['custo_usd'] * $cotacao, 2),
+            ], Crm::custoIaPorProfissional($inicio, $fim)),
             'rateio_lucro' => array_map(
                 fn ($s) => [...$s, 'valor' => Money::fromCents($s['valor_centavos'])],
                 // Referência é HOJE, não o dia 1º: quem entrou no meio do mês

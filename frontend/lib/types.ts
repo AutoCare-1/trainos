@@ -611,6 +611,14 @@ export interface CrmRateio {
   valor: number
 }
 
+export interface CrmCustoProfissional {
+  professional_id: string | null
+  nome: string
+  custo_usd: number
+  custo_brl: number
+  chamadas: number
+}
+
 export interface CrmDashboard {
   mes_referencia: string
   cotacao_usd_brl: number
@@ -619,6 +627,7 @@ export interface CrmDashboard {
   planos: CrmPlano[]
   serie_mensal: CrmMesSerie[]
   custo_ia_por_pipeline: CrmCustoPipeline[]
+  custo_ia_por_profissional: CrmCustoProfissional[]
   rateio_lucro: CrmRateio[]
   modelos_sem_preco: string[]
 }
