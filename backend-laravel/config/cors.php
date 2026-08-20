@@ -21,7 +21,15 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3101')],
+    'allowed_origins' => [
+        env('FRONTEND_URL', 'http://localhost:3101'),
+        // Portas extras de .claude/launch.json (trainos-frontend-prod,
+        // trainos-frontend-verify) — só em local, pra testar uma instância
+        // isolada do frontend sem depender do FRONTEND_URL, que é
+        // compartilhado entre sessões de chat rodando no mesmo repo. Nunca
+        // adicionado em produção.
+        ...(env('APP_ENV') === 'local' ? ['http://localhost:3111', 'http://localhost:3112'] : []),
+    ],
 
     'allowed_origins_patterns' => [],
 
