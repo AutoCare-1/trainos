@@ -1,7 +1,44 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
 import { getMovementPattern, MovementPattern } from '@/lib/exercisePatterns'
 import { resolveMediaUrl } from '@/lib/api'
+
+/**
+ * A biblioteca tem centenas de exercícios e a maioria não tem foto, então cai
+ * nesta animação. A tela de montar treino renderiza a lista inteira de uma vez,
+ * o que colocava ~1000 <animateTransform> rodando ao mesmo tempo — a esmagadora
+ * maioria fora da viewport, gastando CPU (e bateria, num app que roda no
+ * celular) sem ninguém ver.
+ *
+ * A saída é pausar quem está fora da tela em vez de simplificar o desenho:
+ * 6 dos padrões de movimento (agachamento, afundo, panturrilha, hip thrust,
+ * encolhimento e o genérico) são feitos SÓ de translação do corpo inteiro, ou
+ * seja, sem a animação eles viram a mesma figura em pé e deixam de se
+ * distinguir — 27% da biblioteca viraria o mesmo boneco.
+ *
+ * Um observer só pra todos os SVGs: 600 observers seriam o próprio problema
+ * que se quer evitar.
+ */
+let observador: IntersectionObserver | null = null
+function obterObservador(): IntersectionObserver | null {
+  if (typeof IntersectionObserver === 'undefined') return null
+  observador ??= new IntersectionObserver(
+    (entradas) => {
+      for (const entrada of entradas) {
+        const svg = entrada.target as SVGSVGElement
+        // continue, não return: um elemento sem suporte não pode fazer o lote
+        // inteiro de entradas ser descartado.
+        if (typeof svg.pauseAnimations !== 'function') continue
+        if (entrada.isIntersecting) svg.unpauseAnimations()
+        else svg.pauseAnimations()
+      }
+    },
+    // Margem pra animação já estar rodando quando o item entra de fato na tela.
+    { rootMargin: '200px' }
+  )
+  return observador
+}
 
 // "md" aumentado de 64 pra 112 — é o tamanho usado onde o aluno/personal
 // realmente assiste a demonstração pra executar o exercício certo (treino do
@@ -142,20 +179,19 @@ function TranslateGroup({
   )
 }
 
+/** Diferente do RotatingLine, aqui o pivô já vem embutido em cada keyframe de
+ *  `values` ("ângulo cx cy"), então não é passado à parte. */
 function RotateGroup({
-  pivot,
   values,
   dur,
   keyTimes = '0;0.33;0.66;1',
   children,
 }: {
-  pivot: [number, number]
   values: string
   dur: number
   keyTimes?: string
   children: React.ReactNode
 }) {
-  const [px, py] = pivot
   return (
     <g>
       {children}
@@ -324,7 +360,7 @@ function renderBody(pattern: MovementPattern) {
       return (
         <>
           <HipBar /><StaticLegs />
-          <RotateGroup pivot={HIP_C} values="0 50 55;28 50 55;28 50 55;0 50 55" dur={1.7}>
+          <RotateGroup values="0 50 55;28 50 55;28 50 55;0 50 55" dur={1.7}>
             <Head /><ShoulderBar /><Torso /><StaticArms />
           </RotateGroup>
         </>
@@ -335,7 +371,7 @@ function renderBody(pattern: MovementPattern) {
       return (
         <>
           <HipBar /><StaticLegs />
-          <RotateGroup pivot={HIP_C} values="0 50 55;-18 50 55;18 50 55;0 50 55" dur={1.8} keyTimes="0;0.33;0.66;1">
+          <RotateGroup values="0 50 55;-18 50 55;18 50 55;0 50 55" dur={1.8} keyTimes="0;0.33;0.66;1">
             <Head /><ShoulderBar /><Torso /><StaticArms />
           </RotateGroup>
         </>
@@ -365,7 +401,7 @@ function renderBody(pattern: MovementPattern) {
       return (
         <g transform="rotate(90 50 50)">
           <HipBar /><StaticLegs />
-          <RotateGroup pivot={HIP_C} values="0 50 55;-26 50 55;-26 50 55;0 50 55" dur={1.3}>
+          <RotateGroup values="0 50 55;-26 50 55;-26 50 55;0 50 55" dur={1.3}>
             <Head /><ShoulderBar /><Torso /><StaticArms />
           </RotateGroup>
         </g>
@@ -411,6 +447,24 @@ export default function ExerciseAnimation({
   className?: string
 }) {
   const px = SIZES[size]
+  const svgRef = useRef<SVGSVGElement>(null)
+
+  // Hook antes dos returns antecipados de vídeo/imagem: a ref só é preenchida
+  // quando o fallback SVG é o que de fato renderiza, e aí o efeito é no-op.
+  useEffect(() => {
+    const svg = svgRef.current
+    const io = obterObservador()
+    if (!svg || !io) return
+
+    // De propósito NÃO pausa aqui. O observer já dispara na montagem e pausa o
+    // que estiver fora da tela, então o ganho é o mesmo — mas se ele nunca
+    // entregar callback (aba em segundo plano, navegador sem suporte), o estado
+    // que sobra é "animando", como sempre foi. Pausar de largada faria o modo de
+    // falha ser a miniatura congelada, que é bem pior que gastar CPU à toa.
+    io.observe(svg)
+
+    return () => io.unobserve(svg)
+  }, [])
 
   if (videoUrl) {
     return (
@@ -446,6 +500,7 @@ export default function ExerciseAnimation({
   const pattern = getMovementPattern(name, muscleGroup)
   return (
     <svg
+      ref={svgRef}
       viewBox="0 0 100 100"
       width={px}
       height={px}

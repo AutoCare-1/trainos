@@ -74,9 +74,11 @@ repositório — **hoje só existe o backend Laravel** (`backend-laravel/`).
 **Núcleo (v0):**
 - Cadastro/login do profissional (JWT)
 - Cadastro de aluno, com geração de link de convite
-- Biblioteca de exercícios com imagens reais de demonstração (fonte wger.de,
-  CC-BY-SA, com crédito) e fallback de animação boneco-palito quando não há
-  imagem/vídeo
+- Biblioteca de **646 exercícios**: 75 com imagem real de demonstração (fonte
+  wger.de, CC-BY-SA, com crédito) e 571 escritos em pt-BR pra dar repertório de
+  prescrição, que usam o fallback de animação boneco-palito (o wger só tem 66
+  traduções em português no acervo inteiro, então não dava pra escalar por lá).
+  O personal pode subir o próprio vídeo em qualquer exercício
 - Criação e envio de treino (série/reps/carga por exercício), com **modelos
   de treino** reaproveitáveis entre alunos
 - Portal do aluno: visualizar treino, iniciar sessão, registrar séries

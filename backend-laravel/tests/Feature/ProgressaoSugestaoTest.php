@@ -7,7 +7,9 @@ use App\Models\Professional;
 use App\Models\SessionEntry;
 use App\Models\Student;
 use App\Models\TrainingSession;
+use App\Support\Progressao;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 /**
@@ -124,6 +126,42 @@ class ProgressaoSugestaoTest extends TestCase
         // Carga alta na barra: 2,5% de 200kg = 5kg = 2 passos de 2,5kg.
         $barra = $this->sessaoConcluida('Barra', '5', 2, [[5, 200], [5, 200]]);
         $this->assertSame(5.0, (float) $this->sugestaoDe($barra)['delta_kg']);
+    }
+
+    public function test_elastico_sugere_repeticao_em_vez_de_carga(): void
+    {
+        // Elástico não tem kg pra somar: sugerir "+2,5 kg num elástico" seria um
+        // número que o aluno não tem como executar. Vale pro resto do material
+        // sem carga somável (TRX, bola, corda, cardio) — ver Progressao::INCREMENTOS.
+        $exercise = $this->sessaoConcluida('Elástico', '12-15', 2, [[15, null], [15, null]]);
+
+        $sugestao = $this->sugestaoDe($exercise);
+
+        $this->assertSame('aumentar_reps', $sugestao['acao']);
+        $this->assertSame(0.0, (float) $sugestao['delta_kg']);
+    }
+
+    public function test_todo_equipamento_da_biblioteca_tem_incremento_intencional(): void
+    {
+        // Trava contra regressão silenciosa: um equipamento novo no seeder que
+        // ninguém mapeou em INCREMENTOS cai no padrão de 2,5 kg sem erro nenhum,
+        // e o personal só descobre vendo uma sugestão absurda na tela.
+        // "Equipamento" é o balde genérico legítimo e fica de fora da checagem.
+        $this->seed(\Database\Seeders\ExerciseSeeder::class);
+        $this->seed(\Database\Seeders\ExercicioBibliotecaAmpliadaSeeder::class);
+
+        $mapeados = (new \ReflectionClass(Progressao::class))->getConstant('INCREMENTOS');
+
+        $semMapeamento = Exercise::query()
+            ->whereNotNull('equipment')
+            ->where('equipment', '!=', 'Equipamento')
+            ->pluck('equipment')
+            ->unique()
+            ->reject(fn ($e) => array_key_exists(Str::ascii(mb_strtolower(trim($e))), $mapeados))
+            ->values()
+            ->all();
+
+        $this->assertSame([], $semMapeamento, 'Equipamento sem incremento definido em Progressao::INCREMENTOS');
     }
 
     public function test_peso_corporal_sugere_mais_uma_repeticao_em_vez_de_carga(): void

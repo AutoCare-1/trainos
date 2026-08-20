@@ -150,30 +150,63 @@ const EXACT_MAP: Record<string, MovementPattern> = {
   'corrida na esteira': 'cardio',
 }
 
+// A ORDEM IMPORTA: a primeira regra que casar vence. Regras mais específicas
+// vêm antes das genéricas, porque muito nome de exercício contém a palavra de
+// outro ("Panturrilha no hack machine" tem "hack"; "Prancha com remada" tem
+// "remada"; "Abdução de quadril" tem "quadril"). Ao mexer aqui, rode a
+// checagem de padrões dos exercícios da biblioteca antes de commitar.
 const KEYWORD_RULES: [RegExp, MovementPattern][] = [
-  [/agachamento|leg press|hack/, 'squat'],
-  [/afundo|passada|bulgaro|lunge/, 'lunge'],
-  [/terra|stiff|good morning/, 'hinge'],
-  [/extensora|extensao de perna/, 'legExtension'],
-  [/flexora|leg curl/, 'legCurl'],
-  [/panturrilha|gemeos|calf/, 'calfRaise'],
-  [/quadril|hip thrust|gluteo/, 'hipThrust'],
-  [/abdutora|adutora|abducao/, 'hipAbduction'],
+  // --- Precisam vir antes das regras amplas de perna/quadril/costas ---
+  // "no hack machine", "no leg press" apareceriam como agachamento.
+  [/panturrilha|gemeos|calf|tibial/, 'calfRaise'],
+  // "abducao/aducao de quadril" bateria na regra de 'quadril' (hipThrust).
+  [/abdutora|adutora|abducao|aducao|clamshell|fire hydrant|caminhada lateral|monstro/, 'hipAbduction'],
+  // "Prancha lateral com elevação de quadril" e "Prancha com remada".
+  [/prancha|ab wheel|roda abdominal|hollow|dead bug|bird dog|pallof|rollout|bear crawl|crab walk|inchworm/, 'plank'],
+  // "Encolhimento na barra fixa" bateria na regra de puxada.
+  [/encolhimento|shrug|escapula/, 'shrug'],
+  // "Flexão" é ambíguo em português (flexão de braço x flexão de joelho x
+  // flexão lateral de tronco) — os sentidos não-peitoral saem primeiro.
+  [/flexao lateral/, 'twist'],
+  [/flexora|leg curl|nordica|glute ham|flexao de joelho|flexao de calcanhar/, 'legCurl'],
+  [/extensora|extensao de joelho|extensao de perna/, 'legExtension'],
+
+  // --- Membros inferiores ---
+  [/agachamento|leg press|hack|wall sit|sentar e levantar|pistol|sissy/, 'squat'],
+  [/afundo|passada|bulgaro|lunge|avanco|step-?up|subida no step/, 'lunge'],
+  [/terra|stiff|good morning|bom dia|romeno|swing|clean|snatch|arranco/, 'hinge'],
+  // Sem "coice" solto: "Tríceps coice" cairia aqui. Os coices de glúteo já
+  // casam por "gluteo".
+  [/quadril|hip thrust|gluteo|ponte de|frog pump|reverse hyper/, 'hipThrust'],
+
+  // --- Tronco ---
   [/crucifixo|voador|peck deck|crossover|pullover|fly/, 'flye'],
-  [/supino|flexao de braco|press de peito|chest press/, 'horizontalPress'],
-  [/puxada|puxador|barra fixa|pull-up|pulldown/, 'verticalPull'],
-  [/remada|face pull|row/, 'horizontalRow'],
-  [/desenvolvimento|overhead press|press militar/, 'overheadPress'],
-  [/elevacao lateral|remada alta/, 'lateralRaise'],
-  [/elevacao frontal/, 'frontRaise'],
+  [/supino|flexao|press de peito|chest press|floor press|svend|thruster/, 'horizontalPress'],
+  // "Barra australiana" fica de fora: é remada invertida (puxada horizontal),
+  // e o próprio nome já casa na regra de remada logo abaixo.
+  [/puxada|puxador|barra fixa|pull-?up|chin-?up|pulldown|toes to bar/, 'verticalPull'],
+  [/remada|face pull|row|renegade/, 'horizontalRow'],
+  [/desenvolvimento|overhead press|press militar|push press|bradford|halo/, 'overheadPress'],
+  [/elevacao lateral|remada alta|elevacao em [tw]\b/, 'lateralRaise'],
+  [/elevacao frontal|elevacao em y/, 'frontRaise'],
+  [/rotacao externa|rotacao interna|cubano/, 'lateralRaise'],
+
+  // --- Braços ---
   [/rosca de punho/, 'curl'],
-  [/rosca/, 'curl'],
-  [/triceps|mergulho/, 'tricepsExtension'],
-  [/encolhimento|shrug/, 'shrug'],
-  [/prancha|ab wheel|roda abdominal/, 'plank'],
-  [/obliquo|russa|twist|rotacao/, 'twist'],
-  [/abdominal|crunch|elevacao de pernas/, 'crunch'],
-  [/burpee|corda|polichinelo|mountain climber|esteira|jumping/, 'cardio'],
+  [/rosca|curl/, 'curl'],
+  [/triceps|mergulho|dips|jm press|tate press|skull/, 'tricepsExtension'],
+
+  // --- Core ---
+  [/obliquo|russa|twist|rotacao|woodchop|lenhador/, 'twist'],
+  [/abdominal|crunch|elevacao de pernas|elevacao de joelhos|sit-?up|canivete|v-?up|remador|borboleta|estrela/, 'crunch'],
+  [/hiperextensao|extensao lombar|superman/, 'hinge'],
+
+  // --- Condicionamento ---
+  [/burpee|corda|polichinelo|mountain climber|esteira|jumping|salto|pular|sprint|corrida|bicicleta|eliptico|assault|escada|shadow|treno|prowler|wall ball|arremesso|passe de|agilidade|ziguezague|skater|deslocamento|escalador|figure eight|remo ergometro/, 'cardio'],
+
+  // Carregamentos e pegada: a figura em pé sustentando carga é o que mais se
+  // parece com o movimento real — melhor que forçar um padrão de outro grupo.
+  [/farmer walk|caminhada do fazendeiro|caminhada do garcom|carregamento|rack carry|suspensao|dead hang|pinca|preensao|hand grip|enrolamento|turkish|get-?up/, 'generic'],
 ]
 
 const MUSCLE_GROUP_FALLBACK: Record<string, MovementPattern> = {

@@ -44,14 +44,36 @@ class Progressao
         'barra' => 2.5,
         'barra w' => 2.5,
         'barra t' => 2.5,
+        'smith' => 2.5,
+        'landmine' => 2.5,
+        'anilha' => 2.5,
         'halter' => 2.0,
         'halteres' => 2.0,
         'maquina' => 5.0,
         'polia' => 5.0,
+        // Kettlebell não tem meio-termo: o acervo de uma academia costuma pular
+        // de 4 em 4 kg (8, 12, 16...), então sugerir +2,5 seria um peso que não
+        // existe na sala.
+        'kettlebell' => 4.0,
+        // Caneleira e medicine ball sobem de 1 em 1 kg.
+        'caneleira' => 1.0,
+        'medicine ball' => 1.0,
+        // Incremento zero = não existe carga pra somar, e Progressao::avaliar()
+        // troca a sugestão pra "aumentar reps". Sem isso o app sugeriria
+        // "+2,5 kg" num elástico ou numa esteira.
         'peso corporal' => 0.0,
+        'elastico' => 0.0,
+        'trx' => 0.0,
+        'bola suica' => 0.0,
+        'bola' => 0.0,
+        'corda' => 0.0,
+        'step' => 0.0,
+        'esteira' => 0.0,
+        'bicicleta' => 0.0,
+        'remo' => 0.0,
     ];
 
-    /** Equipamento desconhecido/genérico ("Equipamento", "Esteira", null) cai aqui. */
+    /** Equipamento desconhecido/genérico ("Equipamento", null) cai aqui. */
     private const INCREMENTO_PADRAO = 2.5;
 
     public static function incrementoMinimo(?string $equipment): float
