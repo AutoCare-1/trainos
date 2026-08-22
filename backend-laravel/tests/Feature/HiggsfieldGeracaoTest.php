@@ -293,6 +293,6 @@ class HiggsfieldGeracaoTest extends TestCase
 
         $this->assertStringContainsString('Rosca spider', $prompt);
         $this->assertStringContainsString('Barra W', $prompt);
-        $this->assertStringContainsString('referência', $prompt);
+        $this->assertStringContainsString('reference photos', $prompt);
     }
 }
