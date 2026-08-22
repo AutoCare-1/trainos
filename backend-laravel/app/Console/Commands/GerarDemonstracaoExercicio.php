@@ -178,19 +178,30 @@ class GerarDemonstracaoExercicio extends Command
      * braço apoiado num banco inclinado flexionando o cotovelo. Por isso a
      * instrução do próprio exercício (que já existe na biblioteca) entra no
      * prompt — ela é exatamente essa descrição.
+     *
+     * O texto de cena vai em inglês e a execução em português, misturados de
+     * propósito. Testado com crédito real em 22/08/2026:
+     * - Prompt todo em português, liderando com "Foto de demonstração de
+     *   exercício": o modelo ignorou o movimento e devolveu a pessoa parada em
+     *   pé nas 3 tentativas.
+     * - Cena em inglês + execução na frente: acertou o movimento de primeira.
+     * O modelo responde muito melhor ao enquadramento descrito em inglês, mas
+     * entende a descrição de postura em português — o que permite reaproveitar
+     * as instruções que já existem na biblioteca em vez de traduzir 300 delas.
      */
     public static function montarPrompt(Exercise $ex): string
     {
         $descricao = self::instrucaoVisual($ex->instructions);
 
         $partes = [
-            'Foto de demonstração de exercício de academia:',
-            "a mesma pessoa da referência executando \"{$ex->name}\"",
-            $ex->equipment ? "usando {$ex->equipment}" : null,
-            $descricao ? "— {$descricao}" : null,
-            'Corpo inteiro visível e enquadrado, vista de perfil,',
-            'academia bem iluminada, fundo limpo e neutro, foto realista,',
-            'roupa de treino, postura tecnicamente correta.',
+            'The man from the reference photos performs the gym exercise',
+            "\"{$ex->name}\"",
+            $ex->equipment ? "using {$ex->equipment}." : '.',
+            $descricao ? "Execution: {$descricao}" : null,
+            'He repeats the full movement twice, smoothly and under control.',
+            'Static camera, full body in frame, clean white studio background',
+            'with a few gym machines softly visible behind, bright even lighting,',
+            'realistic photograph, no text on screen.',
         ];
 
         return implode(' ', array_filter($partes));
