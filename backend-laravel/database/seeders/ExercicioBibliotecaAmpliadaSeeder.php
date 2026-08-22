@@ -36,9 +36,15 @@ class ExercicioBibliotecaAmpliadaSeeder extends Seeder
         $jaExistem = Exercise::pluck('name')->all();
         $jaExistem = array_combine($jaExistem, $jaExistem);
 
+        // Curadoria de 22/08/2026: 244 destes foram cortados por serem variação
+        // quase idêntica de outro, nota de prescrição (isometria/pausa) ou
+        // equipamento que academia comum não tem. Sem esta checagem, rodar o
+        // seeder de novo ressuscitaria todos eles e desfaria a poda em silêncio.
+        $podados = array_flip(require database_path('biblioteca_podada.php'));
+
         $novos = [];
         foreach (self::linhas() as [$nome, $grupo, $equipamento, $instrucoes]) {
-            if (isset($jaExistem[$nome])) {
+            if (isset($jaExistem[$nome]) || isset($podados[$nome])) {
                 continue;
             }
             $novos[] = [
