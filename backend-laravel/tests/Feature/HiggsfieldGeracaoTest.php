@@ -213,8 +213,11 @@ class HiggsfieldGeracaoTest extends TestCase
         $this->artisan('exercicios:gerar-demonstracao', ['--limite' => 1])->assertSuccessful();
 
         $ex->refresh();
-        $this->assertSame('/storage/exercise-demos/rosca-spider.jpg', $ex->image_url);
-        Storage::disk('public')->assertExists('exercise-demos/rosca-spider.jpg');
+        // Precisa ser /uploads/... — é o único prefixo que resolveMediaUrl
+        // (frontend/lib/api.ts) reescreve pro backend. Com /storage/... o
+        // navegador pediria o arquivo pro Next.js e tomaria 404.
+        $this->assertSame('/uploads/exercise-demos/rosca-spider.jpg', $ex->image_url);
+        $this->assertFileExists(\App\Support\Uploads::publicRoot().'/exercise-demos/rosca-spider.jpg');
         // Precisa ficar claro que é imagem sintética, não foto real de acervo.
         $this->assertStringContainsString('gerada por IA', $ex->image_credit);
     }

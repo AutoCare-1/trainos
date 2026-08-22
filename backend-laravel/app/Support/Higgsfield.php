@@ -3,7 +3,6 @@
 namespace App\Support;
 
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Storage;
 use RuntimeException;
 
 /**
@@ -199,9 +198,19 @@ class Higgsfield
     {
         $conteudo = Http::timeout(180)->get($url)->throw()->body();
 
-        $caminho = "exercise-demos/{$nomeBase}.{$extensao}";
-        Storage::disk('public')->put($caminho, $conteudo);
+        // Tem que ser public/uploads/ (o mesmo de App\Support\Uploads), e não
+        // storage/app/public: o frontend só reescreve caminho que começa com
+        // "/uploads/" pra apontar pro backend (ver resolveMediaUrl em
+        // frontend/lib/api.ts). Um "/storage/..." aqui faria o navegador pedir
+        // o vídeo pro servidor do Next.js, que não tem esse arquivo — daria 404
+        // em toda demonstração gerada.
+        $dir = Uploads::publicRoot().'/exercise-demos';
+        if (! is_dir($dir)) {
+            mkdir($dir, 0755, true);
+        }
 
-        return '/storage/'.$caminho;
+        file_put_contents("{$dir}/{$nomeBase}.{$extensao}", $conteudo);
+
+        return "/uploads/exercise-demos/{$nomeBase}.{$extensao}";
     }
 }
