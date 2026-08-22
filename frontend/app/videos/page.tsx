@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import BackLink from '@/components/BackLink'
 import ExerciseAnimation from '@/components/ExerciseAnimation'
+import FiltroGrupoMuscular from '@/components/FiltroGrupoMuscular'
+import { contarPorGrupo, filtrarEAgrupar } from '@/lib/bibliotecaExercicios'
 import { api, ApiError } from '@/lib/api'
 import { Exercise } from '@/lib/types'
 
@@ -14,6 +16,7 @@ export default function VideosPage() {
   const [erro, setErro] = useState<string | null>(null)
   const [enviando, setEnviando] = useState<string | null>(null)
   const [buscaExercicio, setBuscaExercicio] = useState('')
+  const [grupoMuscular, setGrupoMuscular] = useState<string | null>(null)
   const inputsGravar = useRef<Record<string, HTMLInputElement | null>>({})
   const inputsGaleria = useRef<Record<string, HTMLInputElement | null>>({})
 
@@ -65,15 +68,8 @@ export default function VideosPage() {
     }
   }
 
-  const termoBusca = buscaExercicio.trim().toLowerCase()
-  const exerciciosFiltrados = termoBusca
-    ? (exercises ?? []).filter((ex) => ex.name.toLowerCase().includes(termoBusca))
-    : exercises ?? []
-  const porGrupo = exerciciosFiltrados.reduce<Record<string, Exercise[]>>((acc, ex) => {
-    acc[ex.muscle_group] = acc[ex.muscle_group] ?? []
-    acc[ex.muscle_group].push(ex)
-    return acc
-  }, {})
+  const gruposDisponiveis = contarPorGrupo(exercises ?? [])
+  const gruposFiltrados = filtrarEAgrupar(exercises ?? [], buscaExercicio, grupoMuscular)
 
   return (
     <>
@@ -94,16 +90,25 @@ export default function VideosPage() {
             type="text"
             value={buscaExercicio}
             onChange={(e) => setBuscaExercicio(e.target.value)}
-            placeholder="Buscar exercício pelo nome..."
-            className="input-dark mb-6 w-full rounded-xl px-4 py-2.5 text-sm"
+            placeholder="Buscar por nome ou equipamento..."
+            className="input-dark mb-3 w-full rounded-xl px-4 py-2.5 text-sm"
+          />
+        )}
+
+        {exercises !== null && (
+          <FiltroGrupoMuscular
+            grupos={gruposDisponiveis}
+            selecionado={grupoMuscular}
+            onSelecionar={setGrupoMuscular}
+            total={exercises.length}
           />
         )}
 
         <div className="space-y-6">
-          {termoBusca && Object.keys(porGrupo).length === 0 && (
+          {exercises !== null && gruposFiltrados.length === 0 && (
             <p className="text-sm text-ink-muted">Nenhum exercício encontrado.</p>
           )}
-          {Object.entries(porGrupo).map(([grupo, itens]) => (
+          {gruposFiltrados.map(({ grupo, itens }) => (
             <div key={grupo}>
               <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-ink-muted">{grupo}</h2>
               <div className="space-y-2">
