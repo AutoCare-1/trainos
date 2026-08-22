@@ -18,11 +18,25 @@ return [
     // geração sem precisar de deploy nem de mexer na credencial.
     'habilitado' => (bool) env('HIGGSFIELD_HABILITADO', true),
 
+    // TESTADO DE VERDADE em 22/08/2026, com as fotos do personal. O resultado
+    // muda a recomendação, então vale ler antes de mexer aqui:
+    //
+    // - soul/reference (imagem) NÃO serve pra demonstrar exercício. É modelo de
+    //   retrato: trata a foto de referência como pose a copiar. Pedimos
+    //   "agachamento búlgaro" e as 3 tentativas devolveram a pessoa PARADA EM
+    //   PÉ, sem halteres e sem banco — o cenário e a postura da foto original.
+    // - Modelo de VÍDEO com image_references acertou o movimento na primeira
+    //   tentativa (desce até a coxa paralela e volta), mantendo a identidade.
+    // - O prompt não pode nomear o exercício: o modelo não sabe o que é
+    //   "agachamento búlgaro", mas sabe desenhar "pé traseiro apoiado no banco,
+    //   joelho da frente a 90 graus". Descrever o CORPO, não o nome.
+    // - Duração mínima de vídeo é 4s (não dá pra fazer de 3).
+    //
+    // Custo por unidade: imagem ~0,12 crédito, vídeo 4s ~4 créditos. Pros 571
+    // exercícios sem foto isso é ~69 créditos em imagem e ~2.284 em vídeo.
     'endpoints' => [
-        // 1 foto de referência + prompt -> imagem preservando a identidade.
-        // É o caminho que funciona só com API: treinar um "Soul ID" (que daria
-        // consistência melhor, via /higgsfield-ai/soul/character) NÃO tem
-        // endpoint público — só dá pra criar pelo site.
+        // Mantido só por completude da API — ver a nota acima antes de usar
+        // pra demonstração de exercício, porque não funcionou pra isso.
         'imagem_referencia' => '/higgsfield-ai/soul/reference',
         // Array de fotos de referência + prompt -> vídeo curto.
         'video_referencia' => '/veo3.1/reference-to-video',
