@@ -666,3 +666,38 @@ export interface StatusAssinatura {
   planos: Record<string, PlanoAssinatura>
   faturas: FaturaAssinatura[]
 }
+
+/** Agenda semanal do personal — organização da própria rotina (horário fixo +
+ *  troca pontual numa data específica), não frequência do aluno na academia. */
+export interface AgendaSlot {
+  id: string
+  professional_id: string
+  student_id: string | null
+  titulo: string | null
+  dia_semana: number
+  hora: string
+  duracao_minutos: number
+  ativo: boolean
+}
+
+export interface HorarioAgenda {
+  slot_id: string
+  hora: string
+  duracao_minutos: number
+  student: { id: string; name: string } | null
+  titulo: string | null
+  presenca: 'presente' | 'falta' | null
+  observacao: string | null
+  eh_excecao: boolean
+}
+
+export interface DiaAgenda {
+  data: string
+  dia_semana: number
+  horarios: HorarioAgenda[]
+}
+
+export interface SemanaAgenda {
+  inicio_semana: string
+  dias: DiaAgenda[]
+}

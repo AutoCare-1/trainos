@@ -21,6 +21,7 @@ import {
   Download,
   CreditCard,
   Gauge,
+  CalendarDays,
 } from 'lucide-react'
 import AssinaturaBanner from '@/components/AssinaturaBanner'
 import AtivarNotificacoesButton from '@/components/AtivarNotificacoesButton'
@@ -45,6 +46,7 @@ function itemAtivo(pathname: string): string {
   if (pathname.startsWith('/consultor-ia')) return 'consultor-ia'
   if (pathname.startsWith('/notificacoes')) return 'notificacoes'
   if (pathname.startsWith('/plano')) return 'plano'
+  if (pathname.startsWith('/agenda')) return 'agenda'
   if (pathname.startsWith('/admin')) return 'admin'
   return ''
 }
@@ -58,6 +60,7 @@ export default function Navbar() {
 
   const menuItems: MenuItem[] = [
     { id: 'dashboard', label: 'Meus alunos', icon: <Users size={ICON_SIZE} />, href: '/dashboard', cor: 'blue' },
+    { id: 'agenda', label: 'Agenda', icon: <CalendarDays size={ICON_SIZE} />, href: '/agenda', cor: 'teal' },
     { id: 'gastos', label: 'Meus Gastos', icon: <Wallet size={ICON_SIZE} />, href: '/gastos', cor: 'amber' },
     { id: 'negocio', label: 'Meu Negócio', icon: <TrendingUp size={ICON_SIZE} />, href: '/negocio', cor: 'violet' },
     { id: 'desafios', label: 'Desafios', icon: <Trophy size={ICON_SIZE} />, href: '/desafios', cor: 'coral' },

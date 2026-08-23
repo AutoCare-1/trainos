@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminCrmController;
+use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\AlunoBodyPhotoController;
 use App\Http\Controllers\AlunoPosturalController;
 use App\Http\Controllers\AlunoProgressaoController;
@@ -152,6 +153,15 @@ Route::middleware('auth.jwt')->group(function () {
         Route::get('/', [AssinaturaController::class, 'show']);
         Route::post('/checkout', [AssinaturaController::class, 'checkout']);
         Route::post('/cancelar', [AssinaturaController::class, 'cancelar']);
+    });
+
+    // Agenda semanal do personal — organização da própria rotina (horário
+    // fixo + troca pontual numa data específica), não frequência do aluno.
+    Route::prefix('agenda')->group(function () {
+        Route::get('/', [AgendaController::class, 'semana']);
+        Route::post('/horarios', [AgendaController::class, 'store']);
+        Route::patch('/horarios/{id}', [AgendaController::class, 'update']);
+        Route::patch('/horarios/{id}/ocorrencias', [AgendaController::class, 'upsertOcorrencia']);
     });
 
     // CRM interno do produto — financeiro do Clube Mais como empresa (faturamento,
