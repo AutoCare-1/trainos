@@ -38,4 +38,41 @@ return [
     // O modelo desenhava o cotovelo abaixo da mão, o que vira rosca direta aos
     // olhos de quem só vê o vídeo.
     'Remada alta na polia' => 'His elbows lead the movement and rise above his wrists, out to the sides like wings — this is a shoulder exercise, not a biceps curl.',
+
+    // --- Exercícios cuja instrução da biblioteca não descreve nada de visual.
+    // Sem `execucao` aqui o prompt sai cego, só com o nome — e o gerador não
+    // sabe o que é "agachamento pausado" nem "voador unilateral".
+
+    // A instrução era só prescrição ("sustente pelo tempo prescrito"), que
+    // instrucaoVisual() descarta com razão. Sobrava um prompt sem execução — e,
+    // pior, com o "repete o movimento duas vezes" padrão, que é o oposto de uma
+    // isometria. Daí o `estatico`.
+    'Agachamento isométrico na parede' => [
+        'execucao' => 'Costas retas apoiadas na parede, joelhos flexionados a noventa graus e coxas paralelas ao chão, braços relaxados ao lado do corpo.',
+        'estatico' => true,
+    ],
+
+    'Agachamento pausado' => [
+        'execucao' => 'Barra nas costas, desça até as coxas ficarem paralelas ao chão, segure parado um instante no fundo do agachamento e só então suba.',
+    ],
+
+    'Voador na máquina unilateral' => [
+        'execucao' => 'Sentado na máquina de voador com as costas no encosto, feche um braço de cada vez em arco à frente do peito e retorne controlado.',
+    ],
+
+    // Instrução circular: "mesma execução do floor press". Não diz nada pra
+    // quem (ou o que) nunca viu um floor press.
+    'Floor press com halteres' => [
+        'execucao' => 'Deitado no chão com os joelhos flexionados, empurre os halteres para cima até os braços quase estendidos; os cotovelos tocam o chão e param a descida.',
+    ],
+
+    // O campo `equipment` diz "Peso corporal", mas o exercício precisa de
+    // barras paralelas e cinto de lastro. Sem o override, o prompt afirmava
+    // "no equipment" e brigava com a própria descrição do movimento — daria
+    // alguém fazendo mergulho no ar. É dado errado na biblioteca; corrigir o
+    // seeder mudaria o que o personal lê na tela, então fica só no prompt.
+    'Paralelas com peso' => [
+        'equipamento' => 'a set of parallel dip bars and a dipping belt with a weight plate',
+        'execucao' => 'Apoiado nas barras paralelas com os braços estendidos, desça flexionando os cotovelos com o tronco inclinado à frente e suba de volta.',
+    ],
 ];

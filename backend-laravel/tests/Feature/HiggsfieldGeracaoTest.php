@@ -362,6 +362,59 @@ class HiggsfieldGeracaoTest extends TestCase
         );
     }
 
+    public function test_execucao_curada_substitui_a_instrucao_vazia_da_biblioteca(): void
+    {
+        // Quando a instrução é só prescrição, instrucaoVisual() a descarta com
+        // razão e sobra um prompt cego, só com o nome do exercício. O gerador
+        // não sabe o que é "agachamento isométrico" — e o "repete o movimento
+        // duas vezes" padrão é o oposto de uma isometria.
+        $prompt = GerarDemonstracaoExercicio::montarPrompt($this->exercicioSemImagem([
+            'name' => 'Agachamento isométrico na parede',
+            'muscle_group' => 'Pernas',
+            'equipment' => 'Peso corporal',
+            'instructions' => 'Sustente a posição pelo tempo prescrito.',
+        ]));
+
+        $this->assertStringContainsString('joelhos flexionados a noventa graus', $prompt);
+        $this->assertStringContainsString('isometric hold', $prompt);
+        $this->assertStringNotContainsString('repeats the full movement', $prompt);
+    }
+
+    public function test_equipamento_curado_vence_o_dado_errado_da_biblioteca(): void
+    {
+        // "Paralelas com peso" está cadastrado como peso corporal, mas precisa
+        // de barras paralelas. Sem o override o prompt afirmava "no equipment"
+        // e brigava com a descrição do movimento: mergulho no ar.
+        $prompt = GerarDemonstracaoExercicio::montarPrompt($this->exercicioSemImagem([
+            'name' => 'Paralelas com peso',
+            'muscle_group' => 'Tríceps',
+            'equipment' => 'Peso corporal',
+        ]));
+
+        $this->assertStringContainsString('parallel dip bars', $prompt);
+        $this->assertStringNotContainsString('no equipment', $prompt);
+    }
+
+    public function test_avisa_antes_de_gastar_credito_em_exercicio_sem_execucao(): void
+    {
+        // O prompt cego (só o nome) rende vídeo errado, e o crédito é cobrado
+        // do mesmo jeito. O aviso tem que sair ANTES da chamada — por isso o
+        // teste roda em dry-run, onde nada é gerado.
+        config(['higgsfield.key_id' => null, 'higgsfield.key_secret' => null]);
+        Http::fake();
+        $this->exercicioSemImagem([
+            'name' => 'Rosca 21',
+            'instructions' => '7 reps na metade inferior, 7 na superior e 7 completas.',
+        ]);
+
+        $this->artisan('exercicios:gerar-demonstracao', ['--dry-run' => true])
+            ->expectsOutputToContain('Rosca 21')
+            ->expectsOutputToContain('sem descrição de execução')
+            ->assertSuccessful();
+
+        Http::assertNothingSent();
+    }
+
     public function test_toda_dica_de_cena_aponta_pra_um_exercicio_que_existe(): void
     {
         // Um nome com typo aqui falha em silêncio: a dica nunca é aplicada e só

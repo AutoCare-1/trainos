@@ -61,6 +61,19 @@ class GerarDemonstracaoExercicio extends Command
         $this->info("{$exercicios->count()} exercício(s) nesta rodada · ".count($referencias).' foto(s) de referência');
         $this->newLine();
 
+        // Sem descrição de execução o prompt sai só com o nome do exercício, e
+        // o gerador não sabe o que é "agachamento pausado". O vídeo vem errado
+        // e o crédito já foi cobrado — então o aviso vem ANTES de gastar.
+        $cegos = $exercicios->filter(fn (Exercise $ex) => self::execucao($ex) === null);
+        if ($cegos->isNotEmpty()) {
+            $this->warn($cegos->count().' exercício(s) sem descrição de execução — o prompt sai só com o nome:');
+            foreach ($cegos as $ex) {
+                $this->line("  <fg=yellow>{$ex->name}</>");
+            }
+            $this->line('Escreva a execução em database/dicas_demonstracao.php antes de gerar.');
+            $this->newLine();
+        }
+
         if ($dryRun) {
             foreach ($exercicios as $ex) {
                 $this->line("<fg=cyan>{$ex->name}</> ({$ex->muscle_group} · {$ex->equipment})");
@@ -200,15 +213,18 @@ class GerarDemonstracaoExercicio extends Command
      */
     public static function montarPrompt(Exercise $ex): string
     {
-        $descricao = self::instrucaoVisual($ex->instructions);
+        $ajuste = self::ajuste($ex->name);
+        $descricao = self::execucao($ex);
 
         $partes = [
             'The man from the reference photos performs the gym exercise',
             "\"{$ex->name}\"",
-            self::equipamento($ex->equipment),
+            self::equipamento($ajuste['equipamento'] ?? $ex->equipment),
             $descricao ? "Execution: {$descricao}" : null,
-            self::dicaDeCena($ex->name),
-            'He repeats the full movement twice, smoothly and under control.',
+            $ajuste['cena'] ?? null,
+            ($ajuste['estatico'] ?? false)
+                ? 'He holds this position still: it is an isometric hold, not a repeated movement.'
+                : 'He repeats the full movement twice, smoothly and under control.',
             'Static camera, full body in frame.',
             'Setting: open gym floor with light grey walls, rubber flooring and',
             'weight machines in the background.',
@@ -239,20 +255,50 @@ class GerarDemonstracaoExercicio extends Command
     }
 
     /**
-     * Ajuste de cena específico deste exercício, quando existe.
+     * A descrição de execução que vai pro prompt, ou null se não há nenhuma.
      *
-     * A biblioteca descreve o movimento, nunca a montagem (de que lado a
-     * pessoa senta, onde o aparelho fica em relação a ela) — e o gerador
-     * chuta. A curadoria de quando esse chute erra fica em
-     * database/dicas_demonstracao.php, fora do código, pra dar pra revisar
-     * sem ler PHP.
+     * A curada ganha da instrução da biblioteca: ela só existe justamente nos
+     * casos em que a da biblioteca não serve. Null aqui significa prompt cego
+     * — só o nome do exercício — e é por isso que isto é público: o comando
+     * avisa antes de gastar crédito num.
      */
-    private static function dicaDeCena(string $nome): ?string
+    public static function execucao(Exercise $ex): ?string
+    {
+        return self::ajuste($ex->name)['execucao']
+            ?? self::instrucaoVisual($ex->instructions);
+    }
+
+    /**
+     * Ajustes curados deste exercício, quando existem.
+     *
+     * Três coisas que a biblioteca não resolve sozinha, e que só aparecem
+     * revisando o vídeo pronto — depois de já ter pago por ele:
+     *
+     * - `cena`: a instrução descreve o MOVIMENTO, nunca a MONTAGEM (de que
+     *   lado a pessoa senta, onde o aparelho fica em relação a ela). O gerador
+     *   chuta, e nas puxadas chutou errado em 7 de 7.
+     * - `execucao`: às vezes a instrução não descreve nada de visual — ou é só
+     *   prescrição ("sustente pelo tempo prescrito", que instrucaoVisual()
+     *   descarta e deixa vazio), ou é circular ("mesma execução do floor
+     *   press"). Sem isso o prompt fica cego, só com o nome do exercício.
+     * - `equipamento` / `estatico`: quando o dado da biblioteca contradiz o
+     *   exercício. "Paralelas com peso" está cadastrado como peso corporal mas
+     *   precisa de barras paralelas; isometria não "repete o movimento".
+     *
+     * A curadoria fica em database/dicas_demonstracao.php, fora do código, pra
+     * dar pra revisar sem ler PHP.
+     *
+     * @return array{cena?: string, execucao?: string, equipamento?: string, estatico?: bool}
+     */
+    private static function ajuste(string $nome): array
     {
         static $dicas = null;
         $dicas ??= require database_path('dicas_demonstracao.php');
 
-        return $dicas[$nome] ?? null;
+        $ajuste = $dicas[$nome] ?? [];
+
+        // Entrada em texto puro é atalho pro caso mais comum, que é só cena.
+        return is_string($ajuste) ? ['cena' => $ajuste] : $ajuste;
     }
 
     /**
