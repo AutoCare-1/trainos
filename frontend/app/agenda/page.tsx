@@ -9,6 +9,10 @@ import { formatarDataCurta, somarDias } from '@/lib/checkinDates'
 import { DiaAgenda, HorarioAgenda, SemanaAgenda, Student } from '@/lib/types'
 
 const NOME_DIA = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado']
+const NOME_DIA_CURTO = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
+// "domingo"/"sábado" são masculinos ("no domingo"), os demais dias são
+// femininos ("na segunda") — só pro aria-label ficar gramaticalmente certo.
+const PREPOSICAO_DIA = ['no', 'na', 'na', 'na', 'na', 'na', 'no']
 
 function hojeIso(): string {
   const d = new Date()
@@ -98,7 +102,7 @@ export default function AgendaPage() {
   return (
     <>
       <Navbar />
-      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
         <div className="mb-6">
           <h1 className="font-display text-2xl font-bold tracking-tight text-ink">Agenda</h1>
           <span className="title-accent" />
@@ -140,22 +144,24 @@ export default function AgendaPage() {
 
         {semana === null && !erro && <p className="text-ink-muted">Carregando...</p>}
 
-        <div className="space-y-4">
-          {semana?.dias.map((dia) => (
-            <DiaCard
-              key={dia.data}
-              dia={dia}
-              students={students}
-              hoje={dia.data === hojeIso()}
-              novoAberto={novoAberto === dia.dia_semana}
-              onAbrirNovo={() => setNovoAberto(novoAberto === dia.dia_semana ? null : dia.dia_semana)}
-              onCriarHorario={(dados) => criarHorario(dia.dia_semana, dados)}
-              editando={editando}
-              onEditar={setEditando}
-              onSalvarOcorrencia={(slotId, campos) => salvarOcorrencia(slotId, dia.data, campos)}
-              onDesativarSlot={desativarSlot}
-            />
-          ))}
+        <div className="chat-scroll -mx-4 overflow-x-auto px-4 pb-2">
+          <div className="grid grid-cols-7 gap-3" style={{ minWidth: '980px' }}>
+            {semana?.dias.map((dia) => (
+              <DiaCard
+                key={dia.data}
+                dia={dia}
+                students={students}
+                hoje={dia.data === hojeIso()}
+                novoAberto={novoAberto === dia.dia_semana}
+                onAbrirNovo={() => setNovoAberto(novoAberto === dia.dia_semana ? null : dia.dia_semana)}
+                onCriarHorario={(dados) => criarHorario(dia.dia_semana, dados)}
+                editando={editando}
+                onEditar={setEditando}
+                onSalvarOcorrencia={(slotId, campos) => salvarOcorrencia(slotId, dia.data, campos)}
+                onDesativarSlot={desativarSlot}
+              />
+            ))}
+          </div>
         </div>
       </main>
     </>
@@ -191,21 +197,23 @@ function DiaCard({
   const [novaDuracao, setNovaDuracao] = useState('')
 
   return (
-    <div className={`glass rounded-2xl p-4 ${hoje ? 'border-brand/40' : ''}`}>
-      <div className="mb-2 flex items-center justify-between">
-        <p className="text-sm font-semibold uppercase tracking-wide text-ink-muted">
-          {NOME_DIA[dia.dia_semana]} <span className="font-normal">· {formatarDataCurta(dia.data)}</span>
-        </p>
+    <div className={`glass min-w-0 rounded-2xl p-3 ${hoje ? 'border-brand/40' : ''}`} title={NOME_DIA[dia.dia_semana]}>
+      <div className="mb-2 flex items-start justify-between gap-1">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wide text-ink-muted">{NOME_DIA_CURTO[dia.dia_semana]}</p>
+          <p className="text-xs text-ink-muted">{formatarDataCurta(dia.data)}</p>
+        </div>
         <button
           onClick={onAbrirNovo}
-          className="flex items-center gap-1 text-xs font-medium text-brand"
+          aria-label={`Novo horário ${PREPOSICAO_DIA[dia.dia_semana]} ${NOME_DIA[dia.dia_semana]}`}
+          className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg text-brand transition hover:bg-brand/10"
         >
-          <Plus size={14} /> Horário
+          <Plus size={14} />
         </button>
       </div>
 
       {dia.horarios.length === 0 && !novoAberto && (
-        <p className="text-sm text-ink-muted">Nada marcado.</p>
+        <p className="text-xs text-ink-muted">Nada marcado.</p>
       )}
 
       <div className="space-y-2">
@@ -298,21 +306,20 @@ function HorarioRow({
   const rotulo = horario.student ? horario.student.name : horario.titulo ?? 'Vago'
 
   return (
-    <div className="glass-flat rounded-xl p-3">
-      <button onClick={onEditar} className="flex w-full items-center justify-between text-left">
+    <div className="glass-flat rounded-xl p-2.5">
+      <button onClick={onEditar} className="flex w-full items-start justify-between gap-1 text-left">
         <div className="min-w-0">
-          <p className="text-sm font-semibold text-ink">
-            {horario.hora} — {rotulo}
-          </p>
-          <div className="mt-0.5 flex items-center gap-2">
+          <p className="text-xs font-semibold text-ink">{horario.hora}</p>
+          <p className="truncate text-xs text-ink-soft">{rotulo}</p>
+          <div className="mt-1 flex flex-wrap items-center gap-1">
             {horario.eh_excecao && (
-              <span className="rounded-full bg-warning-soft px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-warning">
-                Trocado nesse dia
+              <span className="rounded-full bg-warning-soft px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-warning">
+                Trocado
               </span>
             )}
             {horario.presenca && (
               <span
-                className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
+                className={`rounded-full px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide ${
                   horario.presenca === 'presente' ? 'bg-success-soft text-success' : 'bg-danger-soft text-danger'
                 }`}
               >
