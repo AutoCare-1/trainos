@@ -324,6 +324,21 @@ class HiggsfieldGeracaoTest extends TestCase
         $this->assertStringContainsString('exactly two arms', $prompt);
     }
 
+    public function test_peso_corporal_nega_o_equipamento_em_vez_de_nomear_um(): void
+    {
+        // "using Peso corporal." joga português no meio da frase de cena, que é
+        // em inglês, e ainda entrega um substantivo pro gerador materializar —
+        // é assim que nasce um aparelho que não existe numa flexão de braço.
+        $prompt = GerarDemonstracaoExercicio::montarPrompt($this->exercicioSemImagem([
+            'name' => 'Flexão de braço com pegada aberta',
+            'muscle_group' => 'Peito',
+            'equipment' => 'Peso corporal',
+        ]));
+
+        $this->assertStringContainsString('no equipment', $prompt);
+        $this->assertStringNotContainsString('Peso corporal', $prompt);
+    }
+
     public function test_prompt_injeta_a_dica_de_cena_do_exercicio(): void
     {
         // A biblioteca descreve o movimento, nunca de que lado a pessoa senta.

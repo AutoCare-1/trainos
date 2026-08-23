@@ -205,11 +205,11 @@ class GerarDemonstracaoExercicio extends Command
         $partes = [
             'The man from the reference photos performs the gym exercise',
             "\"{$ex->name}\"",
-            $ex->equipment ? "using {$ex->equipment}." : '.',
+            self::equipamento($ex->equipment),
             $descricao ? "Execution: {$descricao}" : null,
             self::dicaDeCena($ex->name),
             'He repeats the full movement twice, smoothly and under control.',
-            'Static camera, full body and the equipment in frame.',
+            'Static camera, full body in frame.',
             'Setting: open gym floor with light grey walls, rubber flooring and',
             'weight machines in the background.',
             'One single person only, correct human anatomy with exactly two arms',
@@ -218,6 +218,24 @@ class GerarDemonstracaoExercicio extends Command
         ];
 
         return implode(' ', array_filter($partes));
+    }
+
+    /**
+     * Como o equipamento entra na frase de cena, que é em inglês.
+     *
+     * "Peso corporal" não é equipamento: sair como "using Peso corporal."
+     * joga português no meio da frase inglesa e dá ao gerador um substantivo
+     * pra materializar — é assim que aparece um aparelho que não existe numa
+     * flexão de braço. Nesses casos a frase tem que negar o equipamento, não
+     * nomear um.
+     */
+    private static function equipamento(?string $equipamento): string
+    {
+        if (! $equipamento || mb_strtolower($equipamento) === 'peso corporal') {
+            return 'using only his own bodyweight, with no equipment.';
+        }
+
+        return "using {$equipamento}.";
     }
 
     /**
