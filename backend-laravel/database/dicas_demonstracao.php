@@ -75,4 +75,58 @@ return [
         'equipamento' => 'a set of parallel dip bars and a dipping belt with a weight plate',
         'execucao' => 'Apoiado nas barras paralelas com os braços estendidos, desça flexionando os cotovelos com o tronco inclinado à frente e suba de volta.',
     ],
+
+    // --- Os demais cegos da biblioteca (levantados em 23/08/2026 rodando
+    // execucao() sobre os 402). Onze deles já tinham ganhado vídeo com prompt
+    // cego antes deste levantamento e foram regerados.
+
+    'Rosca 21' => [
+        'execucao' => 'Em pé segurando a barra com as palmas para cima, faça a rosca em três amplitudes: só na metade de baixo, só na metade de cima e depois completa.',
+    ],
+    'Rosca 21 com halteres' => [
+        'execucao' => 'Em pé com um halter em cada mão e as palmas para cima, faça a rosca em três amplitudes: só na metade de baixo, só na metade de cima e depois completa.',
+    ],
+    'Cadeira extensora unilateral' => [
+        'execucao' => 'Sentado na cadeira extensora com as costas no encosto, estenda uma perna de cada vez até quase travar o joelho e desça controlado.',
+    ],
+    'Mesa flexora com pausa' => [
+        'execucao' => 'Deitado de barriga para baixo na mesa flexora, flexione os joelhos trazendo os calcanhares em direção ao glúteo, segure parado um instante no topo e desça controlado.',
+    ],
+    'Elevação de quadril na máquina' => [
+        'execucao' => 'Sentado na máquina de elevação de quadril, com o apoio acolchoado sobre a pelve e as costas no encosto, empurre o quadril para cima até alinhar tronco e coxas e desça controlado.',
+    ],
+    'Encolhimento unilateral com halter' => [
+        'execucao' => 'Em pé com um halter numa das mãos e o braço estendido ao lado do corpo, eleve o ombro em direção à orelha sem dobrar o cotovelo e desça controlado.',
+    ],
+    'Superman no solo' => [
+        'execucao' => 'Deitado de barriga para baixo com braços e pernas estendidos, eleve ao mesmo tempo os braços e as pernas do chão contraindo a lombar, e desça.',
+    ],
+    'Bird dog' => [
+        'execucao' => 'Em quatro apoios, estenda ao mesmo tempo o braço direito à frente e a perna esquerda para trás até alinhá-los com o tronco, volte e alterne os lados.',
+    ],
+    'Corrida na esteira' => [
+        'execucao' => 'Correndo na esteira em ritmo constante, tronco ereto e braços acompanhando a passada.',
+    ],
+    'Caminhada inclinada na esteira' => [
+        'execucao' => 'Caminhando na esteira com a plataforma bem inclinada, passos firmes e tronco ereto, sem se apoiar no corrimão.',
+    ],
+    'Corrida com elevação de joelhos' => [
+        'execucao' => 'Correndo no lugar, eleve alternadamente os joelhos até a altura do quadril em ritmo rápido.',
+    ],
+    'Bicicleta ergométrica' => [
+        'execucao' => 'Sentado na bicicleta ergométrica com as mãos no guidão, pedale em ritmo constante.',
+    ],
+    'Pular corda alternando os pés' => [
+        'execucao' => 'Pulando corda, alterne o apoio de um pé para o outro a cada giro da corda, em ritmo leve e constante.',
+    ],
+
+    // Isometrias: sustentam a posição, não repetem o movimento.
+    'Hollow hold' => [
+        'execucao' => 'Deitado de barriga para cima, lombar colada no chão, braços estendidos atrás da cabeça e pernas estendidas alguns centímetros acima do solo.',
+        'estatico' => true,
+    ],
+    'Suspensão na barra (dead hang)' => [
+        'execucao' => 'Pendurado na barra fixa com os braços estendidos e o corpo relaxado, sustentando o próprio peso pelas mãos.',
+        'estatico' => true,
+    ],
 ];

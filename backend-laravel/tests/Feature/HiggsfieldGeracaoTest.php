@@ -402,13 +402,16 @@ class HiggsfieldGeracaoTest extends TestCase
         // teste roda em dry-run, onde nada é gerado.
         config(['higgsfield.key_id' => null, 'higgsfield.key_secret' => null]);
         Http::fake();
+        // Nome inventado de propósito: se o teste usasse um exercício real, ele
+        // passaria a falhar no dia em que alguém escrevesse a curadoria dele —
+        // ou seja, dependeria da curadoria continuar incompleta pra provar algo.
         $this->exercicioSemImagem([
-            'name' => 'Rosca 21',
+            'name' => 'Exercício sem execução (teste)',
             'instructions' => '7 reps na metade inferior, 7 na superior e 7 completas.',
         ]);
 
         $this->artisan('exercicios:gerar-demonstracao', ['--dry-run' => true])
-            ->expectsOutputToContain('Rosca 21')
+            ->expectsOutputToContain('Exercício sem execução (teste)')
             ->expectsOutputToContain('sem descrição de execução')
             ->assertSuccessful();
 
