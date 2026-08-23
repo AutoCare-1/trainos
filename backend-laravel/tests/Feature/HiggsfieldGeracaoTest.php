@@ -295,4 +295,54 @@ class HiggsfieldGeracaoTest extends TestCase
         $this->assertStringContainsString('Barra W', $prompt);
         $this->assertStringContainsString('reference photos', $prompt);
     }
+
+    public function test_prompt_descreve_a_academia_e_protege_a_anatomia(): void
+    {
+        // O "clean white studio background" da primeira versão era ignorado: o
+        // modelo tirava o cenário das fotos de referência e plantava banco
+        // romano e máquina de remada no corredor do estúdio. E sem guarda de
+        // anatomia saía membro a mais (rosca inclinada). Os dois viraram texto
+        // explícito no prompt, então os dois ficam travados aqui.
+        $prompt = GerarDemonstracaoExercicio::montarPrompt($this->exercicioSemImagem());
+
+        $this->assertStringContainsString('open gym floor', $prompt);
+        $this->assertStringNotContainsString('white studio', $prompt);
+        $this->assertStringContainsString('exactly two arms', $prompt);
+    }
+
+    public function test_prompt_injeta_a_dica_de_cena_do_exercicio(): void
+    {
+        // A biblioteca descreve o movimento, nunca de que lado a pessoa senta.
+        // Sem essa dica o modelo desenhou as 7 puxadas de costas pro aparelho.
+        $semDica = $this->exercicioSemImagem();
+        $puxada = $this->exercicioSemImagem([
+            'name' => 'Puxada frontal pegada aberta',
+            'muscle_group' => 'Costas',
+            'equipment' => 'Polia',
+            'instructions' => 'Pegada bem aberta e pronada, puxe até a clavícula.',
+        ]);
+
+        $this->assertStringContainsString(
+            'facing the machine',
+            GerarDemonstracaoExercicio::montarPrompt($puxada)
+        );
+        // E quem não tem dica não herda a cena de outro exercício.
+        $this->assertStringNotContainsString(
+            'facing the machine',
+            GerarDemonstracaoExercicio::montarPrompt($semDica)
+        );
+    }
+
+    public function test_toda_dica_de_cena_aponta_pra_um_exercicio_que_existe(): void
+    {
+        // Um nome com typo aqui falha em silêncio: a dica nunca é aplicada e só
+        // se descobre revisando o vídeo — depois de já ter pago por ele.
+        $this->seed(\Database\Seeders\ExerciseSeeder::class);
+        $this->seed(\Database\Seeders\ExercicioBibliotecaAmpliadaSeeder::class);
+
+        $comDica = array_keys(require database_path('dicas_demonstracao.php'));
+        $existentes = Exercise::whereIn('name', $comDica)->pluck('name')->all();
+
+        $this->assertSame([], array_values(array_diff($comDica, $existentes)));
+    }
 }

@@ -188,6 +188,15 @@ class GerarDemonstracaoExercicio extends Command
      * O modelo responde muito melhor ao enquadramento descrito em inglês, mas
      * entende a descrição de postura em português — o que permite reaproveitar
      * as instruções que já existem na biblioteca em vez de traduzir 300 delas.
+     *
+     * Revisão do Filipe em 23/08/2026, com os 129 primeiros vídeos na mão,
+     * mudou mais três coisas aqui:
+     * - "clean white studio background" era ignorado: o modelo tirava o cenário
+     *   das fotos de referência e plantava banco romano e máquina de remada no
+     *   corredor do estúdio. Descrever a academia explicitamente segura melhor.
+     * - Sem guarda de anatomia saíam membros a mais (rosca inclinada).
+     * - A montagem da cena (de que lado a pessoa senta em relação ao aparelho)
+     *   não está em `instructions` e o modelo chuta — daí dicaDeCena().
      */
     public static function montarPrompt(Exercise $ex): string
     {
@@ -198,13 +207,34 @@ class GerarDemonstracaoExercicio extends Command
             "\"{$ex->name}\"",
             $ex->equipment ? "using {$ex->equipment}." : '.',
             $descricao ? "Execution: {$descricao}" : null,
+            self::dicaDeCena($ex->name),
             'He repeats the full movement twice, smoothly and under control.',
-            'Static camera, full body in frame, clean white studio background',
-            'with a few gym machines softly visible behind, bright even lighting,',
-            'realistic photograph, no text on screen.',
+            'Static camera, full body and the equipment in frame.',
+            'Setting: open gym floor with light grey walls, rubber flooring and',
+            'weight machines in the background.',
+            'One single person only, correct human anatomy with exactly two arms',
+            'and two legs, clearly separated limbs.',
+            'Realistic photograph, bright even lighting, no text on screen.',
         ];
 
         return implode(' ', array_filter($partes));
+    }
+
+    /**
+     * Ajuste de cena específico deste exercício, quando existe.
+     *
+     * A biblioteca descreve o movimento, nunca a montagem (de que lado a
+     * pessoa senta, onde o aparelho fica em relação a ela) — e o gerador
+     * chuta. A curadoria de quando esse chute erra fica em
+     * database/dicas_demonstracao.php, fora do código, pra dar pra revisar
+     * sem ler PHP.
+     */
+    private static function dicaDeCena(string $nome): ?string
+    {
+        static $dicas = null;
+        $dicas ??= require database_path('dicas_demonstracao.php');
+
+        return $dicas[$nome] ?? null;
     }
 
     /**
