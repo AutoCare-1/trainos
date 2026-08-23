@@ -120,7 +120,7 @@ class Higgsfield
             $corpo = [
                 'prompt' => $prompt,
                 'image_urls' => array_values($referenciasUrl),
-                'resolution' => '720',
+                'resolution' => $padroes['resolution_video'],
                 'aspect_ratio' => '9:16',
                 'duration' => '4',
                 'generate_audio' => false,

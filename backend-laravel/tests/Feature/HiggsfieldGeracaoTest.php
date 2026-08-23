@@ -136,6 +136,20 @@ class HiggsfieldGeracaoTest extends TestCase
             && $r['image_urls'] === ['https://cdn/a.jpg', 'https://cdn/b.jpg']);
     }
 
+    public function test_video_pede_a_resolucao_barata_por_padrao(): void
+    {
+        // 480p custa 4 créditos e 720p custa 10, pra uma diferença que o Filipe
+        // já disse não precisar. Isso saiu caro duas vezes (22/08 e 23/08/2026)
+        // justamente por ser um valor cravado no meio do código, que ninguém
+        // relê. Fechar os ~200 exercícios que faltam: ~790 créditos contra
+        // ~1.980. O padrão barato fica travado aqui.
+        Http::fake(['*' => Http::response(['request_id' => 'req-4', 'status' => 'queued'])]);
+
+        Higgsfield::gerarDemonstracao('prompt', ['https://cdn/a.jpg'], video: true);
+
+        Http::assertSent(fn (Request $r) => $r['resolution'] === '480');
+    }
+
     public function test_kill_switch_impede_a_geracao(): void
     {
         config(['higgsfield.habilitado' => false]);

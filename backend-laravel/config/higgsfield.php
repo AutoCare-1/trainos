@@ -57,6 +57,18 @@ return [
         'aspect_ratio' => '3:4',   // retrato, mesma proporção das fotos do modelo
         'resolution' => '720p',
         'batch_size' => 1,
+
+        // Vídeo é cobrado por resolução: 480p = 4 créditos, 720p = 10. O
+        // Filipe aprovou o 480p olhando os vídeos, então 720p aqui seria pagar
+        // 2,5x por uma diferença que ele já disse não precisar — e o valor
+        // estava cravado no código, onde ninguém revisa. Custo de fechar os
+        // ~200 exercícios que faltam: ~790 créditos em 480p, ~1.980 em 720p.
+        //
+        // O formato sem o "p" é o que este endpoint (veo3.1) aceitava antes;
+        // não foi exercitado com "480" contra a API real ainda. Se ele
+        // recusar, a geração falha na hora com erro visível — não gera errado
+        // em silêncio.
+        'resolution_video' => env('HIGGSFIELD_RESOLUCAO_VIDEO', '480'),
     ],
 
     // O arquivo gerado fica no CDN deles por ~7 dias. Precisa ser baixado e
