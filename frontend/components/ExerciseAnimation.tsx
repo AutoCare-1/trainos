@@ -1,8 +1,35 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { Maximize2 } from 'lucide-react'
 import { getMovementPattern, MovementPattern } from '@/lib/exercisePatterns'
 import { resolveMediaUrl } from '@/lib/api'
+
+/**
+ * Elemento de vídeo com prefixos vendor que os browsers ainda usam pra
+ * fullscreen — Safari (desktop e iOS) não implementa a API padrão até hoje.
+ * No iOS especificamente só existe fullscreen do próprio <video>
+ * (webkitEnterFullscreen), não de um wrapper qualquer — por isso o clique tem
+ * que mirar o elemento de vídeo, nunca uma div em volta dele.
+ */
+type VideoComFullscreenVendor = HTMLVideoElement & {
+  webkitEnterFullscreen?: () => void
+  webkitRequestFullscreen?: () => void
+}
+
+function abrirVideoEmTelaCheia(video: HTMLVideoElement) {
+  video.muted = false
+  video.controls = true
+
+  const v = video as VideoComFullscreenVendor
+  if (v.webkitEnterFullscreen) {
+    v.webkitEnterFullscreen()
+  } else if (video.requestFullscreen) {
+    video.requestFullscreen()
+  } else if (v.webkitRequestFullscreen) {
+    v.webkitRequestFullscreen()
+  }
+}
 
 /**
  * A biblioteca tem centenas de exercícios e a maioria não tem foto, então cai
@@ -448,6 +475,32 @@ export default function ExerciseAnimation({
 }) {
   const px = SIZES[size]
   const svgRef = useRef<SVGSVGElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  // Ao sair da tela cheia (botão nativo, gesto de voltar, ESC), devolve o
+  // vídeo ao estado de miniatura — senão ele fica com controles e som
+  // ligados, parecendo travado no meio da lista.
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    const aoSairDaTelaCheia = () => {
+      if (document.fullscreenElement === video) return
+      video.muted = true
+      video.controls = false
+    }
+    const aoSairDaTelaCheiaIOS = () => {
+      video.muted = true
+      video.controls = false
+    }
+
+    document.addEventListener('fullscreenchange', aoSairDaTelaCheia)
+    video.addEventListener('webkitendfullscreen', aoSairDaTelaCheiaIOS)
+    return () => {
+      document.removeEventListener('fullscreenchange', aoSairDaTelaCheia)
+      video.removeEventListener('webkitendfullscreen', aoSairDaTelaCheiaIOS)
+    }
+  }, [])
 
   // Hook antes dos returns antecipados de vídeo/imagem: a ref só é preenchida
   // quando o fallback SVG é o que de fato renderiza, e aí o efeito é no-op.
@@ -468,18 +521,32 @@ export default function ExerciseAnimation({
 
   if (videoUrl) {
     return (
-      <video
-        src={resolveMediaUrl(videoUrl)}
-        aria-label={`Demonstração: ${name}`}
-        width={px}
-        height={px}
+      <div
         className={className}
-        style={{ width: px, height: px, objectFit: 'cover' }}
-        autoPlay
-        muted
-        loop
-        playsInline
-      />
+        style={{ width: px, height: px, position: 'relative', overflow: 'hidden', cursor: 'pointer' }}
+        onClick={() => videoRef.current && abrirVideoEmTelaCheia(videoRef.current)}
+        role="button"
+        aria-label={`Ver demonstração em tela cheia: ${name}`}
+      >
+        <video
+          ref={videoRef}
+          src={resolveMediaUrl(videoUrl)}
+          aria-hidden="true"
+          width={px}
+          height={px}
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
+        <span
+          className="pointer-events-none absolute bottom-1 right-1 flex items-center justify-center rounded-full bg-black/50 p-1 text-white"
+          aria-hidden="true"
+        >
+          <Maximize2 size={px <= 40 ? 10 : 14} />
+        </span>
+      </div>
     )
   }
 
