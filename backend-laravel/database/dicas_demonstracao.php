@@ -124,6 +124,38 @@ return [
         'execucao' => 'Pulando corda, alterne o apoio de um pé para o outro a cada giro da corda, em ritmo leve e constante.',
     ],
 
+    // --- Leg press. Um caso diferente dos cegos: a instrução EXISTE, então
+    // execucao() não acusa nada — mas ela descreve só a diferença entre as
+    // variações ("base ampla recruta mais adutores e glúteos"), ou seja, que
+    // músculo pega. Nunca diz que a pessoa senta na máquina e empurra uma
+    // plataforma. O gerador não faz ideia do que é um leg press, e o Filipe
+    // reprovou a maioria em 23/08/2026. Cada uma passa a descrever a máquina
+    // inteira e só depois a variação.
+    'Leg press horizontal' => [
+        'execucao' => 'Sentado no leg press horizontal com as costas apoiadas no encosto e os dois pés na plataforma à sua frente, empurre a plataforma para longe até quase estender os joelhos e desça controlado, sem travar o joelho no fim.',
+    ],
+    'Leg press unilateral' => [
+        'execucao' => 'Sentado no leg press com as costas apoiadas no encosto, apoie apenas um pé no centro da plataforma — a outra perna fica afastada dela — e empurre até quase estender o joelho, descendo controlado.',
+    ],
+    'Leg press 45° unilateral' => [
+        'execucao' => 'Sentado no leg press inclinado a 45° com as costas apoiadas no encosto, apoie apenas um pé no centro da plataforma — a outra perna fica afastada dela — e empurre até quase estender o joelho, descendo controlado.',
+    ],
+    'Leg press pés afastados' => [
+        'execucao' => 'Sentado no leg press com as costas apoiadas no encosto, os pés na plataforma bem afastados um do outro e as pontas viradas para fora, empurre a plataforma até quase estender os joelhos e desça controlado.',
+    ],
+    'Leg press pés juntos' => [
+        'execucao' => 'Sentado no leg press com as costas apoiadas no encosto e os dois pés juntos no centro da plataforma, empurre a plataforma até quase estender os joelhos e desça controlado.',
+    ],
+    'Leg press pés altos' => [
+        'execucao' => 'Sentado no leg press com as costas apoiadas no encosto e os pés apoiados na parte alta da plataforma, empurre a plataforma até quase estender os joelhos e desça controlado.',
+    ],
+    'Leg press pés baixos' => [
+        'execucao' => 'Sentado no leg press com as costas apoiadas no encosto e os pés apoiados na parte baixa da plataforma, empurre a plataforma até quase estender os joelhos e desça controlado.',
+    ],
+    'Panturrilha unilateral no leg press' => [
+        'execucao' => 'Sentado no leg press com o joelho estendido, apoie só a ponta de um pé na borda inferior da plataforma e mova a plataforma usando apenas o tornozelo, subindo e descendo o calcanhar.',
+    ],
+
     // Isometrias: sustentam a posição, não repetem o movimento.
     'Hollow hold' => [
         'execucao' => 'Deitado de barriga para cima, lombar colada no chão, braços estendidos atrás da cabeça e pernas estendidas alguns centímetros acima do solo.',
