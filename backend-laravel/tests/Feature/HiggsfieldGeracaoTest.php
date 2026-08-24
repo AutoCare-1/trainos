@@ -322,6 +322,14 @@ class HiggsfieldGeracaoTest extends TestCase
         $this->assertStringContainsString('open gym floor', $prompt);
         $this->assertStringNotContainsString('white studio', $prompt);
         $this->assertStringContainsString('exactly two arms', $prompt);
+
+        // "Dois braços e duas pernas" sozinho não bastou: em exercício onde um
+        // membro sobe e o outro fica parado, o modelo desenhava o membro na
+        // posição nova E mantinha o original — a perna a mais que o Filipe viu
+        // na prancha com elevação de perna. Negar a duplicação é a parte que
+        // resolve, então é ela que fica travada.
+        $this->assertStringContainsString('no extra, duplicated or ghost limbs', $prompt);
+        $this->assertStringContainsString('never also in the old one', $prompt);
     }
 
     public function test_peso_corporal_nega_o_equipamento_em_vez_de_nomear_um(): void

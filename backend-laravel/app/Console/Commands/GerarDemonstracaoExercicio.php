@@ -228,8 +228,15 @@ class GerarDemonstracaoExercicio extends Command
             'Static camera, full body in frame.',
             'Setting: open gym floor with light grey walls, rubber flooring and',
             'weight machines in the background.',
-            'One single person only, correct human anatomy with exactly two arms',
-            'and two legs, clearly separated limbs.',
+            // A guarda genérica não bastava em exercício onde UM membro se move
+            // e o outro fica parado: o modelo desenha o membro na posição nova
+            // e mantém o original, e sobra uma perna. Foi o que o Filipe viu na
+            // prancha com elevação de perna. Por isso o contorno agora conta os
+            // membros no total e nega explicitamente a duplicação.
+            'One single person only, with exactly two arms and two legs in total',
+            'and no extra, duplicated or ghost limbs: a limb that lifts or moves',
+            'must appear once, in its new position only, never also in the old one.',
+            'Limbs clearly separated and never merging into each other.',
             'Realistic photograph, bright even lighting, no text on screen.',
         ];
 
