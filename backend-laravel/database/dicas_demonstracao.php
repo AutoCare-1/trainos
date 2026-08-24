@@ -24,7 +24,11 @@
 $deFrenteProAparelho = 'He sits facing the machine, with the pulley tower, the bar and the weight stack directly in front of him and above his head; his chest and face are turned toward the equipment and his back is never to it.';
 
 return [
-    'Puxada alta no cavalete' => $deFrenteProAparelho,
+    // ATENÇÃO: 'Puxada alta no cavalete' NÃO entra aqui, apesar do nome. É
+    // levantamento em pé com barra ("puxe a barra do chão até o peito com um
+    // movimento explosivo de quadril"), não puxada de polia — mandar a pessoa
+    // sentar de frente pra uma torre inventaria um aparelho que o exercício
+    // não usa. Lição: o nome sugere a família, a instrução decide.
     'Puxada articulada na máquina' => $deFrenteProAparelho,
     'Puxada frontal' => $deFrenteProAparelho,
     'Puxada frontal com pegada em V' => $deFrenteProAparelho,
