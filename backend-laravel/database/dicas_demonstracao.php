@@ -337,7 +337,24 @@ return [
         'execucao' => 'Correndo na esteira em velocidade alta, passada longa e braços acompanhando o ritmo.',
     ],
 
+    // --- Acervo wger virando vídeo (24/08/2026). As fotos eram reais e
+    // corretas, então ninguém tinha olhado a instrução com olho de prompt.
+
+    // Puxada de polia sem "Puxada" no nome: escapou da família por causa disso.
+    'Puxador triângulo' => $deFrenteProAparelho,
+
+    'Barra fixa (pull-up)' => [
+        // Cadastrado como peso corporal, mas sem a barra não há exercício —
+        // terceiro caso do mesmo dado errado (ver 'Paralelas com peso').
+        'equipamento' => 'a pull-up bar',
+        'execucao' => 'Pendurado na barra fixa com as palmas viradas para frente e os braços estendidos, puxe o corpo para cima até o queixo passar da barra e desça controlado.',
+    ],
+
     // Isometrias: sustentam a posição, não repetem o movimento.
+    'Prancha abdominal' => [
+        'execucao' => 'Apoiado nos antebraços e nas pontas dos pés, corpo em linha reta da cabeça aos calcanhares, quadril nivelado e abdômen contraído.',
+        'estatico' => true,
+    ],
     'Hollow hold' => [
         'execucao' => 'Deitado de barriga para cima, lombar colada no chão, braços estendidos atrás da cabeça e pernas estendidas alguns centímetros acima do solo.',
         'estatico' => true,
