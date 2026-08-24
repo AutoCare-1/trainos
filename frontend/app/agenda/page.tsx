@@ -197,7 +197,10 @@ function DiaCard({
   const [novaDuracao, setNovaDuracao] = useState('')
 
   return (
-    <div className={`glass min-w-0 rounded-2xl p-3 ${hoje ? 'border-brand/40' : ''}`} title={NOME_DIA[dia.dia_semana]}>
+    <div
+      className={`glass flex min-h-[65vh] min-w-0 flex-col rounded-2xl p-3 ${hoje ? 'border-brand/40' : ''}`}
+      title={NOME_DIA[dia.dia_semana]}
+    >
       <div className="mb-2 flex items-start justify-between gap-1">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wide text-ink-muted">{NOME_DIA_CURTO[dia.dia_semana]}</p>
