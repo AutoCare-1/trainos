@@ -120,6 +120,28 @@ class PublicarDemonstracoesTest extends TestCase
         );
     }
 
+    public function test_sobrescreve_o_objeto_quando_o_video_foi_regerado(): void
+    {
+        // O nome do arquivo vem do slug, então um vídeo regerado tem o MESMO
+        // nome do antigo. Se o comando pulasse por "já existe no destino", o
+        // CDN continuaria servindo a versão reprovada em silêncio — e ninguém
+        // descobriria, porque a tela mostraria um vídeo normal.
+        Storage::disk('midia')->put('exercise-demos/'.self::SLUG.'.mp4', 'video-antigo');
+        $this->criarArquivo(); // grava 'bytes-de-video', simulando o regerado
+        $ex = $this->exercicio($this->caminhoRelativo());
+
+        $this->artisan('exercicios:publicar-demonstracoes')->assertSuccessful();
+
+        $this->assertSame(
+            'bytes-de-video',
+            Storage::disk('midia')->get('exercise-demos/'.self::SLUG.'.mp4')
+        );
+        $this->assertSame(
+            'https://midia.exemplo/exercise-demos/'.self::SLUG.'.mp4',
+            $ex->fresh()->video_url
+        );
+    }
+
     public function test_ignora_exercicio_cujo_arquivo_local_sumiu(): void
     {
         $ex = $this->exercicio('/uploads/exercise-demos/nao-existe.mp4');

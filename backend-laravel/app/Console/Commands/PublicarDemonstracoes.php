@@ -20,14 +20,15 @@ use Throwable;
  * novas no mapeamento versionado. Aí quem clonar recebe as URLs pelo git e não
  * precisa de nenhum arquivo local.
  *
- * É idempotente: pula o que já está lá, então dá pra rodar de novo depois de
- * gerar vídeo novo sem reenviar os 340 MB.
+ * Rodar de novo é barato: quem já tem URL absoluta no banco é ignorado, então
+ * depois de gerar um vídeo novo só ele sobe. E quem volta a ter caminho local
+ * — que é o que a importação faz — sobe de novo mesmo já existindo no destino,
+ * porque isso significa que o arquivo mudou.
  */
 class PublicarDemonstracoes extends Command
 {
     protected $signature = 'exercicios:publicar-demonstracoes
-        {--dry-run : Mostra o que subiria, sem enviar nada}
-        {--reenviar : Reenvia mesmo o que já está no destino}';
+        {--dry-run : Mostra o que subiria, sem enviar nada}';
 
     protected $description = 'Envia os vídeos de demonstração para o storage configurado e atualiza video_url.';
 
@@ -54,7 +55,6 @@ class PublicarDemonstracoes extends Command
 
         $dryRun = (bool) $this->option('dry-run');
         $enviados = 0;
-        $pulados = 0;
         $jaRemotos = 0;
         $semArquivo = [];
         $falhas = [];
@@ -79,15 +79,15 @@ class PublicarDemonstracoes extends Command
 
             $nomeRemoto = $prefixo.'/'.basename($local);
 
-            if (! $this->option('reenviar') && ! $dryRun && Storage::disk($disco)->exists($nomeRemoto)) {
-                // O arquivo já está lá, mas o banco ainda aponta pro local:
-                // atualiza só a URL, sem pagar o upload de novo.
-                $ex->forceFill(['video_url' => $baseUrl.'/'.basename($local)])->save();
-                $pulados++;
-
-                continue;
-            }
-
+            // Não existe "pular porque já está lá". O nome do arquivo vem do
+            // slug do exercício, então um vídeo regerado sobrescreve o antigo
+            // com o MESMO nome — e video_url volta a apontar pro disco local.
+            // Ou seja: chegar aqui com caminho local significa exatamente "este
+            // mudou". Pular pela existência do objeto deixaria o CDN servindo a
+            // versão velha em silêncio, que é o pior desfecho possível: o vídeo
+            // reprovado continua no ar e ninguém percebe.
+            //
+            // Quem já foi publicado não chega aqui: sai antes, no $jaRemotos.
             if ($dryRun) {
                 $this->line("  subiria <fg=cyan>{$nomeRemoto}</> (".$this->tamanho($local).')');
                 $enviados++;
@@ -116,7 +116,7 @@ class PublicarDemonstracoes extends Command
         $this->newLine();
         $this->info($dryRun
             ? "{$enviados} arquivo(s) subiriam. Dry-run: nada foi enviado."
-            : "{$enviados} enviado(s), {$pulados} já estavam no destino, {$jaRemotos} já publicado(s) antes.");
+            : "{$enviados} enviado(s), {$jaRemotos} já publicado(s) antes.");
 
         if ($semArquivo !== []) {
             $this->warn(count($semArquivo).' exercício(s) sem o arquivo local — nada a enviar:');
@@ -132,7 +132,7 @@ class PublicarDemonstracoes extends Command
             return self::FAILURE;
         }
 
-        if (! $dryRun && $enviados + $pulados > 0) {
+        if (! $dryRun && $enviados > 0) {
             $this->newLine();
             $this->comment('Agora rode `exercicios:aplicar-demonstracoes --exportar` e commite o mapeamento,');
             $this->comment('pra quem clonar receber as URLs sem precisar dos arquivos.');
