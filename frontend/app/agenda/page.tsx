@@ -10,9 +10,10 @@ import { DiaAgenda, HorarioAgenda, SemanaAgenda, Student } from '@/lib/types'
 
 const NOME_DIA = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado']
 const NOME_DIA_CURTO = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
-// "domingo"/"sábado" são masculinos ("no domingo"), os demais dias são
-// femininos ("na segunda") — só pro aria-label ficar gramaticalmente certo.
-const PREPOSICAO_DIA = ['no', 'na', 'na', 'na', 'na', 'na', 'no']
+
+// Grade fixa de horários (05h às 22h, de 1 em 1 hora) — o personal só escolhe
+// o aluno pra cada linha, em vez de digitar o horário toda vez.
+const HORAS_GRADE = Array.from({ length: 18 }, (_, i) => `${String(i + 5).padStart(2, '0')}:00`)
 
 function hojeIso(): string {
   const d = new Date()
@@ -25,8 +26,8 @@ export default function AgendaPage() {
   const [refSemana, setRefSemana] = useState<string | null>(null)
   const [semana, setSemana] = useState<SemanaAgenda | null>(null)
   const [erro, setErro] = useState<string | null>(null)
-  const [novoAberto, setNovoAberto] = useState<number | null>(null) // dia_semana do form aberto
-  const [editando, setEditando] = useState<string | null>(null) // `${slot_id}|${data}` da linha em edição
+  const [novoAberto, setNovoAberto] = useState<string | null>(null) // `${dia_semana}|${hora}` da linha vazia em edição
+  const [editando, setEditando] = useState<string | null>(null) // `${slot_id}|${data}` da linha ocupada em edição
 
   const carregarSemana = useCallback((ref: string | null) => {
     const query = ref ? `?semana=${ref}` : ''
@@ -56,15 +57,15 @@ export default function AgendaPage() {
     setRefSemana(somarDias(base, direcao * 7))
   }
 
-  async function criarHorario(diaSemana: number, dados: { student_id: string; titulo: string; hora: string; duracao_minutos: string }) {
+  async function criarHorario(diaSemana: number, hora: string, dados: { student_id: string; titulo: string }) {
     setErro(null)
     try {
       await api.post('/agenda/horarios', {
         student_id: dados.student_id || null,
         titulo: dados.titulo || null,
         dia_semana: diaSemana,
-        hora: dados.hora,
-        duracao_minutos: dados.duracao_minutos ? Number(dados.duracao_minutos) : undefined,
+        hora,
+        duracao_minutos: 60,
       })
       setNovoAberto(null)
       carregarSemana(refSemana)
@@ -76,7 +77,7 @@ export default function AgendaPage() {
   async function salvarOcorrencia(
     slotId: string,
     data: string,
-    campos: { student_id?: string | null; presenca?: string | null }
+    campos: { student_id?: string | null; titulo?: string | null; presenca?: string | null }
   ) {
     setErro(null)
     try {
@@ -107,7 +108,8 @@ export default function AgendaPage() {
           <h1 className="font-display text-2xl font-bold tracking-tight text-ink">Agenda</h1>
           <span className="title-accent" />
           <p className="mt-2 text-sm text-ink-muted">
-            Seus horários fixos da semana — mude quem ocupa um horário só numa data, sem afetar as próximas.
+            Clique num horário vazio pra colocar um aluno — troque quem ocupa um horário só numa data sem afetar as
+            próximas semanas.
           </p>
         </div>
 
@@ -152,9 +154,9 @@ export default function AgendaPage() {
                 dia={dia}
                 students={students}
                 hoje={dia.data === hojeIso()}
-                novoAberto={novoAberto === dia.dia_semana}
-                onAbrirNovo={() => setNovoAberto(novoAberto === dia.dia_semana ? null : dia.dia_semana)}
-                onCriarHorario={(dados) => criarHorario(dia.dia_semana, dados)}
+                novoAberto={novoAberto}
+                onAbrirNovo={setNovoAberto}
+                onCriarHorario={(hora, dados) => criarHorario(dia.dia_semana, hora, dados)}
                 editando={editando}
                 onEditar={setEditando}
                 onSalvarOcorrencia={(slotId, campos) => salvarOcorrencia(slotId, dia.data, campos)}
@@ -183,72 +185,104 @@ function DiaCard({
   dia: DiaAgenda
   students: Student[]
   hoje: boolean
-  novoAberto: boolean
-  onAbrirNovo: () => void
-  onCriarHorario: (dados: { student_id: string; titulo: string; hora: string; duracao_minutos: string }) => void
+  novoAberto: string | null
+  onAbrirNovo: (chave: string | null) => void
+  onCriarHorario: (hora: string, dados: { student_id: string; titulo: string }) => void
   editando: string | null
   onEditar: (chave: string | null) => void
-  onSalvarOcorrencia: (slotId: string, campos: { student_id?: string | null; presenca?: string | null }) => void
+  onSalvarOcorrencia: (slotId: string, campos: { student_id?: string | null; titulo?: string | null; presenca?: string | null }) => void
   onDesativarSlot: (slotId: string) => void
 }) {
-  const [novoAluno, setNovoAluno] = useState('')
-  const [novoTitulo, setNovoTitulo] = useState('')
-  const [novaHora, setNovaHora] = useState('')
-  const [novaDuracao, setNovaDuracao] = useState('')
+  const porHora = new Map(dia.horarios.map((h) => [h.hora, h]))
 
   return (
     <div
       className={`glass flex min-h-[65vh] min-w-0 flex-col rounded-2xl p-3 ${hoje ? 'border-brand/40' : ''}`}
       title={NOME_DIA[dia.dia_semana]}
     >
-      <div className="mb-2 flex items-start justify-between gap-1">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-ink-muted">{NOME_DIA_CURTO[dia.dia_semana]}</p>
-          <p className="text-xs text-ink-muted">{formatarDataCurta(dia.data)}</p>
-        </div>
-        <button
-          onClick={onAbrirNovo}
-          aria-label={`Novo horário ${PREPOSICAO_DIA[dia.dia_semana]} ${NOME_DIA[dia.dia_semana]}`}
-          className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg text-brand transition hover:bg-brand/10"
-        >
-          <Plus size={14} />
-        </button>
+      <div className="mb-2">
+        <p className="text-xs font-semibold uppercase tracking-wide text-ink-muted">{NOME_DIA_CURTO[dia.dia_semana]}</p>
+        <p className="text-xs text-ink-muted">{formatarDataCurta(dia.data)}</p>
       </div>
 
-      {dia.horarios.length === 0 && !novoAberto && (
-        <p className="text-xs text-ink-muted">Nada marcado.</p>
-      )}
+      <div className="space-y-1.5">
+        {HORAS_GRADE.map((hora) => {
+          const horario = porHora.get(hora)
+          const chave = `${dia.dia_semana}|${hora}`
 
-      <div className="space-y-2">
-        {dia.horarios.map((h) => (
-          <HorarioRow
-            key={h.slot_id}
-            horario={h}
-            students={students}
-            emEdicao={editando === `${h.slot_id}|${dia.data}`}
-            onEditar={() => onEditar(editando === `${h.slot_id}|${dia.data}` ? null : `${h.slot_id}|${dia.data}`)}
-            onSalvar={(campos) => onSalvarOcorrencia(h.slot_id, campos)}
-            onDesativar={() => onDesativarSlot(h.slot_id)}
-          />
-        ))}
+          if (horario) {
+            return (
+              <HorarioRow
+                key={hora}
+                horario={horario}
+                students={students}
+                emEdicao={editando === `${horario.slot_id}|${dia.data}`}
+                onEditar={() => onEditar(editando === `${horario.slot_id}|${dia.data}` ? null : `${horario.slot_id}|${dia.data}`)}
+                onSalvar={(campos) => onSalvarOcorrencia(horario.slot_id, campos)}
+                onDesativar={() => onDesativarSlot(horario.slot_id)}
+              />
+            )
+          }
+
+          return (
+            <LinhaVazia
+              key={hora}
+              hora={hora}
+              students={students}
+              aberta={novoAberto === chave}
+              onAbrir={() => onAbrirNovo(novoAberto === chave ? null : chave)}
+              onCriar={(dados) => onCriarHorario(hora, dados)}
+            />
+          )
+        })}
       </div>
+    </div>
+  )
+}
 
-      {novoAberto && (
+function LinhaVazia({
+  hora,
+  students,
+  aberta,
+  onAbrir,
+  onCriar,
+}: {
+  hora: string
+  students: Student[]
+  aberta: boolean
+  onAbrir: () => void
+  onCriar: (dados: { student_id: string; titulo: string }) => void
+}) {
+  const [aluno, setAluno] = useState('')
+  const [titulo, setTitulo] = useState('')
+
+  return (
+    <div className={`rounded-xl ${aberta ? 'glass-flat p-2' : ''}`}>
+      <button
+        onClick={onAbrir}
+        className="flex w-full items-center gap-1.5 rounded-lg px-1.5 py-1 text-left text-xs text-ink-muted transition hover:bg-ink/5"
+      >
+        <span className="font-medium">{hora}</span>
+        <span className="flex items-center gap-0.5 text-ink-muted/70">
+          <Plus size={11} /> aluno
+        </span>
+      </button>
+
+      {aberta && (
         <form
           onSubmit={(e) => {
             e.preventDefault()
-            onCriarHorario({ student_id: novoAluno, titulo: novoTitulo, hora: novaHora, duracao_minutos: novaDuracao })
-            setNovoAluno('')
-            setNovoTitulo('')
-            setNovaHora('')
-            setNovaDuracao('')
+            onCriar({ student_id: aluno, titulo })
+            setAluno('')
+            setTitulo('')
           }}
-          className="mt-3 space-y-2 border-t border-line-soft pt-3"
+          className="mt-1.5 space-y-1.5"
         >
           <select
-            value={novoAluno}
-            onChange={(e) => setNovoAluno(e.target.value)}
-            className="input-dark w-full rounded-xl px-3 py-2 text-sm"
+            value={aluno}
+            onChange={(e) => setAluno(e.target.value)}
+            className="input-dark w-full rounded-lg px-2 py-1.5 text-xs"
+            autoFocus
           >
             <option value="">Sem aluno (bloqueio pessoal)</option>
             {students.map((s) => (
@@ -257,33 +291,17 @@ function DiaCard({
               </option>
             ))}
           </select>
-          <input
-            type="text"
-            placeholder="Título (ex: Revisão de consultoria) — opcional se escolheu aluno"
-            value={novoTitulo}
-            onChange={(e) => setNovoTitulo(e.target.value)}
-            className="input-dark w-full rounded-xl px-3 py-2 text-sm"
-          />
-          <div className="flex gap-2">
+          {!aluno && (
             <input
-              type="time"
-              required
-              value={novaHora}
-              onChange={(e) => setNovaHora(e.target.value)}
-              className="input-dark w-full rounded-xl px-3 py-2 text-sm"
+              type="text"
+              placeholder="Ou digite um nome/título (substituto sem cadastro, bloqueio pessoal...)"
+              value={titulo}
+              onChange={(e) => setTitulo(e.target.value)}
+              className="input-dark w-full rounded-lg px-2 py-1.5 text-xs"
             />
-            <input
-              type="number"
-              min={15}
-              step={15}
-              placeholder="60 min"
-              value={novaDuracao}
-              onChange={(e) => setNovaDuracao(e.target.value)}
-              className="input-dark w-full rounded-xl px-3 py-2 text-sm"
-            />
-          </div>
-          <button type="submit" className="btn-secondary w-full rounded-xl px-4 py-2 text-sm">
-            Salvar horário fixo
+          )}
+          <button type="submit" className="btn-secondary w-full rounded-lg px-2 py-1.5 text-xs">
+            Salvar
           </button>
         </form>
       )}
@@ -303,9 +321,10 @@ function HorarioRow({
   students: Student[]
   emEdicao: boolean
   onEditar: () => void
-  onSalvar: (campos: { student_id?: string | null; presenca?: string | null }) => void
+  onSalvar: (campos: { student_id?: string | null; titulo?: string | null; presenca?: string | null }) => void
   onDesativar: () => void
 }) {
+  const [nomeDigitado, setNomeDigitado] = useState(horario.student ? '' : horario.titulo ?? '')
   const rotulo = horario.student ? horario.student.name : horario.titulo ?? 'Vago'
 
   return (
@@ -338,16 +357,37 @@ function HorarioRow({
         <div className="mt-3 space-y-2 border-t border-line-soft pt-3">
           <select
             defaultValue={horario.student?.id ?? ''}
-            onChange={(e) => onSalvar({ student_id: e.target.value || null })}
+            onChange={(e) => onSalvar({ student_id: e.target.value || null, titulo: null })}
             className="input-dark w-full rounded-xl px-3 py-2 text-sm"
           >
-            <option value="">Vago (ninguém nesse dia)</option>
+            <option value="">Vago / digitar nome abaixo</option>
             {students.map((s) => (
               <option key={s.id} value={s.id}>
                 {s.name}
               </option>
             ))}
           </select>
+
+          {!horario.student && (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+                onSalvar({ student_id: null, titulo: nomeDigitado || null })
+              }}
+              className="flex gap-1.5"
+            >
+              <input
+                type="text"
+                placeholder="Ou digite o nome (substituto avulso, sem cadastro)"
+                value={nomeDigitado}
+                onChange={(e) => setNomeDigitado(e.target.value)}
+                className="input-dark w-full rounded-xl px-3 py-2 text-sm"
+              />
+              <button type="submit" className="btn-secondary shrink-0 rounded-xl px-3 py-2 text-xs">
+                Salvar
+              </button>
+            </form>
+          )}
 
           {horario.student && (
             <div className="flex gap-2">
