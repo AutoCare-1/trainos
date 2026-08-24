@@ -188,6 +188,21 @@ return [
     'Tríceps na polia unilateral' => [
         'execucao' => 'Em pé de frente para a polia alta segurando uma manopla com uma das mãos, cotovelo colado ao corpo, estenda o cotovelo para baixo até o braço ficar reto e controle a subida sem deixar o cotovelo abrir.',
     ],
+    'Tríceps na polia pegada supinada' => [
+        'execucao' => 'Em pé de frente para a polia alta, segurando a barra com as palmas viradas para cima, estenda os cotovelos empurrando a barra para baixo até os braços ficarem retos e volte controlado.',
+    ],
+    // As três "testa" abaixo diziam só "deitado", sem banco nem trajetória.
+    'Tríceps testa com halteres' => [
+        'execucao' => 'Deitado no banco reto com um halter em cada mão e os braços na vertical, desça os halteres até a lateral da testa flexionando só os cotovelos e estenda de volta.',
+    ],
+    'Tríceps testa com elástico' => [
+        'execucao' => 'Deitado no banco com o elástico ancorado atrás da cabeça, desça as mãos até a testa flexionando os cotovelos e estenda de volta contra a resistência.',
+    ],
+    'Tríceps testa na polia baixa' => [
+        // A original só falava de "tensão no ponto mais alongado" — sensação,
+        // não movimento.
+        'execucao' => 'Deitado no banco reto com a cabeça voltada para a polia baixa, segurando a barra com os braços na vertical, desça as mãos até a testa flexionando só os cotovelos e estenda de volta.',
+    ],
 
     // Isometrias: sustentam a posição, não repetem o movimento.
     'Hollow hold' => [
