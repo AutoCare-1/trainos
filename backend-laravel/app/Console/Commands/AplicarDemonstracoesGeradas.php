@@ -60,9 +60,15 @@ class AplicarDemonstracoesGeradas extends Command
                 continue;
             }
 
-            // Apontar pra arquivo que não existe é pior que não apontar: a tela
-            // mostra um player quebrado em vez do fallback de "sem demonstração".
-            if (! is_file(public_path(ltrim($caminho, '/')))) {
+            // URL absoluta é vídeo já publicado no storage: não há arquivo local
+            // pra conferir, e é exatamente o caso que resolve a vida de quem
+            // clona — recebe a URL pelo git e não precisa baixar 340 MB.
+            $remoto = str_starts_with($caminho, 'http://') || str_starts_with($caminho, 'https://');
+
+            // Já o caminho local só vale se o arquivo chegou: apontar pra
+            // arquivo ausente é pior que não apontar, porque a tela mostra um
+            // player quebrado em vez do fallback de "sem demonstração".
+            if (! $remoto && ! is_file(public_path(ltrim($caminho, '/')))) {
                 $semArquivo[] = $nome;
 
                 continue;

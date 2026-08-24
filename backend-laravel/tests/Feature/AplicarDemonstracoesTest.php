@@ -112,6 +112,25 @@ class AplicarDemonstracoesTest extends TestCase
         $this->assertSame($this->caminhoRelativo(), $ex->fresh()->video_url);
     }
 
+    public function test_url_absoluta_nao_depende_de_arquivo_local(): void
+    {
+        // O ponto do storage de objetos: quem clona recebe a URL pelo git e não
+        // precisa baixar os 340 MB. Se o comando exigisse arquivo local aqui,
+        // recusaria justamente o caso que resolve o problema.
+        $ex = $this->exercicio('Exercício de teste');
+        $this->escreverMapa([
+            'Exercício de teste' => 'https://midia.exemplo/exercise-demos/teste.mp4',
+        ]);
+
+        $this->artisan('exercicios:aplicar-demonstracoes', ['--arquivo' => $this->mapa])
+            ->assertSuccessful();
+
+        $this->assertSame(
+            'https://midia.exemplo/exercise-demos/teste.mp4',
+            $ex->fresh()->video_url
+        );
+    }
+
     public function test_avisa_quando_o_nome_do_mapa_nao_existe_na_biblioteca(): void
     {
         $this->escreverMapa(['Exercício que ninguém cadastrou' => $this->caminhoRelativo()]);
