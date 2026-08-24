@@ -204,6 +204,113 @@ return [
         'execucao' => 'Deitado no banco reto com a cabeça voltada para a polia baixa, segurando a barra com os braços na vertical, desça as mãos até a testa flexionando só os cotovelos e estenda de volta.',
     ],
 
+    // --- Varredura das 402 instruções (24/08/2026), depois que o leg press
+    // mostrou que a checagem automática não pega este defeito. Todos abaixo
+    // caem numa de duas formas:
+    //   (a) a instrução explica ÊNFASE ou JUSTIFICATIVA — que músculo pega,
+    //       por que a variação existe, pra quem serve — e nunca o movimento;
+    //   (b) é circular: "mesma mecânica do X".
+    // Nos dois casos o prompt sai praticamente só com o nome do exercício.
+    // Estes vídeos JÁ FORAM GERADOS com a instrução pobre e estão no ar.
+
+    // (b) circulares
+    'Face pull com elástico' => [
+        'execucao' => 'Em pé com um elástico ancorado à frente na altura do rosto, puxe as duas mãos em direção aos olhos abrindo bem os cotovelos para os lados, acima da linha das mãos, e volte controlado.',
+    ],
+    'Levantamento terra com halteres' => [
+        'execucao' => 'Em pé com um halter em cada mão à frente das coxas, empurre o quadril para trás descendo os halteres rentes às pernas com as costas retas, e volte a ficar em pé estendendo o quadril.',
+    ],
+    'Rotação externa na polia' => [
+        'execucao' => 'Em pé de lado para a polia, cotovelo colado ao corpo e flexionado a noventa graus, gire o antebraço para fora afastando a mão do abdômen e volte controlado.',
+    ],
+
+    // (a) ênfase/justificativa em vez de movimento
+    'Rosca de bíceps sentado com halteres' => [
+        'execucao' => 'Sentado na ponta do banco com um halter em cada mão e os braços estendidos ao lado do corpo, flexione os cotovelos subindo os halteres até os ombros e desça controlado.',
+    ],
+    'Rosca direta com barra W' => [
+        'execucao' => 'Em pé segurando a barra W com pegada semipronada e os cotovelos colados ao corpo, flexione os cotovelos subindo a barra até os ombros e desça controlado.',
+    ],
+    'Rosca direta na polia' => [
+        'execucao' => 'Em pé de frente para a polia baixa segurando a barra reta com as palmas para cima e os cotovelos colados ao corpo, flexione os cotovelos subindo a barra até os ombros e desça controlado.',
+    ],
+    'Barra fixa com elástico (assistida)' => [
+        'execucao' => 'Pendurado na barra fixa com um elástico preso à barra apoiando um dos pés, puxe o corpo para cima até o queixo passar da barra e desça controlado até os braços estenderem.',
+    ],
+    'Barra fixa com peso' => [
+        'equipamento' => 'a pull-up bar and a dipping belt with a weight plate',
+        'execucao' => 'Pendurado na barra fixa com um cinto de lastro na cintura, puxe o corpo para cima até o queixo passar da barra e desça controlado até os braços estenderem.',
+    ],
+    'Barra fixa pegada neutra' => [
+        'equipamento' => 'a pull-up bar with parallel neutral-grip handles',
+        'execucao' => 'Pendurado na barra fixa segurando dois pegadores paralelos com as palmas viradas uma para a outra, puxe o corpo para cima até o queixo passar da barra e desça controlado.',
+    ],
+    'Levantamento terra com trap bar' => [
+        'equipamento' => 'a hexagonal trap bar',
+        'execucao' => 'Em pé dentro da barra hexagonal segurando os pegadores laterais, empurre o chão com as pernas subindo até ficar totalmente em pé com as costas retas, e desça a barra controlado.',
+    ],
+    'Remada no banco inclinado' => [
+        'execucao' => 'Deitado de bruços num banco inclinado com o peito apoiado e um halter em cada mão pendendo em direção ao chão, puxe os halteres até a lateral do tronco e desça controlado.',
+    ],
+    'Remada Pendlay' => [
+        'execucao' => 'Com o tronco inclinado quase paralelo ao chão e a barra apoiada no solo, puxe a barra explosivamente até o abdômen e devolva ao chão a cada repetição.',
+    ],
+    'Agachamento búlgaro com foco em glúteo' => [
+        'execucao' => 'Em pé com um halter em cada mão e o peito do pé de trás apoiado num banco atrás do corpo, incline o tronco à frente e desça flexionando a perna da frente até o joelho de trás quase tocar o chão, e suba.',
+    ],
+    'Elevação de quadril com pés no banco' => [
+        'execucao' => 'Deitado de costas no chão com os calcanhares apoiados num banco à frente, eleve o quadril até alinhar tronco e coxas e desça controlado.',
+    ],
+    'Desenvolvimento com pegada neutra' => [
+        'execucao' => 'Sentado no banco com encosto e um halter em cada mão na altura dos ombros, palmas viradas uma para a outra, empurre os halteres acima da cabeça e desça controlado.',
+    ],
+    'Elevação lateral sentado' => [
+        'execucao' => 'Sentado na ponta do banco com um halter em cada mão ao lado do corpo, eleve os braços lateralmente até a linha dos ombros com os cotovelos levemente flexionados e desça controlado.',
+    ],
+    'Panturrilha com pés para dentro' => [
+        'execucao' => 'Na máquina de panturrilha, com as pontas dos pés na plataforma viradas para dentro, suba na ponta dos pés e desça até alongar bem o tendão.',
+    ],
+    'Panturrilha com pés para fora' => [
+        'execucao' => 'Na máquina de panturrilha, com as pontas dos pés na plataforma viradas para fora, suba na ponta dos pés e desça até alongar bem o tendão.',
+    ],
+    'Panturrilha sentado unilateral' => [
+        'execucao' => 'Sentado na máquina de panturrilha com o pad sobre a coxa, apoie só a ponta de um pé na plataforma e eleve o calcanhar, descendo até alongar bem.',
+    ],
+    'Peck deck inclinado' => [
+        'execucao' => 'Sentado no peck deck com o encosto bem inclinado e as costas apoiadas, feche os dois braços em arco à frente do peito e abra controlado.',
+    ],
+    'Supino com pegada neutra' => [
+        'execucao' => 'Deitado no banco reto com um halter em cada mão e as palmas viradas uma para a outra, empurre os halteres para cima até quase estender os cotovelos e desça controlado.',
+    ],
+    'Supino com pegada fechada' => [
+        'execucao' => 'Deitado no banco reto segurando a barra com as mãos na largura dos ombros, desça a barra até o peito com os cotovelos rentes ao corpo e empurre de volta.',
+    ],
+    'Flexão de braço inclinada' => [
+        'execucao' => 'Com as mãos apoiadas na borda de um banco e os pés no chão, corpo em linha reta, desça o peito em direção ao banco flexionando os cotovelos e empurre de volta.',
+    ],
+    'Flexão de braço declinada' => [
+        'execucao' => 'Em posição de flexão com as mãos no chão e os pés elevados num banco atrás, corpo em linha reta, desça o peito até perto do chão e empurre de volta.',
+    ],
+    'Flexão de braço com joelhos apoiados' => [
+        'execucao' => 'Em posição de flexão com as mãos no chão e os joelhos apoiados no solo, tronco alinhado com as coxas, desça o peito até perto do chão e empurre de volta.',
+    ],
+    'Mergulho na máquina assistida' => [
+        'execucao' => 'Apoiado nas barras paralelas da máquina assistida, com os joelhos sobre a plataforma acolchoada que ajuda a sustentar parte do peso, desça flexionando os cotovelos e suba de volta.',
+    ],
+    'Mergulho entre bancos' => [
+        'equipamento' => 'two flat benches',
+        'execucao' => 'Mãos apoiadas na borda de um banco atrás do corpo e calcanhares no outro banco à frente, desça o quadril flexionando os cotovelos até noventa graus e suba.',
+    ],
+    'Encolhimento inclinado no banco' => [
+        'execucao' => 'Deitado de bruços num banco inclinado com o peito apoiado e um halter em cada mão pendendo, eleve os ombros em direção às orelhas sem dobrar os cotovelos e desça controlado.',
+    ],
+    'Agachamento frontal no smith' => [
+        'execucao' => 'Em pé sob a barra guiada do smith apoiada à frente dos ombros, com os cotovelos altos, desça agachando até as coxas ficarem paralelas ao chão e suba.',
+    ],
+    'Sprint na esteira' => [
+        'execucao' => 'Correndo na esteira em velocidade alta, passada longa e braços acompanhando o ritmo.',
+    ],
+
     // Isometrias: sustentam a posição, não repetem o movimento.
     'Hollow hold' => [
         'execucao' => 'Deitado de barriga para cima, lombar colada no chão, braços estendidos atrás da cabeça e pernas estendidas alguns centímetros acima do solo.',
