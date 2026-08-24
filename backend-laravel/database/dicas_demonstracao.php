@@ -177,10 +177,10 @@ return [
         'execucao' => 'Deitado no banco reto segurando a barra W com pegada semipronada, desça a barra até a altura da testa flexionando só os cotovelos e estenda de volta.',
     ],
     'Supino fechado com halteres' => [
-        'execucao' => 'Deitado no banco reto com um halter em cada mão, os halteres juntos e encostados sobre o peito, empurre para cima mantendo-os em contato e desça controlado.',
+        'execucao' => 'Deitado no banco reto com um halter em cada mão, os halteres juntos e encostados um no outro sobre o peito, cotovelos rentes ao tronco e apontados para os pés, empurre para cima mantendo os halteres em contato e desça controlado. Os cotovelos ficam colados ao corpo o tempo todo, nunca abertos para os lados.',
     ],
     'Supino fechado no smith' => [
-        'execucao' => 'Deitado no banco sob a barra guiada do smith, com as mãos na largura dos ombros, desça a barra até o peito com os cotovelos rentes ao tronco e empurre de volta.',
+        'execucao' => 'Deitado no banco sob a barra guiada do smith, mãos próximas na largura dos ombros, desça a barra até a parte baixa do peito com os cotovelos rentes ao tronco e apontados para os pés, e empurre de volta. Os cotovelos ficam colados ao corpo, nunca abertos para os lados.',
     ],
     'Tríceps na polia com pegada cruzada' => [
         'execucao' => 'Em pé de frente para a polia alta, segurando as duas manoplas com os braços cruzados à frente do corpo, estenda os cotovelos para baixo abrindo os braços e volte controlado.',
@@ -294,12 +294,38 @@ return [
     'Flexão de braço com joelhos apoiados' => [
         'execucao' => 'Em posição de flexão com as mãos no chão e os joelhos apoiados no solo, tronco alinhado com as coxas, desça o peito até perto do chão e empurre de volta.',
     ],
+    // Mergulho e supino fechado são de tríceps por causa da POSTURA, não do
+    // aparelho: tronco na vertical e cotovelo colado ao corpo puxam pro
+    // tríceps; tronco inclinado à frente e cotovelo aberto viram peito. Sem
+    // dizer isso, o gerador desenha a versão de peito — foi o que o Filipe viu
+    // ("não parecem nem de tríceps, parecem mais de peito", 24/08/2026).
     'Mergulho na máquina assistida' => [
-        'execucao' => 'Apoiado nas barras paralelas da máquina assistida, com os joelhos sobre a plataforma acolchoada que ajuda a sustentar parte do peso, desça flexionando os cotovelos e suba de volta.',
+        'execucao' => 'Apoiado nas barras paralelas da máquina assistida, com os joelhos sobre a plataforma acolchoada que ajuda a sustentar parte do peso, mantenha o tronco na vertical e os cotovelos rentes ao corpo, apontados para trás, e desça flexionando os cotovelos até noventa graus antes de subir. O tronco não inclina à frente e os cotovelos não abrem para os lados.',
     ],
     'Mergulho entre bancos' => [
         'equipamento' => 'two flat benches',
-        'execucao' => 'Mãos apoiadas na borda de um banco atrás do corpo e calcanhares no outro banco à frente, desça o quadril flexionando os cotovelos até noventa graus e suba.',
+        'execucao' => 'Mãos apoiadas na borda de um banco atrás do corpo e calcanhares no outro banco à frente, costas rentes ao banco e cotovelos apontados para trás, desça o quadril flexionando os cotovelos até noventa graus e suba. Os cotovelos não abrem para os lados.',
+    ],
+    // Os clássicos de polia do acervo: a instrução fala do cotovelo, nunca do
+    // aparelho. "Cotovelos fixos, estenda o antebraço" pode ser qualquer coisa.
+    'Tríceps corda' => [
+        'execucao' => 'Em pé de frente para a polia alta segurando as duas pontas de uma corda, cotovelos colados ao corpo, estenda os cotovelos empurrando a corda para baixo e separe as pontas no fim do movimento, voltando controlado.',
+    ],
+    'Tríceps pulley barra reta' => [
+        'execucao' => 'Em pé de frente para a polia alta segurando uma barra reta com as palmas para baixo, cotovelos colados ao corpo, estenda os cotovelos empurrando a barra para baixo até os braços ficarem retos e volte controlado.',
+    ],
+    'Tríceps francês' => [
+        'execucao' => 'Em pé segurando um halter com as duas mãos acima da cabeça, cotovelos apontados para o teto, desça o halter atrás da nuca flexionando só os cotovelos e estenda de volta.',
+    ],
+    'Extensão de tríceps unilateral' => [
+        'execucao' => 'Em pé de frente para a polia alta segurando uma manopla com uma das mãos, cotovelo colado ao corpo, estenda o cotovelo empurrando para baixo até o braço ficar reto e volte controlado.',
+    ],
+    'Tríceps testa' => [
+        'execucao' => 'Deitado no banco reto segurando a barra W com os braços na vertical, desça a barra até a altura da testa flexionando só os cotovelos e estenda de volta.',
+    ],
+
+    'Mergulho no banco' => [
+        'execucao' => 'Mãos apoiadas na borda de um banco atrás do corpo e pés no chão à frente com as pernas estendidas, costas rentes ao banco e cotovelos apontados para trás, desça o quadril flexionando os cotovelos até noventa graus e suba.',
     ],
     'Encolhimento inclinado no banco' => [
         'execucao' => 'Deitado de bruços num banco inclinado com o peito apoiado e um halter em cada mão pendendo, eleve os ombros em direção às orelhas sem dobrar os cotovelos e desça controlado.',
