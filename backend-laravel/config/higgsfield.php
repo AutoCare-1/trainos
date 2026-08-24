@@ -51,6 +51,13 @@ return [
     // Fotos do modelo usadas como referência de identidade. Fica em
     // storage/app/private de propósito: é imagem de pessoa real, então não vai
     // pro git (o .gitignore de private/ ignora tudo) nem é servida pela web.
+    //
+    // CONSENTIMENTO: o modelo é o personal do Filipe e liberou o uso da
+    // imagem dele para gerar as demonstrações por IA deste produto
+    // (confirmado com ele em 24/08/2026). O registro fica aqui, junto do
+    // caminho das fotos, porque é aqui que alguém tropeça na pergunta.
+    // As fotos continuam fora do git mesmo com a liberação — autorização de
+    // uso não é motivo pra espalhar o arquivo original.
     'dir_referencias' => env('HIGGSFIELD_DIR_REFERENCIAS', storage_path('app/private/higgsfield/referencias')),
 
     'padroes' => [
