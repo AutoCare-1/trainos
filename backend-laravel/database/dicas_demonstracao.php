@@ -156,6 +156,39 @@ return [
         'execucao' => 'Sentado no leg press com o joelho estendido, apoie só a ponta de um pé na borda inferior da plataforma e mova a plataforma usando apenas o tornozelo, subindo e descendo o calcanhar.',
     ],
 
+    // --- Tríceps. Mesma categoria do leg press: a instrução existe mas não
+    // descreve a montagem. Levantados lendo os 18 restantes um a um, antes de
+    // gerar, justamente porque o leg press ensinou que a checagem automática
+    // não pega isto.
+    'Mergulho nas paralelas' => [
+        // Mesmo dado errado de 'Paralelas com peso': cadastrado como peso
+        // corporal, mas sem as barras não existe exercício.
+        'equipamento' => 'a set of parallel dip bars',
+        'execucao' => 'Apoiado nas barras paralelas com os braços estendidos e o tronco na vertical, desça flexionando os cotovelos rentes ao corpo e suba de volta.',
+    ],
+    'Tríceps coice na polia' => [
+        // Instrução circular: "mesma mecânica do coice".
+        'execucao' => 'Em pé com o tronco inclinado à frente, segurando a manopla de uma polia baixa com o braço colado ao corpo, estenda o cotovelo para trás até o braço ficar reto e volte controlado.',
+    ],
+    'Tríceps na máquina unilateral' => [
+        'execucao' => 'Sentado na máquina de tríceps com as costas no encosto, apoie o antebraço no pad e estenda um cotovelo de cada vez até o braço ficar reto, voltando devagar.',
+    ],
+    'Tríceps testa com barra W' => [
+        'execucao' => 'Deitado no banco reto segurando a barra W com pegada semipronada, desça a barra até a altura da testa flexionando só os cotovelos e estenda de volta.',
+    ],
+    'Supino fechado com halteres' => [
+        'execucao' => 'Deitado no banco reto com um halter em cada mão, os halteres juntos e encostados sobre o peito, empurre para cima mantendo-os em contato e desça controlado.',
+    ],
+    'Supino fechado no smith' => [
+        'execucao' => 'Deitado no banco sob a barra guiada do smith, com as mãos na largura dos ombros, desça a barra até o peito com os cotovelos rentes ao tronco e empurre de volta.',
+    ],
+    'Tríceps na polia com pegada cruzada' => [
+        'execucao' => 'Em pé de frente para a polia alta, segurando as duas manoplas com os braços cruzados à frente do corpo, estenda os cotovelos para baixo abrindo os braços e volte controlado.',
+    ],
+    'Tríceps na polia unilateral' => [
+        'execucao' => 'Em pé de frente para a polia alta segurando uma manopla com uma das mãos, cotovelo colado ao corpo, estenda o cotovelo para baixo até o braço ficar reto e controle a subida sem deixar o cotovelo abrir.',
+    ],
+
     // Isometrias: sustentam a posição, não repetem o movimento.
     'Hollow hold' => [
         'execucao' => 'Deitado de barriga para cima, lombar colada no chão, braços estendidos atrás da cabeça e pernas estendidas alguns centímetros acima do solo.',
