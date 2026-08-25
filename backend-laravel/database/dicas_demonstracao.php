@@ -99,9 +99,8 @@ return [
     'Elevação de quadril na máquina' => [
         'execucao' => 'Sentado na máquina de elevação de quadril, com o apoio acolchoado sobre a pelve e as costas no encosto, empurre o quadril para cima até alinhar tronco e coxas e desça controlado.',
     ],
-    'Encolhimento unilateral com halter' => [
-        'execucao' => 'Em pé com um halter numa das mãos e o braço estendido ao lado do corpo, eleve o ombro em direção à orelha sem dobrar o cotovelo e desça controlado.',
-    ],
+    // 'Encolhimento unilateral com halter' ganhou cena na revisão de 25/08 e
+    // foi consolidado lá embaixo, junto com a execução que estava aqui.
     'Superman no solo' => [
         'execucao' => 'Deitado de barriga para baixo com braços e pernas estendidos, eleve ao mesmo tempo os braços e as pernas do chão contraindo a lombar, e desça.',
     ],
@@ -195,9 +194,7 @@ return [
     'Tríceps testa com halteres' => [
         'execucao' => 'Deitado no banco reto com um halter em cada mão e os braços na vertical, desça os halteres até a lateral da testa flexionando só os cotovelos e estenda de volta.',
     ],
-    'Tríceps testa com elástico' => [
-        'execucao' => 'Deitado no banco com o elástico ancorado atrás da cabeça, desça as mãos até a testa flexionando os cotovelos e estenda de volta contra a resistência.',
-    ],
+    // 'Tríceps testa com elástico' consolidado na revisão de 25/08, lá embaixo.
     'Tríceps testa na polia baixa' => [
         // A original só falava de "tensão no ponto mais alongado" — sensação,
         // não movimento.
@@ -258,9 +255,7 @@ return [
     'Agachamento búlgaro com foco em glúteo' => [
         'execucao' => 'Em pé com um halter em cada mão e o peito do pé de trás apoiado num banco atrás do corpo, incline o tronco à frente e desça flexionando a perna da frente até o joelho de trás quase tocar o chão, e suba.',
     ],
-    'Elevação de quadril com pés no banco' => [
-        'execucao' => 'Deitado de costas no chão com os calcanhares apoiados num banco à frente, eleve o quadril até alinhar tronco e coxas e desça controlado.',
-    ],
+    // 'Elevação de quadril com pés no banco' consolidado na revisão de 25/08.
     'Desenvolvimento com pegada neutra' => [
         'execucao' => 'Sentado no banco com encosto e um halter em cada mão na altura dos ombros, palmas viradas uma para a outra, empurre os halteres acima da cabeça e desça controlado.',
     ],
@@ -320,9 +315,7 @@ return [
     'Extensão de tríceps unilateral' => [
         'execucao' => 'Em pé de frente para a polia alta segurando uma manopla com uma das mãos, cotovelo colado ao corpo, estenda o cotovelo empurrando para baixo até o braço ficar reto e volte controlado.',
     ],
-    'Tríceps testa' => [
-        'execucao' => 'Deitado no banco reto segurando a barra W com os braços na vertical, desça a barra até a altura da testa flexionando só os cotovelos e estenda de volta.',
-    ],
+    // 'Tríceps testa' consolidado na revisão de 25/08, lá embaixo.
 
     'Mergulho no banco' => [
         'execucao' => 'Mãos apoiadas na borda de um banco atrás do corpo e pés no chão à frente com as pernas estendidas, costas rentes ao banco e cotovelos apontados para trás, desça o quadril flexionando os cotovelos até noventa graus e suba.',
@@ -363,4 +356,87 @@ return [
         'execucao' => 'Pendurado na barra fixa com os braços estendidos e o corpo relaxado, sustentando o próprio peso pelas mãos.',
         'estatico' => true,
     ],
+
+    // --- Revisão frame a frame dos 402 (25/08/2026). Método: 5 frames por
+    // vídeo extraídos com ffmpeg e julgados em tira, em vez de só o primeiro
+    // quadro. Resultado: 74 graves, 119 médios, 209 OK.
+    //
+    // O que essa revisão ensinou, e que muda o critério deste arquivo: a
+    // curadoria NÃO move o ponteiro em exercício de máquina ou polia. Os 89
+    // exercícios que já tinham dica erraram na mesma proporção dos 313 sem
+    // dica nenhuma (45–56% contra 46%), e os oito leg press — todos com
+    // parágrafo descrevendo a máquina inteira — saíram como cadeira extensora
+    // assim mesmo. A falha ali não é de compreensão, é de repertório visual:
+    // o gerador não sabe desenhar aparelho de academia, e mais texto não
+    // ensina. Máquina/polia se resolve filmando, não escrevendo.
+    //
+    // As entradas abaixo são só de peso livre, peso corporal e elástico —
+    // família em que o gerador acerta a cena (6% de graves) e o erro é de
+    // MOVIMENTO ESCOLHIDO: ele desenhou um exercício vizinho plausível no
+    // lugar do pedido. Isso o prompt corrige.
+    //
+    // Todas em inglês e todas NEGANDO explicitamente o que saiu errado. A
+    // negação não é ênfase: é a mesma lição da guarda de membro duplicado —
+    // descrever o certo não impede o modelo de desenhar o errado, dizer que o
+    // errado não pode aparecer impede.
+
+    // Saiu elevação lateral nas três. O modelo trata "elevação de ombro" como
+    // uma coisa só e escolhe a lateral, que é a mais comum nas imagens.
+    'Elevação frontal' => 'He raises both dumbbells straight FORWARD, in front of his body, until the arms are horizontal at shoulder height, thumbs leading. The arms travel in the sagittal plane in front of the torso and never out to the sides: this is not a lateral raise. He stops at shoulder height and does not go overhead.',
+    'Elevação frontal com barra' => 'He holds a loaded barbell with both hands in front of his thighs, palms down, and raises it straight FORWARD with the elbows locked straight, until the bar is horizontal at shoulder height. The elbows stay extended the whole time, so this is not an upright row. The barbell keeps its weight plates on both ends in every frame.',
+    'Elevação frontal com anilha' => [
+        'equipamento' => 'one round cast-iron weight plate, held by its rim with both hands',
+        'cena' => 'He grips a single flat round weight plate by its outer rim with both hands, like a steering wheel, and raises it straight FORWARD with the elbows nearly locked until it is at shoulder height, then lowers it. He stops at shoulder height and never lifts it overhead. The plate is a solid disc with a hole in the middle and stays the same size and shape in every frame.',
+    ],
+
+    // Os quatro "declinado" saíram em banco inclinado — o oposto. Descrever a
+    // inclinação em graus não bastou; o que muda é dizer onde a cabeça fica.
+    'Supino declinado' => 'He lies on a DECLINE bench with his head LOWER than his hips and his feet higher than his head, hooked under the leg pads at the raised end. The bench slopes downward toward his head. It is not an incline bench and he is not sitting upright. He presses the loaded barbell straight up from his lower chest.',
+    'Supino declinado com halteres' => 'He lies on a DECLINE bench with his head LOWER than his hips and his feet hooked at the raised end. The bench slopes downward toward his head, never upward. He presses both dumbbells straight up from his lower chest and lowers them back.',
+    'Crucifixo declinado com halteres' => 'He lies on a DECLINE bench with his head LOWER than his hips, feet hooked at the raised end. Arms almost straight with only a small fixed bend at the elbow, he opens both dumbbells wide out to the sides in a big arc until they are level with his chest, then closes them back above his chest. The elbow angle never changes, so this is an arc, not a press.',
+    'Crucifixo invertido no banco inclinado' => 'He lies face DOWN, chest resting on the pad of an incline bench, straddling it from behind so his chest is supported and his head is at the high end. Both arms hang straight down toward the floor holding dumbbells. He opens both arms out to the sides in a wide arc until they are level with his shoulders, squeezing the shoulder blades, then lowers them. He is never seated facing away from the bench.',
+
+    // O "no chão" é a única coisa que define o exercício, e saiu num banco.
+    'Supino no chão (floor press)' => 'He lies flat on his BACK on the gym floor, directly on the rubber flooring, with his knees bent and feet flat. There is no bench anywhere under his body. He presses the loaded barbell up until his arms are almost straight, and the descent stops when his upper arms touch the floor.',
+
+    // Saiu rosca de bíceps: elástico ancorado embaixo e cotovelo flexionando.
+    'Extensão de tríceps com elástico' => 'The resistance band is anchored ABOVE him, at head height or higher behind him, never under his feet. He holds the band with both hands, keeps his upper arms pinned against his ribs and completely still, and EXTENDS his elbows downward until his arms are straight. The movement opens the elbow angle; his hands never curl up toward his shoulders and this is not a biceps curl.',
+    'Tríceps testa com elástico' => [
+        'execucao' => 'Deitado no banco com o elástico ancorado atrás da cabeça, desça as mãos até a testa flexionando os cotovelos e estenda de volta contra a resistência.',
+        'cena' => 'He lies on his back on a flat bench with the resistance band anchored on the floor behind his head. He keeps his upper arms vertical and still, bends only his elbows to bring his hands down beside his forehead, then extends the elbows until the arms are straight above his chest.',
+    ],
+    'Tríceps testa' => [
+        'equipamento' => 'an EZ curl barbell loaded with weight plates on both ends',
+        'execucao' => 'Deitado no banco reto segurando a barra W com os braços na vertical, desça a barra até a altura da testa flexionando só os cotovelos e estenda de volta.',
+        'cena' => 'He lies on a FLAT bench holding a loaded EZ curl bar with both hands above his chest, arms straight. The bar has visible metal weight plates locked on both ends in every frame and is never a bare smooth tube. Keeping his upper arms vertical and motionless, he bends his elbows to lower the bar all the way down to his forehead — a large, obvious range of motion — and then extends the elbows back to straight.',
+    ],
+
+    // Saiu descalço, e sem encolher o ombro.
+    'Encolhimento unilateral com halter' => [
+        // A execução vinha de cima do arquivo; consolidada aqui porque duas
+        // chaves iguais no mesmo array não somam — a de baixo apaga a de cima
+        // em silêncio, e o exercício ficaria com prompt cego.
+        'execucao' => 'Em pé com um halter numa das mãos e o braço estendido ao lado do corpo, eleve o ombro em direção à orelha sem dobrar o cotovelo e desça controlado.',
+        'cena' => 'He stands wearing gym training shoes on both feet — he is never barefoot and never in socks. One dumbbell hangs at arm\'s length by his side. He lifts that shoulder straight UP toward his ear, high enough that the shoulder visibly rises and the dumbbell travels several centimetres, then lets it drop back down. The elbow stays completely straight throughout.',
+    ],
+
+    // Quadril: os três saíram como outro exercício inteiro (joelho à frente,
+    // búlgaro em pé, prancha alta).
+    'Elevação de quadril unilateral' => 'He lies with his upper back resting against the side of a flat bench, hips near the floor, one foot planted on the ground and the other leg extended straight out in the air. He drives his hips UPWARD until his torso and thigh form a straight line, then lowers them. He is lying down against the bench the entire time and is never standing up.',
+    'Elevação de quadril com pés no banco' => [
+        'execucao' => 'Deitado de costas no chão com os calcanhares apoiados num banco à frente, eleve o quadril até alinhar tronco e coxas e desça controlado.',
+        'cena' => 'He lies on his BACK on the floor with both heels resting up on the seat of a flat bench, knees bent. He drives his hips upward off the floor until his body forms a straight line from shoulders to knees, then lowers them back down. He is lying on the floor the whole time; he is never standing and this is not a lunge.',
+    ],
+    'Fire hydrant' => 'He is on all fours on the floor, both hands and both knees down. Keeping the knee bent at ninety degrees, he lifts one knee OUT TO THE SIDE, away from the midline of his body, opening the hip sideways like a gate, then lowers it. The knee travels laterally, never forward toward his chest, and his hands stay on the floor.',
+    'Abdução em pé com elástico' => 'He stands with a resistance loop band around both ankles, holding a rack upright for balance. He lifts one straight leg OUT TO THE SIDE, away from his body, far enough that the band visibly stretches and the gap between his feet opens wide, then brings it back. The sideways travel of the leg is large and obvious.',
+
+    // Hiperextensão sem o banco romano é só uma pessoa se curvando.
+    'Hiperextensão com foco em posterior' => [
+        'equipamento' => 'a 45-degree back extension bench (roman chair)',
+        'cena' => 'He is positioned in a 45-degree back extension bench, with the padded support against his upper thighs and his ankles locked under the rear foot rollers. His whole body is held by the apparatus. He hinges at the hips, lowering his torso toward the floor, then raises it until his body is in a straight line. The bench is visible under him in every frame; he is never standing freely on the floor.',
+    ],
+
+    'Agachamento sissy' => 'Standing and holding a rack upright with one hand for balance, he pushes his KNEES FORWARD past his toes and leans his torso BACKWARD, so that his knees, hips and shoulders stay in one straight diagonal line as he lowers. His hips never travel backward and he never folds forward at the waist: this is not a normal squat.',
+
+    'Afundo lateral' => 'He steps wide out to ONE side and bends only that leg, sinking his hips down over that foot while the OTHER leg stays completely straight with its foot flat on the floor. The two legs are always doing different things — one deeply bent, one extended — and both knees never bend together, so this is not a sumo squat.',
 ];
