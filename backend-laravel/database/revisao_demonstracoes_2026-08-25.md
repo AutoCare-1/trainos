@@ -394,3 +394,67 @@ na altura do ombro) · `supino-declinado` (banco declinado de verdade) · `supin
 `crucifixo-declinado` erraram. Não é o prompt: é sorteio. Regerar esses 5 de novo é ~50/50.
 
 Taxa: 13/19 resolvidos de primeira (68%), o que bate com a previsão de ~6% de graves nessa família.
+
+---
+
+# Rodada 2 (26/08/2026): máquina de perna e polia — 43 vídeos, 172 créditos
+
+Filipe decidiu não filmar, então foram de geração mesmo sabendo que a família
+erra ~40%. Originais em `public/uploads/_backup-2026-08-26/`.
+
+**O que mudou na abordagem:** as dicas antigas descreviam o MOVIMENTO em
+português e não adiantou. Estas descrevem o APARELHO em inglês, peça por peça,
+e negam nominalmente a peça errada — "no padded roller touches his ankles",
+que era a raiz de quase toda a família de perna, e "a single cable stays
+attached in every frame", que era a das polias.
+
+**Resultado: 38 de 43 melhoraram (88%).** Muito acima dos ~58% da rodada 1 em
+máquina — a negação nominal da peça errada funcionou.
+
+## Corrigidos de vez (19)
+
+Perna: `mesa-flexora` (agora de bruços) · `leg-press-45`, `leg-press-pes-juntos`,
+`leg-press-pes-afastados`, `leg-press-pes-baixos` (plataforma real com anilhas,
+sem rolo no tornozelo).
+
+Polia: `rosca-com-corda-na-polia-baixa` (corda de verdade) · `rosca-direta-na-polia`
+e `rosca-invertida-na-polia` (cabo vindo de baixo, ligado) ·
+`pulldown-com-bracos-estendidos` (cotovelo travado) · `triceps-pulley-barra-reta` ·
+`triceps-coice-na-polia` (ganhou o tronco inclinado) · `triceps-frances-na-polia`
+(saiu do chão pro banco) · `triceps-na-polia-unilateral` ·
+`extensao-de-triceps-unilateral` · `triceps-na-polia-com-pegada-cruzada` (cabos
+não somem mais) · `pullover-na-polia-alta` · `crossover` (as mãos finalmente se
+encontram) · `encolhimento-na-polia` (cabo ligado) · `elevacao-lateral-na-polia`.
+
+## Melhoraram e foram instalados, mas não estão perfeitos (19)
+
+O aparelho e a mecânica agora estão certos; o que falta é quase sempre o
+"unilateral" (sai bilateral) ou o acessório exato:
+
+`mesa-flexora-unilateral`, `leg-press-unilateral`, `leg-press-45-unilateral`,
+`cadeira-extensora-unilateral`, `panturrilha-sentado-unilateral`,
+`panturrilha-unilateral-no-leg-press`, `remada-baixa-unilateral` — todos com o
+aparelho certo mas usando as duas pernas/mãos.
+
+`triceps-corda`, `rosca-martelo-na-corda`, `triceps-corda-acima-da-cabeca`,
+`puxador-triangulo` — execução certa, acessório ainda não é corda/triângulo.
+
+`panturrilha-sentado`, `panturrilha-no-leg-press`, `hack-machine`,
+`glute-ham-raise`, `triceps-na-polia-pegada-supinada`,
+`crossover-de-baixo-para-cima`, `abducao-de-quadril-na-polia`,
+`aducao-de-quadril-na-polia` — melhoraram mas com ressalva de amplitude ou
+posição.
+
+## Continuam errados, ORIGINAL MANTIDO (5)
+
+- `cadeira-flexora` e `cadeira-flexora-unilateral` — saem como extensora de
+  novo. A flexora sentada é o caso mais teimoso da biblioteca.
+- `panturrilha-com-pes-para-dentro` — virou panturrilha em pé com halteres, sem
+  a máquina e sem os pés rodados.
+- `puxada-por-tras` — a barra continua descendo na frente do rosto.
+- `elevacao-frontal-na-polia` — o braço continua indo pro lado.
+
+**Nota de método:** o `zsh` não faz word-splitting de variável não-aspeada. Duas
+vezes nesta sessão um loop `for x in $LISTA` rodou com a string inteira como um
+item só — a primeira vez não copiou nada, a segunda instalou os 43 em vez de 38
+e precisou restaurar 5 do backup. Usar lista literal no `for`, não variável.

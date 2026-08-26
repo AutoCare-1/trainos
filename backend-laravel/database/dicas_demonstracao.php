@@ -23,7 +23,11 @@
 // para onde a barra desce, não para onde a pessoa olha.
 $deFrenteProAparelho = 'He sits facing the machine, with the pulley tower, the bar and the weight stack directly in front of him and above his head; his chest and face are turned toward the equipment and his back is never to it.';
 
-return [
+// O arquivo tem dois blocos: este, histórico, e o `$maquinas` lá embaixo, da
+// revisão de 26/08. Os dois são unidos com array_replace() no fim, então uma
+// chave repetida no segundo SOBRESCREVE a daqui — de propósito e à vista.
+// Antes eram um array só, e chave repetida apagava a anterior em silêncio.
+$base = [
     // ATENÇÃO: 'Puxada alta no cavalete' NÃO entra aqui, apesar do nome. É
     // levantamento em pé com barra ("puxe a barra do chão até o peito com um
     // movimento explosivo de quadril"), não puxada de polia — mandar a pessoa
@@ -440,3 +444,99 @@ return [
 
     'Afundo lateral' => 'He steps wide out to ONE side and bends only that leg, sinking his hips down over that foot while the OTHER leg stays completely straight with its foot flat on the floor. The two legs are always doing different things — one deeply bent, one extended — and both knees never bend together, so this is not a sumo squat.',
 ];
+
+// ---------------------------------------------------------------------------
+// Revisão de 26/08/2026: máquina de perna e polia.
+//
+// O Filipe decidiu não filmar, então estes vão de geração mesmo sabendo que a
+// família erra ~40% das vezes. O que muda aqui em relação às tentativas
+// anteriores é O QUE se descreve. As dicas antigas descreviam o MOVIMENTO em
+// português ("empurre a plataforma até quase estender os joelhos") e os oito
+// leg press saíram como cadeira extensora assim mesmo. Estas descrevem o
+// APARELHO em inglês, peça por peça, e negam nominalmente a peça errada que
+// apareceu — o rolinho no tornozelo.
+//
+// Esse rolinho é a raiz de quase toda a família: o gerador tem um aparelho de
+// perna genérico na cabeça (cadeira extensora) e cai nele em leg press, mesa
+// flexora, cadeira flexora e panturrilha. Por isso "no padded roller touches
+// his ankles" aparece repetido: é a negação que importa, não enfeite.
+//
+// Nas polias, o defeito é o cabo: some, aparece dobrado, vem de duas torres ao
+// mesmo tempo ou muda de comprimento no meio do vídeo. Daí $caboUnico.
+// ---------------------------------------------------------------------------
+
+$semRolo = 'No padded roller or pad ever touches his ankles, shins or the front of his lower legs, and his feet are never hooked under or over a pad: this is not a leg extension chair.';
+
+$legPress = 'He sits deep in a 45-degree leg press sled machine, his back and hips pressed flat into the reclined padded backrest low behind him. Both feet press FLAT against a large steel footplate that stands in front of him and above him, with heavy weight plates loaded on the sides of the sled. He bends his knees to let the whole sled travel down toward his chest, then presses the footplate away until his knees are almost straight. '.$semRolo;
+
+$caboUnico = 'A single steel cable runs in one straight unbroken line from the handle to one pulley wheel, and it stays clearly attached to the handle in every single frame. There is never a second cable, never a cable arriving from another direction or another tower, and the handle never floats loose in his hands. The attachment keeps exactly the same shape, length and thickness from the first frame to the last.';
+
+$corda = 'The attachment is a thick black nylon ROPE with a frayed end and a rubber stop at each end — it is not a bar and never turns into one. He grips one rope end in each hand with the palms facing each other. '.$caboUnico;
+
+$maquinas = [
+
+    // --- Leg press. Sete dos oito saíram como cadeira extensora.
+    'Leg press 45°' => ['cena' => $legPress.' Both feet sit flat in the middle of the plate, hip width apart.'],
+    'Leg press 45° unilateral' => ['cena' => $legPress.' Only ONE foot is on the plate, planted in its centre; the other leg is bent out of the way beside the sled and touches nothing.'],
+    'Leg press unilateral' => ['cena' => $legPress.' Only ONE foot is on the plate, planted in its centre; the other leg is bent out of the way beside the sled and touches nothing.'],
+    'Leg press pés juntos' => ['cena' => $legPress.' Both feet are placed in the very centre of the plate with the inner edges of the shoes touching each other.'],
+    'Leg press pés afastados' => ['cena' => $legPress.' The feet are placed very wide apart, near the two outer edges of the plate, with the toes turned outwards.'],
+    'Leg press pés baixos' => ['cena' => $legPress.' Both feet are placed low down on the plate, close to its bottom edge, so the knees travel far.'],
+
+    // --- Cadeira extensora: o rolo fica POR CIMA do tornozelo e a perna sobe.
+    'Cadeira extensora unilateral' => ['cena' => 'He sits upright in a leg extension machine, back against the tall pad, knees bent over the front edge of the seat and a padded roller resting ON TOP of his ankles, in front of his shins. He straightens ONE knee at a time, lifting the roller forward and upward until that leg is almost horizontal, then lowers it; the other foot stays down. The weight stack beside the seat visibly rises and falls with the movement.'],
+
+    // --- Cadeira flexora sentada: coxa presa por cima, calcanhar desce PRA TRÁS.
+    'Cadeira flexora' => ['cena' => 'He sits in a seated leg curl machine with a thick padded bar clamped down ACROSS THE TOP OF HIS THIGHS holding him in the seat, and a roller behind his calves low down near his ankles. He drives his heels DOWN and BACKWARD underneath the seat, bending both knees hard, then lets them come back. His legs never straighten out horizontally in front of him — that would be the opposite machine.'],
+    'Cadeira flexora unilateral' => ['cena' => 'He sits in a seated leg curl machine with a thick padded bar clamped down ACROSS THE TOP OF HIS THIGHS and a roller behind his calves near the ankles. He drives ONE heel down and backward underneath the seat, bending that knee hard, while the other leg stays still. His legs never straighten out horizontally in front of him.'],
+
+    // --- Mesa flexora: de BRUÇOS. Saiu de costas, estendendo a perna.
+    'Mesa flexora' => ['cena' => 'He lies FACE DOWN, chest and stomach flat on the angled bench of a lying leg curl machine, gripping the handles under the front edge. A padded roller rests against the BACK of his ankles just above his heels. He bends both knees to pull his heels up toward his glutes in a big arc, then lowers them. He is never on his back and his legs never extend forward.'],
+    'Mesa flexora unilateral' => ['cena' => 'He lies FACE DOWN on the angled bench of a lying leg curl machine, gripping the front handles, with a padded roller against the BACK of ONE ankle. He bends that single knee to pull the heel up toward his glute, then lowers it; the other leg stays flat on the bench. He is never on his back.'],
+
+    // --- Panturrilha: almofada em cima da COXA, ponta do pé na borda.
+    'Panturrilha sentado' => ['cena' => 'He sits on a seated calf raise machine with a heavily padded bar clamped down ON TOP OF HIS THIGHS, just behind his knees, and weight plates loaded on the arm of the machine. Only the BALLS of his feet rest on a small raised footplate near the floor; his heels hang off the back of it in empty air. He pushes the balls of his feet down to lift both heels as high as they go, then lets the heels sink far below the platform. His knees stay bent at ninety degrees the whole time and never straighten. '.$semRolo],
+    'Panturrilha sentado unilateral' => ['cena' => 'He sits on a seated calf raise machine with a padded bar clamped down ON TOP OF HIS THIGHS and plates loaded on the machine arm. Only the ball of ONE foot rests on the small raised footplate, heel hanging off in the air; the other foot is flat on the floor to the side. He lifts that single heel as high as it goes, then lets it sink below the platform. The knee stays bent at ninety degrees. '.$semRolo],
+    'Panturrilha com pés para dentro' => ['cena' => 'He stands on a standing calf raise machine with his shoulders under the two padded shoulder rests, only the BALLS of both feet on the raised step and the heels hanging off behind. The toes are turned clearly INWARD toward each other, pigeon-toed, so the heels point outward. He lifts both heels as high as they go, then lets them sink well below the step. Only the ankles move; the knees stay straight.'],
+    'Panturrilha no leg press' => ['cena' => 'He sits in a 45-degree leg press sled machine with both knees almost straight and locked out. Only the BALLS of both feet rest on the very bottom edge of the large steel footplate, with the heels hanging off into empty space below it. He pushes with the balls of his feet to move the whole loaded sled a short distance, then lets his heels drop below the edge of the plate. Only the ankle joints move and the knees never bend. '.$semRolo],
+    'Panturrilha unilateral no leg press' => ['cena' => 'He sits in a 45-degree leg press sled with the knee almost straight and locked. Only the ball of ONE foot rests on the bottom edge of the large steel footplate, heel hanging off into empty space; the other leg is bent away to the side, touching nothing. He pushes with that single foot to move the sled a short distance, then lets the heel drop below the plate edge. The knee never bends. '.$semRolo],
+
+    // --- Hack e GHR: aparelhos que ele nunca desenhou.
+    'Hack machine' => ['cena' => 'He STANDS upright inside a hack squat machine, his back flat against the steeply angled padded backrest behind him and both shoulders pressed up under two thick shoulder pads. His feet are flat on the angled footplate below him and weight plates are loaded on the pegs at the sides. He bends his knees to slide the whole carriage down the angled rails, then pushes back up. He is never seated and never holds handles out in front of him.'],
+    'Glute ham raise' => ['cena' => 'He kneels FACING DOWN in a glute-ham developer: knees on the rear pad, both ankles clamped between two rollers behind him, and his body held in one straight line from knees to head. He lowers his torso forward and down toward the floor by straightening his knees, then pulls himself back up using the back of his thighs. He is never lying on his back and never does a sit-up.'],
+
+    // --- Polia: bíceps. Cabo tem que vir da polia BAIXA, do chão.
+    'Rosca direta na polia' => ['cena' => 'He stands facing a cable tower, a straight bar in both hands with palms up. The cable comes UP from a single pulley at FLOOR level, directly in front of his feet, so the bar is pulled downward toward the ground and he curls against that. The pulley is never above his head. '.$caboUnico],
+    'Rosca invertida na polia' => ['cena' => 'He stands facing a cable tower holding a straight bar with an OVERHAND grip, knuckles facing forward and palms facing down toward the floor. The cable comes UP from a single pulley at FLOOR level in front of his feet. He curls the bar up toward his chest keeping the palms turned down the whole time. '.$caboUnico],
+    'Rosca com corda na polia baixa' => ['cena' => 'He stands facing a cable tower. '.$corda.' The rope hangs from a single pulley at FLOOR level directly in front of his feet, never from the sides and never from above. He curls both rope ends up toward his shoulders.'],
+    'Rosca martelo na corda' => ['cena' => 'He stands facing a cable tower. '.$corda.' The rope hangs from a single pulley at FLOOR level in front of his feet. He curls both rope ends up toward his shoulders keeping the palms facing each other the entire time, thumbs on top, like holding two hammers.'],
+
+    // --- Polia: tríceps. Cotovelo colado ao tronco, só o antebraço desce.
+    'Tríceps corda' => ['cena' => 'He stands facing a cable tower. '.$corda.' The rope hangs from a single pulley HIGH above his head. He pins both upper arms hard against his ribs so the elbows never move from his sides, and pushes both rope ends straight DOWN until the arms are completely straight, spreading the two ends apart at the bottom. Only the forearms travel. His hands stay closed around the rope in every frame and never let go.'],
+    'Tríceps pulley barra reta' => ['cena' => 'He stands facing a cable tower holding a short straight bar with an overhand grip, the cable coming DOWN from a single pulley high above his head. His upper arms stay pinned against his ribs and completely motionless. Starting with the bar at chest height and the elbows bent, he pushes the bar straight DOWN until the arms are fully straight against his thighs, then lets it come back to chest height. Only the forearms move: the bar never travels above his shoulders and his shoulders never move. '.$caboUnico],
+    'Tríceps na polia pegada supinada' => ['cena' => 'He stands facing a cable tower holding a short straight bar with an UNDERHAND grip, palms turned up toward the ceiling. The cable comes DOWN from a single pulley high above his head. His upper arms stay pinned against his ribs, and he pushes the bar straight DOWN from chest height until the arms are fully straight. The bar never goes above his shoulders and his shoulders never move. '.$caboUnico],
+    'Tríceps na polia unilateral' => ['cena' => 'He stands facing a cable tower gripping a single small D-handle in ONE hand, palm facing in. The cable comes DOWN from a single pulley high above his head. That upper arm stays pinned against his ribs and completely still while he EXTENDS the elbow, driving the hand straight down until the arm is fully straight beside his thigh, then lets it bend back to chest height. The hand travels downward as the arm straightens — it never curls up toward the shoulder. '.$caboUnico],
+    'Extensão de tríceps unilateral' => ['cena' => 'He stands facing a cable tower gripping a single small D-handle in ONE hand. The cable comes DOWN from a single pulley high above his head. The upper arm is pinned against his ribs and stays still while he EXTENDS the elbow, pushing the hand straight down until the arm is fully straight, then letting it bend back up. The movement opens the elbow angle; the hand never curls up toward the shoulder. '.$caboUnico],
+    'Tríceps na polia com pegada cruzada' => ['cena' => 'He stands between two cable towers, one D-handle in each hand, the two cables coming DOWN from a pulley high on each tower and CROSSING in front of his chest so the left hand holds the right tower cable. Both upper arms stay pinned against his ribs while he pushes both hands straight DOWN and outward until both arms are fully straight beside his thighs. Both cables stay attached and visible, crossed, in every single frame — they never disappear.'],
+    'Tríceps coice na polia' => ['cena' => 'He stands beside a cable tower and bends his torso far FORWARD from the hips until his chest is almost parallel to the floor, one hand braced on his knee. The other hand holds a D-handle with the upper arm raised and pinned tight against his ribs, elbow pointing backwards and upward. The cable comes from a pulley at knee height in front of him. He extends the elbow to swing the forearm straight back until the whole arm is one straight line behind him, then lets it fold back. The torso stays bent forward the entire time and he never stands upright. '.$caboUnico],
+    'Tríceps corda acima da cabeça' => ['cena' => 'He stands with his BACK to a cable tower, stepped forward, torso leaning slightly ahead. '.$corda.' The rope comes from a single pulley at FLOOR level BEHIND him, so it runs up his back and over his shoulder — never down from above. He holds both rope ends beside his ears with the elbows pointing up at the ceiling, then EXTENDS both elbows to push the rope up and forward over his head until the arms are straight.'],
+    'Tríceps francês na polia' => ['cena' => 'He SITS on an upright bench placed in front of a cable tower, feet flat on the floor, back straight. He holds a short bar with both hands behind his head, elbows pointing up at the ceiling. The cable comes from a single pulley at FLOOR level behind the bench. He extends both elbows to push the bar up over his head until the arms are straight, then lowers it behind his head. He is never sitting on the floor. '.$caboUnico],
+
+    // --- Polia: costas e peito.
+    'Puxada por trás' => ['cena' => 'He sits facing a lat pulldown machine with his thighs locked under the pads and a long straight bar in both hands, wide overhand grip, the cable running up to a single pulley above his head. He leans his head and neck slightly FORWARD and pulls the bar DOWN BEHIND HIS HEAD until it reaches the back of his neck, level with the base of his skull. The bar passes behind the head and never comes down in front of his face or chest. '.$caboUnico],
+    'Pulldown com braços estendidos' => ['cena' => 'He stands facing a cable tower with his feet back and his torso hinged FORWARD at the hips, chest low. He holds a straight bar with both hands, and his ELBOWS STAY COMPLETELY LOCKED STRAIGHT from the first frame to the last — they never bend at any point. With straight arms he sweeps the bar down in a wide arc from head height until it touches the front of his thighs, then lets it rise back. The cable comes DOWN from a single pulley high above him. '.$caboUnico],
+    'Puxador triângulo' => ['cena' => 'He sits facing a lat pulldown machine, thighs locked under the pads. The attachment is one small solid metal TRIANGLE with two short parallel handles close together in the middle of it; he grips those two handles with palms facing each other. The triangle is a single rigid piece that keeps exactly the same shape in every frame and never splits into two separate bars. He pulls it straight down to the top of his chest. '.$caboUnico],
+    'Remada baixa unilateral' => ['cena' => 'He sits at a low seated row machine, feet braced on the front platform, holding a single small D-handle in ONE hand only; the other hand rests on his knee and holds nothing. The cable runs HORIZONTALLY from a pulley at floor level in front of him, level with his stomach. He pulls that single handle back to the side of his waist, driving the elbow far behind his torso, then lets the arm extend fully forward. '.$caboUnico],
+    'Pullover na polia alta' => ['cena' => 'He stands facing a cable tower with his torso hinged FORWARD at the hips. He holds a straight bar with both hands and his ELBOWS STAY LOCKED STRAIGHT throughout — they never bend. With straight arms he pulls the bar down in a wide arc from above his head until it reaches the front of his thighs, then lets it travel back up. '.$caboUnico],
+    'Encolhimento na polia' => ['cena' => 'He stands facing a cable tower holding a straight bar in both hands at arm\'s length in front of his thighs, arms hanging completely straight. The cable runs from the bar DOWN to a single pulley at FLOOR level and is clearly attached and taut in every frame. Keeping the elbows locked straight, he lifts both SHOULDERS straight up toward his ears as high as they will go, then lets them drop. Only the shoulders move.'],
+    'Crossover' => ['cena' => 'He stands in the middle between two cable towers, one D-handle in each hand, the cables coming DOWN from a pulley high on each tower. He starts with both arms wide open out to the sides at shoulder height, then sweeps both hands forward and inward in a wide arc until they MEET AND CROSS in front of his lower chest, one wrist over the other, then opens them wide again. The hands must clearly come together in the middle — the arms are never left open the whole time. Both cables stay attached and taut in every frame.'],
+    'Crossover de baixo para cima' => ['cena' => 'He stands between two cable towers, one D-handle in each hand, both cables coming UP from a pulley at FLOOR level on each tower — never from above. He starts with both arms down and wide beside his thighs, then sweeps both hands upward and inward in a wide arc until they meet in front of his face at eye height. The handles stay attached to the cables in every frame and never turn into dumbbells.'],
+
+    // --- Polia: quadril e ombro. Estes viraram outro exercício inteiro.
+    'Abdução de quadril na polia' => ['cena' => 'He stands SIDEWAYS to a cable tower, one hand holding the tower for balance, with an ankle strap around the ankle of the leg FURTHEST from the tower. The cable runs horizontally from a pulley at FLOOR level and crosses in front of his standing leg. Keeping that leg completely straight, he lifts it OUT TO THE SIDE, away from the midline of his body, as high as it will go, then brings it back across. The leg travels sideways in the frontal plane and the knee never comes up toward his chest.'],
+    'Adução de quadril na polia' => ['cena' => 'He stands SIDEWAYS to a cable tower, one hand on the tower for balance, with an ankle strap on the leg NEAREST the tower. The cable runs horizontally from a pulley at FLOOR level out to the side. Keeping that leg completely straight, he pulls it INWARD across the front of his standing leg, crossing the midline of his body, then lets it travel back out to the side. The leg sweeps sideways across the body and the knee never comes up toward his chest.'],
+    'Elevação frontal na polia' => ['cena' => 'He stands with his BACK to a cable tower holding a single D-handle, the cable coming UP from a pulley at FLOOR level and passing between his legs behind him. Keeping the elbow straight, he raises that arm straight FORWARD in front of his body until the hand is at shoulder height, then lowers it. The arm travels forward in front of the torso and never out to the side: this is not a lateral raise. '.$caboUnico],
+    'Elevação lateral na polia' => ['cena' => 'He stands SIDEWAYS to a cable tower, upright with the torso vertical, holding a single D-handle in the hand FURTHEST from the tower. The cable comes from a pulley at FLOOR level and crosses in front of his body. Keeping the elbow almost straight, he raises that arm OUT TO THE SIDE, away from the tower, until it is horizontal at shoulder height, then lowers it. The arm travels sideways, never forward, and his torso never bends over. '.$caboUnico],
+];
+
+return array_replace($base, $maquinas);
