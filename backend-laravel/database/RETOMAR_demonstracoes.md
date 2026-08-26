@@ -3,13 +3,31 @@
 Ponto de partida pra próxima conversa. Escrito em 25/08/2026, depois de revisar
 os 402 um a um.
 
-## O estado, em três linhas
+## O estado (atualizado 26/08, depois da rodada 2)
 
-- 402 vídeos, todos gerados por IA. **~60 graves e ~115 médios ainda no ar.**
-- O erro se concentra em **máquina e polia**: 42% de graves ali, contra 6% no
-  resto (peso livre, peso corporal, cardio).
-- Escrever dica melhor no prompt **não resolve** o lado de máquina. Já foi
-  medido, não é palpite — ver abaixo.
+- 402 vídeos. Já foram regerados **62**: 19 de peso livre (25/08) e 43 de
+  máquina/polia (26/08). **Sobram ~17 graves conhecidos.**
+- Filipe decidiu **não filmar** — a saída é geração mesmo.
+- **A descoberta que destravou:** descrever o APARELHO em inglês, peça por peça,
+  e NEGAR NOMINALMENTE a peça errada que apareceu. Isso levou a máquina/polia de
+  ~58% para **88% de acerto** numa rodada. Ver "O que funciona" abaixo.
+
+## O que funciona (use isto em qualquer regeração nova)
+
+Duas negações carregaram quase todo o ganho da rodada 2:
+
+- **Perna:** `No padded roller or pad ever touches his ankles, shins or the
+  front of his lower legs (...) this is not a leg extension chair.` O gerador
+  tem uma cadeira extensora genérica na cabeça e cai nela em leg press, mesa
+  flexora e panturrilha. Negar o rolinho resolveu quase tudo.
+- **Polia:** `A single steel cable runs in one straight unbroken line from the
+  handle to one pulley wheel and stays clearly attached in every single frame.
+  There is never a second cable (...) The attachment keeps exactly the same
+  shape, length and thickness from the first frame to the last.` Resolve cabo
+  sumindo, cabo de duas torres e corda que encurta.
+
+Descrever o movimento em português (campo `execucao`) continua não adiantando.
+O que muda o resultado é o campo `cena`, em inglês, com a negação.
 
 ## Onde está tudo
 
@@ -39,27 +57,38 @@ resultado diferente.**
 
 ## O que fazer a seguir, na ordem que eu faria
 
-### 1. Filmar os 129 de máquina e polia
-O modelo dos vídeos é o próprio Filipe, que já cedeu a imagem, e as máquinas
-existem numa academia real. É uma tarde com celular em tripé, sai melhor que
-qualquer geração e não custa crédito. Enquanto não rolar, alternativas:
-licenciar acervo pronto, ou voltar o boneco animado nesses (um esquema
-abstrato correto ensina mais que um vídeo realista errado).
+### 1. Os 10 que continuam errados (originais mantidos)
 
-### 2. Os 5 que a regeração não resolveu
-`fire-hydrant` · `agachamento-sissy` · `afundo-lateral` ·
-`supino-declinado-com-halteres` · `crucifixo-declinado-com-halteres`
+Da rodada 2 (máquina/polia): `cadeira-flexora`, `cadeira-flexora-unilateral`
+(saem como extensora — o caso mais teimoso da biblioteca),
+`panturrilha-com-pes-para-dentro`, `puxada-por-tras`, `elevacao-frontal-na-polia`.
 
-Estão com o vídeo ORIGINAL (errado) instalado, porque o novo não ficou melhor.
-Regerar de novo é ~50/50, uns 20 créditos por tentativa. Detalhe revelador:
-`supino-declinado` (barra) acertou com **exatamente o mesmo texto** que
-`supino-declinado-com-halteres` errou — nessa faixa o resultado é sorteio, não
-prompt.
+Da rodada 1 (peso livre): `fire-hydrant`, `agachamento-sissy`, `afundo-lateral`,
+`supino-declinado-com-halteres`, `crucifixo-declinado-com-halteres`.
 
-### 3. Os médios
-~115, quase todos do tipo "a variação do nome não aparece": pegada neutra sai
-pronada, declinado sai inclinado, unilateral usa as duas mãos. Dá pra viver com
-eles; se for tratar, tratar em lote por família.
+Vale uma rodada nova com negação mais dura, agora que se sabe que a negação
+nominal é o que funciona. ~40 créditos.
+
+### 2. O problema do "unilateral"
+
+Sete vídeos ficaram com o aparelho certo mas usando as duas pernas/mãos:
+`leg-press-unilateral`, `leg-press-45-unilateral`, `mesa-flexora-unilateral`,
+`cadeira-extensora-unilateral`, `panturrilha-sentado-unilateral`,
+`panturrilha-unilateral-no-leg-press`, `remada-baixa-unilateral`. Já estão
+instalados (o aparelho certo vale mais que o anterior), mas se for atacar,
+o padrão é o mesmo: negar nominalmente — "the other foot is lifted completely
+off the plate and rests on the floor beside it".
+
+### 3. O acessório que não vira corda
+
+`triceps-corda`, `rosca-martelo-na-corda`, `triceps-corda-acima-da-cabeca`,
+`puxador-triangulo` — execução certa, mas o acessório sai como barra. A
+descrição da corda já está bem detalhada e mesmo assim não pegou; pode ser
+limite do gerador.
+
+### 4. Os médios que sobraram
+~110, quase todos "a variação do nome não aparece": pegada neutra sai pronada,
+declinado sai inclinado. Dá pra viver com eles.
 
 ## Como gerar (o comando artisan NÃO gera)
 
