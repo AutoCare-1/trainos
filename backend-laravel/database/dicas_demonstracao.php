@@ -539,4 +539,45 @@ $maquinas = [
     'Elevação lateral na polia' => ['cena' => 'He stands SIDEWAYS to a cable tower, upright with the torso vertical, holding a single D-handle in the hand FURTHEST from the tower. The cable comes from a pulley at FLOOR level and crosses in front of his body. Keeping the elbow almost straight, he raises that arm OUT TO THE SIDE, away from the tower, until it is horizontal at shoulder height, then lowers it. The arm travels sideways, never forward, and his torso never bends over. '.$caboUnico],
 ];
 
-return array_replace($base, $maquinas);
+// ---------------------------------------------------------------------------
+// Rodada 3 (26/08/2026): as 12 "outras máquinas", que ficaram de fora do recorte
+// perna/polia da rodada anterior. Mesma receita que deu 88% lá: descrever o
+// aparelho em inglês peça por peça e negar por nome o que saiu errado.
+//
+// Aqui a peça errada varia mais que na perna (lá era sempre o rolinho), então
+// cada negação é específica: o pegador que flutua solto sem nada ligando ele à
+// máquina, a placa de peso que nunca se move, a mão que sobra num exercício
+// unilateral.
+//
+// $placaSobe é o denominador comum: em quase todas o defeito visível era o
+// aparelho parado. Dizer que a placa sobe e desce dá ao gerador uma peça
+// concreta pra animar, em vez de só "ele repete o movimento".
+// ---------------------------------------------------------------------------
+
+$placaSobe = 'The rectangular weight stack of the machine is clearly visible at its side and it visibly RISES as he pulls or pushes and sinks back down as he returns, so the machine is obviously loaded and working.';
+
+$umaMaoSo = 'He uses ONE arm only: the working hand grips its handle while the other arm hangs relaxed at his side or rests on his thigh, clearly holding nothing at all.';
+
+$outras = [
+
+    'Remada máquina' => ['cena' => 'He sits at a chest-supported row machine, chest and stomach pressed against a large upright padded chest pad, feet on the footrests. Both hands grip two handles that are the ends of the machine\'s own rigid steel arms — the handles are always solidly attached to the machine by those visible arms and never float loose in the air. He pulls both handles back toward his ribs, driving the elbows far behind his torso, then lets the arms extend fully forward again: a large, obvious travel. '.$placaSobe],
+    'Remada máquina unilateral' => ['cena' => 'He sits at a chest-supported row machine, chest against the upright padded chest pad. '.$umaMaoSo.' That handle is the end of the machine\'s own rigid steel arm and is always solidly attached to the machine, never floating loose. He pulls it back toward his ribs, elbow driving far behind the torso, then lets the arm extend fully forward. '.$placaSobe],
+
+    'Extensão lombar na máquina' => ['cena' => 'He sits upright in a seated back extension machine, facing AWAY from the machine\'s column, with a thick padded bar pressed across his UPPER BACK behind his shoulder blades and a lap belt across his thighs. He pushes backwards against that back pad, extending his spine until his torso is well behind vertical, then lets it come back forward. The pad behind his back is what he pushes, and his arms are folded across his chest doing nothing. '.$placaSobe],
+    'Abdominal na máquina com carga' => ['cena' => 'He sits in an abdominal crunch machine with a padded chest bar across the front of his chest and both hands gripping the handles beside his head. He crunches FORWARD, curling his ribs down toward his hips against the chest pad, then lets his torso come back up. The chest pad travels forward with him. '.$placaSobe],
+
+    'Elevação de quadril na máquina' => ['cena' => 'He sits in a hip thrust machine with his upper back braced against a pad behind him, feet flat on a footplate in front, and a thick padded belt bar clamped down ACROSS HIS HIPS. He drives his HIPS upward against that hip pad until his torso and thighs form a straight line, then lowers them. The pad on his hips visibly rises and falls. '.$placaSobe],
+    'Elevação de quadril no smith' => ['cena' => 'He lies on the FLOOR with his upper back resting against the long side of a flat bench, knees bent and feet flat on the floor. The loaded Smith machine barbell rests horizontally across his hips, padded. He drives his hips UPWARD until his torso and thighs form a straight line and the bar rises with them, then lowers back toward the floor. He is lying against the bench the whole time and is never seated on the ground.'],
+
+    'Extensão de tríceps na máquina' => ['cena' => 'He sits in a triceps extension machine with his back against the pad and both FOREARMS resting on an angled pad in front of his chest, elbows bent and pointing down. He pushes both hands DOWN and forward, extending the elbows until the arms are straight, then lets them fold back. His hands stay below shoulder height at all times and nothing is ever pushed above his head. '.$placaSobe],
+    'Tríceps na máquina unilateral' => ['cena' => 'He sits in a triceps extension machine with his back against the pad. '.$umaMaoSo.' That forearm rests on the angled pad with the elbow bent, and he pushes the hand DOWN and forward until that arm is straight, then lets it fold back. The hand stays below shoulder height and nothing is pushed above his head. '.$placaSobe],
+
+    'Encolhimento na máquina' => ['cena' => 'He stands upright inside a shrug machine holding one handle at each side of his hips, arms hanging completely straight down. Keeping the elbows locked straight, he lifts both SHOULDERS straight UP toward his ears — the shoulders visibly travel several centimetres and his neck appears to shorten — then lets them drop all the way down. Only the shoulders move; the elbows never bend. '.$placaSobe],
+
+    'Chest press unilateral' => ['cena' => 'He sits in a chest press machine with his back flat against the upright pad. '.$umaMaoSo.' He pushes that single handle straight FORWARD, away from his chest, until the arm is almost fully extended in front of him, then lets it come back to his chest. The hand travels forward and back in front of the torso, not out to the sides. '.$placaSobe],
+    'Voador na máquina unilateral' => ['cena' => 'He sits in a pec deck machine with his back against the pad. '.$umaMaoSo.' Keeping that arm almost straight, he sweeps the single machine arm in a wide horizontal ARC from out at his side until it is in front of the centre of his chest, then lets it open back out wide. The arm sweeps sideways in an arc, it does not push forward. '.$placaSobe],
+
+    'Supino declinado no smith' => ['cena' => 'He lies on a DECLINE bench set inside a Smith machine, with his head LOWER than his hips and his feet hooked under the pads at the raised end. The bench slopes downward toward his head; it is never an incline bench and he is never sitting upright. He presses the guided Smith barbell straight up from his lower chest and lowers it back.'],
+];
+
+return array_replace($base, $maquinas, $outras);

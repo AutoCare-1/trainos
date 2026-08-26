@@ -458,3 +458,45 @@ posição.
 vezes nesta sessão um loop `for x in $LISTA` rodou com a string inteira como um
 item só — a primeira vez não copiou nada, a segunda instalou os 43 em vez de 38
 e precisou restaurar 5 do backup. Usar lista literal no `for`, não variável.
+
+---
+
+# Rodada 3 (26/08/2026): as 12 "outras máquinas" — 48 créditos
+
+Ficaram de fora do recorte perna/polia da rodada 2 por erro meu de priorização:
+entre elas estava a `remada-maquina`, que o Filipe tinha apontado por nome
+("puxando sem nenhuma corda"). Originais em `public/uploads/_backup-2026-08-26b/`.
+
+**Resultado: 12 de 12 melhoraram, 10 corrigidos de vez.** Todos instalados.
+
+## Corrigidos (10)
+
+- `remada-maquina` — o pegador agora é a ponta do braço rígido da máquina e está
+  sempre preso a ela; era exatamente a queixa.
+- `extensao-lombar-na-maquina` — máquina de extensão lombar de verdade, almofada
+  nas costas, cinto no colo, placa de peso visível.
+- `abdominal-na-maquina-com-carga` — máquina de abdominal com barra no peito.
+- `elevacao-de-quadril-na-maquina` — barra acolchoada com anilhas sobre o quadril.
+- `elevacao-de-quadril-no-smith` — costas no banco, barra guiada sobre o quadril.
+- `extensao-de-triceps-na-maquina` — antebraços no pad, empurra pra baixo; parou
+  de virar desenvolvimento.
+- `triceps-na-maquina-unilateral`, `chest-press-unilateral`,
+  `voador-na-maquina-unilateral` — **unilateral de verdade**, uma mão só.
+- `supino-declinado-no-smith` — banco finalmente declinado.
+
+## Melhoraram mas com ressalva (2)
+
+- `remada-maquina-unilateral` — aparelho certo, mas ainda usa as duas mãos.
+- `encolhimento-na-maquina` — aparelho certo, mas os ombros quase não sobem.
+
+## O que essa rodada ensinou
+
+A negação nominal do "unilateral" funcionou aqui em 3 de 3, contra 0 de 7 na
+rodada 2. O que mudou foi a frase: em vez de só dizer que uma mão trabalha,
+descrever o que a OUTRA faz — `the other arm hangs relaxed at his side, clearly
+holding nothing at all`. Vale reaproveitar nos 7 unilaterais que ficaram
+bilaterais na rodada 2.
+
+Outro achado: `The rectangular weight stack (...) visibly RISES as he pulls and
+sinks back down` deu ao gerador uma peça concreta pra animar. Quase todos os
+defeitos dessa família eram "aparelho parado".
