@@ -413,6 +413,7 @@ class PortalController extends Controller
             'satisfaction' => ['nullable', 'integer'],
             'discomfort' => ['nullable', 'string'],
             'comment' => ['nullable', 'string'],
+            'finished_at' => ['nullable', 'date'],
         ]);
 
         $session = TrainingSession::where('id', $sessionId)->where('student_id', $student->id)->first();
@@ -426,7 +427,10 @@ class PortalController extends Controller
         // Estagnacao/Progressao usam pra achar "a última sessão". Mantém a data
         // original; só o feedback continua sendo atualizável.
         if ($session->status !== 'completed') {
-            $session->update(['status' => 'completed', 'finished_at' => now()]);
+            $session->update([
+                'status' => 'completed',
+                'finished_at' => $this->momentoDaConclusao($validated['finished_at'] ?? null),
+            ]);
         }
 
         Feedback::updateOrCreate(
@@ -440,5 +444,36 @@ class PortalController extends Controller
         );
 
         return response()->json(['session' => $session]);
+    }
+
+    /**
+     * Quando o treino foi de fato concluído.
+     *
+     * A fila offline pode despachar horas depois (o aluno treina às 7h sem
+     * sinal na academia e o celular só sincroniza à noite), e now() gravava o
+     * horário da SINCRONIZAÇÃO. Treino de domingo despachado na segunda
+     * quebrava o streak — que é a métrica da gamificação.
+     *
+     * O horário do cliente não é confiável (relógio errado, adiantado de
+     * propósito pra forjar streak), então só é aceito dentro de uma janela
+     * defensável: nada no futuro, nada mais velho que 7 dias.
+     */
+    private function momentoDaConclusao(?string $informado): \Illuminate\Support\Carbon
+    {
+        if ($informado === null) {
+            return now();
+        }
+
+        try {
+            $momento = \Illuminate\Support\Carbon::parse($informado);
+        } catch (\Throwable) {
+            return now();
+        }
+
+        if ($momento->isFuture() || $momento->lt(now()->subDays(7))) {
+            return now();
+        }
+
+        return $momento;
     }
 }

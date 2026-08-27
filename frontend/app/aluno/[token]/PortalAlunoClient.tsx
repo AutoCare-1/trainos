@@ -632,6 +632,10 @@ export default function PortalAlunoClient({ token }: { token: string }) {
               satisfaction: item.payload.satisfaction,
               discomfort: item.payload.discomfort,
               comment: item.payload.comment,
+              // Quando o aluno concluiu de fato, não quando deu pra sincronizar:
+              // sem isso, treino de domingo despachado na segunda entrava como
+              // segunda e quebrava o streak. O backend valida a janela.
+              finished_at: new Date(item.criadoEm).toISOString(),
             })
           }
 
