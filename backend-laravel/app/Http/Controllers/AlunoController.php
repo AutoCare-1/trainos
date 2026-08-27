@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\ResolvesStudentForProfessional;
 use App\Http\Requests\StoreAlunoRequest;
 use App\Http\Requests\UpdateAlunoRequest;
 use App\Models\BodyMeasurement;
@@ -21,6 +22,8 @@ use Illuminate\Support\Str;
 
 class AlunoController extends Controller
 {
+    use ResolvesStudentForProfessional;
+
     /**
      * Aplica a cobrança informada (se veio alguma) sem nunca dar UPDATE em
      * monthly_value/billing_type — fecha o plano vigente (ends_on = hoje) e cria
@@ -182,10 +185,9 @@ class AlunoController extends Controller
     // regra de fechar/criar plano de cobrança se billing_type/monthly_value vierem
     public function update(UpdateAlunoRequest $request, string $id): JsonResponse
     {
-        $professionalId = $request->user()->id;
         $validated = $request->validated();
 
-        $student = Student::where('id', $id)->where('professional_id', $professionalId)->first();
+        $student = $this->buscarAlunoDoProfissional($request, $id);
         if (! $student) {
             return response()->json(['error' => 'Aluno não encontrado'], 404);
         }
@@ -224,10 +226,9 @@ class AlunoController extends Controller
     // de alunos. Reativar (ativo: true) devolve o acesso normalmente.
     public function status(Request $request, string $id): JsonResponse
     {
-        $professionalId = $request->user()->id;
         $validated = $request->validate(['ativo' => ['required', 'boolean']]);
 
-        $student = Student::where('id', $id)->where('professional_id', $professionalId)->first();
+        $student = $this->buscarAlunoDoProfissional($request, $id);
         if (! $student) {
             return response()->json(['error' => 'Aluno não encontrado'], 404);
         }
@@ -243,8 +244,7 @@ class AlunoController extends Controller
     // independentes, então quem decide se faz sentido juntar os dois é o personal.
     public function lembretePagamento(Request $request, string $id): JsonResponse
     {
-        $professionalId = $request->user()->id;
-        $student = Student::where('id', $id)->where('professional_id', $professionalId)->first();
+        $student = $this->buscarAlunoDoProfissional($request, $id);
         if (! $student) {
             return response()->json(['error' => 'Aluno não encontrado'], 404);
         }
@@ -266,7 +266,7 @@ class AlunoController extends Controller
             'ends_on' => ['nullable', 'date'],
         ]);
 
-        $student = Student::where('id', $id)->where('professional_id', $request->user()->id)->first();
+        $student = $this->buscarAlunoDoProfissional($request, $id);
         if (! $student) {
             return response()->json(['error' => 'Aluno não encontrado'], 404);
         }
@@ -289,9 +289,7 @@ class AlunoController extends Controller
     // GET /:id — perfil do aluno + treinos
     public function show(Request $request, string $id): JsonResponse
     {
-        $student = Student::where('id', $id)
-            ->where('professional_id', $request->user()->id)
-            ->first();
+        $student = $this->buscarAlunoDoProfissional($request, $id);
 
         if (! $student) {
             return response()->json(['error' => 'Aluno não encontrado'], 404);
@@ -354,7 +352,7 @@ class AlunoController extends Controller
     // POST /:id/medicoes — registra uma nova medição (peso/cintura/quadril/%gordura) do aluno
     public function postMedicao(Request $request, string $id): JsonResponse
     {
-        $student = Student::where('id', $id)->where('professional_id', $request->user()->id)->first();
+        $student = $this->buscarAlunoDoProfissional($request, $id);
         if (! $student) {
             return response()->json(['error' => 'Aluno não encontrado'], 404);
         }
@@ -384,7 +382,7 @@ class AlunoController extends Controller
     // PATCH /:id/avaliacao — atualiza anamnese de saúde (PAR-Q resumido) do aluno
     public function updateAvaliacao(Request $request, string $id): JsonResponse
     {
-        $student = Student::where('id', $id)->where('professional_id', $request->user()->id)->first();
+        $student = $this->buscarAlunoDoProfissional($request, $id);
         if (! $student) {
             return response()->json(['error' => 'Aluno não encontrado'], 404);
         }
@@ -415,7 +413,7 @@ class AlunoController extends Controller
     // POST /:id/foto — profissional envia a foto do aluno (fallback, caso o aluno não tenha feito isso)
     public function uploadFoto(Request $request, string $id): JsonResponse
     {
-        $student = Student::where('id', $id)->where('professional_id', $request->user()->id)->first();
+        $student = $this->buscarAlunoDoProfissional($request, $id);
         if (! $student) {
             return response()->json(['error' => 'Aluno não encontrado'], 404);
         }
