@@ -25,6 +25,12 @@ class TreinoController extends Controller
             'items.*.notes' => ['nullable', 'string'],
             'items.*.structure_type' => ['nullable', 'string'],
             'items.*.group_label' => ['nullable', 'string'],
+            // "Salvar e enviar" numa chamada só. Em duas (POST /treinos e
+            // depois POST /treinos/{id}/enviar), uma falha de rede no meio
+            // deixava um rascunho órfão que o personal não via em lugar
+            // nenhum — e ele clicava de novo, criando outro.
+            'enviar' => ['nullable', 'boolean'],
+            'duration_weeks' => ['nullable', 'integer', 'min:1'],
         ]);
 
         $professionalId = $request->user()->id;
@@ -37,10 +43,20 @@ class TreinoController extends Controller
         }
 
         $workout = DB::transaction(function () use ($validated, $professionalId, $student) {
+            $agora = now();
+            $enviarAgora = (bool) ($validated['enviar'] ?? false);
+            $durationWeeks = $validated['duration_weeks'] ?? null;
+
             $workout = Workout::create([
                 'professional_id' => $professionalId,
                 'student_id' => $student->id,
                 'name' => trim($validated['name']),
+                ...$enviarAgora ? [
+                    'status' => 'sent',
+                    'sent_at' => $agora,
+                    'duration_weeks' => $durationWeeks,
+                    'expires_at' => $durationWeeks ? $agora->copy()->addWeeks($durationWeeks)->toDateString() : null,
+                ] : [],
             ]);
 
             $orderIndex = 0;

@@ -194,8 +194,14 @@ export default function NovoTreinoClient() {
     }
     setSalvando(true)
     try {
-      const { workout } = await api.post<{ workout: Workout }>('/treinos', { student_id: studentId, name, items })
-      await api.post(`/treinos/${workout.id}/enviar`, {
+      // Criar e enviar numa chamada só (transação no backend). Em duas, uma
+      // falha de rede entre elas deixava um rascunho órfão que não aparecia em
+      // lugar nenhum pro personal — e ele clicava de novo, duplicando.
+      const { workout } = await api.post<{ workout: Workout }>('/treinos', {
+        student_id: studentId,
+        name,
+        items,
+        enviar: true,
         duration_weeks: duracaoSemanas ? Number(duracaoSemanas) : undefined,
       })
       router.push(`/treinos/${workout.id}`)
