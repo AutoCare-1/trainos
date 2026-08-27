@@ -28,10 +28,26 @@ class Estagnacao
     public const JANELA_PADRAO = 4;
 
     /**
+     * Histórico mais antigo que isso não entra na comparação.
+     *
+     * Sem recorte, a CTE varria session_entries inteiro do personal — e isso
+     * roda em GET /alunos (dashboard, a cada carregamento). Além do custo, o
+     * veredito ficava pior: "não superou a carga" comparado com um treino de
+     * um ano atrás não diz nada sobre estagnação hoje. Como a janela já exige
+     * `janela` sessões completas, quem treina espaçado demais pra caber em 6
+     * meses simplesmente não gera alerta — que é o comportamento certo.
+     */
+    public const MESES_DE_HISTORICO = 6;
+
+    /**
+     * @param  string|null  $studentId  restringe a um aluno; null = todos os do personal
      * @return array{student_id: string, exercise_id: string, session_id: string, finished_at: string, ultima: float, anterior: float}[]
      */
-    public static function compararUltimasSessoes(?string $professionalId = null, int $janela = self::JANELA_PADRAO): array
-    {
+    public static function compararUltimasSessoes(
+        ?string $professionalId = null,
+        int $janela = self::JANELA_PADRAO,
+        ?string $studentId = null,
+    ): array {
         // Interpolado direto na query (não dá pra bindar em HAVING/CASE como parâmetro
         // posicional junto dos outros `?` sem confundir a ordem) — cast explícito aqui,
         // em vez de confiar só no type-hint do parâmetro, fecha a via de SQL injection
@@ -47,7 +63,9 @@ class Estagnacao
               join workout_exercises we on we.id = se.workout_exercise_id
               join students s on s.id = ts.student_id
               where ts.status = 'completed' and se.load_kg_done is not null
+                and ts.finished_at >= ?
                 and (? is null or s.professional_id = ?)
+                and (? is null or ts.student_id = ?)
               group by ts.student_id, we.exercise_id, ts.id, ts.finished_at
             ),
             ranked as (
@@ -71,7 +89,11 @@ class Estagnacao
             select student_id, exercise_id, session_id, finished_at, ultima, anterior
             from comparacao
             SQL,
-            [$professionalId, $professionalId]
+            [
+                now()->subMonths(self::MESES_DE_HISTORICO)->toDateTimeString(),
+                $professionalId, $professionalId,
+                $studentId, $studentId,
+            ]
         );
 
         return array_map(fn ($r) => (array) $r, $rows);

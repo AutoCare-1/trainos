@@ -322,8 +322,12 @@ class AlunoController extends Controller
 
         // Mesma fonte de verdade de contarEstagnacaoPorAluno() e da notificação
         // push estagnacao_detectada — ver App\Support\Estagnacao.
-        $comparacoesEstagnadas = collect(Estagnacao::compararUltimasSessoes($student->professional_id))
-            ->filter(fn ($c) => $c['student_id'] === $student->id && $c['ultima'] <= $c['anterior']);
+        // studentId vai na query, não num filter() depois: esta tela é de UM
+        // aluno, e calcular a estagnação de todos os alunos do personal pra
+        // jogar fora todos menos um era desperdício puro.
+        $comparacoesEstagnadas = collect(
+            Estagnacao::compararUltimasSessoes($student->professional_id, studentId: $student->id)
+        )->filter(fn ($c) => $c['ultima'] <= $c['anterior']);
         $nomesExercicios = Exercise::whereIn('id', $comparacoesEstagnadas->pluck('exercise_id'))->pluck('name', 'id');
         $alertasEstagnacao = $comparacoesEstagnadas
             ->map(fn ($c) => [
