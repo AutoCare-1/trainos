@@ -87,6 +87,13 @@ class Chat
      * sequência, o que a Anthropic rejeita — então mensagens consecutivas do
      * mesmo role são mescladas em uma só.
      *
+     * A API também exige que a PRIMEIRA mensagem seja "user", e o histórico
+     * começa em "assistant" em dois casos nada raros: o personal puxa conversa
+     * antes do aluno responder, e a janela de 30 mensagens corta no meio de uma
+     * resposta da IA — o que acontece justamente com os alunos mais engajados.
+     * Nesses casos a API devolvia 400, a exceção era capturada lá no controller
+     * e o aluno ficava sem resposta nenhuma, sem erro na tela.
+     *
      * @param  Collection<int, MessageModel>  $historico
      * @return array<int, array{role: string, content: string}>
      */
@@ -102,6 +109,13 @@ class Chat
             }
         }
 
+        // Descarta o que vier antes da primeira fala do aluno. Perder esse
+        // pedaço de contexto é bem melhor que a chamada inteira falhar — e o
+        // system prompt, que carrega o contexto que importa, continua indo.
+        while ($messages && $messages[0]['role'] !== 'user') {
+            array_shift($messages);
+        }
+
         return $messages;
     }
 
@@ -110,6 +124,12 @@ class Chat
     {
         $systemPrompt = self::montarSystemPrompt($contexto);
         $messages = self::montarMensagens($historico);
+
+        // Histórico só com falas do lado do treinador: não há pergunta pra
+        // responder, e mandar array vazio é 400 na certa.
+        if ($messages === []) {
+            throw new RuntimeException('Histórico sem nenhuma mensagem do aluno para responder.');
+        }
 
         $response = self::client()->messages->create(
             model: self::MODEL,
