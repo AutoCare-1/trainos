@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight, Plus, X } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import { api, ApiError } from '@/lib/api'
 import { formatarDataCurta, somarDias } from '@/lib/checkinDates'
-import { DiaAgenda, HorarioAgenda, SemanaAgenda, Student } from '@/lib/types'
+import { HorarioAgenda, SemanaAgenda, Student } from '@/lib/types'
 
 const NOME_DIA = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado']
 const NOME_DIA_CURTO = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
@@ -14,6 +14,11 @@ const NOME_DIA_CURTO = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
 // Grade fixa de horários (05h às 22h, de 1 em 1 hora) — o personal só escolhe
 // o aluno pra cada linha, em vez de digitar o horário toda vez.
 const HORAS_GRADE = Array.from({ length: 18 }, (_, i) => `${String(i + 5).padStart(2, '0')}:00`)
+
+// Coluna fixa e estreita pra hora + 7 colunas iguais que dividem o resto. O
+// minmax(0,1fr) é o que deixa as colunas encolherem abaixo do conteúdo, sem
+// isso a grade estoura a largura da tela e volta a exigir rolagem lateral.
+const COLUNAS_GRADE = '42px repeat(7, minmax(0, 1fr))'
 
 function hojeIso(): string {
   const d = new Date()
@@ -26,8 +31,11 @@ export default function AgendaPage() {
   const [refSemana, setRefSemana] = useState<string | null>(null)
   const [semana, setSemana] = useState<SemanaAgenda | null>(null)
   const [erro, setErro] = useState<string | null>(null)
-  const [novoAberto, setNovoAberto] = useState<string | null>(null) // `${dia_semana}|${hora}` da linha vazia em edição
-  const [editando, setEditando] = useState<string | null>(null) // `${slot_id}|${data}` da linha ocupada em edição
+  // Célula selecionada da grade (`${data}|${hora}`). O formulário abre num
+  // painel abaixo da grade, não dentro da célula: numa coluna de ~45px (que é
+  // o que sobra quando os 7 dias cabem juntos na tela do celular) não cabe
+  // select nem input.
+  const [selecionada, setSelecionada] = useState<{ data: string; diaSemana: number; hora: string } | null>(null)
 
   const carregarSemana = useCallback((ref: string | null) => {
     const query = ref ? `?semana=${ref}` : ''
@@ -67,7 +75,7 @@ export default function AgendaPage() {
         hora,
         duracao_minutos: 60,
       })
-      setNovoAberto(null)
+      setSelecionada(null)
       carregarSemana(refSemana)
     } catch (err) {
       setErro(err instanceof ApiError ? err.message : 'Erro ao criar horário')
@@ -82,7 +90,7 @@ export default function AgendaPage() {
     setErro(null)
     try {
       await api.patch(`/agenda/horarios/${slotId}/ocorrencias`, { data, ...campos })
-      setEditando(null)
+      setSelecionada(null)
       carregarSemana(refSemana)
     } catch (err) {
       setErro(err instanceof ApiError ? err.message : 'Erro ao atualizar o horário')
@@ -146,129 +154,173 @@ export default function AgendaPage() {
 
         {semana === null && !erro && <p className="text-ink-muted">Carregando...</p>}
 
-        <div className="chat-scroll -mx-4 overflow-x-auto px-4 pb-2">
-          <div className="grid grid-cols-7 gap-3" style={{ minWidth: '980px' }}>
-            {semana?.dias.map((dia) => (
-              <DiaCard
-                key={dia.data}
-                dia={dia}
-                students={students}
-                hoje={dia.data === hojeIso()}
-                novoAberto={novoAberto}
-                onAbrirNovo={setNovoAberto}
-                onCriarHorario={(hora, dados) => criarHorario(dia.dia_semana, hora, dados)}
-                editando={editando}
-                onEditar={setEditando}
-                onSalvarOcorrencia={(slotId, campos) => salvarOcorrencia(slotId, dia.data, campos)}
-                onDesativarSlot={desativarSlot}
-              />
+        {semana && (
+          <div className="glass overflow-hidden rounded-2xl">
+            {/* Cabeçalho: os 7 dias, sempre visíveis juntos. A hora fica numa
+                coluna fixa à esquerda em vez de repetida em cada célula — é o
+                que permite as colunas caberem lado a lado até no celular. */}
+            <div className="grid border-b border-line-soft" style={{ gridTemplateColumns: COLUNAS_GRADE }}>
+              <div />
+              {semana.dias.map((dia) => {
+                const ehHoje = dia.data === hojeIso()
+                return (
+                  <div
+                    key={dia.data}
+                    className={`px-1 py-2 text-center ${ehHoje ? 'bg-brand/10' : ''}`}
+                    title={NOME_DIA[dia.dia_semana]}
+                  >
+                    <p className={`text-[11px] font-semibold uppercase ${ehHoje ? 'text-brand' : 'text-ink-muted'}`}>
+                      {NOME_DIA_CURTO[dia.dia_semana]}
+                    </p>
+                    <p className="text-[10px] text-ink-muted">{formatarDataCurta(dia.data).slice(0, 5)}</p>
+                  </div>
+                )
+              })}
+            </div>
+
+            {HORAS_GRADE.map((hora) => (
+              <div
+                key={hora}
+                className="grid border-b border-line-soft last:border-b-0"
+                style={{ gridTemplateColumns: COLUNAS_GRADE }}
+              >
+                <div className="flex items-center justify-end pr-1.5 text-[10px] font-medium text-ink-muted">
+                  {hora}
+                </div>
+                {semana.dias.map((dia) => {
+                  const horario = dia.horarios.find((h) => h.hora === hora)
+                  const estaSelecionada = selecionada?.data === dia.data && selecionada?.hora === hora
+                  return (
+                    <CelulaAgenda
+                      key={dia.data}
+                      horario={horario}
+                      ehHoje={dia.data === hojeIso()}
+                      selecionada={estaSelecionada}
+                      onClick={() =>
+                        setSelecionada(
+                          estaSelecionada ? null : { data: dia.data, diaSemana: dia.dia_semana, hora }
+                        )
+                      }
+                    />
+                  )
+                })}
+              </div>
             ))}
           </div>
-        </div>
+        )}
+
+        {selecionada && semana && (
+          <PainelHorario
+            selecionada={selecionada}
+            horario={semana.dias
+              .find((d) => d.data === selecionada.data)
+              ?.horarios.find((h) => h.hora === selecionada.hora)}
+            students={students}
+            onFechar={() => setSelecionada(null)}
+            onCriar={(dados) => criarHorario(selecionada.diaSemana, selecionada.hora, dados)}
+            onSalvar={(slotId, campos) => salvarOcorrencia(slotId, selecionada.data, campos)}
+            onDesativar={desativarSlot}
+          />
+        )}
       </main>
     </>
   )
 }
 
-function DiaCard({
-  dia,
-  students,
-  hoje,
-  novoAberto,
-  onAbrirNovo,
-  onCriarHorario,
-  editando,
-  onEditar,
-  onSalvarOcorrencia,
-  onDesativarSlot,
+/**
+ * Uma célula da grade: dia x hora. É deliberadamente minúscula — mostra só
+ * quem ocupa o horário (ou um "+" quando está livre), porque numa semana
+ * inteira lado a lado na tela do celular sobram ~45px por coluna. O que
+ * precisa de espaço (trocar aluno, marcar presença) abre no PainelHorario.
+ */
+function CelulaAgenda({
+  horario,
+  ehHoje,
+  selecionada,
+  onClick,
 }: {
-  dia: DiaAgenda
-  students: Student[]
-  hoje: boolean
-  novoAberto: string | null
-  onAbrirNovo: (chave: string | null) => void
-  onCriarHorario: (hora: string, dados: { student_id: string; titulo: string }) => void
-  editando: string | null
-  onEditar: (chave: string | null) => void
-  onSalvarOcorrencia: (slotId: string, campos: { student_id?: string | null; titulo?: string | null; presenca?: string | null }) => void
-  onDesativarSlot: (slotId: string) => void
+  horario: HorarioAgenda | undefined
+  ehHoje: boolean
+  selecionada: boolean
+  onClick: () => void
 }) {
-  const porHora = new Map(dia.horarios.map((h) => [h.hora, h]))
+  const rotulo = horario ? (horario.student ? horario.student.name : horario.titulo ?? 'Vago') : null
 
   return (
-    <div
-      className={`glass flex min-h-[65vh] min-w-0 flex-col rounded-2xl p-3 ${hoje ? 'border-brand/40' : ''}`}
-      title={NOME_DIA[dia.dia_semana]}
+    <button
+      onClick={onClick}
+      title={rotulo ? `${horario?.hora} — ${rotulo}` : `${horario?.hora ?? ''} livre`}
+      className={`min-h-[38px] min-w-0 border-l border-line-soft px-0.5 py-1 text-center transition ${
+        selecionada ? 'bg-brand/15 ring-1 ring-inset ring-brand' : ehHoje ? 'bg-brand/5' : 'hover:bg-ink/5'
+      }`}
     >
-      <div className="mb-2">
-        <p className="text-xs font-semibold uppercase tracking-wide text-ink-muted">{NOME_DIA_CURTO[dia.dia_semana]}</p>
-        <p className="text-xs text-ink-muted">{formatarDataCurta(dia.data)}</p>
-      </div>
-
-      <div className="space-y-1.5">
-        {HORAS_GRADE.map((hora) => {
-          const horario = porHora.get(hora)
-          const chave = `${dia.dia_semana}|${hora}`
-
-          if (horario) {
-            return (
-              <HorarioRow
-                key={hora}
-                horario={horario}
-                students={students}
-                emEdicao={editando === `${horario.slot_id}|${dia.data}`}
-                onEditar={() => onEditar(editando === `${horario.slot_id}|${dia.data}` ? null : `${horario.slot_id}|${dia.data}`)}
-                onSalvar={(campos) => onSalvarOcorrencia(horario.slot_id, campos)}
-                onDesativar={() => onDesativarSlot(horario.slot_id)}
-              />
-            )
-          }
-
-          return (
-            <LinhaVazia
-              key={hora}
-              hora={hora}
-              students={students}
-              aberta={novoAberto === chave}
-              onAbrir={() => onAbrirNovo(novoAberto === chave ? null : chave)}
-              onCriar={(dados) => onCriarHorario(hora, dados)}
+      {rotulo ? (
+        <>
+          <span
+            className={`block truncate text-[10px] font-semibold leading-tight ${
+              horario?.student ? 'text-ink' : 'text-ink-muted'
+            }`}
+          >
+            {rotulo}
+          </span>
+          {(horario?.eh_excecao || horario?.presenca) && (
+            <span
+              className={`mx-auto mt-0.5 block h-1.5 w-1.5 rounded-full ${
+                horario?.presenca === 'presente'
+                  ? 'bg-success'
+                  : horario?.presenca === 'falta'
+                    ? 'bg-danger'
+                    : 'bg-warning'
+              }`}
             />
-          )
-        })}
-      </div>
-    </div>
+          )}
+        </>
+      ) : (
+        <Plus size={11} className="mx-auto text-ink-muted/40" />
+      )}
+    </button>
   )
 }
 
-function LinhaVazia({
-  hora,
+/**
+ * Formulário do horário selecionado, abaixo da grade. Fica aqui e não dentro
+ * da célula por espaço: select e input não cabem numa coluna de 45px.
+ */
+function PainelHorario({
+  selecionada,
+  horario,
   students,
-  aberta,
-  onAbrir,
+  onFechar,
   onCriar,
+  onSalvar,
+  onDesativar,
 }: {
-  hora: string
+  selecionada: { data: string; diaSemana: number; hora: string }
+  horario: HorarioAgenda | undefined
   students: Student[]
-  aberta: boolean
-  onAbrir: () => void
+  onFechar: () => void
   onCriar: (dados: { student_id: string; titulo: string }) => void
+  onSalvar: (slotId: string, campos: { student_id?: string | null; titulo?: string | null; presenca?: string | null }) => void
+  onDesativar: (slotId: string) => void
 }) {
   const [aluno, setAluno] = useState('')
   const [titulo, setTitulo] = useState('')
 
   return (
-    <div className={`rounded-xl ${aberta ? 'glass-flat p-2' : ''}`}>
-      <button
-        onClick={onAbrir}
-        className="flex w-full items-center gap-1.5 rounded-lg px-1.5 py-1 text-left text-xs text-ink-muted transition hover:bg-ink/5"
-      >
-        <span className="font-medium">{hora}</span>
-        <span className="flex items-center gap-0.5 text-ink-muted/70">
-          <Plus size={11} /> aluno
-        </span>
-      </button>
+    <div className="glass mt-4 rounded-2xl p-4">
+      <div className="mb-3 flex items-start justify-between gap-2">
+        <div>
+          <p className="text-sm font-semibold text-ink">
+            {NOME_DIA[selecionada.diaSemana]}, {selecionada.hora}
+          </p>
+          <p className="text-xs text-ink-muted">{formatarDataCurta(selecionada.data)}</p>
+        </div>
+        <button onClick={onFechar} aria-label="Fechar" className="text-ink-muted transition hover:text-ink">
+          <X size={18} />
+        </button>
+      </div>
 
-      {aberta && (
+      {!horario ? (
         <form
           onSubmit={(e) => {
             e.preventDefault()
@@ -276,12 +328,12 @@ function LinhaVazia({
             setAluno('')
             setTitulo('')
           }}
-          className="mt-1.5 space-y-1.5"
+          className="space-y-2"
         >
           <select
             value={aluno}
             onChange={(e) => setAluno(e.target.value)}
-            className="input-dark w-full rounded-lg px-2 py-1.5 text-xs"
+            className="input-dark w-full rounded-xl px-3 py-2 text-sm"
             autoFocus
           >
             <option value="">Sem aluno (bloqueio pessoal)</option>
@@ -297,124 +349,119 @@ function LinhaVazia({
               placeholder="Ou digite um nome/título (substituto sem cadastro, bloqueio pessoal...)"
               value={titulo}
               onChange={(e) => setTitulo(e.target.value)}
-              className="input-dark w-full rounded-lg px-2 py-1.5 text-xs"
+              className="input-dark w-full rounded-xl px-3 py-2 text-sm"
             />
           )}
-          <button type="submit" className="btn-secondary w-full rounded-lg px-2 py-1.5 text-xs">
-            Salvar
+          <button type="submit" className="btn-primary w-full rounded-xl px-4 py-2.5 text-sm">
+            Colocar nesse horário
           </button>
+          <p className="text-xs text-ink-muted">Esse horário passa a se repetir toda semana.</p>
         </form>
+      ) : (
+        <HorarioSelecionado
+          horario={horario}
+          students={students}
+          onSalvar={(campos) => onSalvar(horario.slot_id, campos)}
+          onDesativar={() => onDesativar(horario.slot_id)}
+        />
       )}
     </div>
   )
 }
 
-function HorarioRow({
+function HorarioSelecionado({
   horario,
   students,
-  emEdicao,
-  onEditar,
   onSalvar,
   onDesativar,
 }: {
   horario: HorarioAgenda
   students: Student[]
-  emEdicao: boolean
-  onEditar: () => void
   onSalvar: (campos: { student_id?: string | null; titulo?: string | null; presenca?: string | null }) => void
   onDesativar: () => void
 }) {
   const [nomeDigitado, setNomeDigitado] = useState(horario.student ? '' : horario.titulo ?? '')
-  const rotulo = horario.student ? horario.student.name : horario.titulo ?? 'Vago'
 
   return (
-    <div className="glass-flat rounded-xl p-2.5">
-      <button onClick={onEditar} className="flex w-full items-start justify-between gap-1 text-left">
-        <div className="min-w-0">
-          <p className="text-xs font-semibold text-ink">{horario.hora}</p>
-          <p className="truncate text-xs text-ink-soft">{rotulo}</p>
-          <div className="mt-1 flex flex-wrap items-center gap-1">
-            {horario.eh_excecao && (
-              <span className="rounded-full bg-warning-soft px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-warning">
-                Trocado
-              </span>
-            )}
-            {horario.presenca && (
-              <span
-                className={`rounded-full px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide ${
-                  horario.presenca === 'presente' ? 'bg-success-soft text-success' : 'bg-danger-soft text-danger'
-                }`}
-              >
-                {horario.presenca === 'presente' ? 'Presente' : 'Faltou'}
-              </span>
-            )}
-          </div>
-        </div>
-        {emEdicao ? <X size={16} className="shrink-0 text-ink-muted" /> : null}
-      </button>
-
-      {emEdicao && (
-        <div className="mt-3 space-y-2 border-t border-line-soft pt-3">
-          <select
-            defaultValue={horario.student?.id ?? ''}
-            onChange={(e) => onSalvar({ student_id: e.target.value || null, titulo: null })}
-            className="input-dark w-full rounded-xl px-3 py-2 text-sm"
+    <div className="space-y-2">
+      <div className="flex flex-wrap items-center gap-1.5">
+        <span className="text-sm text-ink-soft">
+          {horario.student ? horario.student.name : horario.titulo ?? 'Vago'}
+        </span>
+        {horario.eh_excecao && (
+          <span className="rounded-full bg-warning-soft px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-warning">
+            Trocado só nesse dia
+          </span>
+        )}
+        {horario.presenca && (
+          <span
+            className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
+              horario.presenca === 'presente' ? 'bg-success-soft text-success' : 'bg-danger-soft text-danger'
+            }`}
           >
-            <option value="">Vago / digitar nome abaixo</option>
-            {students.map((s) => (
-              <option key={s.id} value={s.id}>
-                {s.name}
-              </option>
-            ))}
-          </select>
+            {horario.presenca === 'presente' ? 'Presente' : 'Faltou'}
+          </span>
+        )}
+      </div>
 
-          {!horario.student && (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault()
-                onSalvar({ student_id: null, titulo: nomeDigitado || null })
-              }}
-              className="flex gap-1.5"
-            >
-              <input
-                type="text"
-                placeholder="Ou digite o nome (substituto avulso, sem cadastro)"
-                value={nomeDigitado}
-                onChange={(e) => setNomeDigitado(e.target.value)}
-                className="input-dark w-full rounded-xl px-3 py-2 text-sm"
-              />
-              <button type="submit" className="btn-secondary shrink-0 rounded-xl px-3 py-2 text-xs">
-                Salvar
-              </button>
-            </form>
-          )}
+      <select
+        defaultValue={horario.student?.id ?? ''}
+        onChange={(e) => onSalvar({ student_id: e.target.value || null, titulo: null })}
+        className="input-dark w-full rounded-xl px-3 py-2 text-sm"
+      >
+        <option value="">Vago / digitar nome abaixo</option>
+        {students.map((s) => (
+          <option key={s.id} value={s.id}>
+            {s.name}
+          </option>
+        ))}
+      </select>
 
-          {horario.student && (
-            <div className="flex gap-2">
-              <button
-                onClick={() => onSalvar({ presenca: 'presente' })}
-                className={`flex-1 rounded-xl px-3 py-2 text-xs font-semibold ${
-                  horario.presenca === 'presente' ? 'bg-success text-white' : 'glass-hover glass text-ink-soft'
-                }`}
-              >
-                Presente
-              </button>
-              <button
-                onClick={() => onSalvar({ presenca: 'falta' })}
-                className={`flex-1 rounded-xl px-3 py-2 text-xs font-semibold ${
-                  horario.presenca === 'falta' ? 'bg-danger text-white' : 'glass-hover glass text-ink-soft'
-                }`}
-              >
-                Faltou
-              </button>
-            </div>
-          )}
+      {!horario.student && (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            onSalvar({ student_id: null, titulo: nomeDigitado || null })
+          }}
+          className="flex gap-1.5"
+        >
+          <input
+            type="text"
+            placeholder="Ou digite o nome (substituto avulso, sem cadastro)"
+            value={nomeDigitado}
+            onChange={(e) => setNomeDigitado(e.target.value)}
+            className="input-dark w-full rounded-xl px-3 py-2 text-sm"
+          />
+          <button type="submit" className="btn-secondary shrink-0 rounded-xl px-3 py-2 text-xs">
+            Salvar
+          </button>
+        </form>
+      )}
 
-          <button onClick={onDesativar} className="text-xs font-medium text-danger transition hover:underline">
-            Remover esse horário fixo da agenda
+      {horario.student && (
+        <div className="flex gap-2">
+          <button
+            onClick={() => onSalvar({ presenca: 'presente' })}
+            className={`flex-1 rounded-xl px-3 py-2 text-xs font-semibold ${
+              horario.presenca === 'presente' ? 'bg-success text-white' : 'glass-hover glass text-ink-soft'
+            }`}
+          >
+            Presente
+          </button>
+          <button
+            onClick={() => onSalvar({ presenca: 'falta' })}
+            className={`flex-1 rounded-xl px-3 py-2 text-xs font-semibold ${
+              horario.presenca === 'falta' ? 'bg-danger text-white' : 'glass-hover glass text-ink-soft'
+            }`}
+          >
+            Faltou
           </button>
         </div>
       )}
+
+      <button onClick={onDesativar} className="text-xs font-medium text-danger transition hover:underline">
+        Remover esse horário fixo da agenda
+      </button>
     </div>
   )
 }
