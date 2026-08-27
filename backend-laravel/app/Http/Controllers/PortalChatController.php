@@ -67,14 +67,29 @@ class PortalChatController extends Controller
 
         $messages = Message::where('student_id', $student->id)->orderBy('created_at')->get();
 
-        // Verdade de "lido" no servidor (pro tipo de notificação mensagem_nao_lida) —
-        // antes disso só existia como localStorage no navegador do aluno.
-        Message::where('student_id', $student->id)
+        // De propósito NÃO marca como lido aqui: este GET é o polling do portal,
+        // que roda com o aluno em qualquer aba (e até com o app em segundo
+        // plano). Marcar aqui dava "lido" pra mensagem que ninguém viu, e a
+        // MensagemNaoLidaRule nunca achava candidato — a notificação inteira
+        // virava código morto. Quem marca é POST .../mensagens/lidas, chamado
+        // pelo portal só quando a aba de chat está de fato aberta.
+        return response()->json(['messages' => $messages]);
+    }
+
+    // POST /:token/mensagens/lidas — o aluno abriu (ou está com) a aba de chat aberta
+    public function marcarLidas(string $token): JsonResponse
+    {
+        $student = $this->buscarAlunoPorToken($token);
+        if (! $student) {
+            return response()->json(['error' => 'Link inválido'], 404);
+        }
+
+        $marcadas = Message::where('student_id', $student->id)
             ->whereIn('sender', ['ai', 'professional'])
             ->whereNull('read_at')
             ->update(['read_at' => now()]);
 
-        return response()->json(['messages' => $messages]);
+        return response()->json(['marcadas' => $marcadas]);
     }
 
     // POST /:token/mensagens — aluno envia mensagem; IA responde se o autopilot estiver ligado

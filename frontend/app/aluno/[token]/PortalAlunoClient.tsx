@@ -481,9 +481,15 @@ export default function PortalAlunoClient({ token }: { token: string }) {
 
   // Persiste no localStorage assim que o aluno abre a aba de mensagens (o
   // "visto até" em si já é derivado direto de `aba`/`messages` acima).
+  //
+  // É aqui também que o servidor fica sabendo: o GET do histórico é polling e
+  // roda em qualquer aba, então marcar lá dava "lido" pra mensagem que ninguém
+  // viu. Este effect só dispara com a aba de chat aberta — que é o momento em
+  // que o aluno de fato está olhando o chat.
   useEffect(() => {
     if (aba !== 'chat' || !ultimaMensagem) return
     localStorage.setItem(chaveUltimaVista(token), ultimaMensagem.created_at)
+    api.post(`/portal/${token}/mensagens/lidas`).catch(() => {})
   }, [aba, ultimaMensagem, token])
 
   // Notifica o aluno quando chega mensagem nova do professor/IA e ele não está na aba de chat.

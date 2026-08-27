@@ -230,6 +230,7 @@ Route::prefix('portal')->group(function () {
 
     Route::get('/{token}/mensagens', [PortalChatController::class, 'index']);
     Route::post('/{token}/mensagens', [PortalChatController::class, 'store']);
+    Route::post('/{token}/mensagens/lidas', [PortalChatController::class, 'marcarLidas']);
 
     // throttle:push-portal — chaveado pelo token do portal (App\Providers\AppServiceProvider),
     // não por IP: não penaliza vários usuários legítimos atrás do mesmo IP
