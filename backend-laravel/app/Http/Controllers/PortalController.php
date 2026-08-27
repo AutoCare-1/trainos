@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Concerns\ResolvesStudentByToken;
 use App\Models\Feedback;
 use App\Models\SessionEntry;
 use App\Models\TrainingSession;
@@ -18,16 +17,11 @@ use Illuminate\Support\Facades\DB;
 
 class PortalController extends Controller
 {
-    use ResolvesStudentByToken;
-
     // GET /:token — dados do aluno + treino selecionado (?workout_id=, senão o mais
     // recente não-arquivado) + lista dos treinos disponíveis pro aluno escolher
     public function show(Request $request, string $token): JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         // Só treinos não-arquivados entram na lista de escolha — arquivar é decisão
         // manual do personal (nunca automática por expirar), então um treino vencido
@@ -171,10 +165,7 @@ class PortalController extends Controller
     // POST /:token/avaliacao — o próprio aluno responde a avaliação de saúde (PAR-Q) no primeiro acesso
     public function avaliacao(Request $request, string $token): JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $validated = $request->validate([
             'par_q_answers' => ['required', 'array'],
@@ -198,10 +189,7 @@ class PortalController extends Controller
     // treino com prazo definido vence (ver PortalController::show, revisaoPendente)
     public function revisao(Request $request, string $token): JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $validated = $request->validate([
             'workout_id' => ['required', 'string'],
@@ -249,10 +237,7 @@ class PortalController extends Controller
     // POST /:token/foto — o próprio aluno envia sua foto de perfil
     public function foto(Request $request, string $token): JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $request->validate(['foto' => ['required', 'file', 'mimetypes:image/*', 'max:10240']]);
 
@@ -265,10 +250,7 @@ class PortalController extends Controller
     // POST /:token/sessoes — inicia (ou retoma) uma sessão de execução do treino
     public function iniciarSessao(Request $request, string $token): JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $validated = $request->validate(['workout_id' => ['required', 'string']]);
 
@@ -307,10 +289,7 @@ class PortalController extends Controller
     // POST /:token/sessoes/:sessionId/registros — registra uma série executada
     public function registrarSerie(Request $request, string $token, string $sessionId): JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $validated = $request->validate([
             'workout_exercise_id' => ['required', 'string'],
@@ -403,10 +382,7 @@ class PortalController extends Controller
     // POST /:token/sessoes/:sessionId/concluir — finaliza a sessão + feedback pós-treino
     public function concluirSessao(Request $request, string $token, string $sessionId): JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $validated = $request->validate([
             'effort_rpe' => ['nullable', 'integer'],

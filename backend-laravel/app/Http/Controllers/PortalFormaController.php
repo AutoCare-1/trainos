@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Concerns\ResolvesStudentByToken;
 use App\Models\FormAnalysisResult;
 use App\Models\FormCorrectionVideo;
 use App\Models\TrainingSession;
@@ -19,8 +18,6 @@ use Illuminate\Support\Str;
 
 class PortalFormaController extends Controller
 {
-    use ResolvesStudentByToken;
-
     private static function inferirNivelAluno(int $totalSessoesConcluidas): string
     {
         if ($totalSessoesConcluidas < 20) {
@@ -40,10 +37,7 @@ class PortalFormaController extends Controller
             return $resp;
         }
 
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $request->validate(['video' => ['required', 'file', 'mimetypes:video/*', 'max:51200']]);
 

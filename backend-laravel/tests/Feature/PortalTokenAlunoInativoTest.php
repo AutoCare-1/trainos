@@ -36,6 +36,24 @@ class PortalTokenAlunoInativoTest extends TestCase
         $this->getJson("/portal/{$student->invite_token}/mensagens")->assertNotFound();
     }
 
+    /**
+     * A checagem de token virou middleware justamente pra uma rota nova não
+     * poder esquecer dela (antes eram as mesmas 4 linhas repetidas em cada
+     * método). Este teste é a trava: rota do portal sem aluno.token passa a
+     * ser falha de teste, não algo que se descobre em produção.
+     */
+    public function test_toda_rota_do_portal_exige_o_middleware_de_token(): void
+    {
+        $desprotegidas = collect(app('router')->getRoutes()->getRoutes())
+            ->filter(fn ($rota) => str_starts_with($rota->uri(), 'portal/'))
+            ->reject(fn ($rota) => in_array('aluno.token', $rota->gatherMiddleware(), true))
+            ->map(fn ($rota) => $rota->uri())
+            ->values()
+            ->all();
+
+        $this->assertSame([], $desprotegidas);
+    }
+
     public function test_token_de_aluno_ativo_continua_acessando_normalmente(): void
     {
         $professional = Professional::create([

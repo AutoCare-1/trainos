@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Concerns\ResolvesStudentByToken;
 use App\Models\Exercise;
 use App\Models\GymAnalysisResult;
 use App\Models\GymMediaSubmission;
@@ -20,8 +19,6 @@ use Illuminate\Support\Str;
 
 class PortalAcademiaController extends Controller
 {
-    use ResolvesStudentByToken;
-
     private const LABEL_PAR_Q = [
         'cardiaco' => 'histórico cardíaco',
         'tontura' => 'tontura/equilíbrio',
@@ -42,12 +39,9 @@ class PortalAcademiaController extends Controller
     }
 
     // GET /:token/academia — histórico de submissões do aluno, mais recente primeiro
-    public function index(string $token): JsonResponse
+    public function index(Request $request, string $token): JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $submissions = DB::table('gym_media_submissions as s')
             ->leftJoin('gym_workout_recommendations as r', 'r.submission_id', '=', 's.id')
@@ -60,12 +54,9 @@ class PortalAcademiaController extends Controller
     }
 
     // GET /:token/academia/:submissionId — detalhe de uma submissão (mídia, análise e recomendação)
-    public function show(string $token, string $submissionId): JsonResponse
+    public function show(Request $request, string $token, string $submissionId): JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $submission = GymMediaSubmission::where('id', $submissionId)->where('student_id', $student->id)->first();
         if (! $submission) {
@@ -98,10 +89,7 @@ class PortalAcademiaController extends Controller
             return $resp;
         }
 
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $request->validate([
             'media' => ['required', 'array', 'min:1', 'max:10'],

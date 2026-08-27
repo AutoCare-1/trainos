@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Concerns\ResolvesStudentByToken;
 use App\Models\PosturalAssessment;
 use App\Support\AvaliacaoPostural;
 use App\Support\ErrorReporting;
@@ -14,15 +13,10 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class PortalPosturalController extends Controller
 {
-    use ResolvesStudentByToken;
-
     // GET /:token/postural — histórico de avaliações posturais do aluno, mais recente primeiro
-    public function index(string $token): JsonResponse
+    public function index(Request $request, string $token): JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $avaliacoes = PosturalAssessment::where('student_id', $student->id)
             ->orderByDesc('taken_at')
@@ -38,10 +32,7 @@ class PortalPosturalController extends Controller
             return $resp;
         }
 
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $request->validate([
             'foto_frente' => ['required', 'file', 'mimetypes:image/*', 'max:15360'],
@@ -98,12 +89,9 @@ class PortalPosturalController extends Controller
     }
 
     // GET /:token/postural/:id/imagem/:angulo — serve o arquivo (autenticado pelo token do aluno)
-    public function imagem(string $token, string $id, string $angulo): JsonResponse|BinaryFileResponse
+    public function imagem(Request $request, string $token, string $id, string $angulo): JsonResponse|BinaryFileResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $avaliacao = PosturalAssessment::where('id', $id)->where('student_id', $student->id)->first();
         if (! $avaliacao) {

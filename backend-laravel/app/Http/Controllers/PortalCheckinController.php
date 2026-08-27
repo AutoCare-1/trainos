@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Concerns\ResolvesStudentByToken;
 use App\Models\Checkin;
 use App\Support\Checkins;
 use App\Support\Uploads;
@@ -12,15 +11,10 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class PortalCheckinController extends Controller
 {
-    use ResolvesStudentByToken;
-
     // GET /:token/checkins/summary — marcadores semanal/mensal/anual + grid da semana atual
-    public function summary(string $token): JsonResponse
+    public function summary(Request $request, string $token): JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         return response()->json([
             'semana' => Checkins::calcularResumoSemana($student->id, null),
@@ -34,10 +28,7 @@ class PortalCheckinController extends Controller
     // (grid/contagem do período + galeria de fotos com comentário, mais recente primeiro)
     public function index(Request $request, string $token): JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $ref = $request->query('ref');
         $period = in_array($request->query('period'), ['month', 'year'], true) ? $request->query('period') : 'week';
@@ -54,10 +45,7 @@ class PortalCheckinController extends Controller
     // POST /:token/checkins — marca o treino de hoje (substitui a foto se já tiver check-in hoje)
     public function store(Request $request, string $token): JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $request->validate(['foto' => ['required', 'file', 'mimetypes:image/*', 'max:10240']]);
         $comment = trim((string) $request->input('comment')) ?: null;
@@ -83,12 +71,9 @@ class PortalCheckinController extends Controller
     }
 
     // GET /:token/checkins/:checkinId/imagem — serve o arquivo (autenticado pelo token do aluno)
-    public function imagem(string $token, string $checkinId): JsonResponse|BinaryFileResponse
+    public function imagem(Request $request, string $token, string $checkinId): JsonResponse|BinaryFileResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $checkin = Checkin::where('id', $checkinId)->where('student_id', $student->id)->first();
         if (! $checkin) {

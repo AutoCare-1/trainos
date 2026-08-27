@@ -21,12 +21,9 @@ class StravaController extends Controller
     }
 
     // GET /strava/conectar/:token — redireciona o aluno para a tela de autorização do Strava
-    public function conectar(string $token): RedirectResponse|JsonResponse
+    public function conectar(Request $request, string $token): RedirectResponse|JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $redirectUri = config('app.backend_url').'/strava/callback';
         $url = Strava::montarUrlAutorizacao($redirectUri, $token);
@@ -81,12 +78,9 @@ class StravaController extends Controller
     }
 
     // GET /strava/:token/status — status da conexão + atividades sincronizadas
-    public function status(string $token): JsonResponse
+    public function status(Request $request, string $token): JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $conexoes = DB::table('device_connections')
             ->where('student_id', $student->id)
@@ -108,12 +102,9 @@ class StravaController extends Controller
     }
 
     // POST /strava/:token/sincronizar — busca atividades recentes do Strava
-    public function sincronizar(string $token): JsonResponse
+    public function sincronizar(Request $request, string $token): JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         try {
             $novas = Strava::sincronizarAtividades($student->id);

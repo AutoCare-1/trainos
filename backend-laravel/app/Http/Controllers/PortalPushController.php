@@ -2,21 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Concerns\ResolvesStudentByToken;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PortalPushController extends Controller
 {
-    use ResolvesStudentByToken;
-
     // POST /:token/push/subscribe — salva (ou atualiza) a subscription do aluno
     public function subscribe(Request $request, string $token): JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $validated = $request->validate([
             'endpoint' => ['required', 'string'],
@@ -38,10 +32,7 @@ class PortalPushController extends Controller
     // DELETE /:token/push/subscribe
     public function unsubscribe(Request $request, string $token): JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $validated = $request->validate(['endpoint' => ['required', 'string']]);
 

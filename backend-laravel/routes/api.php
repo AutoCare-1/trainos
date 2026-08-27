@@ -192,10 +192,15 @@ Route::middleware('auth.jwt')->group(function () {
 // Rotas públicas: autenticadas pelo invite_token do aluno, não por JWT (mesmo
 // padrão do backend Node — usadas pelo fluxo de OAuth do Strava e pelo portal).
 Route::prefix('strava')->group(function () {
-    Route::get('/conectar/{token}', [StravaController::class, 'conectar']);
+    // /callback fica de fora do aluno.token: quem chama é o Strava, e a URL
+    // não tem token de aluno nenhum (o vínculo vem do state do OAuth).
     Route::get('/callback', [StravaController::class, 'callback']);
-    Route::get('/{token}/status', [StravaController::class, 'status']);
-    Route::post('/{token}/sincronizar', [StravaController::class, 'sincronizar']);
+
+    Route::middleware('aluno.token')->group(function () {
+        Route::get('/conectar/{token}', [StravaController::class, 'conectar']);
+        Route::get('/{token}/status', [StravaController::class, 'status']);
+        Route::post('/{token}/sincronizar', [StravaController::class, 'sincronizar']);
+    });
 });
 
 // Webhook do Mercado Pago — não é autenticado por token de aluno nem por JWT
@@ -203,7 +208,11 @@ Route::prefix('strava')->group(function () {
 // vem da assinatura HMAC (x-signature), checada dentro do controller.
 Route::post('/assinatura/webhook', [AssinaturaWebhookController::class, 'handle']);
 
-Route::prefix('portal')->group(function () {
+// aluno.token resolve o aluno pelo invite_token da URL e devolve 404 "Link
+// inválido" quando não existe (ou está inativo) — antes isso eram as mesmas
+// quatro linhas repetidas em cada método de controller, que uma rota nova podia
+// esquecer. Ver ResolveAlunoPorToken.
+Route::prefix('portal')->middleware('aluno.token')->group(function () {
     Route::get('/{token}', [PortalController::class, 'show']);
     Route::post('/{token}/avaliacao', [PortalController::class, 'avaliacao']);
     Route::post('/{token}/foto', [PortalController::class, 'foto']);

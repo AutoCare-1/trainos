@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Concerns\ResolvesStudentByToken;
 use App\Models\Message;
 use App\Models\Student;
 use App\Support\Chat;
@@ -14,8 +13,6 @@ use Illuminate\Support\Facades\DB;
 
 class PortalChatController extends Controller
 {
-    use ResolvesStudentByToken;
-
     /** @return array{nome: string, objetivo: ?string, pesoKg: ?float, alturaCm: ?float, treinoAtual: ?string, exerciciosAtuais: string[], sessoesConcluidas: int, ultimoRpe: ?int} */
     private function montarContextoAluno(Student $student): array
     {
@@ -59,12 +56,9 @@ class PortalChatController extends Controller
     }
 
     // GET /:token/mensagens — histórico do chat do aluno
-    public function index(string $token): JsonResponse
+    public function index(Request $request, string $token): JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $messages = Message::where('student_id', $student->id)->orderBy('created_at')->get();
 
@@ -78,12 +72,9 @@ class PortalChatController extends Controller
     }
 
     // POST /:token/mensagens/lidas — o aluno abriu (ou está com) a aba de chat aberta
-    public function marcarLidas(string $token): JsonResponse
+    public function marcarLidas(Request $request, string $token): JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $marcadas = Message::where('student_id', $student->id)
             ->whereIn('sender', ['ai', 'professional'])
@@ -96,10 +87,7 @@ class PortalChatController extends Controller
     // POST /:token/mensagens — aluno envia mensagem; IA responde se o autopilot estiver ligado
     public function store(Request $request, string $token): JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $request->validate(['content' => ['required', 'string', 'max:4000']]);
         $conteudo = trim((string) $request->input('content'));

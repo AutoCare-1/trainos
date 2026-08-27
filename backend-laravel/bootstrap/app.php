@@ -3,6 +3,7 @@
 use App\Http\Middleware\AdminOnly;
 use App\Http\Middleware\JwtAuthenticate;
 use App\Http\Middleware\NormalizeTimestampsToIso8601;
+use App\Http\Middleware\ResolveAlunoPorToken;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -34,6 +35,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'auth.jwt' => JwtAuthenticate::class,
             // CRM interno do produto — sempre encadeado depois de auth.jwt.
             'admin' => AdminOnly::class,
+            // Autenticação das rotas do portal do aluno (invite_token na URL,
+            // nunca JWT) — ver ResolveAlunoPorToken.
+            'aluno.token' => ResolveAlunoPorToken::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

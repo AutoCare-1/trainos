@@ -217,7 +217,7 @@ class AlunoController extends Controller
 
     // PATCH /:id/status — desvincula ("ativo: false") ou reativa um aluno.
     // Desvincular é o jeito do personal parar de treinar um aluno sem apagar o
-    // histórico dele: o aluno perde acesso ao portal na hora (ResolvesStudentByToken
+    // histórico dele: o aluno perde acesso ao portal na hora (ResolveAlunoPorToken
     // só resolve status=active) e para de contar no limite de alunos do plano
     // (Assinatura::alunosAtivos só soma status=active), liberando vaga pra outro
     // aluno — isso importa porque o plano de assinatura é cobrado por quantidade

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Concerns\ResolvesStudentByToken;
 use App\Models\BodyPhoto;
 use App\Support\ErrorReporting;
 use App\Support\EvolucaoFisica;
@@ -13,15 +12,10 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class PortalBodyPhotoController extends Controller
 {
-    use ResolvesStudentByToken;
-
     // GET /:token/body-photos — galeria de fotos de evolução do aluno, mais recente primeiro
-    public function index(string $token): JsonResponse
+    public function index(Request $request, string $token): JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $photos = BodyPhoto::where('student_id', $student->id)
             ->orderByDesc('taken_at')
@@ -33,10 +27,7 @@ class PortalBodyPhotoController extends Controller
     // POST /:token/body-photos — o aluno registra uma nova foto; dispara comentário da Coach IA
     public function store(Request $request, string $token): JsonResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $request->validate(['foto' => ['required', 'file', 'mimetypes:image/*', 'max:15360']]);
 
@@ -78,12 +69,9 @@ class PortalBodyPhotoController extends Controller
     }
 
     // GET /:token/body-photos/:photoId/imagem — serve o arquivo (autenticado pelo token do aluno)
-    public function imagem(string $token, string $photoId): JsonResponse|BinaryFileResponse
+    public function imagem(Request $request, string $token, string $photoId): JsonResponse|BinaryFileResponse
     {
-        $student = $this->buscarAlunoPorToken($token);
-        if (! $student) {
-            return response()->json(['error' => 'Link inválido'], 404);
-        }
+        $student = $this->alunoDoPortal($request);
 
         $photo = BodyPhoto::where('id', $photoId)->where('student_id', $student->id)->first();
         if (! $photo) {
