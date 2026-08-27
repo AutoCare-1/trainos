@@ -12,6 +12,7 @@ import WeightChart from '@/components/WeightChart'
 import { api, ApiError, fetchImagemAutenticada } from '@/lib/api'
 import { ANAMNESE_VAZIA, anamneseTemConteudo, LOCAL_TREINO_OPCOES, normalizarAnamnese, OBJETIVOS_OPCOES } from '@/lib/anamnese'
 import { ASPECTOS_PROGRESSO_OPCOES } from '@/lib/anamneseRevisao'
+import { copiarTexto, linkWhatsApp, mensagemConvite } from '@/lib/compartilharLink'
 import { formatarDataCurta, formatarDataLonga, nomeMes, primeiroDiaAno, primeiroDiaMes, somarDias } from '@/lib/checkinDates'
 import { PAR_Q_VAZIO } from '@/lib/parq'
 import {
@@ -367,8 +368,11 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
               Editar
             </Link>
             <button
-              onClick={() => {
-                navigator.clipboard.writeText(inviteLink)
+              onClick={async () => {
+                if (!(await copiarTexto(inviteLink))) {
+                  setErro('Não consegui copiar o link. Toque nele e copie na mão.')
+                  return
+                }
                 setCopiado(true)
                 setTimeout(() => setCopiado(false), 2000)
               }}
@@ -383,9 +387,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
               )}
             </button>
             <a
-              href={`https://wa.me/?text=${encodeURIComponent(
-                `Oi, ${student.name.split(' ')[0]}! Aqui está seu acesso ao Clube Mais: ${inviteLink}`
-              )}`}
+              href={linkWhatsApp(student.phone, mensagemConvite(student.name, inviteLink))}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 rounded-xl bg-[#25D366] px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"

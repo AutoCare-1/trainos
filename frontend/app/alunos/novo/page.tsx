@@ -7,6 +7,7 @@ import { Check, MessageCircle } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import BackLink from '@/components/BackLink'
 import { api, ApiError } from '@/lib/api'
+import { copiarTexto, linkWhatsApp, mensagemConvite } from '@/lib/compartilharLink'
 import { Student, TipoCobranca } from '@/lib/types'
 
 export default function NovoAlunoPage() {
@@ -73,8 +74,11 @@ export default function NovoAlunoPage() {
                 {link}
               </code>
               <button
-                onClick={() => {
-                  navigator.clipboard.writeText(link)
+                onClick={async () => {
+                  if (!(await copiarTexto(link))) {
+                    setErro('Não consegui copiar o link. Toque nele e copie na mão.')
+                    return
+                  }
                   setCopiado(true)
                   setTimeout(() => setCopiado(false), 2000)
                 }}
@@ -90,9 +94,7 @@ export default function NovoAlunoPage() {
               </button>
             </div>
             <a
-              href={`https://wa.me/?text=${encodeURIComponent(
-                `Oi, ${criado.name.split(' ')[0]}! Aqui está seu acesso ao Clube Mais: ${link}`
-              )}`}
+              href={linkWhatsApp(criado.phone, mensagemConvite(criado.name, link))}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-[#25D366] px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
