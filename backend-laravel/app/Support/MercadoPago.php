@@ -17,6 +17,9 @@ class MercadoPago
 {
     private const BASE_URL = 'https://api.mercadopago.com';
 
+    /** Idade máxima aceita pro ts do header x-signature (ver validarAssinaturaWebhook). */
+    private const JANELA_WEBHOOK_SEGUNDOS = 300;
+
     private static function accessToken(): string
     {
         $token = config('services.mercado_pago.access_token');
@@ -139,6 +142,14 @@ class MercadoPago
         $ts = $partes['ts'] ?? null;
         $v1 = $partes['v1'] ?? null;
         if (! $ts || ! $v1) {
+            return false;
+        }
+
+        // O ts entra no manifest (logo, é assinado e não dá pra forjar), mas
+        // assinatura válida sozinha não diz que a requisição é de agora: sem
+        // comparar com o relógio, uma requisição capturada valia pra sempre.
+        // 5 min cobre atraso de rede e diferença de relógio entre servidores.
+        if (abs(now()->timestamp - (int) $ts) > self::JANELA_WEBHOOK_SEGUNDOS) {
             return false;
         }
 

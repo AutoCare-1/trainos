@@ -260,4 +260,90 @@ class AssinaturaTest extends TestCase
     {
         $this->postJson('/assinatura/webhook', ['type' => 'payment'])->assertOk();
     }
+
+    /**
+     * Monta o header x-signature como o Mercado Pago monta, pra exercitar o
+     * caminho de assinatura VÁLIDA (os testes acima só cobriam a rejeição).
+     */
+    private function assinarWebhook(string $dataId, string $requestId = 'req-1', ?int $ts = null): array
+    {
+        $ts ??= now()->timestamp;
+        $secret = 'segredo-de-teste';
+        config(['services.mercado_pago.webhook_secret' => $secret]);
+
+        $v1 = hash_hmac('sha256', "id:{$dataId};request-id:{$requestId};ts:{$ts};", $secret);
+
+        return ['x-signature' => "ts={$ts},v1={$v1}", 'x-request-id' => $requestId];
+    }
+
+    private function assinaturaAtivaComCobranca(string $planoChave = 'custom'): ProfessionalSubscription
+    {
+        [$professional] = $this->criarPersonal(diasAtras: 10);
+
+        return ProfessionalSubscription::create([
+            'professional_id' => $professional->id,
+            'plano_chave' => $planoChave,
+            'status' => ProfessionalSubscription::STATUS_ATIVA,
+            'mp_preapproval_id' => 'mp-preapproval-123',
+            'proxima_cobranca_em' => now()->toDateString(),
+        ]);
+    }
+
+    public function test_webhook_de_pagamento_repetido_nao_estende_a_assinatura_duas_vezes(): void
+    {
+        config(['services.mercado_pago.access_token' => 'token-teste']);
+        $subscription = $this->assinaturaAtivaComCobranca();
+        Http::fake([
+            'api.mercadopago.com/v1/payments/pay-1' => Http::response([
+                'status' => 'approved',
+                'transaction_amount' => 79.90,
+                'preapproval_id' => 'mp-preapproval-123',
+            ], 200),
+        ]);
+
+        $this->postJson('/assinatura/webhook', ['type' => 'payment', 'data' => ['id' => 'pay-1']], $this->assinarWebhook('pay-1'))
+            ->assertOk();
+
+        $cobrancaAposPrimeiro = $subscription->fresh()->proxima_cobranca_em->toDateString();
+
+        // Reentrega do MESMO pagamento: é retry normal do Mercado Pago, não
+        // pagamento novo. Não pode gravar de novo nem empurrar mais um mês.
+        $this->postJson('/assinatura/webhook', ['type' => 'payment', 'data' => ['id' => 'pay-1']], $this->assinarWebhook('pay-1', 'req-2'))
+            ->assertOk();
+
+        $this->assertSame(1, $subscription->payments()->count());
+        $this->assertSame($cobrancaAposPrimeiro, $subscription->fresh()->proxima_cobranca_em->toDateString());
+    }
+
+    public function test_webhook_rejeita_assinatura_valida_mas_antiga(): void
+    {
+        // Assinatura correta, ts de uma hora atrás: requisição capturada e
+        // reenviada não pode continuar valendo pra sempre.
+        $headers = $this->assinarWebhook('pay-1', 'req-1', ts: now()->subHour()->timestamp);
+
+        $this->postJson('/assinatura/webhook', ['type' => 'payment', 'data' => ['id' => 'pay-1']], $headers)
+            ->assertStatus(401);
+    }
+
+    public function test_pagamento_aprovado_com_valor_divergente_nao_ativa_assinatura(): void
+    {
+        config(['services.mercado_pago.access_token' => 'token-teste']);
+        $subscription = $this->assinaturaAtivaComCobranca(planoChave: 'custom'); // 79.90
+        $subscription->update(['status' => ProfessionalSubscription::STATUS_ATRASADA]);
+        Http::fake([
+            'api.mercadopago.com/v1/payments/pay-2' => Http::response([
+                'status' => 'approved',
+                'transaction_amount' => 1.00,
+                'preapproval_id' => 'mp-preapproval-123',
+            ], 200),
+        ]);
+
+        $this->postJson('/assinatura/webhook', ['type' => 'payment', 'data' => ['id' => 'pay-2']], $this->assinarWebhook('pay-2'))
+            ->assertOk();
+
+        // O dinheiro que entrou fica registrado, mas quem libera mês de
+        // assinatura por valor fora do plano é uma pessoa, não o webhook.
+        $this->assertSame(1, $subscription->payments()->count());
+        $this->assertSame(ProfessionalSubscription::STATUS_ATRASADA, $subscription->fresh()->status);
+    }
 }

@@ -74,6 +74,15 @@ class AssinaturaWebhookController extends Controller
 
     private function tratarPagamento(string $paymentId): void
     {
+        // Idempotência: o Mercado Pago reenvia o mesmo evento por conta própria.
+        // Sem esta parada, cada reentrega gravava outro pagamento e rodava o
+        // addMonth() de novo lá embaixo — reentrega virava mês grátis.
+        if (ProfessionalSubscriptionPayment::where('mp_payment_id', $paymentId)->exists()) {
+            Log::info('Webhook de pagamento já processado, ignorando reentrega', ['payment_id' => $paymentId]);
+
+            return;
+        }
+
         $pagamento = MercadoPago::buscarPagamento($paymentId);
 
         // O formato exato de onde vem o preapproval_id num pagamento de
@@ -97,14 +106,33 @@ class AssinaturaWebhookController extends Controller
         }
 
         $aprovado = ($pagamento['status'] ?? null) === 'approved';
+        $valor = (float) ($pagamento['transaction_amount'] ?? 0);
 
         ProfessionalSubscriptionPayment::create([
             'subscription_id' => $subscription->id,
             'mp_payment_id' => (string) $paymentId,
-            'valor' => $pagamento['transaction_amount'] ?? 0,
+            'valor' => $valor,
             'status' => $aprovado ? 'aprovado' : 'recusado',
             'pago_em' => $aprovado ? now()->toDateString() : null,
         ]);
+
+        // Um "approved" que veio com valor diferente do plano contratado não
+        // estende assinatura nenhuma: o pagamento fica registrado (pra não
+        // sumir dinheiro que entrou), mas quem decide o que fazer é uma pessoa
+        // olhando o log — automatizar isso é dar mês de assinatura por um
+        // valor que ninguém conferiu.
+        $valorEsperado = config("planos_assinatura.planos.{$subscription->plano_chave}.valor_mensal");
+        if ($aprovado && $valorEsperado !== null && abs($valor - (float) $valorEsperado) >= 0.01) {
+            Log::warning('Pagamento aprovado com valor divergente do plano — revisar manualmente', [
+                'payment_id' => $paymentId,
+                'subscription_id' => $subscription->id,
+                'plano' => $subscription->plano_chave,
+                'valor_recebido' => $valor,
+                'valor_esperado' => $valorEsperado,
+            ]);
+
+            return;
+        }
 
         if ($aprovado) {
             $subscription->update([
