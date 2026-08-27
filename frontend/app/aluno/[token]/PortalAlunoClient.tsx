@@ -111,10 +111,36 @@ function chaveUltimaVista(token: string): string {
   return `chat_ultima_vista_${token}`
 }
 
+/**
+ * Aviso de "não deu pra carregar" com botão de tentar de novo.
+ *
+ * Existe porque as cargas do portal engoliam o erro de rede em silêncio: o
+ * aluno via "Nenhuma foto registrada ainda", que é indistinguível de estado
+ * vazio de verdade. Ele então achava que o app tinha perdido as fotos dele — e
+ * isso virava suporte pro personal, que não tinha como diagnosticar.
+ */
+function FalhaAoCarregar({ onTentarDeNovo }: { onTentarDeNovo: () => void }) {
+  return (
+    <div className="glass-flat rounded-2xl px-4 py-5 text-center">
+      <p className="text-sm text-ink-soft">Não consegui carregar isso agora.</p>
+      <p className="mt-1 text-xs text-ink-muted">Pode ser a conexão da academia.</p>
+      <button onClick={onTentarDeNovo} className="btn-secondary mt-3 rounded-xl px-4 py-2 text-xs">
+        Tentar de novo
+      </button>
+    </div>
+  )
+}
+
 export default function PortalAlunoClient({ token }: { token: string }) {
   const [data, setData] = useState<PortalData | null>(null)
   const [erro, setErro] = useState<string | null>(null)
   const [aba, setAba] = useState<'treino' | 'checkin' | 'evolucao' | 'fotos' | 'academia' | 'desafio' | 'chat'>('treino')
+  // Quais cargas falharam, pra cada aba poder mostrar "tentar de novo" em vez
+  // de um estado vazio mentiroso. Ver FalhaAoCarregar.
+  const [falhas, setFalhas] = useState<Record<string, boolean>>({})
+  const marcarFalha = useCallback((area: string, falhou: boolean) => {
+    setFalhas((atual) => (atual[area] === falhou ? atual : { ...atual, [area]: falhou }))
+  }, [])
   const [menuAberto, setMenuAberto] = useState(false)
   const [instalarAberto, setInstalarAberto] = useState(false)
 
@@ -196,9 +222,12 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   const carregarFotosEvolucao = useCallback(() => {
     api
       .get<{ photos: BodyPhoto[] }>(`/portal/${token}/body-photos`)
-      .then((d) => setFotosEvolucao(d.photos))
-      .catch(() => {})
-  }, [token])
+      .then((d) => {
+        setFotosEvolucao(d.photos)
+        marcarFalha('fotos', false)
+      })
+      .catch(() => marcarFalha('fotos', true))
+  }, [token, marcarFalha])
 
   // avaliação postural (opcional) — 3 fotos (frente/lado/costas) num único envio
   const [posturais, setPosturais] = useState<PosturalAssessment[]>([])
@@ -213,9 +242,12 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   const carregarPosturais = useCallback(() => {
     api
       .get<{ assessments: PosturalAssessment[] }>(`/portal/${token}/postural`)
-      .then((d) => setPosturais(d.assessments))
-      .catch(() => {})
-  }, [token])
+      .then((d) => {
+        setPosturais(d.assessments)
+        marcarFalha('posturais', false)
+      })
+      .catch(() => marcarFalha('posturais', true))
+  }, [token, marcarFalha])
 
   async function enviarAvaliacaoPostural() {
     if (!fotosPostural.frente || !fotosPostural.lado || !fotosPostural.costas) return
@@ -268,9 +300,12 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   const carregarSubmissoesAcademia = useCallback(() => {
     api
       .get<{ submissions: GymMediaSubmission[] }>(`/portal/${token}/academia`)
-      .then((d) => setSubmissoesAcademia(d.submissions))
-      .catch(() => {})
-  }, [token])
+      .then((d) => {
+        setSubmissoesAcademia(d.submissions)
+        marcarFalha('academia', false)
+      })
+      .catch(() => marcarFalha('academia', true))
+  }, [token, marcarFalha])
 
   async function enviarMidiaAcademia(files: File[]) {
     setEnviandoAcademia(true)
@@ -310,9 +345,12 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   const carregarResumoCheckins = useCallback(() => {
     api
       .get<ResumoCheckins>(`/portal/${token}/checkins/summary`)
-      .then(setResumoCheckins)
-      .catch(() => {})
-  }, [token])
+      .then((d) => {
+        setResumoCheckins(d)
+        marcarFalha('checkins', false)
+      })
+      .catch(() => marcarFalha('checkins', true))
+  }, [token, marcarFalha])
 
   const carregarHistoricoCheckins = useCallback(
     (period: 'week' | 'month' | 'year', ref: string | null) => {
@@ -392,9 +430,10 @@ export default function PortalAlunoClient({ token }: { token: string }) {
       .then((d) => {
         setStravaConectado(d.conectado)
         setAtividades(d.atividades)
+        marcarFalha('strava', false)
       })
-      .catch(() => {})
-  }, [token])
+      .catch(() => marcarFalha('strava', true))
+  }, [token, marcarFalha])
 
   async function sincronizarStrava() {
     setSincronizando(true)
@@ -983,7 +1022,11 @@ export default function PortalAlunoClient({ token }: { token: string }) {
               </p>
             )}
 
-            {stravaConectado && atividades.length === 0 && (
+            {falhas.strava && (
+              <FalhaAoCarregar onTentarDeNovo={carregarStrava} />
+            )}
+
+            {!falhas.strava && stravaConectado && atividades.length === 0 && (
               <p className="text-sm text-ink-muted">
                 Nenhuma atividade sincronizada ainda. Clique em &quot;Sincronizar&quot; pra buscar suas atividades
                 recentes.
@@ -1119,6 +1162,10 @@ export default function PortalAlunoClient({ token }: { token: string }) {
               </div>
             )}
           </div>
+
+          {falhas.checkins && !resumoCheckins && (
+            <FalhaAoCarregar onTentarDeNovo={carregarResumoCheckins} />
+          )}
 
           {resumoCheckins && (
             <>
@@ -1359,7 +1406,11 @@ export default function PortalAlunoClient({ token }: { token: string }) {
             </button>
           </div>
 
-          {fotosEvolucao.length === 0 && !enviandoFotoEvolucao && (
+          {falhas.fotos && fotosEvolucao.length === 0 && (
+            <FalhaAoCarregar onTentarDeNovo={carregarFotosEvolucao} />
+          )}
+
+          {!falhas.fotos && fotosEvolucao.length === 0 && !enviandoFotoEvolucao && (
             <div className="glass rounded-2xl border-dashed p-8 text-center">
               <p className="text-sm text-ink-muted">
                 Nenhuma foto registrada ainda. Tire a primeira quando quiser começar a acompanhar
@@ -1601,7 +1652,11 @@ export default function PortalAlunoClient({ token }: { token: string }) {
             )}
           </div>
 
-          {submissoesAcademia.length === 0 && !enviandoAcademia && (
+          {falhas.academia && submissoesAcademia.length === 0 && (
+            <FalhaAoCarregar onTentarDeNovo={carregarSubmissoesAcademia} />
+          )}
+
+          {!falhas.academia && submissoesAcademia.length === 0 && !enviandoAcademia && (
             <div className="glass rounded-2xl border-dashed p-8 text-center">
               <p className="text-sm text-ink-muted">Nenhuma análise enviada ainda.</p>
             </div>
