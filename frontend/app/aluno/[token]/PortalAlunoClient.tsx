@@ -432,8 +432,9 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   useEffect(() => {
     carregarPortal()
 
+    // Uma carga só, pro badge de não-lidas aparecer já na abertura. O polling
+    // em si mora no effect logo abaixo, atrelado à aba de chat.
     carregarMensagens()
-    const intervalo = setInterval(carregarMensagens, 5000)
 
     carregarFotosEvolucao()
     carregarPosturais()
@@ -457,7 +458,6 @@ export default function PortalAlunoClient({ token }: { token: string }) {
       setTimeout(() => setAvisoStrava(null), 5000)
     }
 
-    return () => clearInterval(intervalo)
   }, [
     token,
     carregarPortal,
@@ -468,6 +468,32 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     carregarResumoCheckins,
     carregarSubmissoesAcademia,
   ])
+
+  // Polling do chat só com a aba de chat na frente E a página visível.
+  //
+  // Antes rodava a cada 5s o tempo todo, inclusive com o app em segundo plano
+  // e o aluno no meio do treino: uma sessão de 1h dava ~720 requisições por
+  // aluno, cada uma varrendo o histórico inteiro. Fora da aba de chat quem
+  // avisa de mensagem nova é o push (PortalPushController + lib/push.ts), que
+  // já está implementado — o polling era redundante com ele.
+  useEffect(() => {
+    if (aba !== 'chat') return
+
+    const rodarSeVisivel = () => {
+      if (!document.hidden) carregarMensagens()
+    }
+
+    rodarSeVisivel()
+    const intervalo = setInterval(rodarSeVisivel, 15000)
+    // Voltar pro app é o momento em que o atraso do intervalo mais incomoda:
+    // busca na hora em vez de esperar o próximo ciclo.
+    document.addEventListener('visibilitychange', rodarSeVisivel)
+
+    return () => {
+      clearInterval(intervalo)
+      document.removeEventListener('visibilitychange', rodarSeVisivel)
+    }
+  }, [aba, carregarMensagens])
 
   // Pede permissão de notificação do navegador uma vez, sem bloquear o carregamento da página.
   // Só faz sentido pedir isso pra quem já instalou o app na tela inicial — no
