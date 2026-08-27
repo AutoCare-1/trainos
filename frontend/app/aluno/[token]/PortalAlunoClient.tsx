@@ -327,8 +327,12 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   )
 
   useEffect(() => {
+    // Só com a aba de check-in aberta: é a grade que ela desenha, e no mount
+    // era mais uma requisição competindo com o carregamento do treino. Trocar
+    // de período/mês dentro da aba continua recarregando normalmente.
+    if (aba !== 'checkin') return
     carregarHistoricoCheckins(periodoHistorico, refHistorico)
-  }, [periodoHistorico, refHistorico, carregarHistoricoCheckins])
+  }, [aba, periodoHistorico, refHistorico, carregarHistoricoCheckins])
 
   async function enviarCheckin() {
     if (!fotoCheckinSelecionada) return
@@ -436,11 +440,8 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     // em si mora no effect logo abaixo, atrelado à aba de chat.
     carregarMensagens()
 
-    carregarFotosEvolucao()
-    carregarPosturais()
-    carregarResumoCheckins()
-    carregarSubmissoesAcademia()
-    carregarStrava()
+    // O resto (fotos, posturais, check-ins, academia, Strava) carrega quando a
+    // aba correspondente abre — ver o effect de carga sob demanda abaixo.
     const params = new URLSearchParams(window.location.search)
     const statusStrava = STRAVA_HABILITADO ? params.get('strava') : null
     if (statusStrava) {
@@ -458,15 +459,37 @@ export default function PortalAlunoClient({ token }: { token: string }) {
       setTimeout(() => setAvisoStrava(null), 5000)
     }
 
+  }, [token, carregarPortal, carregarMensagens])
+
+  // Carga sob demanda por aba.
+  //
+  // O mount disparava sete requisições em paralelo — no wifi da academia,
+  // antes do aluno ver o botão de começar o treino, e seis delas de abas que
+  // ele provavelmente nem vai abrir. Agora só portal e mensagens (o badge de
+  // não-lidas) saem na abertura; o resto espera a aba abrir.
+  //
+  // O ref guarda o que já veio pra troca de aba não recarregar tudo de novo.
+  // Cada aba ainda tem seus próprios botões de atualizar/enviar, que chamam os
+  // mesmos loaders direto quando o dado precisa ser refrescado de verdade.
+  const abasCarregadas = useRef<Set<string>>(new Set())
+  useEffect(() => {
+    if (abasCarregadas.current.has(aba)) return
+    abasCarregadas.current.add(aba)
+
+    if (aba === 'checkin') carregarResumoCheckins()
+    if (aba === 'academia') carregarSubmissoesAcademia()
+    if (aba === 'evolucao') carregarStrava()
+    if (aba === 'fotos') {
+      carregarFotosEvolucao()
+      carregarPosturais()
+    }
   }, [
-    token,
-    carregarPortal,
-    carregarMensagens,
+    aba,
+    carregarResumoCheckins,
+    carregarSubmissoesAcademia,
     carregarStrava,
     carregarFotosEvolucao,
     carregarPosturais,
-    carregarResumoCheckins,
-    carregarSubmissoesAcademia,
   ])
 
   // Polling do chat só com a aba de chat na frente E a página visível.
