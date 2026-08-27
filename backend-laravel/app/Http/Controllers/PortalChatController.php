@@ -7,6 +7,7 @@ use App\Models\Message;
 use App\Models\Student;
 use App\Support\Chat;
 use App\Support\ErrorReporting;
+use App\Support\KillSwitchIa;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -117,7 +118,13 @@ class PortalChatController extends Controller
         // Enviar a mensagem do aluno nunca pode falhar por causa da IA — se o
         // autopilot estiver desligado por kill-switch, só não gera resposta
         // automática (mesmo efeito de ai_autopilot=false, sem erro nenhum).
-        if ($student->ai_autopilot && config('ia_pipelines.chat_autopilot') !== false) {
+        // O teto de gasto entra aqui junto com o kill-switch: sem ele, um
+        // invite_token vazado (não expira nem rotaciona, e circula por
+        // WhatsApp) é torneira aberta na conta da Anthropic.
+        $podeChamarIa = $student->ai_autopilot
+            && KillSwitchIa::verificar('chat_autopilot', $student->professional_id) === null;
+
+        if ($podeChamarIa) {
             try {
                 $historico = Message::where('student_id', $student->id)
                     ->orderByDesc('created_at')

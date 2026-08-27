@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -58,12 +59,52 @@ class IaUsage
                 'custo_usd' => self::calcularCustoUsd($model, $input, $output, $cacheWrite, $cacheRead, $webSearches),
                 'created_at' => now(),
             ]);
+
+            // Gasto novo invalida o total cacheado — sem isso o teto diário só
+            // enxergaria esta chamada até um minuto depois, e quem está
+            // abusando faz muita chamada em um minuto.
+            self::esquecerGastoCacheado($professionalId);
         } catch (\Throwable $e) {
             // Nunca propaga: a resposta da IA já foi produzida e entregue.
             Log::warning('Falha ao registrar consumo de IA', [
                 'pipeline' => $pipeline,
                 'erro' => $e->getMessage(),
             ]);
+        }
+    }
+
+    /**
+     * Gasto de hoje em USD. Com $professionalId, só o daquele personal; sem ele,
+     * o total do dia (usado quando a chamada nasce do portal do aluno e não dá
+     * pra atribuir a ninguém).
+     *
+     * Cacheado por 1 min: isso roda antes de toda chamada de IA, e um teto que
+     * atrasa no máximo um minuto pra fechar continua cortando o abuso — o que
+     * não pode é somar a tabela inteira a cada mensagem de chat.
+     */
+    public static function gastoDeHojeUsd(?string $professionalId = null): float
+    {
+        return Cache::remember(self::chaveGasto($professionalId), 60, function () use ($professionalId) {
+            $query = DB::table('ia_usage_logs')->where('created_at', '>=', now()->startOfDay());
+            if ($professionalId !== null) {
+                $query->where('professional_id', $professionalId);
+            }
+
+            return (float) $query->sum('custo_usd');
+        });
+    }
+
+    private static function chaveGasto(?string $professionalId): string
+    {
+        return 'ia_gasto_hoje:'.now()->toDateString().':'.($professionalId ?? 'global');
+    }
+
+    /** O total global sempre muda junto; o do personal, só quando há dono. */
+    private static function esquecerGastoCacheado(?string $professionalId): void
+    {
+        Cache::forget(self::chaveGasto(null));
+        if ($professionalId !== null) {
+            Cache::forget(self::chaveGasto($professionalId));
         }
     }
 

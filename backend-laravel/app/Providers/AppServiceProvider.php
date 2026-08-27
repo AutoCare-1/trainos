@@ -37,5 +37,21 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('postural-portal', function (Request $request) {
             return Limit::perHour(5)->by((string) $request->route('token'));
         });
+
+        // Chat do aluno: cada POST dispara uma chamada Haiku com até 4000
+        // caracteres mais 30 mensagens de histórico. Chaveado pelo token pelo
+        // mesmo motivo dos dois de cima — o invite_token não expira nem
+        // rotaciona, e circula por WhatsApp. Mais folgado que o postural
+        // porque conversa de verdade tem rajada (o aluno manda 3, 4 seguidas).
+        RateLimiter::for('chat-ia-portal', function (Request $request) {
+            return Limit::perMinute(20)->by((string) $request->route('token'));
+        });
+
+        // Lado do personal: já é rota autenticada, então chaveia pelo dono do
+        // JWT — o teto de gasto diário (KillSwitchIa) cuida do custo, aqui é só
+        // pra não deixar um script fazer rajada.
+        RateLimiter::for('chat-ia-personal', function (Request $request) {
+            return Limit::perMinute(20)->by($request->user()?->id ?: $request->ip());
+        });
     }
 }

@@ -80,7 +80,7 @@ Route::middleware('auth.jwt')->group(function () {
         Route::get('/{id}/checkins/{checkinId}/imagem', [AlunoCheckinController::class, 'imagem']);
 
         Route::get('/{id}/mensagens', [AlunoChatController::class, 'index']);
-        Route::post('/{id}/mensagens', [AlunoChatController::class, 'store']);
+        Route::post('/{id}/mensagens', [AlunoChatController::class, 'store'])->middleware('throttle:chat-ia-personal');
         Route::patch('/{id}/autopilot', [AlunoChatController::class, 'autopilot']);
     });
 
@@ -120,7 +120,7 @@ Route::middleware('auth.jwt')->group(function () {
 
     Route::prefix('consultor-ia')->group(function () {
         Route::get('/', [ConsultorIaController::class, 'index']);
-        Route::post('/chat', [ConsultorIaController::class, 'chat']);
+        Route::post('/chat', [ConsultorIaController::class, 'chat'])->middleware('throttle:chat-ia-personal');
     });
 
     Route::get('/negocio', [NegocioController::class, 'index']);
@@ -229,7 +229,7 @@ Route::prefix('portal')->group(function () {
     Route::post('/{token}/sessoes/{sessionId}/concluir', [PortalController::class, 'concluirSessao']);
 
     Route::get('/{token}/mensagens', [PortalChatController::class, 'index']);
-    Route::post('/{token}/mensagens', [PortalChatController::class, 'store']);
+    Route::post('/{token}/mensagens', [PortalChatController::class, 'store'])->middleware('throttle:chat-ia-portal');
     Route::post('/{token}/mensagens/lidas', [PortalChatController::class, 'marcarLidas']);
 
     // throttle:push-portal — chaveado pelo token do portal (App\Providers\AppServiceProvider),
