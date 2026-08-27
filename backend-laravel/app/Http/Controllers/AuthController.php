@@ -6,6 +6,7 @@ use App\Models\Professional;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -29,6 +30,28 @@ class AuthController extends Controller
             // forjar esse campo no cliente só revelaria um link que responde 404.
             'professional' => $professional->only(['id', 'name', 'email', 'is_admin']),
         ]);
+    }
+
+    /**
+     * POST /auth/logout — encerra a sessão de verdade, no servidor.
+     *
+     * Até aqui "Sair" era só apagar o localStorage: o token continuava válido
+     * pelos 7 dias do TTL, então quem copiou o token antes seguia com acesso.
+     * Marcar tokens_valid_after derruba TODOS os tokens já emitidos pra este
+     * personal (inclusive os de outros aparelhos, que é o comportamento
+     * esperado de "sair" quando se desconfia de acesso indevido).
+     */
+    public function logout(Request $request): JsonResponse
+    {
+        $professional = Professional::find($request->user()->id);
+        if (! $professional) {
+            return response()->json(['error' => 'Profissional não encontrado'], 404);
+        }
+
+        $professional->forceFill(['tokens_valid_after' => now()])->save();
+        Cache::forget("tokens_valid_after:{$professional->id}");
+
+        return response()->json(['ok' => true]);
     }
 
     // POST /auth/signup

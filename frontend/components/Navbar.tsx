@@ -87,7 +87,12 @@ export default function Navbar() {
       .catch(() => {})
   }, [])
 
-  function sair() {
+  async function sair() {
+    // Avisa o servidor antes de limpar o token daqui: é o que invalida de
+    // verdade a sessão (quem copiou o token continuaria com acesso até o TTL
+    // vencer). Se a chamada falhar, sai localmente do mesmo jeito — ficar
+    // preso na tela por causa disso seria pior.
+    await api.post('/auth/logout').catch(() => {})
     clearToken()
     router.push('/login')
   }
