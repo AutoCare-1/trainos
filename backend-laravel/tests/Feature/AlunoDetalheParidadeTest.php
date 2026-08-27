@@ -65,6 +65,27 @@ class AlunoDetalheParidadeTest extends TestCase
             ->assertJsonPath('student.par_q_answers.cardiaco', true);
     }
 
+    public function test_avaliacao_parcial_nao_apaga_o_par_q_ja_salvo(): void
+    {
+        [, $headers] = $this->autenticar();
+        $studentId = $this->criarAluno($headers);
+
+        $this->patchJson("/alunos/{$studentId}/avaliacao", [
+            'par_q_answers' => ['cardiaco' => true],
+            'anamnese' => ['lesoes' => 'ombro direito'],
+            'birth_date' => '1990-05-20',
+        ], $headers)->assertOk();
+
+        // PATCH só com health_notes não pode zerar o resto — é a rota que
+        // guarda o PAR-Q, que tem peso legal pro profissional.
+        $this->patchJson("/alunos/{$studentId}/avaliacao", ['health_notes' => 'Hipertenso controlado'], $headers)
+            ->assertOk()
+            ->assertJsonPath('student.health_notes', 'Hipertenso controlado')
+            ->assertJsonPath('student.par_q_answers.cardiaco', true)
+            ->assertJsonPath('student.anamnese.lesoes', 'ombro direito')
+            ->assertJsonPath('student.birth_date', '1990-05-20');
+    }
+
     public function test_chat_do_lado_do_profissional_e_autopilot(): void
     {
         [, $headers] = $this->autenticar();

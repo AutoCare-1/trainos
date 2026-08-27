@@ -392,12 +392,18 @@ class AlunoController extends Controller
             'anamnese' => ['nullable', 'array'],
         ]);
 
-        $student->update([
-            'par_q_answers' => $validated['par_q_answers'] ?? null,
-            'health_notes' => isset($validated['health_notes']) ? trim($validated['health_notes']) ?: null : null,
-            'birth_date' => $validated['birth_date'] ?? null,
-            'anamnese' => $validated['anamnese'] ?? null,
-        ]);
+        // Só grava o que veio no request. Com `?? null` em todos os campos
+        // (semântica de PUT numa rota PATCH), quem mandasse só health_notes
+        // zerava par_q_answers, anamnese e birth_date junto — e o PAR-Q é
+        // justamente o dado que tem peso legal pro profissional.
+        $campos = collect($validated)->only(['par_q_answers', 'birth_date', 'anamnese'])->all();
+        if (array_key_exists('health_notes', $validated)) {
+            $campos['health_notes'] = $validated['health_notes'] ? trim($validated['health_notes']) ?: null : null;
+        }
+
+        if ($campos !== []) {
+            $student->update($campos);
+        }
 
         return response()->json(['student' => $student->fresh()]);
     }
