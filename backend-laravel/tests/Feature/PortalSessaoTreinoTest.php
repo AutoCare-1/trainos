@@ -51,6 +51,10 @@ class PortalSessaoTreinoTest extends TestCase
             ->assertCreated()
             ->json('workout.id');
 
+        // Enviar de verdade: o aluno só enxerga (e só pode iniciar) treino com
+        // status 'sent' — rascunho é o personal ainda montando.
+        $this->postJson("/treinos/{$workoutId}/enviar", [], $headers)->assertOk();
+
         $workoutExerciseId = $this->getJson("/treinos/{$workoutId}", $headers)
             ->json('exercises.0.id');
 

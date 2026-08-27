@@ -48,6 +48,7 @@ class PortalSerieOfflineIdempotenteTest extends TestCase
             'name' => 'Treino A',
             'items' => [['exercise_id' => $exercise->id, 'sets' => 3, 'reps' => '10-12']],
         ], $headers)->assertCreated()->json('workout.id');
+        $this->postJson("/treinos/{$workoutId}/enviar", [], $headers)->assertOk();
 
         $workoutExerciseId = $this->getJson("/treinos/{$workoutId}", $headers)->json('exercises.0.id');
 

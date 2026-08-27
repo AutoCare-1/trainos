@@ -167,6 +167,14 @@ class PortalController extends Controller
     {
         $student = $this->alunoDoPortal($request);
 
+        // Onboarding é de uma vez só. Sem essa trava, reenviar o POST
+        // sobrescrevia a anamnese inteira do aluno (inclusive o PAR-Q) por
+        // qualquer um com o link — e o link circula por WhatsApp. Editar
+        // depois é pelo personal, em PATCH /alunos/{id}/avaliacao.
+        if ($student->onboarding_completed_at !== null) {
+            return response()->json(['error' => 'Sua avaliação já foi respondida.'], 409);
+        }
+
         $validated = $request->validate([
             'par_q_answers' => ['required', 'array'],
             'health_notes' => ['nullable', 'string'],
@@ -256,10 +264,10 @@ class PortalController extends Controller
 
         // Confere que o treino é do próprio aluno antes de vincular a sessão a ele
         // — sem isso, um workout_id de outro aluno seria aceito sem checagem de dono.
-        $donoDoTreino = Workout::where('id', $validated['workout_id'])
+        $treino = Workout::where('id', $validated['workout_id'])
             ->where('student_id', $student->id)
-            ->exists();
-        if (! $donoDoTreino) {
+            ->first();
+        if (! $treino) {
             return response()->json(['error' => 'Treino não encontrado'], 404);
         }
 
@@ -267,21 +275,35 @@ class PortalController extends Controller
         // checar "já existe sessão em andamento?" e criar uma nova — sem isso,
         // duas requisições quase simultâneas (dois dispositivos, ou retry de
         // rede) podiam criar duas sessões in_progress pro mesmo treino.
-        $session = DB::transaction(function () use ($validated, $student) {
-            $existente = TrainingSession::where('workout_id', $validated['workout_id'])
+        $session = DB::transaction(function () use ($treino, $student) {
+            $existente = TrainingSession::where('workout_id', $treino->id)
                 ->where('student_id', $student->id)
                 ->where('status', 'in_progress')
                 ->lockForUpdate()
                 ->first();
+            // Retomar vale sempre: se o personal arquivou o treino com o aluno
+            // no meio da execução, deixá-lo preso na academia sem conseguir
+            // continuar seria pior que qualquer coisa que a trava abaixo evita.
             if ($existente) {
                 return $existente;
             }
 
+            // Começar do zero, não: rascunho que o personal ainda não terminou
+            // de montar, ou treino já arquivado, não deve virar sessão nova. O
+            // portal não oferece o botão, mas o endpoint aceitava o id direto.
+            if ($treino->status !== 'sent' || $treino->archived_at !== null) {
+                return null;
+            }
+
             return TrainingSession::create([
-                'workout_id' => $validated['workout_id'],
+                'workout_id' => $treino->id,
                 'student_id' => $student->id,
             ])->refresh();
         });
+
+        if (! $session) {
+            return response()->json(['error' => 'Esse treino não está disponível pra treinar agora.'], 409);
+        }
 
         return response()->json(['session' => $session], $session->wasRecentlyCreated ? 201 : 200);
     }
@@ -293,7 +315,7 @@ class PortalController extends Controller
 
         $validated = $request->validate([
             'workout_exercise_id' => ['required', 'string'],
-            'set_number' => ['required', 'integer'],
+            'set_number' => ['required', 'integer', 'min:1'],
             'reps_done' => ['nullable', 'integer'],
             'load_kg_done' => ['nullable', 'numeric'],
             'notes' => ['nullable', 'string'],
@@ -385,8 +407,11 @@ class PortalController extends Controller
         $student = $this->alunoDoPortal($request);
 
         $validated = $request->validate([
-            'effort_rpe' => ['nullable', 'integer'],
-            'satisfaction' => ['nullable', 'integer'],
+            // 0-10 porque é assim que o RPE entra no system prompt do coach IA
+            // ("RPE 0-10") e nos gráficos de evolução — valor fora da faixa
+            // envenena os dois sem nunca dar erro.
+            'effort_rpe' => ['nullable', 'integer', 'min:0', 'max:10'],
+            'satisfaction' => ['nullable', 'integer', 'min:0', 'max:10'],
             'discomfort' => ['nullable', 'string'],
             'comment' => ['nullable', 'string'],
             'finished_at' => ['nullable', 'date'],

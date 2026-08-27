@@ -43,6 +43,7 @@ class PortalConclusaoOfflineDataTest extends TestCase
             'name' => 'Treino A',
             'items' => [['exercise_id' => $exercise->id, 'sets' => 3, 'reps' => '10']],
         ], $headers)->assertCreated()->json('workout.id');
+        $this->postJson("/treinos/{$workoutId}/enviar", [], $headers)->assertOk();
 
         $sessionId = $this->postJson("/portal/{$student->invite_token}/sessoes", ['workout_id' => $workoutId])
             ->assertCreated()
