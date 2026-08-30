@@ -3,11 +3,13 @@
 Ponto de partida pra próxima conversa. Escrito em 25/08/2026, depois de revisar
 os 402 um a um.
 
-## O estado (atualizado 26/08, depois da rodada 2)
+## O estado (atualizado 26/08, depois da rodada 3)
 
-- 402 vídeos. Já foram regerados **62**: 19 de peso livre (25/08) e 43 de
-  máquina/polia (26/08). **Sobram ~17 graves conhecidos.**
+- 402 vídeos. Já foram regerados **74**: 19 de peso livre (25/08), 43 de
+  perna/polia e 12 de outras máquinas (26/08). **62 melhoraram; sobram 12
+  graves.**
 - Filipe decidiu **não filmar** — a saída é geração mesmo.
+- Restam **918 créditos** no Higgsfield (~229 vídeos). Não é o gargalo.
 - **A descoberta que destravou:** descrever o APARELHO em inglês, peça por peça,
   e NEGAR NOMINALMENTE a peça errada que apareceu. Isso levou a máquina/polia de
   ~58% para **88% de acerto** numa rodada. Ver "O que funciona" abaixo.
@@ -25,6 +27,13 @@ Duas negações carregaram quase todo o ganho da rodada 2:
   There is never a second cable (...) The attachment keeps exactly the same
   shape, length and thickness from the first frame to the last.` Resolve cabo
   sumindo, cabo de duas torres e corda que encurta.
+
+- **Unilateral:** descrever o que a OUTRA mão/perna faz, não só dizer que uma
+  trabalha — `the other arm hangs relaxed at his side, clearly holding nothing
+  at all`. Pegou 3 de 3 na rodada 3, contra 0 de 7 na rodada 2.
+- **Aparelho parado:** `The rectangular weight stack visibly RISES as he pulls
+  and sinks back down.` Dá uma peça concreta pra animar; metade dos defeitos de
+  máquina era simplesmente nada se mexendo.
 
 Descrever o movimento em português (campo `execucao`) continua não adiantando.
 O que muda o resultado é o campo `cena`, em inglês, com a negação.
@@ -57,17 +66,20 @@ resultado diferente.**
 
 ## O que fazer a seguir, na ordem que eu faria
 
-### 1. Os 10 que continuam errados (originais mantidos)
+### 1. Os 12 que continuam errados (originais mantidos)
 
-Da rodada 2 (máquina/polia): `cadeira-flexora`, `cadeira-flexora-unilateral`
+Da rodada 2 (perna/polia): `cadeira-flexora`, `cadeira-flexora-unilateral`
 (saem como extensora — o caso mais teimoso da biblioteca),
 `panturrilha-com-pes-para-dentro`, `puxada-por-tras`, `elevacao-frontal-na-polia`.
 
 Da rodada 1 (peso livre): `fire-hydrant`, `agachamento-sissy`, `afundo-lateral`,
 `supino-declinado-com-halteres`, `crucifixo-declinado-com-halteres`.
 
+Da rodada 3 (instalados, mas fracos): `remada-maquina-unilateral` (aparelho
+certo, ainda bilateral) e `encolhimento-na-maquina` (ombro não sobe).
+
 Vale uma rodada nova com negação mais dura, agora que se sabe que a negação
-nominal é o que funciona. ~40 créditos.
+nominal é o que funciona. ~48 créditos.
 
 ### 2. O problema do "unilateral"
 
