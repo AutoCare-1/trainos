@@ -4,9 +4,9 @@ import { Exercise } from './types'
  * Filtro e agrupamento da biblioteca de exercícios, compartilhado pelas telas
  * que listam ela inteira (montar treino e gerenciar vídeos).
  *
- * Virou módulo próprio quando a biblioteca passou de 75 pra 646 exercícios: com
- * esse volume, rolar os 13 grupos até achar um exercício ficou inviável, e as
- * duas telas tinham copiado a mesma lógica de agrupar.
+ * Virou módulo próprio quando a biblioteca passou de 75 pra centenas de
+ * exercícios: com esse volume, rolar os grupos até achar um exercício ficou
+ * inviável, e as duas telas tinham copiado a mesma lógica de agrupar.
  */
 
 /**
@@ -30,6 +30,16 @@ export const ORDEM_GRUPOS = [
   'Panturrilha',
   'Core',
   'Funcional',
+  // Grupos da leva complementar, depois dos 13 de musculação de propósito: o
+  // uso do dia a dia é montar treino de academia, e empurrar 'Ativação' e
+  // 'Mobilidade' pro topo só afastaria 'Peito' e 'Costas' do primeiro toque.
+  // Entre si seguem a ordem da sessão: esporte, preparo, e alongamento no fim.
+  'Esportivo',
+  'Ativação',
+  'Mobilidade',
+  'Equilíbrio',
+  'Prevenção',
+  'Alongamento',
 ] as const
 
 function normalizar(texto: string): string {

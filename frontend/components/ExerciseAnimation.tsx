@@ -446,6 +446,28 @@ function renderBody(pattern: MovementPattern) {
         </TranslateGroup>
       )
 
+    // ─── alongamento: inclina sobre o quadril e SUSTENTA (keyTimes longo no meio) ───
+    case 'stretch':
+      return (
+        <>
+          <StaticLegs />
+          <RotateGroup values="0 50 55;26 50 55;26 50 55;0 50 55" keyTimes="0;0.25;0.75;1" dur={4}>
+            <Head /><ShoulderBar /><Torso /><HipBar /><StaticArms />
+          </RotateGroup>
+        </>
+      )
+
+    // ─── equilíbrio: uma perna no chão, a outra com joelho à frente, corpo oscilando ───
+    case 'balance':
+      return (
+        <RotateGroup values="0 44 95;3 44 95;-3 44 95;0 44 95" dur={2.8}>
+          <Head /><ShoulderBar /><Torso /><HipBar /><StaticArms />
+          <line x1={HIP_L[0]} y1={HIP_L[1]} x2={HIP_L[0]} y2={HIP_L[1] + LEG_LEN} stroke="currentColor" strokeWidth={3.2} strokeLinecap="round" />
+          <line x1={HIP_R[0]} y1={HIP_R[1]} x2={HIP_R[0] + 13} y2={HIP_R[1] + 12} stroke="currentColor" strokeWidth={3.2} strokeLinecap="round" />
+          <line x1={HIP_R[0] + 13} y1={HIP_R[1] + 12} x2={HIP_R[0] + 5} y2={HIP_R[1] + 28} stroke="currentColor" strokeWidth={3.2} strokeLinecap="round" />
+        </RotateGroup>
+      )
+
     case 'generic':
     default:
       return (

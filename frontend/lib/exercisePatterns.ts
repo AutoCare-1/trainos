@@ -25,6 +25,10 @@ export type MovementPattern =
   | 'crunch'
   | 'twist'
   | 'cardio'
+  // Chegaram com a leva de mobilidade/alongamento/equilíbrio: sem eles, 143
+  // exercícios novos animariam como a figura genérica balançando no lugar.
+  | 'stretch'
+  | 'balance'
   | 'generic'
 
 function normalize(s: string): string {
@@ -156,9 +160,18 @@ const EXACT_MAP: Record<string, MovementPattern> = {
 // "remada"; "Abdução de quadril" tem "quadril"). Ao mexer aqui, rode a
 // checagem de padrões dos exercícios da biblioteca antes de commitar.
 const KEYWORD_RULES: [RegExp, MovementPattern][] = [
+  // --- Alongamento, mobilidade e equilíbrio vêm ANTES de tudo ---
+  // Estes nomes carregam a palavra do exercício de musculação que eles
+  // alongam ou estabilizam: "Alongamento de tríceps acima da cabeça" cairia
+  // em tricepsExtension, "Prancha com apoio no bosu" em plank, e
+  // "Propriocepção de joelho em semiagachamento" em squat.
+  [/alongamento|postura d[ao] |sleeper stretch|liberacao (miofascial|de )/, 'stretch'],
+  [/mobilidade|mobilizacao|gato e camelo|escorpiao|open book|90\/90|balanco de perna|respiracao diafragmatica/, 'stretch'],
+  [/apoio unipodal|apoio unico|unipodal|equilibrio|tandem|bosu|cegonha|propriocep|transferencia de peso/, 'balance'],
+
   // --- Precisam vir antes das regras amplas de perna/quadril/costas ---
   // "no hack machine", "no leg press" apareceriam como agachamento.
-  [/panturrilha|gemeos|calf|tibial/, 'calfRaise'],
+  [/panturrilha|gemeos|calf|tibial|soleu|aquiles|elevacao de calcanhar|arco plantar/, 'calfRaise'],
   // "abducao/aducao de quadril" bateria na regra de 'quadril' (hipThrust).
   [/abdutora|adutora|abducao|aducao|clamshell|fire hydrant|caminhada lateral|monstro/, 'hipAbduction'],
   // "Prancha lateral com elevação de quadril" e "Prancha com remada".
@@ -168,7 +181,7 @@ const KEYWORD_RULES: [RegExp, MovementPattern][] = [
   // "Flexão" é ambíguo em português (flexão de braço x flexão de joelho x
   // flexão lateral de tronco) — os sentidos não-peitoral saem primeiro.
   [/flexao lateral/, 'twist'],
-  [/flexora|leg curl|nordica|glute ham|flexao de joelho|flexao de calcanhar/, 'legCurl'],
+  [/flexora|leg curl|nordica|glute ham|flexao de joelho|flexao de calcanhar|isquiotibiais/, 'legCurl'],
   [/extensora|extensao de joelho|extensao de perna/, 'legExtension'],
 
   // --- Membros inferiores ---
@@ -223,6 +236,16 @@ const MUSCLE_GROUP_FALLBACK: Record<string, MovementPattern> = {
   trapezio: 'shrug',
   antebraco: 'curl',
   funcional: 'cardio',
+  // Grupos da leva complementar.
+  esportivo: 'cardio',
+  mobilidade: 'stretch',
+  alongamento: 'stretch',
+  equilibrio: 'balance',
+  // Ativação e Prevenção são heterogêneos demais pra um padrão só (tem
+  // escápula, tornozelo, cervical e core no mesmo grupo): quem não casar em
+  // nenhuma regra por nome fica melhor na figura genérica do que forçado.
+  ativacao: 'generic',
+  prevencao: 'generic',
 }
 
 export function getMovementPattern(name: string, muscleGroup?: string): MovementPattern {

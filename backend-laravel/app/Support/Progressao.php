@@ -68,6 +68,17 @@ class Progressao
         'bola' => 0.0,
         'corda' => 0.0,
         'step' => 0.0,
+        // Material da leva complementar (mobilidade, alongamento, equilíbrio,
+        // prevenção, calistenia). Nenhum aceita anilha: sem estar listado aqui,
+        // cairia no INCREMENTO_PADRAO e o app sugeriria "+2,5 kg" num
+        // alongamento de panturrilha na parede ou numa barra fixa nas argolas.
+        'bastao' => 0.0,
+        'rolo' => 0.0,
+        'bosu' => 0.0,
+        'disco' => 0.0,
+        'argolas' => 0.0,
+        'toalha' => 0.0,
+        'cadeira' => 0.0,
         'esteira' => 0.0,
         'bicicleta' => 0.0,
         'remo' => 0.0,
