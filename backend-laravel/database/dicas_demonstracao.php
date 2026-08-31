@@ -1007,6 +1007,20 @@ $varreduraPreventiva['Serra abdominal na toalha'] = 'He is in a plank on his FOR
 $varreduraPreventiva['Alongamento de dorsal na barra'] = 'He grips a fixed bar at about CHEST height — low, not overhead — with both hands, steps his feet back and pushes his hips backwards until his arms are straight and his torso hangs down HORIZONTALLY, back parallel to the floor and head between the arms. He never hangs upright from a high bar.';
 $varreduraPreventiva['Alongamento de rotadores externos deitado (sleeper stretch)'] = 'He lies ON HIS SIDE, lying on the shoulder being stretched, with that upper arm out in front of his chest on the floor and the ELBOW BENT to a right angle so the forearm points straight UP at the ceiling. With his free top hand he presses that forearm slowly DOWN toward the floor, rotating the shoulder. The bottom elbow never straightens.';
 
+// Lote 5: sete que a varredura NÃO pegou, porque não citam apoio nem
+// orientação — mas erram por outro motivo, o par espelhado. Palma pra cima x
+// palma pra baixo, dedos do pé dobrados x esticados, braço que cruza x braço
+// que sobe: são pares em que uma metade é o exercício e a outra metade é um
+// exercício diferente que existe na biblioteca. Mesmo caso do sóleo: o que
+// resolve é dizer qual das duas, por nome.
+$varreduraPreventiva['Alongamento de tibial anterior ajoelhado'] = 'He kneels on the floor and sits back onto his own heels, with the TOPS of both feet flat on the ground and the toes pointing straight back behind him, then leans his weight backwards. His toes are never tucked under.';
+$varreduraPreventiva['Alongamento de peitoral com as mãos atrás da cabeça'] = 'He stands upright with both hands laced together behind his head and both elbows opened wide out to the sides, and draws the elbows backwards to open the chest, lifting the sternum.';
+$varreduraPreventiva['Alongamento de deltoide posterior cruzando o braço'] = 'He stands upright and brings one straight arm horizontally ACROSS the front of his chest, then hooks the other forearm under that elbow and pulls it in toward his chest, keeping that shoulder down.';
+$varreduraPreventiva['Alongamento de antebraço em extensão'] = 'He stands with one arm held straight out in front of him at shoulder height, elbow locked and the PALM turned UP toward the ceiling. With the other hand he grips those fingers and pulls them DOWN and back toward the floor.';
+$varreduraPreventiva['Alongamento de antebraço em flexão'] = 'He stands with one arm held straight out in front of him at shoulder height, elbow locked and the PALM turned DOWN toward the floor. With the other hand he grips the back of that hand and pulls it DOWN and back toward his own body.';
+$varreduraPreventiva['Alongamento de trapézio superior sentado'] = 'He sits upright on a bench, gripping the edge of the seat with one hand beside his hip to hold that shoulder DOWN, and tilts his head sideways away from that hand, ear toward the opposite shoulder.';
+$varreduraPreventiva['Alongamento cervical lateral'] = 'He stands upright, reaches one hand OVER the top of his head to rest on the opposite ear, and gently tilts his head sideways toward that same shoulder while the other arm hangs down relaxed at his side, that shoulder kept low.';
+
 foreach ($varreduraPreventiva as $nome => $cenaDoExercicio) {
     // Não sobrescreve cena de prop já montada acima (rolo, bosu, argolas,
     // elástico): ali as duas precisam conviver.

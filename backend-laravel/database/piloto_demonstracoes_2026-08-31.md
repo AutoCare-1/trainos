@@ -222,3 +222,42 @@ escolher a mão quando o exercício é do pé. Cena corrigida nos três.
 48 vídeos, 192 créditos. **526 restantes = 131 vídeos.**
 Faltam 226 da leva. Acumulado: 31 OK, 10 médios, 7 graves — e dos 7 graves,
 6 já foram corrigidos e reinstalados.
+
+# Lote 5 — 3 correções + 9 alongamentos, 48 créditos (478 restantes)
+
+| # | Exercício | Antes | Agora |
+|---|---|---|---|
+| 81 | Serra abdominal na toalha | MÉDIO | **MÉDIO** — toalha sob os antebraços, 2ª tentativa |
+| 82 | Alongamento de dorsal na barra | MÉDIO | **OK** |
+| 83 | Alongamento de rotadores externos (sleeper) | MÉDIO | **MÉDIO** — cotovelo ainda abre, 2ª tentativa |
+| 84 | Alongamento de tibial anterior ajoelhado | novo | **OK** |
+| 85 | Alongamento de peitoral com as mãos atrás da cabeça | novo | **OK** |
+| 86 | Alongamento de dorsal ajoelhado no banco | novo | **OK** |
+| 87 | Alongamento de bíceps na parede | novo | **OK** |
+| 88 | Alongamento de deltoide posterior cruzando o braço | novo | **OK** |
+| 89 | Alongamento de antebraço em extensão | novo | **MÉDIO** — palma ambígua |
+| 90 | Alongamento de antebraço em flexão | novo | **OK** |
+| 91 | Alongamento de trapézio superior sentado | novo | **OK** |
+| 92 | Alongamento cervical lateral | novo | **OK** |
+
+**9 OK · 3 MÉDIO · ZERO GRAVE — 75%.** Segundo lote seguido sem grave.
+
+## Os dois que não pegaram na segunda tentativa: PARAR
+
+`Serra abdominal na toalha` e o `sleeper stretch` já levaram duas rodadas de
+cena cada e continuam médios. A regra do RETOMAR vale aqui: não gastar
+crédito regerando esperando resultado diferente.
+
+Nos dois o defeito é o mesmo tipo, e é sutil: **a toalha vai para onde o peso
+visual está** (ele apoia nos antebraços, então a toalha aparece embaixo
+deles), e **o cotovelo do sleeper abre porque deitar de lado com o cotovelo
+a 90 graus é uma pose rara**. Nenhum dos dois engana o personal: a prancha é
+prancha, o deitado de lado é deitado de lado. Ficam como médios aceitos.
+
+## Placar
+
+60 vídeos, 240 créditos. **478 restantes = 119 vídeos.**
+Alongamento: 34 dos 46 feitos. Faltam 214 da leva.
+Acumulado: 40 OK, 16 médios, 7 graves — os 7 graves todos refeitos e certos.
+Taxa dos dois últimos lotes, já com a varredura preventiva: **75% OK, 0% grave**,
+contra 42% e 33% do piloto.
