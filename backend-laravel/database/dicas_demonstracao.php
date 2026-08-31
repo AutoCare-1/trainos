@@ -1033,6 +1033,12 @@ $varreduraPreventiva['Alongamento de ombro em rotação interna com toalha'] = '
 $varreduraPreventiva['Alongamento de cadeia lateral em pé com braço acima da cabeça'] = 'He stands with feet together, reaches ONE arm straight up overhead and leans his whole torso sideways to the opposite side in a long C shape, the other arm hanging down his leg. His hips stay square and he never twists.';
 $varreduraPreventiva['Alongamento de quadril em passada profunda com rotação'] = 'He is in a deep forward lunge with the front foot flat and the back leg extended behind. He plants the hand on the same side as the front leg on the floor INSIDE that front foot, then rotates his torso open and reaches the other arm straight up at the ceiling, following it with his eyes.';
 
+// Lote 7, abrindo Mobilidade: o 90/90 é sentado com as duas canelas no chão
+// em L, e sem cena sai como ajoelhado ou de pernas cruzadas.
+$varreduraPreventiva['Mobilidade de quadril 90/90'] = 'He SITS on the floor with both knees bent at right angles: the FRONT shin lies flat on the ground straight across in front of him, and the BACK shin lies flat on the ground out to his side, so the two legs make two letter L shapes. He then leans his chest forward over the front shin. He is never cross-legged and never kneeling.';
+$varreduraPreventiva['Transição 90/90 com rotação'] = 'He SITS on the floor in the 90/90 position, both shins flat on the ground at right angles, and without using his hands he sweeps both knees over to the OTHER side so the legs swap places, then sweeps them back. His feet drag across the floor and his hips stay on the ground.';
+$varreduraPreventiva['Sustentação em agachamento profundo com apoio'] = 'He squats all the way down until his hips are below his knees and his heels stay flat on the floor, holding onto a fixed upright post or rack in front of him with both hands for support, and stays down in that deep position.';
+
 foreach ($varreduraPreventiva as $nome => $cenaDoExercicio) {
     // Não sobrescreve cena de prop já montada acima (rolo, bosu, argolas,
     // elástico): ali as duas precisam conviver.

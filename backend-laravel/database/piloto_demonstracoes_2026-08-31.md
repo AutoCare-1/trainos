@@ -296,3 +296,50 @@ padrão e a taxa não muda: o par espelhado responde à negação nominal
 72 vídeos, 288 créditos. **430 restantes = 107 vídeos.**
 Faltam 202 da leva. Acumulado: **48 OK, 20 médios, 7 graves** — os 7 graves
 todos refeitos e certos, e três lotes seguidos sem produzir grave novo.
+
+# Lote 7 — 12 de mobilidade, 48 créditos (382 restantes)
+
+| # | Exercício | Veredito |
+|---|---|---|
+| 121 | Mobilidade torácica em quatro apoios (open book) | **OK** |
+| 122 | Rotação torácica deitado de lado | **OK** |
+| 123 | Gato e camelo | **OK** |
+| 124 | Mobilidade de quadril 90/90 | **GRAVE** — sai EM PÉ tocando o pé |
+| 125 | Transição 90/90 com rotação | **MÉDIO** — sentado, mas não em 90/90 |
+| 126 | Sustentação em agachamento profundo com apoio | **OK** |
+| 127 | Círculo de quadril em quatro apoios | **OK** |
+| 128 | Mobilidade de tornozelo na parede | **OK** |
+| 129 | Mobilidade de tornozelo com elástico | **GRAVE** — o elástico não aparece em nenhum frame |
+| 130 | Deslizamento de escápula na parede (wall slide) | **OK** |
+| 131 | Círculo de ombro com bastão | **OK** |
+| 132 | Rotação de ombro no batente da porta | **MÉDIO** — cotovelo não fica a 90° |
+
+**8 OK · 2 MÉDIO · 2 GRAVE.** Quebra a sequência de três lotes sem grave.
+
+## Os dois graves são de um tipo NOVO, e não é montagem
+
+O 90/90 tinha cena longa e específica — "both shins flat on the ground at
+right angles, never cross-legged, never kneeling" — e ele fez um exercício
+completamente diferente, em pé. Isso não é montagem ambígua: é **posição que
+o gerador não tem no repertório**. Mesma família do disco deslizante. Sentar
+no chão com as duas canelas em L é uma pose rara fora do universo de
+mobilidade, e nenhuma quantidade de texto inventa o que ele não conhece.
+
+O elástico no tornozelo sumiu inteiro. A negação de elástico que funciona nos
+28 outros descreve a faixa saindo das MÃOS; ancorada no tornozelo, baixa e
+fina contra piso escuro, ela não renderiza. Vale UMA tentativa com faixa
+clara e grossa descrita por cor antes de desistir.
+
+## Achado operacional: `declined_preset_id` cobre um preset só
+
+O item 126 foi recusado com um preset DIFERENTE ("DROWN IN MUSIC",
+f1821f84-945b-4cd1-9085-1f479db0028e) mesmo mandando o `declined_preset_id`
+do preset antigo. Ou seja: o campo suprime aquele preset específico, não a
+recomendação em geral. Numa submissão em lote, tratar cada recusa com o id
+que vier no erro dela. Não cobra nada, mas custa uma viagem.
+
+## Placar
+
+84 vídeos, 336 créditos. **382 restantes = 95 vídeos.**
+Mobilidade: 15 dos 43. Faltam 190 da leva.
+Acumulado: **56 OK, 22 médios, 9 graves** — 7 dos 9 graves já refeitos e certos.
