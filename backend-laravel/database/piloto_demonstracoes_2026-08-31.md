@@ -261,3 +261,38 @@ Alongamento: 34 dos 46 feitos. Faltam 214 da leva.
 Acumulado: 40 OK, 16 médios, 7 graves — os 7 graves todos refeitos e certos.
 Taxa dos dois últimos lotes, já com a varredura preventiva: **75% OK, 0% grave**,
 contra 42% e 33% do piloto.
+
+# Lote 6 — 12 alongamentos, 48 créditos (430 restantes). GRUPO ALONGAMENTO FECHADO
+
+| # | Exercício | Veredito |
+|---|---|---|
+| 101 | Alongamento de punho em extensão na mesa | **MÉDIO** — palma na mesa, devia ser o dorso |
+| 102 | Alongamento de escaleno e cervical anterior | **OK** |
+| 103 | Alongamento de lombar com joelhos cruzados | **OK** |
+| 104 | Alongamento de coluna em torção sentado | **OK** |
+| 105 | Alongamento de cadeia anterior em pé na parede | **MÉDIO** — de lado, devia ser de frente |
+| 106 | Alongamento de banda iliotibial em pé | **OK** |
+| 107 | Alongamento de psoas em decúbito dorsal na maca | **OK** — a maca renderizou |
+| 108 | Alongamento de quadril em passada profunda com rotação | **OK** |
+| 109 | Alongamento de coluna suspenso na barra com pés no chão | **MÉDIO** — pés não apoiados |
+| 110 | Postura do pombo | **MÉDIO** — perna de trás não estende |
+| 111 | Alongamento de ombro em rotação interna com toalha | **OK** |
+| 112 | Alongamento de cadeia lateral em pé com braço acima da cabeça | **OK** |
+
+**8 OK · 4 MÉDIO · ZERO GRAVE.** Terceiro lote seguido sem grave.
+
+## Alongamento: 46/46 gerados
+
+O maior grupo da leva está fechado. Nenhum grave sobrou no grupo inteiro, e
+os médios são todos de detalhe que não engana o personal.
+
+Os 4 médios deste lote são do mesmo tipo dos anteriores — par espelhado
+(dorso x palma, de frente x de lado). Já foram duas rodadas de cena nesse
+padrão e a taxa não muda: o par espelhado responde à negação nominal
+**às vezes** (sóleo pegou, punho não). Não vale terceira rodada.
+
+## Placar
+
+72 vídeos, 288 créditos. **430 restantes = 107 vídeos.**
+Faltam 202 da leva. Acumulado: **48 OK, 20 médios, 7 graves** — os 7 graves
+todos refeitos e certos, e três lotes seguidos sem produzir grave novo.

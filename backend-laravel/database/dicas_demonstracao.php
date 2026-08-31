@@ -1021,6 +1021,18 @@ $varreduraPreventiva['Alongamento de antebraço em flexão'] = 'He stands with o
 $varreduraPreventiva['Alongamento de trapézio superior sentado'] = 'He sits upright on a bench, gripping the edge of the seat with one hand beside his hip to hold that shoulder DOWN, and tilts his head sideways away from that hand, ear toward the opposite shoulder.';
 $varreduraPreventiva['Alongamento cervical lateral'] = 'He stands upright, reaches one hand OVER the top of his head to rest on the opposite ear, and gently tilts his head sideways toward that same shoulder while the other arm hangs down relaxed at his side, that shoulder kept low.';
 
+// Lote 6, fechando Alongamento: mais oito pares espelhados e montagens que
+// a varredura não pegou — dorso da mão x palma na mesa, qual perna cruza
+// atrás, e a perna da frente dobrada NO CHÃO do pombo (que sai como passada).
+$varreduraPreventiva['Alongamento de punho em extensão na mesa'] = 'He stands at a flat bench and places the BACKS of both hands flat on top of it with the fingers pointing BACK toward his own body, palms facing up at the ceiling, then leans his weight backwards away from the bench. His palms are never flat on the bench.';
+$varreduraPreventiva['Alongamento de escaleno e cervical anterior'] = 'He stands upright, places one flat hand on the front of his chest just below the opposite collarbone to hold that skin down, then tilts his head backwards and turns it AWAY from that hand, looking up and to the side.';
+$varreduraPreventiva['Alongamento de coluna em torção sentado'] = 'He sits on the floor with one leg extended forward and the other foot crossed over it and planted flat beside that knee. He hooks the opposite elbow on the OUTSIDE of that raised knee and turns his torso toward the raised leg, the other hand planted on the floor behind him.';
+$varreduraPreventiva['Alongamento de banda iliotibial em pé'] = 'He stands and crosses one leg BEHIND the other so the ankles are crossed and both feet stay flat on the floor, then reaches the arm on the back-leg side up overhead and leans his whole torso sideways AWAY from that back leg, pushing that hip out to the side.';
+$varreduraPreventiva['Postura do pombo'] = 'He is on the floor with the FRONT leg folded in front of him, that shin lying flat across the ground and the knee out to the side, while the BACK leg is stretched straight out behind him with the top of that foot on the floor. He then lowers his chest forward over the front shin.';
+$varreduraPreventiva['Alongamento de ombro em rotação interna com toalha'] = 'He stands and holds a towel VERTICALLY behind his back: the top hand reaches over the same-side shoulder holding the upper end, and the bottom hand comes up behind the lower back holding the other end. The top hand pulls the towel upward, dragging the bottom hand higher up his back.';
+$varreduraPreventiva['Alongamento de cadeia lateral em pé com braço acima da cabeça'] = 'He stands with feet together, reaches ONE arm straight up overhead and leans his whole torso sideways to the opposite side in a long C shape, the other arm hanging down his leg. His hips stay square and he never twists.';
+$varreduraPreventiva['Alongamento de quadril em passada profunda com rotação'] = 'He is in a deep forward lunge with the front foot flat and the back leg extended behind. He plants the hand on the same side as the front leg on the floor INSIDE that front foot, then rotates his torso open and reaches the other arm straight up at the ceiling, following it with his eyes.';
+
 foreach ($varreduraPreventiva as $nome => $cenaDoExercicio) {
     // Não sobrescreve cena de prop já montada acima (rolo, bosu, argolas,
     // elástico): ali as duas precisam conviver.
