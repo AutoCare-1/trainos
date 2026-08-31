@@ -879,6 +879,12 @@ $dicasCena = [
     'Alongamento de glúteo deitado (figura 4)' => 'He lies FACE UP on the floor with the back of his head resting on the ground. One ankle is crossed on top of the opposite knee so the legs form a clear number 4, and both hands reach through the gap between his legs to hold the back of the supporting thigh and pull it toward his chest. His head and shoulders stay down on the floor: he never curls up into a sit-up.',
 ];
 
+// Lote 3 (31/08): mais três casos de montagem ambígua — "apoio no banco" não
+// diz apoio de QUÊ, e o cruzamento do tornozelo simplesmente não aconteceu.
+$dicasCena['Alongamento de isquiotibiais em passada com apoio no banco'] = 'He stands in front of a flat bench and rests his whole straight LEG on top of it, heel on the bench and knee locked, while the other foot stays on the floor. He hinges his chest forward over that raised leg. His hands never rest on the bench — it is the leg that is on the bench, not the arms.';
+$dicasCena['Alongamento de glúteo sentado na cadeira'] = 'He sits upright on a chair and crosses one ANKLE on top of the opposite knee, so the raised shin lies horizontally across the supporting thigh and the legs form a clear number 4. He then leans his chest forward over that crossed leg. Both feet are never on the floor at the same time.';
+$dicasCena['Alongamento de quadríceps na parede ajoelhado'] = 'He kneels in a half-lunge with his BACK to the wall: the rear knee is on the floor right at the base of the wall and that rear foot points straight UP resting flat against the wall face, shin vertical against it. The front foot is planted well ahead on the floor with the knee bent. He drives his hips forward and up. He is never kneeling on both knees at once.';
+
 foreach ($dicasCena as $nome => $cenaDoExercicio) {
     $complementar[$nome]['cena'] = $cenaDoExercicio;
 }

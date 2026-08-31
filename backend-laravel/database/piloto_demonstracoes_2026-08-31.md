@@ -129,3 +129,49 @@ comprar crédito e priorizar dentro do que cabe.
 
 Vídeos e tiras: `/private/tmp/claude-501/-Users-filipelima/6cab34fd-b357-4d6a-a4ef-51a353148aa0/scratchpad/piloto/`
 (scratchpad de sessão não é apagado — não regerar pra rever).
+
+# Lote 3 — 11 alongamentos + regeração do figura 4, 48 créditos (574 restantes)
+
+| # | Exercício | Veredito |
+|---|---|---|
+| 41 | Alongamento de isquiotibiais em pé | **OK** |
+| 42 | Alongamento de isquiotibiais deitado com elástico | **OK** — elástico íntegro |
+| 43 | Alongamento de isquiotibiais em passada com apoio no banco | **GRAVE** — ele apoia as MÃOS no banco; é a perna que sobe |
+| 44 | Alongamento de quadríceps deitado de lado | **OK** |
+| 45 | Alongamento de quadríceps na parede ajoelhado | **MÉDIO** — ajoelhado nos dois joelhos, sem o pé na parede |
+| 46 | Alongamento de glúteo sentado na cadeira | **GRAVE** — sentado sem cruzar o tornozelo no joelho |
+| 47 | Alongamento de piriforme sentado | **OK** |
+| 48 | Alongamento de adutores sentado (borboleta) | **OK** |
+| 49 | Alongamento de adutores em afastamento lateral | **OK** |
+| 50 | Alongamento de virilha em agachamento profundo | **OK** |
+| 51 | Alongamento de sóleo com joelho flexionado | **MÉDIO** — joelho de trás sai ESTENDIDO mesmo com a cena mandando dobrar |
+| 52 | Alongamento de glúteo deitado (figura 4) — regeração | **OK** — uma cabeça só |
+
+**8 OK · 2 MÉDIO · 2 GRAVE — 67%**
+
+## Achados
+
+**A duplicação era sorteio mesmo.** O figura 4 voltou certo na segunda tentativa,
+com uma cabeça só. Somei ao prompt uma negação explícita de segunda cabeça
+("exactly ONE head and ONE face in the whole frame, no mirrored body, no
+reflection") — mas como a primeira tentativa já tinha a guarda genérica de
+anatomia, não dá pra saber se foi a negação nova ou a re-rolagem. De qualquer
+jeito custou 4 créditos e resolveu.
+
+**Os 2 graves são de novo montagem ambígua, e o padrão agora tem nome:
+substantivo que não diz o que apoia onde.** "Apoio no banco" não diz apoio de
+QUÊ — o gerador apoiou as mãos, e o exercício é a perna em cima. Escritas as
+três cena que faltavam (banco, cadeira, parede ajoelhado).
+
+**O sóleo é o primeiro caso em que a cena NÃO pegou.** O prompt dizia "the rear
+leg is set back with the KNEE CLEARLY BENT" em maiúsculas e o joelho saiu
+estendido, idêntico ao alongamento de panturrilha que veio antes dele. É
+distinção de variante — o mesmo critério (a) que a poda de 22/08 usou pra
+cortar 244 exercícios, e o mesmo tipo de erro dos "pegada neutra sai pronada"
+que sobraram nos 402. Não insistir: 4 créditos por tentativa pra uma diferença
+que nem o personal vê no vídeo.
+
+## Placar
+
+36 vídeos gerados, 144 créditos. **574 restantes = 143 vídeos.**
+Faltam 238 da leva, ou 227 tirando os 11 de disco.
