@@ -580,4 +580,242 @@ $outras = [
     'Supino declinado no smith' => ['cena' => 'He lies on a DECLINE bench set inside a Smith machine, with his head LOWER than his hips and his feet hooked under the pads at the raised end. The bench slopes downward toward his head; it is never an incline bench and he is never sitting upright. He presses the guided Smith barbell straight up from his lower chest and lowers it back.'],
 ];
 
-return array_replace($base, $maquinas, $outras);
+
+
+// ---------------------------------------------------------------------------
+// LEVA COMPLEMENTAR (31/08/2026) — esportivo, mobilidade, alongamento,
+// ativação, equilíbrio, prevenção.
+//
+// Estes 274 caem quase todos na faixa BOA da auditoria de 25/08 (peso livre /
+// peso corporal / cardio: 6% de erro grave). Só 14 são máquina/polia/smith, a
+// faixa de 42%. Mas a leva traz DUAS coisas que a auditoria nunca mediu, e é
+// pra elas que existe este bloco:
+//
+// 1. Prop que a biblioteca nunca teve. Rolo de espuma, bosu, disco
+//    deslizante, argolas e bastão nunca passaram pelo gerador. Pela lição da
+//    rodada 2 — o que corrige não é descrever mais, é NEGAR NOMINALMENTE a
+//    peça errada — cada um desses entra com a negação do objeto em que ele
+//    provavelmente vai virar (o disco vira anilha, a argola vira barra).
+//
+// 2. Exercício em que ficar parado é o certo. 75 dos 274 são posição
+//    sustentada. Sem `estatico`, o prompt manda "He repeats the full movement
+//    twice" e o gerador inventa repetição num alongamento — e, pior, a régua
+//    da auditoria ("amplitude quase nula = GRAVE") se inverte: aqui amplitude
+//    nula é o acerto.
+// ---------------------------------------------------------------------------
+
+$roloDeEspuma = 'The only equipment is one plain cylindrical foam roller lying on the floor, roughly 15 cm thick and 45 cm long, in a single solid colour. He rolls his body slowly back and forth over it. That cylinder is never a barbell, never a dumbbell, never a weight plate and never a bench, and there is exactly one of them.';
+
+$bosu = 'He uses a BOSU: one rubber dome mounted on a flat circular platform, dome side UP, resting on the gym floor. It is never a flat balance board, never a step platform, never a full stability ball and never a weight plate.';
+
+$discoDeslizante = 'Each working foot or hand rests on a small flat plastic sliding disc the size of a saucer, lying flush on the floor and sliding over it. Those discs are never weight plates, never a step platform, never a skateboard and never a wheel — they stay flat on the ground and keep the same size in every frame.';
+
+$argolas = 'He holds two wooden gymnastic rings hanging from long straps from the ceiling, one ring in each hand. The two rings hang free and separate from each other in every single frame; they are never joined into a single bar, never a barbell and never a TRX handle, and each strap stays attached to the ceiling the whole time.';
+
+$bastao = 'He holds one plain straight wooden stick about the thickness of a broom handle, with nothing mounted on either end. It is never a loaded barbell and never has weight plates on it.';
+
+$elasticoIntegro = 'A single continuous elastic resistance band runs unbroken from his hands to its anchor point and stays clearly attached in every single frame. There is never a second band, it never turns into a steel cable, a rope or a chain, and it keeps the same colour and thickness from the first frame to the last.';
+
+// Posição sustentada: a régua da auditoria se inverte aqui.
+$isometricosComplementar = [
+    'Alongamento de isquiotibiais sentado',
+    'Alongamento de isquiotibiais em pé',
+    'Alongamento de isquiotibiais deitado com elástico',
+    'Alongamento de isquiotibiais em passada com apoio no banco',
+    'Alongamento de quadríceps em pé',
+    'Alongamento de quadríceps deitado de lado',
+    'Alongamento de quadríceps na parede ajoelhado',
+    'Alongamento de flexores do quadril ajoelhado',
+    'Alongamento de glúteo deitado (figura 4)',
+    'Alongamento de glúteo sentado na cadeira',
+    'Alongamento de piriforme sentado',
+    'Alongamento de adutores sentado (borboleta)',
+    'Alongamento de adutores em afastamento lateral',
+    'Alongamento de virilha em agachamento profundo',
+    'Alongamento de panturrilha na parede',
+    'Alongamento de sóleo com joelho flexionado',
+    'Alongamento de tibial anterior ajoelhado',
+    'Alongamento de peitoral no batente',
+    'Alongamento de peitoral com as mãos atrás da cabeça',
+    'Alongamento de dorsal na barra',
+    'Alongamento de dorsal ajoelhado no banco',
+    'Alongamento de tríceps acima da cabeça',
+    'Alongamento de bíceps na parede',
+    'Alongamento de deltoide posterior cruzando o braço',
+    'Alongamento de rotadores externos deitado (sleeper stretch)',
+    'Alongamento de manguito rotador na porta',
+    'Alongamento de antebraço em extensão',
+    'Alongamento de antebraço em flexão',
+    'Alongamento de punho em extensão na mesa',
+    'Alongamento de trapézio superior sentado',
+    'Alongamento cervical lateral',
+    'Alongamento de escaleno e cervical anterior',
+    'Alongamento de lombar em posição fetal',
+    'Alongamento de lombar com joelhos cruzados',
+    'Alongamento de coluna em torção sentado',
+    'Alongamento de cadeia posterior com toalha',
+    'Alongamento de cadeia anterior em pé na parede',
+    'Alongamento de banda iliotibial em pé',
+    'Alongamento de psoas em decúbito dorsal na maca',
+    'Alongamento de quadril em passada profunda com rotação',
+    'Alongamento de abdome em decúbito ventral (esfinge)',
+    'Alongamento de coluna suspenso na barra com pés no chão',
+    'Postura da criança',
+    'Postura do pombo',
+    'Alongamento de ombro em rotação interna com toalha',
+    'Alongamento de cadeia lateral em pé com braço acima da cabeça',
+    'Apoio unipodal com olhos abertos',
+    'Apoio unipodal com olhos fechados',
+    'Apoio unipodal em superfície instável',
+    'Prancha com apoio no bosu',
+    'Prancha de Copenhague',
+    'Prancha de Copenhague com joelho apoiado',
+    'Ponte de glúteo com aperto de adutores',
+    'Estabilização lombar em quatro apoios com elástico',
+    'Estabilização escapular em prancha com apoio na parede',
+    'Elevação do arco plantar (short foot)',
+    'Propriocepção de joelho em semiagachamento com elástico',
+    'Fortalecimento de pescoço em isometria manual',
+    'Isometria de cervical em decúbito dorsal',
+    'L-sit no solo',
+    'L-sit nas paralelas',
+    'Parada de mão na parede',
+    'Front lever progressivo',
+    'Back lever progressivo',
+    'Streamline na parede',
+    'Sustentação de tronco em posição aero',
+    'Extensão de tronco em posição de guidão',
+    'Suspensão em pegada aberta para escalada',
+    'Equilíbrio na prancha de balanço',
+    'Sustentação em agachamento profundo com apoio',
+    'Mobilidade de ombro em suspensão passiva com pés apoiados',
+    'Respiração diafragmática deitada',
+    'Ativação de peitoral com isometria de palmas',
+    'Ativação de dorsal com puxada isométrica no elástico',
+    'Ativação de core com respiração 360 graus',
+];
+
+// Prop novo -> negação nominal do objeto em que ele costuma virar.
+$propsComplementar = [
+    'Rolo' => [
+        'Mobilidade de coluna torácica sobre o rolo',
+        'Liberação miofascial de quadríceps no rolo',
+        'Liberação miofascial de banda iliotibial no rolo',
+        'Liberação miofascial de dorsal no rolo',
+        'Liberação miofascial de panturrilha no rolo',
+        'Liberação miofascial de posterior de coxa no rolo',
+        'Liberação miofascial de tibial anterior no rolo',
+    ],
+    'Bosu' => [
+        'Apoio unipodal em superfície instável',
+        'Agachamento no bosu com apoio bipodal',
+        'Prancha com apoio no bosu',
+        'Salto sobre o bosu com aterrissagem estável',
+    ],
+    'Disco' => [
+        'Equilíbrio na prancha de balanço',
+        'Apoio unipodal sobre espuma com giro de cabeça',
+        'Agachamento unipodal no disco de equilíbrio',
+        'Deslizamento de isquiotibiais no disco',
+        'Deslizamento de calcanhar bilateral no disco',
+        'Excêntrico de isquiotibiais no deslizador com uma perna',
+        'Flexão de braço com abertura nos discos',
+        'Prancha com abertura de pernas nos discos',
+        'Agachamento com deslocamento lateral no disco',
+        'Serra abdominal no disco',
+        'Prancha com deslizamento de braços no disco',
+    ],
+    'Argolas' => [
+        'Flexão de braço nas argolas',
+        'Paralelas nas argolas',
+        'Remada nas argolas com pés elevados',
+        'Barra fixa nas argolas',
+        'Rosca nas argolas',
+        'Extensão de tríceps nas argolas',
+        'Mergulho nas argolas',
+        'Muscle-up nas argolas',
+    ],
+    'Bastão' => [
+        'Pronossupinação com bastão lastrado',
+        'Passagem de bastão pela cabeça',
+        'Círculo de ombro com bastão',
+        'Rotação de tronco sentado com bastão',
+        'Aquecimento de agachamento com bastão acima da cabeça',
+    ],
+    'Elástico' => [
+        'Golpe de forehand com elástico',
+        'Golpe de backhand com elástico',
+        'Smash aéreo simulado com elástico',
+        'Chute com resistência de elástico',
+        'Chute interno resistido no elástico',
+        'Puxada de nado no elástico (crawl)',
+        'Remada de peito no elástico',
+        'Cruzado com rotação de quadril no elástico',
+        'Joelhada com resistência de elástico',
+        'Puxada de gola no elástico (kuzushi)',
+        'Manchete simulada com elástico',
+        'Swing de golfe resistido com elástico',
+        'Aceleração de braço com elástico para arremesso',
+        'Passada lateral defensiva com elástico na cintura',
+        'Mobilidade de tornozelo com elástico',
+        'Alongamento de isquiotibiais deitado com elástico',
+        'Marcha de ativação com elástico nos tornozelos',
+        'Ativação de dorsal com puxada isométrica no elástico',
+        'Apoio unipodal com perturbação no elástico',
+        'Transferência de peso em base tandem com resistência elástica',
+        'Estabilização lombar em quatro apoios com elástico',
+        'Rotação externa de ombro a 90 graus com elástico',
+        'Inversão de tornozelo com elástico',
+        'Eversão de tornozelo com elástico',
+        'Dorsiflexão de tornozelo com elástico',
+        'Propriocepção de joelho em semiagachamento com elástico',
+        'Mobilização de quadril em decúbito dorsal com elástico',
+        'Fortalecimento de pescoço com elástico em quatro direções',
+    ],
+];
+
+// A instrução destes some inteira no filtro de prescrição de
+// instrucaoVisual() — quase sempre por causa da palavra "sustente" — e o
+// prompt sairia cego, só com o nome. Reescritas aqui em termos visuais.
+$execucaoComplementar = [
+    // Instrução circular: "mesma posição", "versão mais fácil" e "mesma
+    // transição" só fazem sentido pra quem acabou de ler o exercício de cima.
+    // O gerador recebe um exercício por vez e não tem esse "de cima".
+    'Alongamento de sóleo com joelho flexionado' => 'Em passada com as mãos na parede, perna de trás com o joelho dobrado e o calcanhar firme no chão.',
+    'Apoio unipodal com olhos fechados' => 'Em pé sobre uma perna só, joelho levemente flexionado, o outro pé no ar e os olhos fechados.',
+    'Prancha de Copenhague com joelho apoiado' => 'Deitado de lado apoiado no antebraço, joelho da perna de cima apoiado num banco, quadril erguido em linha reta.',
+    'Excêntrico de sóleo unilateral no degrau' => 'Sobre um degrau em apoio de uma perna só, joelho dobrado, descendo o calcanhar lentamente abaixo da borda.',
+    'Muscle-up nas argolas' => 'Pendurado nas argolas, puxa o corpo com força e gira os punhos passando o peito acima das argolas até estender os braços.',
+    'Pedalada em cadência alta na bicicleta' => 'Sentado numa bicicleta ergométrica de academia, pedalando rápido com as pernas girando em alta rotação.',
+    'Tiro sentado com carga alta na bicicleta' => 'Sentado numa bicicleta ergométrica, pedalando com força e lentamente contra carga pesada, tronco firme.',
+    'Sustentação de tronco em posição aero' => 'Apoiado nos antebraços no chão, quadril alto e costas retas, como quem se debruça sobre o guidão.',
+    'Extensão de tronco em posição de guidão' => 'Deitado de bruços no chão, peito e ombros erguidos alguns centímetros e braços à frente.',
+    'Ativação de peitoral com isometria de palmas' => 'Em pé, palmas das mãos unidas à frente do peito, cotovelos abertos, empurrando uma mão contra a outra.',
+    'Ativação de dorsal com puxada isométrica no elástico' => 'Em pé, puxando um elástico até a altura do peito com os cotovelos junto ao corpo, braços parados.',
+    'Aquecimento de joelho com extensão sentado sem carga' => 'Sentado na borda de um banco, estendendo e dobrando um joelho de cada vez, sem peso nenhum na perna.',
+    'Prancha com apoio no bosu' => 'Prancha com os dois antebraços sobre a cúpula do bosu, corpo em linha reta da cabeça aos calcanhares.',
+    'Estabilização escapular em prancha com apoio na parede' => 'Em pé inclinado com os antebraços apoiados na parede, corpo reto, empurrando a parede.',
+    'Propriocepção de joelho em semiagachamento com elástico' => 'Meio agachamento com um elástico ao redor das coxas, joelhos abertos alinhados com os pés.',
+    'Isometria de cervical em decúbito dorsal' => 'Deitado de costas no chão, cabeça erguida poucos centímetros com o queixo recuado.',
+    'Parada de mão na parede' => 'De cabeça para baixo, mãos no chão e pés apoiados na parede, corpo estendido em linha reta.',
+    'L-sit nas paralelas' => 'Sustentado nas barras paralelas com os braços travados e as pernas estendidas à frente, na horizontal.',
+    'Front lever progressivo' => 'Pendurado numa barra fixa, corpo na horizontal com a barriga para cima e os joelhos recolhidos ao peito.',
+    'Back lever progressivo' => 'Pendurado numa barra fixa de costas, corpo na horizontal com a barriga para baixo e os joelhos recolhidos.',
+];
+
+$complementar = [];
+foreach ($propsComplementar as $equipamento => $nomes) {
+    $cena = ['Rolo' => $roloDeEspuma, 'Bosu' => $bosu, 'Disco' => $discoDeslizante,
+             'Argolas' => $argolas, 'Bastão' => $bastao, 'Elástico' => $elasticoIntegro][$equipamento];
+    foreach ($nomes as $nome) {
+        $complementar[$nome]['cena'] = $cena;
+    }
+}
+foreach ($isometricosComplementar as $nome) {
+    $complementar[$nome]['estatico'] = true;
+}
+foreach ($execucaoComplementar as $nome => $texto) {
+    $complementar[$nome]['execucao'] = $texto;
+}
+
+return array_replace($base, $maquinas, $outras, $complementar);

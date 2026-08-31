@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Console\Commands\GerarDemonstracaoExercicio;
 use App\Models\Exercise;
 use App\Support\Progressao;
 use Database\Seeders\ExercicioBibliotecaAmpliadaSeeder;
@@ -125,6 +126,44 @@ class ExercicioBibliotecaComplementarTest extends TestCase
             $this->assertContains($incremento, [0.0, 1.0, 2.0, 2.5, 4.0, 5.0],
                 "Incremento inesperado para '$equipamento'.");
         }
+    }
+
+    // ---- A curadoria de prompt de vídeo ----------------------------------
+
+    public function test_nenhuma_dica_de_demonstracao_aponta_pra_exercicio_inexistente(): void
+    {
+        // Chave errada em dicas_demonstracao.php não dá erro nenhum: a dica
+        // simplesmente nunca é aplicada, o prompt sai sem a negação curada e o
+        // vídeo volta errado — depois de já ter sido pago.
+        $this->seed(ExerciseSeeder::class);
+        $this->seed(ExercicioBibliotecaAmpliadaSeeder::class);
+        $this->seed(ExercicioBibliotecaComplementarSeeder::class);
+        $existentes = Exercise::pluck('name')->all();
+
+        $orfas = array_diff(array_keys(require database_path('dicas_demonstracao.php')), $existentes);
+
+        $this->assertSame([], array_values($orfas),
+            'Dica de demonstração apontando para exercício que não existe.');
+    }
+
+    public function test_exercicio_da_leva_nao_gera_prompt_cego(): void
+    {
+        // Prompt cego = só o nome do exercício. É o que acontece quando a
+        // instrução inteira cai no filtro de prescrição de instrucaoVisual()
+        // (a palavra "sustente" derruba a frase toda). Custa um crédito e
+        // volta errado.
+        $cegos = [];
+        foreach (ExercicioBibliotecaComplementarSeeder::linhas() as [$nome, $grupo, $equipamento, $instrucoes]) {
+            $ex = new Exercise(compact('nome') + [
+                'name' => $nome, 'muscle_group' => $grupo,
+                'equipment' => $equipamento, 'instructions' => $instrucoes,
+            ]);
+            if (GerarDemonstracaoExercicio::execucao($ex) === null) {
+                $cegos[] = $nome;
+            }
+        }
+
+        $this->assertSame([], $cegos, 'Exercício sem descrição visual aproveitável para o prompt.');
     }
 
     // ---- A forma das linhas ----------------------------------------------
