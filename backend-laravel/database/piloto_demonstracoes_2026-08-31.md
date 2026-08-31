@@ -175,3 +175,50 @@ que nem o personal vê no vídeo.
 
 36 vídeos gerados, 144 créditos. **574 restantes = 143 vídeos.**
 Faltam 238 da leva, ou 227 tirando os 11 de disco.
+
+# Lote 4 — 6 correções + 6 novos, 48 créditos (526 restantes)
+
+Primeiro lote depois da varredura preventiva das 58 cena.
+
+| # | Exercício | Antes | Agora |
+|---|---|---|---|
+| 61 | Alongamento de isquiotibiais em passada com apoio no banco | GRAVE | **OK** |
+| 62 | Alongamento de glúteo sentado na cadeira | GRAVE | **OK** |
+| 63 | Alongamento de quadríceps na parede ajoelhado | MÉDIO | **OK** |
+| 64 | Alongamento de sóleo com joelho flexionado | MÉDIO | **OK** |
+| 65 | Deslizamento de isquiotibiais na toalha | MÉDIO (disco) | **OK** |
+| 66 | Serra abdominal na toalha | MÉDIO (disco) | **MÉDIO** — toalha certa, mas sob as mãos |
+| 67 | Alongamento de dorsal na barra | novo | **MÉDIO** — barra alta, tronco em pé |
+| 68 | Alongamento de lombar em posição fetal | novo | **OK** |
+| 69 | Alongamento de abdome (esfinge) | novo | **OK** |
+| 70 | Alongamento de cadeia posterior com toalha | novo | **OK** |
+| 71 | Alongamento de rotadores externos (sleeper stretch) | novo | **MÉDIO** — cotovelo estendido |
+| 72 | Alongamento de manguito rotador na porta | novo | **OK** |
+
+**9 OK · 3 MÉDIO · ZERO GRAVE — 75%.** As 6 correções pegaram, 6 de 6.
+
+## Duas correções do que eu tinha afirmado antes
+
+**Eu estava errado sobre o sóleo.** Escrevi no lote 3 que era limite do
+gerador e que não valia insistir. Não era: bastou dizer o contraste POR NOME
+— "the rear leg is NEVER straight, this is not the straight-leg calf stretch"
+— e saiu certo. A lição não é "distinção de variante é limite", é que o
+gerador precisa saber de QUAL exercício parecido ele tem que se afastar.
+Antes de dar variante como perdida, tentar a negação nominal do vizinho.
+
+**E estava errado sobre o disco.** O erro não era do gerador, era meu, de ter
+agrupado disco de EQUILÍBRIO e disco DESLIZANTE como um prop só. O de
+equilíbrio sempre esteve certo; o deslizador virou toalha e renderizou de
+primeira.
+
+## O padrão dos 3 médios que sobraram
+
+Todos são a cena estar certa mas INCOMPLETA — ela diz o apoio e não diz qual
+extremidade vai nele. "Under each working foot or hand" deixou o gerador
+escolher a mão quando o exercício é do pé. Cena corrigida nos três.
+
+## Placar
+
+48 vídeos, 192 créditos. **526 restantes = 131 vídeos.**
+Faltam 226 da leva. Acumulado: 31 OK, 10 médios, 7 graves — e dos 7 graves,
+6 já foram corrigidos e reinstalados.

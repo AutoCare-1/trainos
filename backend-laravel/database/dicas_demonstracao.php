@@ -1000,6 +1000,13 @@ $varreduraPreventiva = [
     'Muscle-up na barra' => 'He hangs below a fixed bar, pulls explosively until his chest passes above the bar, leans over it and presses to straight arms supported ON TOP of the bar, then lowers back to the hang.',
 ];
 
+// Lote 4: três ajustes finos. Nos dois primeiros a cena estava certa mas
+// incompleta — não dizia QUAL extremidade vai no apoio, e ele escolheu a
+// outra. No sleeper, faltava a mecânica do cotovelo.
+$varreduraPreventiva['Serra abdominal na toalha'] = 'He is in a plank on his FOREARMS with the towel under the tips of BOTH FEET and his hands flat on the floor — the towel is never under his hands. He pushes his whole body backwards so the feet slide away, then pulls back to the start.';
+$varreduraPreventiva['Alongamento de dorsal na barra'] = 'He grips a fixed bar at about CHEST height — low, not overhead — with both hands, steps his feet back and pushes his hips backwards until his arms are straight and his torso hangs down HORIZONTALLY, back parallel to the floor and head between the arms. He never hangs upright from a high bar.';
+$varreduraPreventiva['Alongamento de rotadores externos deitado (sleeper stretch)'] = 'He lies ON HIS SIDE, lying on the shoulder being stretched, with that upper arm out in front of his chest on the floor and the ELBOW BENT to a right angle so the forearm points straight UP at the ceiling. With his free top hand he presses that forearm slowly DOWN toward the floor, rotating the shoulder. The bottom elbow never straightens.';
+
 foreach ($varreduraPreventiva as $nome => $cenaDoExercicio) {
     // Não sobrescreve cena de prop já montada acima (rolo, bosu, argolas,
     // elástico): ali as duas precisam conviver.
