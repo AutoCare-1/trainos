@@ -336,9 +336,9 @@ class ExercicioBibliotecaComplementarSeeder extends Seeder
             ['Prancha de Copenhague', 'Prevenção', 'Peso corporal', 'De lado com o pé de cima no banco, eleve o quadril sustentando pelo adutor.'],
             ['Prancha de Copenhague com joelho apoiado', 'Prevenção', 'Peso corporal', 'Versão mais fácil, com o joelho da perna de cima apoiado no banco.'],
             ['Ponte de glúteo com aperto de adutores', 'Prevenção', 'Peso corporal', 'Em ponte, aperte uma bola ou almofada entre os joelhos durante toda a sustentação.'],
-            ['Deslizamento de isquiotibiais no disco', 'Prevenção', 'Disco', 'Em ponte com os pés nos discos, estenda as pernas devagar e puxe de volta.'],
-            ['Deslizamento de calcanhar bilateral no disco', 'Prevenção', 'Disco', 'Deitado, deslize os dois calcanhares para longe e traga de volta sem largar o quadril.'],
-            ['Excêntrico de isquiotibiais no deslizador com uma perna', 'Prevenção', 'Disco', 'Em ponte unipodal, estenda a perna do disco em cinco segundos e volte com as duas.'],
+            ['Deslizamento de isquiotibiais na toalha', 'Prevenção', 'Toalha', 'Em ponte com os pés sobre toalhas em piso liso, estenda as pernas devagar e puxe de volta.'],
+            ['Deslizamento de calcanhar bilateral na toalha', 'Prevenção', 'Toalha', 'Deitado, deslize os dois calcanhares sobre toalhas para longe e traga de volta sem largar o quadril.'],
+            ['Excêntrico de isquiotibiais na toalha com uma perna', 'Prevenção', 'Toalha', 'Em ponte unipodal, estenda a perna da toalha em cinco segundos e volte com as duas.'],
             ['Estabilização lombar em quatro apoios com elástico', 'Prevenção', 'Elástico', 'Elástico puxando para o lado, mantenha a coluna imóvel enquanto resiste.'],
             ['Ativação de transverso do abdome deitado', 'Prevenção', 'Peso corporal', 'Deitado, puxe o umbigo para dentro sem prender a respiração nem mover a pelve.'],
             ['Estabilização lombar em ponte com marcha', 'Prevenção', 'Peso corporal', 'Na ponte de glúteo, alterne tirar um pé do chão sem deixar o quadril cair.'],
@@ -375,13 +375,13 @@ class ExercicioBibliotecaComplementarSeeder extends Seeder
             ['Flexão de braço nas argolas', 'Peito', 'Argolas', 'Argolas baixas, desça o peito entre elas girando as palmas para fora ao subir.'],
             ['Paralelas nas argolas', 'Peito', 'Argolas', 'Mergulho nas argolas com tronco inclinado à frente, estabilizando a oscilação.'],
             ['Crucifixo na polia deitado no banco', 'Peito', 'Polia', 'Banco entre as polias baixas, abra e feche os braços com leve flexão de cotovelo.'],
-            ['Flexão de braço com abertura nos discos', 'Peito', 'Disco', 'Mãos sobre os discos, deslize um braço para o lado ao descer e puxe de volta ao subir.'],
+            ['Flexão de braço com abertura na toalha', 'Peito', 'Toalha', 'Mãos sobre toalhas em piso liso, deslize um braço para o lado ao descer e puxe de volta ao subir.'],
 
             // Costas
             ['Puxada frontal ajoelhado na polia', 'Costas', 'Polia', 'Ajoelhado de frente para a polia alta, puxe a barra até o peito sem recuar o tronco.'],
             ['Remada nas argolas com pés elevados', 'Costas', 'Argolas', 'Corpo na horizontal com os pés no banco, puxe as argolas até as costelas.'],
             ['Barra fixa nas argolas', 'Costas', 'Argolas', 'Puxe até o queixo passar as argolas, deixando as palmas girarem naturalmente.'],
-            ['Prancha com abertura de pernas nos discos', 'Core', 'Disco', 'Em prancha com os pés nos discos, afaste e junte as pernas sem deixar o quadril cair.'],
+            ['Prancha com abertura de pernas na toalha', 'Core', 'Toalha', 'Em prancha com os pés sobre toalhas em piso liso, afaste e junte as pernas sem deixar o quadril cair.'],
             ['Remada curvada no smith', 'Costas', 'Smith', 'Tronco a quarenta e cinco graus sob a barra guiada, puxe até o abdome.'],
 
             // Ombros
@@ -398,7 +398,7 @@ class ExercicioBibliotecaComplementarSeeder extends Seeder
             ['Mergulho nas argolas', 'Tríceps', 'Argolas', 'Tronco vertical nas argolas, desça até noventa graus e suba estendendo os cotovelos.'],
 
             // Pernas
-            ['Agachamento com deslocamento lateral no disco', 'Pernas', 'Disco', 'Um pé sobre o disco, deslize-o para o lado descendo em agachamento e puxe de volta.'],
+            ['Agachamento com deslocamento lateral na toalha', 'Pernas', 'Toalha', 'Um pé sobre uma toalha em piso liso, deslize-o para o lado descendo em agachamento e puxe de volta.'],
             ['Belt squat na máquina', 'Pernas', 'Máquina', 'Carga presa no cinto pelo quadril, agache sem nenhuma compressão na coluna.'],
             ['Leg press vertical', 'Pernas', 'Máquina', 'Deitado sob a plataforma, empurre para cima sem tirar a lombar do apoio.'],
 
@@ -407,8 +407,8 @@ class ExercicioBibliotecaComplementarSeeder extends Seeder
             ['L-sit nas paralelas', 'Core', 'Peso corporal', 'Nas paralelas com os braços travados, sustente as pernas estendidas na horizontal.'],
             ['Dragon flag', 'Core', 'Peso corporal', 'Deitado segurando o banco atrás da cabeça, eleve o corpo reto e desça sem dobrar o quadril.'],
             ['Limpador de para-brisa suspenso na barra', 'Core', 'Peso corporal', 'Pendurado com as pernas elevadas, leve os pés de um lado ao outro.'],
-            ['Serra abdominal no disco', 'Core', 'Disco', 'Em prancha com os pés nos discos, empurre o corpo para trás e puxe de volta.'],
-            ['Prancha com deslizamento de braços no disco', 'Core', 'Disco', 'Em prancha com as mãos nos discos, deslize um braço à frente por vez sem girar o quadril.'],
+            ['Serra abdominal na toalha', 'Core', 'Toalha', 'Em prancha com os pés sobre uma toalha em piso liso, empurre o corpo para trás e puxe de volta.'],
+            ['Prancha com deslizamento de braços na toalha', 'Core', 'Toalha', 'Em prancha com as mãos sobre toalhas em piso liso, deslize um braço à frente por vez sem girar o quadril.'],
 
             // Funcional
             ['Muscle-up na barra', 'Funcional', 'Peso corporal', 'Puxada explosiva seguida da transição do peito sobre a barra e extensão dos braços.'],

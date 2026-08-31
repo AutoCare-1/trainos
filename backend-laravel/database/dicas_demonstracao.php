@@ -712,18 +712,13 @@ $propsComplementar = [
         'Prancha com apoio no bosu',
         'Salto sobre o bosu com aterrissagem estável',
     ],
+    // Só os três de EQUILÍBRIO. Os oito de deslizador saíram daqui quando
+    // viraram toalha — se ficassem, receberiam a cena do disco de equilíbrio
+    // em cima da cena da toalha e o prompt se contradiria.
     'Disco' => [
         'Equilíbrio na prancha de balanço',
         'Apoio unipodal sobre espuma com giro de cabeça',
         'Agachamento unipodal no disco de equilíbrio',
-        'Deslizamento de isquiotibiais no disco',
-        'Deslizamento de calcanhar bilateral no disco',
-        'Excêntrico de isquiotibiais no deslizador com uma perna',
-        'Flexão de braço com abertura nos discos',
-        'Prancha com abertura de pernas nos discos',
-        'Agachamento com deslocamento lateral no disco',
-        'Serra abdominal no disco',
-        'Prancha com deslizamento de braços no disco',
     ],
     'Argolas' => [
         'Flexão de braço nas argolas',
@@ -858,15 +853,17 @@ $dicasCena = [
     'Extensão de tríceps nas argolas' => 'He stands leaning FORWARD onto the rings with his body straight and angled toward the floor, elbows pointing forward beside his head. Only the elbows bend and straighten; the shoulders stay put. He is never lying down.',
 
     // Solo barriga para cima (6)
-    'Deslizamento de isquiotibiais no disco' => $pontePeitoParaCima,
-    'Deslizamento de calcanhar bilateral no disco' => $pontePeitoParaCima,
-    'Excêntrico de isquiotibiais no deslizador com uma perna' => $pontePeitoParaCima,
+    'Deslizamento de isquiotibiais na toalha' => $pontePeitoParaCima,
+    'Deslizamento de calcanhar bilateral na toalha' => $pontePeitoParaCima,
+    'Excêntrico de isquiotibiais na toalha com uma perna' => $pontePeitoParaCima,
     'Ponte de glúteo com aperto de adutores' => $pontePeitoParaCima,
     'Estabilização lombar em ponte com marcha' => $pontePeitoParaCima,
 
     // Parede (2) — a variante do sóleo é a mesma montagem com o joelho dobrado.
     'Alongamento de panturrilha na parede' => $panturrilhaNaParede,
-    'Alongamento de sóleo com joelho flexionado' => 'He stands facing a wall with both palms flat on it. The rear leg is set back with the KNEE CLEARLY BENT, and that rear heel stays pressed flat on the floor in every single frame — the rear foot is never lifted off the ground. He sinks his hips straight down.',
+    // Segunda tentativa: a primeira saiu idêntica ao alongamento de panturrilha,
+    // com o joelho de trás esticado. Agora o contraste é dito por nome.
+    'Alongamento de sóleo com joelho flexionado' => 'He stands close to a wall with both palms on it, in a SHORT stance with the rear foot only about thirty centimetres behind the front one. The rear KNEE is deeply BENT, clearly folded to roughly a hundred and thirty degrees, and he sinks his hips straight DOWN toward his heels as if starting to sit. That rear heel stays pressed flat on the floor throughout. His rear leg is NEVER straight and never extended far back: this is not the straight-leg calf stretch.',
 
     // Bastão (5) — o objeto saiu perfeito, o movimento saiu aleatório.
     'Passagem de bastão pela cabeça' => 'He grips the stick with BOTH hands in a very wide overhand grip and keeps both elbows completely straight the whole time. The stick travels in one slow arc from in front of his thighs, up over his head and down behind his back, then returns the same way. It stays horizontal and level at all times, and is never swung diagonally, never held in one hand and never rested on his shoulders.',
@@ -889,13 +886,128 @@ foreach ($dicasCena as $nome => $cenaDoExercicio) {
     $complementar[$nome]['cena'] = $cenaDoExercicio;
 }
 
-// O disco foi o único prop que não pegou no piloto: sai como um pad redondo e
-// aparece um só. Negação mais dura, do jeito que funcionou pros outros props.
-$discoDeslizante = 'There are exactly TWO separate sliding discs, one under each working foot. Each disc is a completely FLAT round plastic disc lying on the floor like a plate — flat on top, with no dome, no curve, no cushion and no thickness. They are never a BOSU, never a balance pad, never a weight plate, never a step and never a single object.';
+// O disco deslizante não pegou nem com negação dura (lotes 1 e 2): sai sempre
+// como um pad redondo, e um só. Os 8 exercícios de DESLIZADOR foram trocados
+// pra toalha na biblioteca — é o que academia usa de verdade e o gerador
+// desenha bem. Os 3 que continuam em `Disco` são disco de EQUILÍBRIO e
+// espuma, e pra esses o pad redondo que ele desenha está certo.
+$discoDeEquilibrio = 'He balances on a round inflated balance disc lying on the gym floor — a soft air-filled cushion about the size of a dinner plate. It is never a weight plate and never a flat board.';
 foreach ($propsComplementar['Disco'] as $nome) {
-    // Não sobrescreve a cena de montagem de quem já ganhou uma acima: as duas
-    // precisam conviver (o disco E a orientação do corpo).
-    $complementar[$nome]['cena'] = $discoDeslizante.' '.($dicasCena[$nome] ?? '');
+    $complementar[$nome]['cena'] = $discoDeEquilibrio.' '.($dicasCena[$nome] ?? '');
+}
+
+// Toalha em piso liso: o substituto do deslizador. Lista explícita, e NÃO
+// todo mundo que usa toalha — as três toalhas antigas da leva (cadeia
+// posterior, pé, rotação interna de ombro) seguram a toalha na mão, não
+// deslizam sobre ela, e receber esta cena as quebraria.
+$toalhaDeslizante = 'Under each working foot or hand there is a small folded hand towel lying flat on a smooth floor, and it slides across that floor as he moves. The towel is plain fabric, stays flat and never becomes a weight plate, a mat, a cushion or a disc.';
+$deslizamComToalha = [
+    'Prancha com abertura de pernas na toalha',
+    'Serra abdominal na toalha',
+    'Prancha com deslizamento de braços na toalha',
+    'Agachamento com deslocamento lateral na toalha',
+    'Deslizamento de isquiotibiais na toalha',
+    'Deslizamento de calcanhar bilateral na toalha',
+    'Excêntrico de isquiotibiais na toalha com uma perna',
+    'Flexão de braço com abertura na toalha',
+];
+foreach ($deslizamComToalha as $nome) {
+    $complementar[$nome]['cena'] = isset($complementar[$nome]['cena'])
+        ? $toalhaDeslizante.' '.$complementar[$nome]['cena']
+        : $toalhaDeslizante;
+}
+
+// ---------------------------------------------------------------------------
+// VARREDURA PREVENTIVA (31/08, depois do lote 3) — 58 exercícios ainda não
+// gerados.
+//
+// Até aqui a cena estava sendo escrita DEPOIS de ver o vídeo errado, a 4
+// créditos por descoberta. Três lotes bastaram pra mostrar que o erro de
+// montagem não é aleatório: ele aparece sempre que o exercício menciona um
+// apoio (banco, cadeira, parede, degrau, barra, bola) sem dizer o que encosta
+// nele, ou uma orientação de corpo (deitado, de bruços, em quatro apoios,
+// pendurado) que o gerador pode inverter.
+//
+// E há uma lição do arquivo de memória que eu só apliquei tarde: a instrução
+// em português (`execucao`) NÃO move o ponteiro; o que move é a cena em
+// inglês. "Perna estendida sobre o banco" estava escrito e claro, e mesmo
+// assim ele apoiou as MÃOS no banco. Então não basta a instrução ser boa —
+// se a montagem importa, ela precisa estar aqui, em inglês.
+//
+// Por isso estas 58 foram escritas ANTES de gerar, varrendo os que faltam por
+// esses dois padrões. Custo: zero. O que elas evitam, pela taxa dos lotes
+// 1-3, é da ordem de 15 vídeos errados = 60 créditos.
+// ---------------------------------------------------------------------------
+
+$varreduraPreventiva = [
+    'Arremesso rotacional de medicine ball na parede' => 'He stands SIDE-ON to a solid wall about one metre away, holding the medicine ball at chest height. He rotates hips and torso and throws the ball hard into the wall beside him, catches the rebound and repeats. He never faces the wall square and never throws it at the floor.',
+    'Arranque de 10 metros a partir da posição deitada' => 'He starts lying FACE DOWN flat on the gym floor with his hands beside his chest, pushes up, gets to his feet and sprints forward. He never starts from a standing position.',
+    'Puxada de nado na polia deitado' => 'He lies FACE DOWN along a flat bench, chest on the bench and legs extended behind, holding one low-pulley cable handle in each hand. He pulls both hands from in front of his head down past his ribs, like a swimming stroke, then lets them travel forward again.',
+    'Batida de pernas no banco' => 'He lies FACE DOWN on a flat bench with his hips at the end of it and both straight legs out in the air behind him, hands gripping the bench sides. He flutter-kicks the legs up and down alternately in a short fast range.',
+    'Rotação de ombro em decúbito ventral (nadador)' => 'He lies FACE DOWN flat on the floor with the chest lifted slightly, and sweeps both straight arms from beside his hips out to the sides and up above his head, then back, without the hands ever touching the floor.',
+    'Streamline na parede' => 'He stands with his BACK flat against a wall — heels, hips and shoulders all touching it — both arms stretched straight overhead with the hands together and the ears between the upper arms.',
+    'Ponte de luta (ponte de pescoço assistida)' => 'He lies FACE UP with knees bent and feet flat, then drives his hips up and arches back so the weight goes onto his upper back and shoulders, with both hands on the floor beside his head taking part of the load. His head never carries the weight alone.',
+    'Troca rápida de pés no step (foot fire)' => 'He stands in front of a low step platform and alternates tapping the ball of each foot on top of it as fast as possible, torso upright. He never stands with both feet on the step.',
+    'Extensão de tronco em posição de guidão' => 'He lies FACE DOWN flat on the floor with arms reaching forward, and lifts chest and shoulders a few centimetres off the ground, holding there.',
+    'Escalada horizontal na parede (traverse)' => 'He is on a climbing wall covered in coloured holds, gripping holds with both hands and standing on holds with both feet, moving SIDEWAYS along the wall with three points of contact. He never climbs upward and never leaves the wall.',
+    'Pop-up de surf no solo' => 'He lies FACE DOWN on the floor with hands beside his chest, pushes the floor away and swings both feet forward underneath him in one motion, landing in a low side-on surf stance with knees bent.',
+    'Remada de surf em decúbito ventral' => 'He lies FACE DOWN along a flat bench, chest and hips supported and legs out behind, alternating long paddling strokes with each arm reaching forward and pulling back past the hip, chest kept lifted.',
+    'Mobilidade torácica em quatro apoios (open book)' => 'He lies ON HIS SIDE on the floor with both knees bent and stacked in front of him and both arms stretched forward at shoulder height. He opens the TOP arm in a wide arc across his body until the back of that hand reaches the floor behind him, head following it, then closes it. The knees stay stacked and never move.',
+    'Rotação torácica deitado de lado' => 'He lies ON HIS SIDE with the top knee bent and resting on the floor in front of him, pinned there by his lower hand. He rotates the upper torso backwards until the top shoulder heads for the floor behind him. The knee stays pinned the whole time.',
+    'Gato e camelo' => 'He is on ALL FOURS on the floor, hands under shoulders and knees under hips, alternating rounding the back up toward the ceiling and letting it sag down. Only the spine moves; hands and knees never leave the floor.',
+    'Círculo de quadril em quatro apoios' => 'He is on ALL FOURS and lifts ONE knee out to the side, drawing a large slow circle in the air with that knee while the other three limbs stay planted and the torso stays level.',
+    'Mobilidade de tornozelo na parede' => 'He stands facing a wall in a short split stance with the FRONT foot a few centimetres from it, and drives the FRONT knee forward until it touches the wall while that front heel stays pressed flat on the floor, then returns.',
+    'Deslizamento de escápula na parede (wall slide)' => 'He stands with his BACK flat against a wall, both forearms pressed against the wall with elbows at shoulder height. He slides both forearms straight UP the wall until the arms are nearly overhead, then back down, keeping wrists, elbows and back touching the wall throughout.',
+    'Rotação de ombro no batente da porta' => 'He stands in a doorway with one FOREARM pressed flat against the door frame, elbow bent to a right angle at shoulder height, then turns his torso away from that arm to open the chest.',
+    'Mobilidade de punho em quatro apoios' => 'He kneels on ALL FOURS with both palms flat on the floor and rocks his bodyweight forward and back over the hands, then turns the hands so the fingers point back toward his knees and rocks again.',
+    'Escorpião deitado' => 'He lies FACE DOWN flat on the floor with both arms out to the sides in a T. He lifts one leg and swings that foot across his body toward the opposite hand, letting the hip roll, then returns. Chest and arms stay down on the floor.',
+    'Respiração diafragmática deitada' => 'He lies FACE UP on the floor with knees bent and feet flat, one hand on his chest and one on his belly, breathing slowly so the belly hand rises while the chest hand stays still.',
+    'Mobilidade de quadril em passada com apoio no cotovelo' => 'He is in a deep forward lunge, front foot flat and back knee near the floor. He lowers the ELBOW on the same side as the front leg down to the floor on the INSIDE of that front foot, then rotates and reaches the other arm up to the ceiling.',
+    'Rotação em quatro apoios com mão na nuca' => 'He is on ALL FOURS with one hand behind his head, elbow pointing out. He rotates the upper back to bring that elbow up toward the ceiling, then down under his chest, while hips and knees stay square and still.',
+    'Liberação miofascial de glúteo na bola' => 'He SITS on top of a small firm massage ball on the floor with one buttock, crosses that ankle over the opposite knee and rolls slowly over the ball, hands on the floor behind him for support.',
+    'Liberação de peitoral na bola na parede' => 'He stands FACING a wall and traps a small firm massage ball between the front of his shoulder and the wall, leaning into it and moving that arm slowly. The ball stays pinned between his chest and the wall.',
+    'Alongamento de dorsal na barra' => 'He stands facing a fixed horizontal bar at about chest height, grips it with both hands and steps back, pushing his hips backwards and letting the torso hang down between straight arms until his back is horizontal.',
+    'Alongamento de dorsal ajoelhado no banco' => 'He KNEELS on the floor in front of a flat bench and rests both ELBOWS on top of the bench, then sits his hips back toward his heels and lets his chest sink toward the floor between his arms.',
+    'Alongamento de bíceps na parede' => 'He stands SIDE-ON to a wall and places one straight arm behind him with the PALM flat on the wall at shoulder height, then rotates his torso away from that arm.',
+    'Alongamento de rotadores externos deitado (sleeper stretch)' => 'He lies ON HIS SIDE with the bottom shoulder directly under him and that arm out in front, elbow bent to a right angle and forearm pointing up. With the top hand he presses that forearm slowly DOWN toward the floor.',
+    'Alongamento de manguito rotador na porta' => 'He stands in a doorway and places one HAND high on the door frame above head height with the arm straight, then steps forward through the doorway to open the shoulder.',
+    'Alongamento de lombar em posição fetal' => 'He lies FACE UP on the floor and hugs BOTH knees in to his chest with both arms, head resting on the ground.',
+    'Alongamento de lombar com joelhos cruzados' => 'He lies FACE UP on the floor with arms out in a T, crosses one thigh over the other and lets both knees fall together to one side while both shoulders stay flat on the ground.',
+    'Alongamento de cadeia posterior com toalha' => 'He lies FACE UP on the floor and loops a towel around the sole of one foot, one end in each hand, pulling that straight leg up toward him. The other leg stays flat on the floor.',
+    'Alongamento de cadeia anterior em pé na parede' => 'He stands FACING a wall with both hands flat on it above head height, then walks his feet back and pushes hips and chest forward toward the wall, opening the front of the body.',
+    'Alongamento de psoas em decúbito dorsal na maca' => 'He lies FACE UP on a treatment table with his hips at the very edge. He hugs one knee to his chest with both arms while the OTHER leg hangs down freely off the end of the table toward the floor.',
+    'Alongamento de abdome em decúbito ventral (esfinge)' => 'He lies FACE DOWN on the floor and props himself on both FOREARMS with elbows under the shoulders, lifting the chest while hips and legs stay flat on the ground.',
+    'Alongamento de coluna suspenso na barra com pés no chão' => 'He grips a fixed bar overhead with both hands while both FEET stay flat on the floor, bends his knees and lets his bodyweight hang from the arms to decompress the spine. His feet never leave the ground.',
+    'Ativação de serrátil na parede' => 'He stands FACING a wall with both palms flat on it at shoulder height and arms straight. Without bending the elbows he pushes his chest away from the wall so the shoulder blades spread apart, then lets them come back together.',
+    'Elevação de ponta do pé no degrau (tibial)' => 'He stands on a step with both HEELS on the step and the front half of both feet hanging off the front edge, holding a rail. He lifts the TOES upward toward his shins and lowers them. His heels never leave the step.',
+    'Subida no step com pausa em apoio único' => 'He steps up onto a low platform with one foot and stands fully upright on that single leg, holding the other foot in the air beside him for two seconds without letting it touch, then steps back down.',
+    'Prancha de Copenhague' => 'He lies ON HIS SIDE propped on the bottom FOREARM, with the TOP leg lifted and its inner ankle resting on top of a flat bench beside him. He lifts his hips until the body is a straight line, the bottom leg hanging free in the air below the bench.',
+    'Prancha de Copenhague com joelho apoiado' => 'He lies ON HIS SIDE propped on the bottom FOREARM, with the TOP leg resting its KNEE and shin on a flat bench beside him. He lifts his hips until the body is a straight line, the bottom leg hanging free below the bench.',
+    'Ativação de transverso do abdome deitado' => 'He lies FACE UP on the floor with knees bent and feet flat, hands resting on his lower belly, drawing the navel gently inward while pelvis and ribs stay completely still.',
+    'Estabilização escapular em prancha com apoio na parede' => 'He stands leaning FORWARD with both FOREARMS pressed against a wall at chest height and his body in a straight line from head to heels, then pushes his chest away from the wall so the shoulder blades spread apart.',
+    'Retração e depressão escapular em decúbito ventral' => 'He lies FACE DOWN flat on the floor with both arms out to the sides. Without pushing with his hands he pulls his SHOULDER BLADES down and together so the chest lifts slightly off the ground, then releases.',
+    'Excêntrico de sóleo unilateral no degrau' => 'He stands on ONE foot on the edge of a step with that heel hanging off behind and a hand on a rail. With that KNEE BENT to about thirty degrees the whole time, he lowers the heel slowly below the level of the step, then puts the other foot down to help him back up.',
+    'Controle de valgo dinâmico no step' => 'He steps up onto a low platform with one foot, seen from the FRONT so both knees are visible, and stands up on that leg with the knee tracking straight out over the foot and never collapsing inward.',
+    'Isometria de cervical em decúbito dorsal' => 'He lies FACE UP flat on the floor with arms at his sides and lifts only his HEAD a few centimetres off the ground, chin tucked toward his throat, holding it there. His shoulders stay on the floor.',
+    'Descompressão lombar com elevação de pernas na cadeira' => 'He lies FACE UP on the floor with both CALVES resting on the seat of a chair, hips and knees each bent to a right angle, arms relaxed at his sides.',
+    'Crucifixo na polia deitado no banco' => 'He lies FACE UP on a flat bench placed between two LOW cable pulleys, one handle in each hand, arms out wide at chest level with a slight bend. He sweeps both hands up and together above his chest in a wide arc, then opens them back out.',
+    'Parada de mão na parede' => 'He is upside down in a handstand with both HANDS on the floor and the soles of both FEET resting against a wall, body straight and vertical, head between the arms.',
+    'Desenvolvimento em parada de mão na parede' => 'He is upside down in a handstand with hands on the floor and feet against a wall. He bends both elbows to lower the top of his head toward the floor between his hands, then presses back up to straight arms.',
+    'Leg press vertical' => 'He lies FACE UP on the padded base of a vertical leg press with back and hips flat, both feet pressed against a footplate directly ABOVE him. He pushes the plate straight up and lowers it back down.',
+    'L-sit nas paralelas' => 'He supports his whole bodyweight on two parallel bars, one hand on each, arms locked straight and shoulders pushed down, both legs held straight out in front of him horizontally so the body makes an L.',
+    'Dragon flag' => 'He lies FACE UP along a flat bench and grips the bench behind his head with both hands. He raises his whole body — legs, hips and back together in one straight rigid line — up to near vertical, resting only on his upper back, then lowers it slowly without bending at the hips.',
+    'Limpador de para-brisa suspenso na barra' => 'He hangs from a fixed bar overhead with both legs raised straight up in front of him, and swings the feet from one side to the other in a wide arc like a windscreen wiper while his hands stay fixed on the bar.',
+    'Muscle-up na barra' => 'He hangs below a fixed bar, pulls explosively until his chest passes above the bar, leans over it and presses to straight arms supported ON TOP of the bar, then lowers back to the hang.',
+];
+
+foreach ($varreduraPreventiva as $nome => $cenaDoExercicio) {
+    // Não sobrescreve cena de prop já montada acima (rolo, bosu, argolas,
+    // elástico): ali as duas precisam conviver.
+    if (isset($complementar[$nome]['cena'])) {
+        $complementar[$nome]['cena'] .= ' '.$cenaDoExercicio;
+    } else {
+        $complementar[$nome]['cena'] = $cenaDoExercicio;
+    }
 }
 
 return array_replace($base, $maquinas, $outras, $complementar);
