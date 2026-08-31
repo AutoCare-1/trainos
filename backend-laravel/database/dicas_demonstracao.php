@@ -818,4 +818,78 @@ foreach ($execucaoComplementar as $nome => $texto) {
     $complementar[$nome]['execucao'] = $texto;
 }
 
+// ---------------------------------------------------------------------------
+// MONTAGEM DE CENA da leva complementar — escrito depois do piloto de 12
+// (database/piloto_demonstracoes_2026-08-31.md).
+//
+// Os 4 graves do piloto tinham o prop CERTO e o corpo no lugar errado: ele fez
+// a remada nas argolas em pé, o mergulho pendurado como barra fixa, a ponte
+// sentado com as mãos atrás e o alongamento de panturrilha com o pé no ar.
+// É o mesmo padrão dos 7 de 7 erros de puxada de 23/08 — a instrução da
+// biblioteca descreve o MOVIMENTO e nunca a MONTAGEM, e o gerador chuta.
+//
+// Por isso estas entradas não são só dos 4 que falharam: cada uma vale pra
+// família inteira. O piloto viu 2 de 8 exercícios de argolas; a montagem que
+// ele errou é a mesma dos outros 6.
+// ---------------------------------------------------------------------------
+
+// --- Argolas: o que muda entre eles é ONDE o corpo fica em relação às argolas,
+// e é exatamente isso que a instrução não diz.
+$argolasApoiadoEmCima = 'He supports himself ON TOP of the rings: the rings are down beside his ribs, his arms are straight down at his sides, his torso is upright and his feet hang clear of the floor. He is NEVER hanging below the rings with his arms above his head — this is a dip, not a pull-up.';
+$argolasPenduradoHorizontal = 'His body hangs UNDERNEATH the rings, face up and almost horizontal, with his heels resting on a flat bench and his back never touching the floor. He is NEVER standing upright and never faces down. He pulls his chest up toward the rings and lowers back down.';
+$argolasPenduradoVertical = 'He hangs BELOW the rings with his body vertical and his feet clear of the floor, arms fully straight at the bottom. He pulls himself straight up until his chin passes the rings, then lowers back down.';
+$argolasInclinadoParaTras = 'He stands leaning BACK, body straight and angled away from the rings with his heels on the floor in front of him and his arms taking his weight. He is never lying down and never hanging vertically.';
+
+// --- Solo, barriga para cima: o gerador senta a pessoa e apoia as mãos atrás.
+$pontePeitoParaCima = 'He lies FACE UP on the floor with the back of his shoulders and both arms flat on the ground beside him, and his hips lifted high so that his body makes a straight line from shoulders to knees. He never sits up, and he never puts his hands on the floor behind him to prop himself.';
+
+// --- Parede: o erro foi dobrar a perna de trás e tirar o pé do chão.
+$panturrilhaNaParede = 'He stands facing a wall with both palms flat on it at chest height. The rear leg is COMPLETELY STRAIGHT and set far back, and that rear heel stays pressed flat on the floor in every single frame — the rear foot is never lifted, never bent up behind him and never off the ground. He leans his hips toward the wall.';
+
+$dicasCena = [
+    // Argolas (8) — só 2 passaram pelo piloto, mas a montagem é a mesma família.
+    'Mergulho nas argolas' => $argolasApoiadoEmCima,
+    'Paralelas nas argolas' => $argolasApoiadoEmCima,
+    'Flexão de braço nas argolas' => 'He is in a push-up position with his hands gripping two rings hanging just above the floor, body straight from head to heels and toes on the ground. He is never standing and never hanging in the air.',
+    'Remada nas argolas com pés elevados' => $argolasPenduradoHorizontal,
+    'Barra fixa nas argolas' => $argolasPenduradoVertical,
+    'Muscle-up nas argolas' => $argolasPenduradoVertical.' At the top he pulls his chest above the rings and turns his wrists to finish supported on top of them with his arms straight.',
+    'Rosca nas argolas' => $argolasInclinadoParaTras.' Only his elbows bend: the upper arms stay still and his palms face up toward his own shoulders.',
+    'Extensão de tríceps nas argolas' => 'He stands leaning FORWARD onto the rings with his body straight and angled toward the floor, elbows pointing forward beside his head. Only the elbows bend and straighten; the shoulders stay put. He is never lying down.',
+
+    // Solo barriga para cima (6)
+    'Deslizamento de isquiotibiais no disco' => $pontePeitoParaCima,
+    'Deslizamento de calcanhar bilateral no disco' => $pontePeitoParaCima,
+    'Excêntrico de isquiotibiais no deslizador com uma perna' => $pontePeitoParaCima,
+    'Ponte de glúteo com aperto de adutores' => $pontePeitoParaCima,
+    'Estabilização lombar em ponte com marcha' => $pontePeitoParaCima,
+
+    // Parede (2) — a variante do sóleo é a mesma montagem com o joelho dobrado.
+    'Alongamento de panturrilha na parede' => $panturrilhaNaParede,
+    'Alongamento de sóleo com joelho flexionado' => 'He stands facing a wall with both palms flat on it. The rear leg is set back with the KNEE CLEARLY BENT, and that rear heel stays pressed flat on the floor in every single frame — the rear foot is never lifted off the ground. He sinks his hips straight down.',
+
+    // Bastão (5) — o objeto saiu perfeito, o movimento saiu aleatório.
+    'Passagem de bastão pela cabeça' => 'He grips the stick with BOTH hands in a very wide overhand grip and keeps both elbows completely straight the whole time. The stick travels in one slow arc from in front of his thighs, up over his head and down behind his back, then returns the same way. It stays horizontal and level at all times, and is never swung diagonally, never held in one hand and never rested on his shoulders.',
+    'Círculo de ombro com bastão' => 'He holds the stick horizontally with both hands wide apart and both arms straight, and draws slow wide circles with it in front of his body. It stays level and is never held in one hand.',
+    'Rotação de tronco sentado com bastão' => 'He sits on a bench with the stick resting horizontally across the back of his shoulders, one hand near each end. Only his torso turns, left and right; his hips stay square and the stick stays level.',
+    'Aquecimento de agachamento com bastão acima da cabeça' => 'He holds the stick horizontally with both arms locked straight ABOVE his head, wide grip, and squats down keeping it there. The stick stays overhead and level for the whole clip and never comes down to his shoulders.',
+    'Pronossupinação com bastão lastrado' => 'He sits with his forearm resting on his thigh and his elbow bent to a right angle, holding one end of the stick so it points upward. Only his wrist turns, rolling the stick from side to side; the elbow and shoulder never move.',
+
+    // Figura 4 (1) — o cruzamento não lia e ele levantava os ombros.
+    'Alongamento de glúteo deitado (figura 4)' => 'He lies FACE UP on the floor with the back of his head resting on the ground. One ankle is crossed on top of the opposite knee so the legs form a clear number 4, and both hands reach through the gap between his legs to hold the back of the supporting thigh and pull it toward his chest. His head and shoulders stay down on the floor: he never curls up into a sit-up.',
+];
+
+foreach ($dicasCena as $nome => $cenaDoExercicio) {
+    $complementar[$nome]['cena'] = $cenaDoExercicio;
+}
+
+// O disco foi o único prop que não pegou no piloto: sai como um pad redondo e
+// aparece um só. Negação mais dura, do jeito que funcionou pros outros props.
+$discoDeslizante = 'There are exactly TWO separate sliding discs, one under each working foot. Each disc is a completely FLAT round plastic disc lying on the floor like a plate — flat on top, with no dome, no curve, no cushion and no thickness. They are never a BOSU, never a balance pad, never a weight plate, never a step and never a single object.';
+foreach ($propsComplementar['Disco'] as $nome) {
+    // Não sobrescreve a cena de montagem de quem já ganhou uma acima: as duas
+    // precisam conviver (o disco E a orientação do corpo).
+    $complementar[$nome]['cena'] = $discoDeslizante.' '.($dicasCena[$nome] ?? '');
+}
+
 return array_replace($base, $maquinas, $outras, $complementar);

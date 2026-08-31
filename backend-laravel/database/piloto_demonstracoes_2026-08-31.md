@@ -65,12 +65,67 @@ Nenhum dos 4 é limite do modelo — é dica faltando. O que cada um precisa:
 - `Mergulho nas argolas` — corpo apoiado EM CIMA das argolas com os braços ao
   lado das costelas, nunca pendurado com os braços acima da cabeça.
 
-## Próximo passo
+# Lote 2 — 7 correções + 5 novos, 48 créditos (622,18 restantes)
 
-Escrever essas quatro `cena` (mais as duas dos médios), regerar os 6 e
-conferir a tira ANTES de soltar os 262 restantes. Custo: 24 créditos.
-Se pegar, a projeção da leva inteira melhora muito — os 5 OK e os 2 médios
-de prop já mostram que a faixa boa se confirma aqui.
+As `cena` foram escritas pra FAMÍLIA, não pros 4 que falharam: o piloto viu
+2 dos 8 exercícios de argolas, e a montagem que ele errou é a mesma dos
+outros 6. Entraram 8 de argolas, 5 de solo barriga-pra-cima, 2 de parede,
+5 de bastão e o figura 4.
+
+| # | Exercício | Antes | Agora |
+|---|---|---|---|
+| 21 | Alongamento de panturrilha na parede | GRAVE | **OK** |
+| 22 | Alongamento de glúteo deitado (figura 4) | MÉDIO | **GRAVE** — duas cabeças |
+| 23 | Remada nas argolas com pés elevados | GRAVE | **OK** |
+| 24 | Mergulho nas argolas | GRAVE | **OK** |
+| 25 | Deslizamento de isquiotibiais no disco | GRAVE | **MÉDIO** — ponte certa, disco não |
+| 26 | Serra abdominal no disco | MÉDIO | **MÉDIO** — disco não |
+| 27 | Passagem de bastão pela cabeça | MÉDIO | **OK** |
+| 28 | Alongamento de quadríceps em pé | novo | **OK** |
+| 29 | Alongamento de flexores do quadril ajoelhado | novo | **OK** |
+| 30 | Alongamento de peitoral no batente | novo | **OK** |
+| 31 | Alongamento de tríceps acima da cabeça | novo | **OK** |
+| 32 | Postura da criança | novo | **OK** |
+
+**9 OK · 2 MÉDIO · 1 GRAVE — 75%**, contra 42% do piloto.
+
+## O que fechou
+
+**A cena de montagem resolve montagem: 5 de 6.** Panturrilha, remada nas
+argolas, mergulho nas argolas e bastão saíram certos com o texto escrito
+depois de ver o erro. Confirma de novo que erro de montagem é dica faltando,
+não limite do gerador — e que a dica de família vale pra família inteira.
+
+**Os 5 alongamentos novos saíram OK de primeira, 5 de 5.** É o maior grupo
+da leva (46) e o mais barato de acertar: peso corporal, isometria e nenhum
+prop. A faixa boa se confirmou.
+
+**O disco deslizante é limite do gerador — decidido.** A negação dura
+("completely FLAT round plastic disc, no dome, no curve, no cushion, no
+thickness, never a BOSU, never a balance pad") não mudou nada: continua um
+pad redondo e continua um só. É o mesmo caso da corda nos 402, que também
+não virou corda com nenhuma quantidade de texto.
+
+NÃO gastar os 44 créditos dos 11 exercícios de disco. Duas saídas melhores:
+deixar no boneco animado, ou trocar o equipamento pra `Toalha` na biblioteca
+— o deslizamento funciona com toalha em piso liso, é o que academia de
+verdade usa, e toalha é objeto que o gerador desenha bem.
+
+**O figura 4 saiu com duas cabeças.** É o modo de falha de duplicação que a
+guarda de anatomia já tenta cobrir e que às vezes escapa mesmo assim. Não é
+prompt: é sorteio, do mesmo tipo do `supino-declinado` que acertou com o
+texto que o `supino-declinado-com-halteres` errou. Vale UMA regeração.
+
+## Onde estão
+
+Vídeos e tiras: `/private/tmp/claude-501/-Users-filipelima/6cab34fd-b357-4d6a-a4ef-51a353148aa0/scratchpad/piloto/`
+(scratchpad de sessão não é apagado — não regerar pra rever.)
+
+## Placar de créditos
+
+24 vídeos gerados, 96 créditos. Restam **622**, que dão 155 vídeos.
+Faltam 250 da leva — ou 239 tirando os de disco. Ainda falta decidir entre
+comprar crédito e priorizar dentro do que cabe.
 
 Vídeos e tiras: `/private/tmp/claude-501/-Users-filipelima/6cab34fd-b357-4d6a-a4ef-51a353148aa0/scratchpad/piloto/`
 (scratchpad de sessão não é apagado — não regerar pra rever).
