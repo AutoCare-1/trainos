@@ -403,3 +403,54 @@ conclusão "limite do gerador" era prematura ali também.
 96 vídeos, 384 créditos. **334 restantes = 83 vídeos.**
 Mobilidade: 27 dos 43. Faltam 178 da leva.
 Acumulado: **68 OK, 22 médios, 9 graves** — todos os 9 graves refeitos e certos.
+
+# Lote 9 — 9 correções de médio + 3 de mobilidade, 48 créditos (286 restantes)
+
+**8 OK · 4 MÉDIO · ZERO GRAVE.** Das 9 correções, 5 pegaram.
+
+| # | Exercício | Tentativa | Veredito |
+|---|---|---|---|
+| 161 | Serra abdominal na toalha | 3ª | **MÉDIO** — toalha aparece também sob os antebraços |
+| 162 | Sleeper stretch | 3ª | **MÉDIO** — cotovelo de baixo ainda estende |
+| 163 | Alongamento de antebraço em extensão | 2ª | **OK** |
+| 164 | Alongamento de punho em extensão na mesa | 2ª | **MÉDIO** — apoia a palma, não o dorso |
+| 165 | Alongamento de cadeia anterior na parede | 2ª | **OK** |
+| 166 | Coluna suspenso na barra com pés no chão | 2ª | **MÉDIO** — pés alternam chão e ar |
+| 167 | Postura do pombo | 2ª | **OK** — perna de trás agora estende |
+| 168 | Transição 90/90 com rotação | 2ª | **OK** |
+| 169 | Rotação de ombro no batente | 2ª | **OK** — cotovelo a 90° |
+| 170 | Escorpião deitado | novo | **OK** |
+| 171 | Ponte torácica lateral | novo | **OK** |
+| 172 | Mobilidade de quadril com joelho alto e rotação | novo | **OK** |
+
+## Onde a negação do erro funciona e onde não funciona
+
+A regra do lote 8 se confirmou nas cinco que pegaram: negar o erro observado
+("that back knee is never bent", "the arm is never straight", "he never
+stands up") resolve montagem e posição de membro inteiro.
+
+**Os quatro que resistem têm todos a mesma natureza, e é uma natureza nova:
+distinção de FACE ou de CONTATO de um segmento pequeno.**
+
+- toalha sob os pés x sob os antebraços
+- dorso da mão x palma da mão
+- cotovelo dobrado a 90° x estendido
+- pé tocando o chão x no ar
+
+Não é o corpo inteiro no lugar errado — é qual LADO de uma parte pequena
+encosta em quê. O gerador desenha a cena certa e erra o detalhe, e a negação
+explícita ("his palms never touch the bench at any moment") não muda nada.
+Três tentativas na serra abdominal e no sleeper, duas no punho e na barra.
+
+**Encerro esses quatro como estão.** Somam 12 créditos por tentativa sem
+convergir, e o erro que sobra é de grau: o exercício lê, a montagem está
+certa, e o detalhe errado é justamente o que o personal corrige ao vivo com
+o aluno. Gastar mais aqui é o mesmo erro que a poda de 22/08 documentou —
+perseguir uma variação que ninguém vê no vídeo de 4 segundos.
+
+## Placar
+
+108 vídeos, 432 créditos. **286 restantes = 71 vídeos.**
+Mobilidade: 30 dos 43. Faltam 166 da leva.
+Acumulado: **81 OK, 18 médios, 9 graves.** Todos os graves refeitos e certos;
+dos 18 médios, 14 refeitos e certos e 4 encerrados como estão.
