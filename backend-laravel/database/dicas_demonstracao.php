@@ -1050,6 +1050,14 @@ $varreduraPreventiva['Balanço de perna lateral'] = 'He stands FACING a rack hol
 $varreduraPreventiva['Mobilidade de coluna em posição de criança'] = 'He kneels and sits back on his heels with both arms stretched out on the floor in front of him and chest low, then WALKS both hands around to one side and then to the other, feeling the stretch down each side of the back.';
 $varreduraPreventiva['Cachorro olhando para baixo com pedalada'] = 'He is in an inverted V position with hands and feet on the floor, hips high in the air and legs straight. He then alternates bending one knee and pressing the other heel down toward the floor, pedalling the feet.';
 
+// Lote 10, fechando Mobilidade. A suspensão passiva leva a mesma negação de
+// pé no chão que o alongamento de coluna na barra precisou.
+$varreduraPreventiva['Mobilidade de ombro em suspensão passiva com pés apoiados'] = 'He grips a fixed bar overhead with both hands while BOTH FEET stay flat on the floor in every single frame — he never hangs with his feet in the air. He relaxes his shoulders and lets his bodyweight sink into the arms so the shoulders open, knees slightly bent.';
+$varreduraPreventiva['Agachamento em cócoras com rotação alternada'] = 'He squats all the way down into a deep bottom position with both heels flat on the floor and elbows inside his knees. From there he rotates his torso and reaches ONE arm straight up at the ceiling, then comes back down and reaches with the other. He never stands up between reaches.';
+$varreduraPreventiva['Mobilidade de joelho em círculos controlados'] = 'He stands with feet together and both knees slightly bent, both palms resting on his kneecaps, and draws slow circles with the knees, first in one direction then the other. His feet stay planted and his hands stay on his knees.';
+$varreduraPreventiva['Mobilidade de cotovelo com rotação controlada'] = 'He stands with one arm held straight out to the side at shoulder height, elbow locked, and slowly rotates the whole forearm so the palm turns fully UP at the ceiling and then fully DOWN at the floor. Only the forearm rotates: the shoulder and the elbow never move.';
+$varreduraPreventiva['Liberação de fáscia plantar na bolinha'] = 'He stands upright next to a rack, holding it with one hand, with a small firm massage ball under the ARCH of one bare foot. He rolls that foot slowly forward and back over the ball, from heel to toes, pressing down. The ball stays under the sole of the foot and never moves to the hand.';
+
 foreach ($varreduraPreventiva as $nome => $cenaDoExercicio) {
     // Não sobrescreve cena de prop já montada acima (rolo, bosu, argolas,
     // elástico): ali as duas precisam conviver.
