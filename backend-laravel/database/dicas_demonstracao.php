@@ -1039,6 +1039,17 @@ $varreduraPreventiva['Mobilidade de quadril 90/90'] = 'He SITS on the floor with
 $varreduraPreventiva['Transição 90/90 com rotação'] = 'He SITS on the floor in the 90/90 position, both shins flat on the ground at right angles, and without using his hands he sweeps both knees over to the OTHER side so the legs swap places, then sweeps them back. His feet drag across the floor and his hips stay on the ground.';
 $varreduraPreventiva['Sustentação em agachamento profundo com apoio'] = 'He squats all the way down until his hips are below his knees and his heels stay flat on the floor, holding onto a fixed upright post or rack in front of him with both hands for support, and stays down in that deep position.';
 
+// Lote 8: os balanços de perna precisam dizer o PLANO (frontal x lateral) e
+// onde a mão se apoia, senão os dois saem iguais.
+$varreduraPreventiva['Mobilidade cervical em flexão e extensão'] = 'He stands upright with arms relaxed at his sides and slowly drops his chin to his chest, then lifts it and looks up at the ceiling, moving only the head and neck. His shoulders and torso never move.';
+$varreduraPreventiva['Rotação cervical controlada'] = 'He stands upright with arms relaxed at his sides and slowly turns his head to look over one shoulder, then over the other. Only the head turns; the shoulders and torso stay square to the front.';
+$varreduraPreventiva['Alongamento dinâmico do flexor de quadril'] = 'He is in a forward lunge with the front foot flat and the back knee close to the floor, and he pushes his hips FORWARD and then rocks them back, repeating the movement instead of holding it.';
+$varreduraPreventiva['Rotação de quadril em pé (hip airplane)'] = 'He balances on ONE straight leg with his torso tipped forward toward horizontal and the other leg extended straight out behind him, arms out to the sides. He then rotates his pelvis, opening the free hip up toward the ceiling and closing it back down, while the standing foot stays planted.';
+$varreduraPreventiva['Balanço de perna frontal'] = 'He stands side-on holding a rack upright with one hand for balance, and swings the outside leg FORWARD and BACKWARD in front of and behind his body like a pendulum, keeping the leg fairly straight and the torso upright.';
+$varreduraPreventiva['Balanço de perna lateral'] = 'He stands FACING a rack holding it with both hands, and swings one leg ACROSS the front of his body from side to side, out to one side and then across in front of the standing leg. The swing is sideways, never forward and back.';
+$varreduraPreventiva['Mobilidade de coluna em posição de criança'] = 'He kneels and sits back on his heels with both arms stretched out on the floor in front of him and chest low, then WALKS both hands around to one side and then to the other, feeling the stretch down each side of the back.';
+$varreduraPreventiva['Cachorro olhando para baixo com pedalada'] = 'He is in an inverted V position with hands and feet on the floor, hips high in the air and legs straight. He then alternates bending one knee and pressing the other heel down toward the floor, pedalling the feet.';
+
 foreach ($varreduraPreventiva as $nome => $cenaDoExercicio) {
     // Não sobrescreve cena de prop já montada acima (rolo, bosu, argolas,
     // elástico): ali as duas precisam conviver.
