@@ -454,3 +454,43 @@ perseguir uma variação que ninguém vê no vídeo de 4 segundos.
 Mobilidade: 30 dos 43. Faltam 166 da leva.
 Acumulado: **81 OK, 18 médios, 9 graves.** Todos os graves refeitos e certos;
 dos 18 médios, 14 refeitos e certos e 4 encerrados como estão.
+
+# Lote 10 — 12 de mobilidade, 48 créditos (238 restantes)
+
+**11 OK · 1 MÉDIO · ZERO GRAVE — 92%.** Único médio: `Agachamento em cócoras
+com rotação alternada`, que saiu em meio agachamento em vez de cócoras
+profundas.
+
+OK: rolo torácica, respiração diafragmática, suspensão passiva, passada com
+cotovelo, rotação em quatro apoios, joelho em círculos, cotovelo em rotação,
+e os quatro de liberação (dorsal, panturrilha, posterior de coxa, fáscia
+plantar na bolinha).
+
+## Dois resultados que refinam a conclusão do lote 9
+
+**1. A distinção panturrilha x posterior de coxa FUNCIONOU.** Os dois vídeos
+são a mesma montagem (sentado, mãos atrás, rolo sob a perna) e o rolo saiu no
+lugar certo nos dois: sob a panturrilha num, sob a coxa no outro.
+
+No lote 9 eu escrevi que o limite era "distinção de face ou de contato de um
+segmento pequeno". Está grosseiro demais. O que realmente falha é mais
+estreito:
+
+> Separar dois SEGMENTOS diferentes funciona (coxa x panturrilha, pé x mão).
+> Separar duas FACES do mesmo segmento não funciona (dorso x palma), e
+> contato binário com o chão (pé apoiado x no ar) é instável.
+
+**2. A negação de "pés no chão" funcionou aqui e tinha falhado no lote 9.**
+O texto é praticamente o mesmo que o do `Alongamento de coluna suspenso na
+barra`, que alternou pé no chão e pé no ar. Aqui, na suspensão passiva, pegou
+nos 5 frames. Mesma frase, resultados diferentes = sorteio, não limite.
+
+Ou seja, dos quatro que encerrei no lote 9, o da barra provavelmente só
+precisava de uma re-rolagem. Vale 4 créditos quando sobrar folga — mas não
+antes de fechar os grupos que ainda não têm vídeo nenhum.
+
+## Placar
+
+120 vídeos, 480 créditos. **238 restantes = 59 vídeos.**
+Mobilidade: 42 de 43. Faltam 154 da leva.
+Acumulado: **92 OK, 19 médios, 9 graves.**
