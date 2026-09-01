@@ -53,7 +53,7 @@ class AlunoNutricaoController extends Controller
         $agua = HydrationLog::where('student_id', $student->id)
             ->whereDate('data', '>=', $desde)
             ->orderByDesc('data')
-            ->get(['data', 'copos']);
+            ->get(['data', 'ml']);
 
         // As orientações que a IA deu ao aluno aparecem aqui porque é o
         // personal quem responde profissionalmente por ele — não pode haver

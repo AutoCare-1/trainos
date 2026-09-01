@@ -60,6 +60,7 @@ import {
   DiaNutricao,
   SugestaoNutricao,
   MomentoRefeicao,
+  RecipienteAgua,
 } from '@/lib/types'
 import { agruparExercicios, rotuloEstrutura } from '@/lib/workoutStructures'
 
@@ -110,6 +111,16 @@ interface PortalData {
   desafio: Challenge | null
   onboardingCompleted: boolean
   revisaoPendente: RevisaoPendente | null
+}
+
+/** Volume de cada recipiente, só pro palpite otimista da barra — o número
+ *  que vale é sempre o que o servidor devolve. */
+const VOLUME_ESTIMADO: Record<RecipienteAgua, number> = { copo: 200, garrafa: 500 }
+
+/** 1750 -> "1,75 L"; 800 -> "800 ml". Litro só quando já passou de um. */
+function formatarLitros(ml: number): string {
+  if (ml < 1000) return `${ml} ml`
+  return `${(ml / 1000).toLocaleString('pt-BR', { maximumFractionDigits: 2 })} L`
 }
 
 function chaveUltimaVista(token: string): string {
@@ -273,13 +284,18 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     }
   }
 
-  async function mudarAgua(delta: 1 | -1) {
-    // Otimista: o toque tem que responder na hora, e o servidor confirma
-    // logo em seguida com o valor real (que ele limita entre 0 e o teto).
-    setNutricao((atual) => (atual ? { ...atual, copos_agua: Math.max(0, atual.copos_agua + delta) } : atual))
+  async function mudarAgua(recipiente: RecipienteAgua, sinal: 1 | -1) {
+    // Otimista: o toque tem que responder na hora, e o servidor confirma logo
+    // em seguida com o valor real (é ele quem sabe o volume de cada
+    // recipiente e quem limita entre 0 e o teto).
+    const estimado = VOLUME_ESTIMADO[recipiente] * sinal
+    setNutricao((atual) => (atual ? { ...atual, agua_ml: Math.max(0, atual.agua_ml + estimado) } : atual))
     try {
-      const { copos_agua } = await api.post<{ copos_agua: number }>(`/portal/${token}/nutricao/agua`, { delta })
-      setNutricao((atual) => (atual ? { ...atual, copos_agua } : atual))
+      const { agua_ml } = await api.post<{ agua_ml: number }>(`/portal/${token}/nutricao/agua`, {
+        recipiente,
+        sinal,
+      })
+      setNutricao((atual) => (atual ? { ...atual, agua_ml } : atual))
     } catch {
       carregarNutricao()
     }
@@ -1662,7 +1678,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
       pre_treino: 'Pré-treino',
       pos_treino: 'Pós-treino',
     }
-    const META_COPOS = 8
+    const META_ML = 2000
 
     return (
       <div className="flex min-h-screen flex-col">
@@ -1685,33 +1701,41 @@ export default function PortalAlunoClient({ token }: { token: string }) {
 
           {/* Água primeiro: é o registro de menor esforço do dia inteiro. */}
           <div className="glass mb-4 rounded-2xl p-5">
-            <div className="mb-3 flex items-center justify-between">
+            <div className="mb-3 flex items-baseline justify-between">
               <h2 className="font-semibold text-ink">Água hoje</h2>
-              <span className="stat-number text-sm text-ink-muted">
-                {nutricao?.copos_agua ?? 0} <span className="text-xs font-normal">de {META_COPOS} copos</span>
+              <span className="text-sm text-ink-muted">
+                <span className="stat-number text-lg text-ink">{formatarLitros(nutricao?.agua_ml ?? 0)}</span>{' '}
+                de {formatarLitros(META_ML)}
               </span>
             </div>
-            <div className="mb-4 flex flex-wrap gap-1.5">
-              {Array.from({ length: META_COPOS }, (_, i) => (
-                <span
-                  key={i}
-                  className={`h-7 w-5 rounded-b-md rounded-t-sm border transition ${
-                    i < (nutricao?.copos_agua ?? 0) ? 'border-brand bg-brand/70' : 'border-line bg-ink/5'
-                  }`}
-                  aria-hidden="true"
-                />
-              ))}
+
+            <div className="mb-4 h-2.5 overflow-hidden rounded-full bg-ink/8">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-brand to-accent transition-all"
+                style={{ width: `${Math.min(100, ((nutricao?.agua_ml ?? 0) / META_ML) * 100)}%` }}
+              />
             </div>
+
             <div className="flex gap-2">
-              <button onClick={() => mudarAgua(1)} className="btn-primary flex-1 rounded-xl px-4 py-2.5 text-sm">
-                + 1 copo
+              <button
+                onClick={() => mudarAgua('copo', 1)}
+                className="btn-primary flex-1 rounded-xl px-3 py-2.5 text-sm"
+              >
+                + Copo <span className="text-xs opacity-75">200ml</span>
               </button>
               <button
-                onClick={() => mudarAgua(-1)}
-                disabled={(nutricao?.copos_agua ?? 0) === 0}
-                className="glass glass-hover rounded-xl px-4 py-2.5 text-sm text-ink-soft disabled:opacity-40"
+                onClick={() => mudarAgua('garrafa', 1)}
+                className="btn-secondary flex-1 rounded-xl px-3 py-2.5 text-sm"
               >
-                Tirar
+                + Garrafa <span className="text-xs opacity-75">500ml</span>
+              </button>
+              <button
+                onClick={() => mudarAgua('copo', -1)}
+                disabled={(nutricao?.agua_ml ?? 0) === 0}
+                aria-label="Tirar um copo"
+                className="glass glass-hover shrink-0 rounded-xl px-3 py-2.5 text-sm text-ink-soft disabled:opacity-40"
+              >
+                −
               </button>
             </div>
           </div>

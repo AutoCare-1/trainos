@@ -40,12 +40,12 @@ class PortalNutricaoController extends Controller
                 'tem_foto' => $r->file_path !== null,
             ]);
 
-        $agua = HydrationLog::where('student_id', $student->id)->whereDate('data', $data)->value('copos') ?? 0;
+        $agua = HydrationLog::where('student_id', $student->id)->whereDate('data', $data)->value('ml') ?? 0;
 
         return response()->json([
             'data' => $data,
             'refeicoes' => $refeicoes,
-            'copos_agua' => (int) $agua,
+            'agua_ml' => (int) $agua,
         ]);
     }
 
@@ -119,13 +119,17 @@ class PortalNutricaoController extends Controller
         return response()->json(['ok' => true]);
     }
 
-    // POST /:token/nutricao/agua — soma (ou tira) um copo do dia
+    // POST /:token/nutricao/agua — soma (ou tira) um copo/garrafa do dia
     public function registrarAgua(Request $request): JsonResponse
     {
         $student = $this->alunoDoPortal($request);
 
         $validated = $request->validate([
-            'delta' => ['required', 'integer', 'in:-1,1'],
+            // O cliente diz QUE recipiente foi, não quantos ml: quem define o
+            // volume de cada um é o servidor (HydrationLog::VOLUMES), senão
+            // qualquer número entraria no registro do aluno.
+            'recipiente' => ['required', 'string', Rule::in(array_keys(HydrationLog::VOLUMES))],
+            'sinal' => ['required', 'integer', 'in:-1,1'],
             'data' => ['nullable', 'date_format:Y-m-d'],
         ]);
 
@@ -137,15 +141,17 @@ class PortalNutricaoController extends Controller
         // Mesma pegadinha que já tinha mordido a Agenda; whereDate normaliza
         // nos dois bancos.
         $log = HydrationLog::where('student_id', $student->id)->whereDate('data', $data)->first()
-            ?? new HydrationLog(['student_id' => $student->id, 'data' => $data, 'copos' => 0]);
+            ?? new HydrationLog(['student_id' => $student->id, 'data' => $data, 'ml' => 0]);
+
+        $delta = HydrationLog::VOLUMES[$validated['recipiente']] * $validated['sinal'];
 
         // Preso entre 0 e o teto: acima disso é toque repetido sem querer, e
         // abaixo de zero não existe.
-        $novo = max(0, min(HydrationLog::MAX_COPOS, (int) $log->copos + $validated['delta']));
-        $log->copos = $novo;
+        $novo = max(0, min(HydrationLog::MAX_ML, (int) $log->ml + $delta));
+        $log->ml = $novo;
         $log->save();
 
-        return response()->json(['copos_agua' => $novo]);
+        return response()->json(['agua_ml' => $novo]);
     }
 
     // GET /:token/nutricao/sugestoes — histórico do que a IA já orientou

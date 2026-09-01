@@ -965,9 +965,8 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
                     Água:{' '}
                     {nutricao.agua
                       .slice(0, 7)
-                      .map((a) => `${formatarDataCurta(a.data)} ${a.copos}`)
-                      .join(' · ')}{' '}
-                    copos
+                      .map((a) => `${formatarDataCurta(a.data)} ${(a.ml / 1000).toLocaleString('pt-BR', { maximumFractionDigits: 2 })} L`)
+                      .join(' · ')}
                   </p>
                 )}
 

@@ -106,29 +106,41 @@ class NutricaoTest extends TestCase
 
     // ─── água ───
 
-    public function test_copos_de_agua_somam_e_nao_passam_do_teto(): void
+    public function test_agua_soma_por_recipiente_e_nao_passa_do_teto(): void
     {
         [, $student] = $this->cenario();
         $url = "/portal/{$student->invite_token}/nutricao/agua";
 
-        $this->postJson($url, ['delta' => 1])->assertOk()->assertJsonPath('copos_agua', 1);
-        $this->postJson($url, ['delta' => 1])->assertOk()->assertJsonPath('copos_agua', 2);
-        $this->postJson($url, ['delta' => -1])->assertOk()->assertJsonPath('copos_agua', 1);
+        $this->postJson($url, ['recipiente' => 'copo', 'sinal' => 1])->assertOk()->assertJsonPath('agua_ml', 200);
+        $this->postJson($url, ['recipiente' => 'garrafa', 'sinal' => 1])->assertOk()->assertJsonPath('agua_ml', 700);
+        $this->postJson($url, ['recipiente' => 'copo', 'sinal' => -1])->assertOk()->assertJsonPath('agua_ml', 500);
 
-        // Toque repetido sem querer não vira 500 copos.
-        for ($i = 0; $i < HydrationLog::MAX_COPOS + 5; $i++) {
-            $this->postJson($url, ['delta' => 1]);
+        // Toque repetido sem querer não vira 40 litros.
+        for ($i = 0; $i < 30; $i++) {
+            $this->postJson($url, ['recipiente' => 'garrafa', 'sinal' => 1]);
         }
-        $this->assertSame(HydrationLog::MAX_COPOS, (int) HydrationLog::first()->copos);
+        $this->assertSame(HydrationLog::MAX_ML, (int) HydrationLog::first()->ml);
     }
 
     public function test_agua_nao_fica_negativa(): void
     {
         [, $student] = $this->cenario();
 
-        $this->postJson("/portal/{$student->invite_token}/nutricao/agua", ['delta' => -1])
+        $this->postJson("/portal/{$student->invite_token}/nutricao/agua", ['recipiente' => 'copo', 'sinal' => -1])
             ->assertOk()
-            ->assertJsonPath('copos_agua', 0);
+            ->assertJsonPath('agua_ml', 0);
+    }
+
+    public function test_cliente_nao_escolhe_o_volume(): void
+    {
+        [, $student] = $this->cenario();
+
+        // Quem define quantos ml vale cada recipiente é o servidor — senão o
+        // aluno registraria qualquer número no próprio histórico.
+        $this->postJson("/portal/{$student->invite_token}/nutricao/agua", ['recipiente' => 'balde', 'sinal' => 1])
+            ->assertStatus(422);
+        $this->postJson("/portal/{$student->invite_token}/nutricao/agua", ['ml' => 5000, 'sinal' => 1])
+            ->assertStatus(422);
     }
 
     // ─── a fronteira: quando a IA não pode responder ───
@@ -206,7 +218,7 @@ class NutricaoTest extends TestCase
         $this->postJson("/portal/{$student->invite_token}/nutricao/refeicoes", [
             'momento' => 'almoco', 'descricao' => 'Arroz, feijão e frango',
         ])->assertCreated();
-        $this->postJson("/portal/{$student->invite_token}/nutricao/agua", ['delta' => 1])->assertOk();
+        $this->postJson("/portal/{$student->invite_token}/nutricao/agua", ['recipiente' => 'copo', 'sinal' => 1])->assertOk();
         NutritionSuggestion::create([
             'student_id' => $student->id, 'momento' => 'pre_treino', 'resposta' => 'Uma fruta antes.',
         ]);

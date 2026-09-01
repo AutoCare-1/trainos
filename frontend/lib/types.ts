@@ -720,8 +720,13 @@ export interface RefeicaoRegistrada {
 export interface DiaNutricao {
   data: string
   refeicoes: RefeicaoRegistrada[]
-  copos_agua: number
+  /** Em mililitros. "Copo" não é unidade (200 ml? 300?) — litro é o que o
+   *  aluno compara com a referência que ele conhece ("2 litros por dia"). */
+  agua_ml: number
 }
+
+/** Recipientes que um toque registra. O volume de cada um mora no servidor. */
+export type RecipienteAgua = 'copo' | 'garrafa'
 
 export interface SugestaoNutricao {
   id: string
@@ -733,6 +738,6 @@ export interface SugestaoNutricao {
 
 export interface NutricaoDoAluno {
   refeicoes: RefeicaoRegistrada[]
-  agua: { data: string; copos: number }[]
+  agua: { data: string; ml: number }[]
   sugestoes: SugestaoNutricao[]
 }

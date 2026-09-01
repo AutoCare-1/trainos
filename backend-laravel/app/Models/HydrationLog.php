@@ -11,12 +11,15 @@ class HydrationLog extends Model
 {
     use HasUuids;
 
-    /** Teto por dia: acima disso é engano de toque, não hidratação. */
-    public const MAX_COPOS = 30;
+    /** Teto por dia em ml: acima de 8 L é engano de toque, não hidratação. */
+    public const MAX_ML = 8000;
+
+    /** Volumes que um toque pode somar (ou tirar). O servidor manda aqui, não o cliente. */
+    public const VOLUMES = ['copo' => 200, 'garrafa' => 500];
 
     public $timestamps = false;
 
-    protected $fillable = ['student_id', 'data', 'copos'];
+    protected $fillable = ['student_id', 'data', 'ml'];
 
     protected $casts = [
         // date:Y-m-d e não 'date': é data pura, e sem o formato o Eloquent
@@ -24,7 +27,7 @@ class HydrationLog extends Model
         // helpers de data do frontend — eles fatiam a string de propósito,
         // pra não deslocar o dia por fuso.
         'data' => 'date:Y-m-d',
-        'copos' => 'integer',
+        'ml' => 'integer',
     ];
 
     public function student(): BelongsTo
