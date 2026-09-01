@@ -104,6 +104,38 @@ class NutricaoTest extends TestCase
         $this->assertSame(0, MealLog::count());
     }
 
+    public function test_data_absurda_e_rejeitada(): void
+    {
+        [, $student] = $this->cenario();
+        $url = "/portal/{$student->invite_token}/nutricao/refeicoes";
+
+        // Registrar refeição no futuro não existe, e muito pra trás é engano
+        // (ou tentativa de forjar histórico pro personal).
+        $this->postJson($url, ['momento' => 'almoco', 'descricao' => 'x', 'data' => '2099-12-31'])
+            ->assertStatus(422);
+        $this->postJson($url, ['momento' => 'almoco', 'descricao' => 'x', 'data' => '2020-01-01'])
+            ->assertStatus(422);
+
+        // Ontem continua valendo: quem sincroniza atrasado não pode ser barrado.
+        $this->postJson($url, [
+            'momento' => 'almoco', 'descricao' => 'x', 'data' => now()->subDay()->toDateString(),
+        ])->assertCreated();
+    }
+
+    public function test_rajada_de_upload_de_refeicao_e_barrada(): void
+    {
+        [, $student] = $this->cenario();
+        $url = "/portal/{$student->invite_token}/nutricao/refeicoes";
+
+        // Sem limite, um invite_token vazado enchia o disco com imagens de 8 MB.
+        for ($i = 0; $i < 40; $i++) {
+            $this->postJson($url, ['momento' => 'lanche', 'descricao' => "registro {$i}"])->assertCreated();
+        }
+
+        $this->postJson($url, ['momento' => 'lanche', 'descricao' => 'o de numero 41'])
+            ->assertStatus(429);
+    }
+
     // ─── água ───
 
     public function test_agua_soma_por_recipiente_e_nao_passa_do_teto(): void
@@ -243,6 +275,51 @@ class NutricaoTest extends TestCase
         [, $student] = $this->cenario();
 
         $this->assertFalse(Nutricao::exigeNutricionista($student));
+    }
+
+    /**
+     * A varredura da anamnese decide se a IA responde ou encaminha. Errar pra
+     * qualquer lado é ruim: deixar passar uma condição de saúde é o problema
+     * grave, e encaminhar quem escreveu "primeira vez na academia" faz o aluno
+     * nunca mais conseguir usar o recurso.
+     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('casosDeAnamnese')]
+    public function test_varredura_da_anamnese_decide_certo(string $texto, bool $deveEncaminhar): void
+    {
+        [, $student] = $this->cenario();
+        $student->update(['health_notes' => $texto]);
+
+        $this->assertSame(
+            $deveEncaminhar,
+            Nutricao::exigeNutricionista($student->fresh()),
+            "\"{$texto}\" deveria ".($deveEncaminhar ? 'encaminhar' : 'ser respondido')
+        );
+    }
+
+    public static function casosDeAnamnese(): array
+    {
+        return [
+            // Precisa de nutricionista — escrito como a pessoa escreve mesmo,
+            // com acento (era aqui que a trava falhava: "diabet" não casa com
+            // "diabético").
+            'diabético com acento' => ['Diabético tipo 2', true],
+            'diabetes sem acento' => ['Tenho diabetes', true],
+            'alérgico com acento' => ['Alérgico a amendoim', true],
+            'celíaca' => ['Sou celíaca', true],
+            'gestante' => ['Estou gestante', true],
+            'renal' => ['Problema renal', true],
+            'hepático com acento' => ['Problema hepático', true],
+            'tireoide' => ['Tireoide alterada', true],
+            'intolerância a lactose' => ['Intolerância a lactose', true],
+
+            // Não pode encaminhar: sem isso o aluno perde o recurso pra sempre
+            // por ter escrito uma frase comum.
+            'primeira vez' => ['Primeira vez na academia', false],
+            'sugestão' => ['Aceito sugestão de treino', false],
+            'primo' => ['Tenho um primo que treina aqui', false],
+            'sem observação' => ['', false],
+            'quer emagrecer' => ['Quero emagrecer', false],
+        ];
     }
 
     public function test_prompt_proibe_quantidade_caloria_e_suplemento(): void

@@ -34,10 +34,16 @@ class Nutricao
      * mais custa a saúde de alguém.
      */
     private const SINAIS_QUE_EXIGEM_NUTRICIONISTA = [
-        'diabet', 'insulin', 'renal', 'rim', 'hepat', 'f[ií]gado', 'gastrite', 'refluxo',
+        // Cada acento precisa estar previsto: "diabet" sozinho NÃO casa com
+        // "diabético" (é ≠ e), e era assim que a trava deixava passar quem
+        // escrevia a condição do jeito mais natural em português.
+        'diab[eé]t', 'insulin', 'renal', 'rim', 'rins', 'hep[aá]t', 'f[ií]gado', 'gastrite', 'refluxo',
         'bari[aá]tric', 'cirurgia', 'anorex', 'bulimi', 'transtorno alimentar', 'compuls',
-        'cel[ií]ac', 'gl[uú]ten', 'lactose', 'alergi', 'intoler[aâ]nc', 'gest', 'gr[aá]vid',
-        'amament', 'hipertens', 'press[aã]o alta', 'colesterol', 'tireoid', 'anemia',
+        'cel[ií]ac', 'gl[uú]ten', 'lactose', 'al[eé]rgi', 'intoler[aâ]nc',
+        // "gestante/gestação" escrito por extenso, e não o prefixo "gest": solto,
+        // ele casava dentro de "sugestão" e mandava o aluno pro nutricionista.
+        'gestante', 'gesta[çc][ãa]o', 'gr[aá]vid',
+        'amament', 'hipertens', 'press[aã]o alta', 'colesterol', 'tireo[ií]d', 'anemia',
     ];
 
     private static ?Client $client = null;
@@ -81,7 +87,12 @@ class Nutricao
         $tudo = mb_strtolower(implode(' ', $textos));
 
         foreach (self::SINAIS_QUE_EXIGEM_NUTRICIONISTA as $sinal) {
-            if (preg_match("/{$sinal}/u", $tudo) === 1) {
+            // \b no início: sem ele, "rim" casava dentro de "primeira" e
+            // "gest" dentro de "sugestão" — e o aluno ficava encaminhado ao
+            // nutricionista pra sempre por ter escrito "primeira vez na
+            // academia" na anamnese. Só o começo é ancorado, porque o que
+            // varia é o sufixo (diabet-es, diabét-ico, alergi-a/co).
+            if (preg_match("/\b{$sinal}/u", $tudo) === 1) {
                 return true;
             }
         }

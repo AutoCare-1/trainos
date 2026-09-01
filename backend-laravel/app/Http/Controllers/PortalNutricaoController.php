@@ -85,7 +85,10 @@ class PortalNutricaoController extends Controller
             'momento' => ['required', 'string', Rule::in(MealLog::MOMENTOS)],
             'descricao' => ['nullable', 'string', 'max:500'],
             'foto' => ['nullable', 'image', 'max:8192'],
-            'data' => ['nullable', 'date_format:Y-m-d'],
+            // Janela curta: registrar refeição no futuro não existe, e muito
+            // pra trás é engano de digitação (ou tentativa de forjar histórico
+            // pro personal). Uma semana cobre quem sincroniza atrasado.
+            'data' => ['nullable', 'date_format:Y-m-d', 'after_or_equal:'.now()->subWeek()->toDateString(), 'before_or_equal:'.now()->toDateString()],
         ]);
 
         $descricao = trim($validated['descricao'] ?? '') ?: null;
@@ -157,7 +160,7 @@ class PortalNutricaoController extends Controller
             // qualquer número entraria no registro do aluno.
             'recipiente' => ['required', 'string', Rule::in(array_keys(HydrationLog::VOLUMES))],
             'sinal' => ['required', 'integer', 'in:-1,1'],
-            'data' => ['nullable', 'date_format:Y-m-d'],
+            'data' => ['nullable', 'date_format:Y-m-d', 'after_or_equal:'.now()->subWeek()->toDateString(), 'before_or_equal:'.now()->toDateString()],
         ]);
 
         $data = $validated['data'] ?? now()->toDateString();

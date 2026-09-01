@@ -47,6 +47,14 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute(20)->by((string) $request->route('token'));
         });
 
+        // Registro de refeição aceita imagem de até 8 MB e, ao contrário do
+        // check-in (unique por dia) e do postural, não tem nada limitando
+        // quantas vezes por dia — virou o endpoint de upload mais exposto do
+        // app. 40/hora cobre com folga 6 refeições e sobra pra reenvio.
+        RateLimiter::for('refeicao-portal', function (Request $request) {
+            return Limit::perHour(40)->by((string) $request->route('token'));
+        });
+
         // Orientação de pré/pós-treino: um botão que o aluno aperta e que chama
         // a Anthropic. Mais apertado que o chat porque não há conversa aqui —
         // pedir 6 vezes na mesma hora não traz resposta melhor, só custo.

@@ -113,6 +113,13 @@ interface PortalData {
   revisaoPendente: RevisaoPendente | null
 }
 
+/** Hoje em Y-m-d pelo relógio local — nunca via toISOString(), que converte
+ *  pra UTC e vira o dia errado à noite no Brasil. */
+function hojeIsoLocal(): string {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
 /** Volume de cada recipiente, só pro palpite otimista da barra — o número
  *  que vale é sempre o que o servidor devolve. */
 const VOLUME_ESTIMADO: Record<RecipienteAgua, number> = { copo: 200, garrafa: 500 }
@@ -228,6 +235,10 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   // pré/pós-treino. Nada aqui prescreve dieta (ver backend: prescrição
   // dietética é privativa do nutricionista).
   const [nutricao, setNutricao] = useState<DiaNutricao | null>(null)
+  // Dia que a aba está mostrando. O aluno precisa conseguir olhar pra trás —
+  // ver o próprio padrão é o motivo do diário existir, e só "hoje" não mostra
+  // padrão nenhum. A janela é a mesma que o backend aceita gravar.
+  const [diaNutricao, setDiaNutricao] = useState<string>(() => hojeIsoLocal())
   const [sugestoesNutricao, setSugestoesNutricao] = useState<SugestaoNutricao[]>([])
   const [momentoRefeicao, setMomentoRefeicao] = useState<MomentoRefeicao>('almoco')
   const [descricaoRefeicao, setDescricaoRefeicao] = useState('')
@@ -239,7 +250,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
 
   const carregarNutricao = useCallback(() => {
     api
-      .get<DiaNutricao>(`/portal/${token}/nutricao`)
+      .get<DiaNutricao>(`/portal/${token}/nutricao?data=${diaNutricao}`)
       .then((d) => {
         setNutricao(d)
         marcarFalha('nutricao', false)
@@ -249,7 +260,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
       .get<{ sugestoes: SugestaoNutricao[] }>(`/portal/${token}/nutricao/sugestoes`)
       .then((d) => setSugestoesNutricao(d.sugestoes))
       .catch(() => {})
-  }, [token, marcarFalha])
+  }, [token, diaNutricao, marcarFalha])
 
   async function registrarRefeicao() {
     if (!fotoRefeicao && !descricaoRefeicao.trim()) {
@@ -263,6 +274,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
       form.append('momento', momentoRefeicao)
       if (descricaoRefeicao.trim()) form.append('descricao', descricaoRefeicao.trim())
       if (fotoRefeicao) form.append('foto', fotoRefeicao)
+      form.append('data', diaNutricao)
       await api.postFile(`/portal/${token}/nutricao/refeicoes`, form)
       setDescricaoRefeicao('')
       setFotoRefeicao(null)
@@ -294,6 +306,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
       const { agua_ml } = await api.post<{ agua_ml: number }>(`/portal/${token}/nutricao/agua`, {
         recipiente,
         sinal,
+        data: diaNutricao,
       })
       setNutricao((atual) => (atual ? { ...atual, agua_ml } : atual))
     } catch {
@@ -1700,10 +1713,35 @@ export default function PortalAlunoClient({ token }: { token: string }) {
 
           {falhas.nutricao && !nutricao && <FalhaAoCarregar onTentarDeNovo={carregarNutricao} />}
 
+          {/* Navegação de dia: sem ela o aluno só via hoje, e "ver o próprio
+              padrão" — que é o motivo do diário existir — não acontecia. A
+              janela é a mesma que o backend aceita gravar. */}
+          <div className="mb-4 flex items-center justify-between">
+            <button
+              onClick={() => setDiaNutricao((d) => somarDias(d, -1))}
+              disabled={diaNutricao <= somarDias(hojeIsoLocal(), -6)}
+              aria-label="Dia anterior"
+              className="flex h-9 w-9 items-center justify-center rounded-lg text-ink-muted transition hover:bg-ink/5 disabled:opacity-30"
+            >
+              <ChevronLeft size={18} />
+            </button>
+            <p className="text-sm font-medium text-ink-soft">
+              {diaNutricao === hojeIsoLocal() ? 'Hoje' : formatarDataLonga(diaNutricao)}
+            </p>
+            <button
+              onClick={() => setDiaNutricao((d) => somarDias(d, 1))}
+              disabled={diaNutricao >= hojeIsoLocal()}
+              aria-label="Próximo dia"
+              className="flex h-9 w-9 items-center justify-center rounded-lg text-ink-muted transition hover:bg-ink/5 disabled:opacity-30"
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
+
           {/* Água primeiro: é o registro de menor esforço do dia inteiro. */}
           <div className="glass mb-4 rounded-2xl p-5">
             <div className="mb-3 flex items-baseline justify-between">
-              <h2 className="font-semibold text-ink">Água hoje</h2>
+              <h2 className="font-semibold text-ink">Água{diaNutricao === hojeIsoLocal() ? ' hoje' : ' nesse dia'}</h2>
               <span className="text-sm text-ink-muted">
                 <span className={`stat-number text-lg ${bateuMeta ? 'text-success' : 'text-ink'}`}>
                   {formatarLitros(nutricao?.agua_ml ?? 0)}
@@ -1801,7 +1839,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
 
           {/* Diário do dia */}
           <div className="glass mb-4 rounded-2xl p-5">
-            <h2 className="mb-1 font-semibold text-ink">O que você comeu hoje</h2>
+            <h2 className="mb-1 font-semibold text-ink">O que você comeu{diaNutricao === hojeIsoLocal() ? ' hoje' : ' nesse dia'}</h2>
             <p className="mb-4 text-sm text-ink-muted">
               Uma foto já basta. Seu professor vê isso e usa pra te orientar.
             </p>
@@ -1845,7 +1883,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
 
           {nutricao && nutricao.refeicoes.length === 0 && !falhas.nutricao && (
             <div className="glass rounded-2xl border-dashed p-8 text-center">
-              <p className="text-sm text-ink-muted">Nada registrado hoje ainda.</p>
+              <p className="text-sm text-ink-muted">Nada registrado nesse dia.</p>
             </div>
           )}
 
