@@ -235,7 +235,12 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   const [salvandoRefeicao, setSalvandoRefeicao] = useState(false)
   const [pedindoSugestao, setPedindoSugestao] = useState<'pre_treino' | 'pos_treino' | null>(null)
   const [erroNutricao, setErroNutricao] = useState<string | null>(null)
-  const fotoRefeicaoInputRef = useRef<HTMLInputElement | null>(null)
+  // Dois inputs escondidos, mesmo padrão do check-in: um abre a câmera
+  // (capture) e o outro a galeria. Um input de arquivo cru mostraria
+  // "Escolher arquivo / Nenhum arquivo selecionado", que no celular não deixa
+  // claro que dá pra tirar a foto na hora.
+  const fotoRefeicaoCameraRef = useRef<HTMLInputElement | null>(null)
+  const fotoRefeicaoGaleriaRef = useRef<HTMLInputElement | null>(null)
 
   const carregarNutricao = useCallback(() => {
     api
@@ -266,7 +271,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
       await api.postFile(`/portal/${token}/nutricao/refeicoes`, form)
       setDescricaoRefeicao('')
       setFotoRefeicao(null)
-      if (fotoRefeicaoInputRef.current) fotoRefeicaoInputRef.current.value = ''
+
       carregarNutricao()
     } catch (err) {
       setErroNutricao(err instanceof ApiError ? err.message : 'Não consegui registrar agora.')
@@ -1829,12 +1834,55 @@ export default function PortalAlunoClient({ token }: { token: string }) {
             />
 
             <input
-              ref={fotoRefeicaoInputRef}
+              ref={fotoRefeicaoCameraRef}
               type="file"
               accept="image/*"
-              onChange={(e) => setFotoRefeicao(e.target.files?.[0] ?? null)}
-              className="mb-3 w-full text-xs text-ink-muted"
+              capture="environment"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0]
+                if (file) setFotoRefeicao(file)
+                e.target.value = ''
+              }}
             />
+            <input
+              ref={fotoRefeicaoGaleriaRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0]
+                if (file) setFotoRefeicao(file)
+                e.target.value = ''
+              }}
+            />
+
+            {fotoRefeicao ? (
+              <div className="mb-3 flex items-center justify-between gap-2 rounded-xl bg-success-soft px-3 py-2">
+                <span className="truncate text-xs text-ink-soft">Foto escolhida</span>
+                <button
+                  onClick={() => setFotoRefeicao(null)}
+                  className="shrink-0 text-xs font-semibold text-ink-muted underline"
+                >
+                  Trocar
+                </button>
+              </div>
+            ) : (
+              <div className="mb-3 flex gap-2">
+                <button
+                  onClick={() => fotoRefeicaoCameraRef.current?.click()}
+                  className="glass glass-hover flex-1 rounded-xl px-3 py-2.5 text-sm text-ink-soft"
+                >
+                  Tirar foto
+                </button>
+                <button
+                  onClick={() => fotoRefeicaoGaleriaRef.current?.click()}
+                  className="glass glass-hover flex-1 rounded-xl px-3 py-2.5 text-sm text-ink-soft"
+                >
+                  Escolher da galeria
+                </button>
+              </div>
+            )}
 
             <button
               onClick={registrarRefeicao}
