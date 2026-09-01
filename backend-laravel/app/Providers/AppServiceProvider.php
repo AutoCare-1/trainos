@@ -47,6 +47,13 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute(20)->by((string) $request->route('token'));
         });
 
+        // Orientação de pré/pós-treino: um botão que o aluno aperta e que chama
+        // a Anthropic. Mais apertado que o chat porque não há conversa aqui —
+        // pedir 6 vezes na mesma hora não traz resposta melhor, só custo.
+        RateLimiter::for('nutricao-portal', function (Request $request) {
+            return Limit::perHour(6)->by((string) $request->route('token'));
+        });
+
         // Lado do personal: já é rota autenticada, então chaveia pelo dono do
         // JWT — o teto de gasto diário (KillSwitchIa) cuida do custo, aqui é só
         // pra não deixar um script fazer rajada.

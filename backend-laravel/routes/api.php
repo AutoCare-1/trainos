@@ -7,6 +7,7 @@ use App\Http\Controllers\AlunoPosturalController;
 use App\Http\Controllers\AlunoProgressaoController;
 use App\Http\Controllers\AlunoRevisaoController;
 use App\Http\Controllers\AlunoChatController;
+use App\Http\Controllers\AlunoNutricaoController;
 use App\Http\Controllers\AlunoCheckinController;
 use App\Http\Controllers\AlunoController;
 use App\Http\Controllers\AssinaturaController;
@@ -25,6 +26,7 @@ use App\Http\Controllers\PortalAcademiaController;
 use App\Http\Controllers\PortalBodyPhotoController;
 use App\Http\Controllers\PortalPosturalController;
 use App\Http\Controllers\PortalChatController;
+use App\Http\Controllers\PortalNutricaoController;
 use App\Http\Controllers\PortalCheckinController;
 use App\Http\Controllers\PortalController;
 use App\Http\Controllers\PortalFormaController;
@@ -81,6 +83,9 @@ Route::middleware('auth.jwt')->group(function () {
         Route::get('/{id}/checkins/summary', [AlunoCheckinController::class, 'summary']);
         Route::get('/{id}/checkins', [AlunoCheckinController::class, 'index']);
         Route::get('/{id}/checkins/{checkinId}/imagem', [AlunoCheckinController::class, 'imagem']);
+
+        Route::get('/{id}/nutricao', [AlunoNutricaoController::class, 'index']);
+        Route::get('/{id}/nutricao/refeicoes/{refeicaoId}/imagem', [AlunoNutricaoController::class, 'imagem']);
 
         Route::get('/{id}/mensagens', [AlunoChatController::class, 'index']);
         Route::post('/{id}/mensagens', [AlunoChatController::class, 'store'])->middleware('throttle:chat-ia-personal');
@@ -239,6 +244,18 @@ Route::prefix('portal')->middleware('aluno.token')->group(function () {
     Route::post('/{token}/sessoes', [PortalController::class, 'iniciarSessao']);
     Route::post('/{token}/sessoes/{sessionId}/registros', [PortalController::class, 'registrarSerie']);
     Route::post('/{token}/sessoes/{sessionId}/concluir', [PortalController::class, 'concluirSessao']);
+
+    Route::get('/{token}/nutricao', [PortalNutricaoController::class, 'index']);
+    Route::post('/{token}/nutricao/refeicoes', [PortalNutricaoController::class, 'registrarRefeicao']);
+    Route::get('/{token}/nutricao/refeicoes/{id}/imagem', [PortalNutricaoController::class, 'imagem']);
+    Route::delete('/{token}/nutricao/refeicoes/{id}', [PortalNutricaoController::class, 'removerRefeicao']);
+    Route::post('/{token}/nutricao/agua', [PortalNutricaoController::class, 'registrarAgua']);
+    Route::get('/{token}/nutricao/sugestoes', [PortalNutricaoController::class, 'sugestoes']);
+    // throttle: a sugestão chama a Anthropic. Mesmo chaveamento por token do
+    // resto do portal — e mais apertado que o chat porque aqui não há conversa,
+    // é um botão que o aluno aperta.
+    Route::post('/{token}/nutricao/sugestoes', [PortalNutricaoController::class, 'pedirSugestao'])
+        ->middleware('throttle:nutricao-portal');
 
     Route::get('/{token}/mensagens', [PortalChatController::class, 'index']);
     Route::post('/{token}/mensagens', [PortalChatController::class, 'store'])->middleware('throttle:chat-ia-portal');

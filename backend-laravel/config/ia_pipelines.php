@@ -12,6 +12,7 @@ return [
     'chat_autopilot' => env('IA_CHAT_AUTOPILOT_ATIVO', true),
     'consultor_ia' => env('IA_CONSULTOR_ATIVO', true),
     'ideias_conteudo' => env('IA_CONTEUDO_ATIVO', true),
+    'nutricao_sugestao' => env('IA_NUTRICAO_ATIVO', true),
 
     // Teto de gasto com IA por dia, em USD. Diferente do kill-switch acima, que
     // é global e derruba a feature pra todo mundo: aqui o corte é por personal,
