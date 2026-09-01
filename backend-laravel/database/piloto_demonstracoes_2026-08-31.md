@@ -637,3 +637,46 @@ aqui. `Agachamento em cócoras` fica na 2ª e ganha mais uma chance depois.
 156 vídeos, 624 créditos. **94 restantes = 23 vídeos.**
 Prevenção: 25 de 30. Faltam 118 da leva.
 Acumulado: **115 OK, 26 médios, 15 graves.**
+
+# Lote 14 — 2 reenquadramentos + 2 correções + 8 novos, 48 créditos (46 restantes)
+
+**10 OK · 2 MÉDIO · ZERO GRAVE — 83%. GRUPO PREVENÇÃO FECHADO (30 de 30).**
+
+## O erro de enquadramento, apontado pelo Filipe
+
+Os dois vídeos de pé do lote 13 saíram **só o pé, sem a pessoa em quadro**. Eu
+tinha comemorado o `framed low on his feet` como técnica nova e não pensei na
+consistência do catálogo: ao lado de 400 clipes de corpo inteiro, um pé solto
+parece outro produto, e no card da biblioteca não dá pra saber o que é.
+
+Corrigido mandando o corpo inteiro E a câmera baixa ao mesmo tempo:
+`He SITS upright on a flat bench (...) His WHOLE BODY is in shot, head to
+feet, filmed from the side and slightly low so that his bare feet occupy the
+lower part of the frame`. Os dois voltaram OK, com a pessoa visível e o
+detalhe do pé ainda legível.
+
+**Regra que fica: nunca sacrificar a figura inteira pela legibilidade do
+detalhe.** Enquadramento é parte da identidade do catálogo, não só do prompt.
+
+## A hipótese do enquadramento foi REFUTADA — e isso economiza crédito
+
+No lote 13 eu levantei que os médios teimosos (dorso x palma, cotovelo
+dobrado x estendido) talvez fossem problema de detalhe pequeno em 480p, não
+de negação. Testei o punho na mesa em plano médio: **saiu com a palma
+apoiada de novo.**
+
+Então a distinção de FACE do mesmo segmento é limite de verdade, e não
+enquadramento. Os quatro que estavam encerrados continuam encerrados, e não
+vale gastar os 16 créditos que eu já estava planejando gastar neles.
+
+`Agachamento em cócoras com rotação` chegou à 3ª tentativa em meio
+agachamento — encerrado também.
+
+## Placar
+
+168 vídeos, 672 créditos. **46 restantes = 11 vídeos.**
+Prevenção 30/30 · Alongamento 46/46 · Mobilidade 42/43 · Equilíbrio 3/24.
+Faltam 106 da leva.
+Acumulado: **125 OK, 28 médios, 15 graves.**
+
+**O crédito acaba no próximo lote.**
