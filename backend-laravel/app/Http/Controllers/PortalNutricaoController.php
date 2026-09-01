@@ -24,11 +24,13 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  */
 class PortalNutricaoController extends Controller
 {
-    // GET /:token/nutricao?data=YYYY-MM-DD — o dia do aluno
+    // GET /:token/nutricao — o dia de hoje do aluno
     public function index(Request $request): JsonResponse
     {
         $student = $this->alunoDoPortal($request);
-        $data = $request->query('data') ?: now()->toDateString();
+        // Só hoje. O histórico continua existindo e o personal continua vendo
+        // — a tela do aluno é um ritual diário, não um arquivo.
+        $data = now()->toDateString();
 
         $refeicoes = MealLog::where('student_id', $student->id)
             ->whereDate('data', $data)
@@ -85,10 +87,6 @@ class PortalNutricaoController extends Controller
             'momento' => ['required', 'string', Rule::in(MealLog::MOMENTOS)],
             'descricao' => ['nullable', 'string', 'max:500'],
             'foto' => ['nullable', 'image', 'max:8192'],
-            // Janela curta: registrar refeição no futuro não existe, e muito
-            // pra trás é engano de digitação (ou tentativa de forjar histórico
-            // pro personal). Uma semana cobre quem sincroniza atrasado.
-            'data' => ['nullable', 'date_format:Y-m-d', 'after_or_equal:'.now()->subWeek()->toDateString(), 'before_or_equal:'.now()->toDateString()],
         ]);
 
         $descricao = trim($validated['descricao'] ?? '') ?: null;
@@ -102,9 +100,13 @@ class PortalNutricaoController extends Controller
             ? Uploads::storePrivate($request->file('foto'), 'refeicoes', (string) $request->route('token'))
             : null;
 
+        // Sempre hoje, e o cliente não escolhe: deixar registrar dias atrás
+        // permitia preencher a semana inteira no domingo, de memória. Isso é
+        // histórico inventado — e o personal olha esse histórico pra decidir
+        // coisa, então dado inventado é pior que dado nenhum.
         $refeicao = MealLog::create([
             'student_id' => $student->id,
-            'data' => $validated['data'] ?? now()->toDateString(),
+            'data' => now()->toDateString(),
             'momento' => $validated['momento'],
             'file_path' => $filePath,
             'descricao' => $descricao,
@@ -160,10 +162,10 @@ class PortalNutricaoController extends Controller
             // qualquer número entraria no registro do aluno.
             'recipiente' => ['required', 'string', Rule::in(array_keys(HydrationLog::VOLUMES))],
             'sinal' => ['required', 'integer', 'in:-1,1'],
-            'data' => ['nullable', 'date_format:Y-m-d', 'after_or_equal:'.now()->subWeek()->toDateString(), 'before_or_equal:'.now()->toDateString()],
         ]);
 
-        $data = $validated['data'] ?? now()->toDateString();
+        // Mesma razão do registro de refeição: só o dia de hoje.
+        $data = now()->toDateString();
 
         // whereDate e não firstOrCreate: o cast 'date' grava "Y-m-d 00:00:00"
         // no SQLite, então a igualdade exata de firstOrCreate nunca casava com

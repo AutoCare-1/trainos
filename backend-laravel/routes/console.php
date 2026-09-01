@@ -18,3 +18,10 @@ Schedule::command('notifications:process')
 Schedule::command('assinatura:verificar-carencia')
     ->daily()
     ->withoutOverlapping();
+
+// Sem isso o disco cresce pra sempre: a foto de uma refeição pesa até 8 MB, e
+// o diário não tem prazo de validade. A poda tira só a imagem e mantém o
+// texto — ver PodarFotosDeRefeicao.
+Schedule::command('nutricao:podar-fotos')
+    ->daily()
+    ->withoutOverlapping();

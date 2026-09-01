@@ -104,22 +104,54 @@ class NutricaoTest extends TestCase
         $this->assertSame(0, MealLog::count());
     }
 
-    public function test_data_absurda_e_rejeitada(): void
+    public function test_registro_e_sempre_de_hoje_mesmo_se_o_cliente_mandar_outra_data(): void
     {
         [, $student] = $this->cenario();
-        $url = "/portal/{$student->invite_token}/nutricao/refeicoes";
 
-        // Registrar refeição no futuro não existe, e muito pra trás é engano
-        // (ou tentativa de forjar histórico pro personal).
-        $this->postJson($url, ['momento' => 'almoco', 'descricao' => 'x', 'data' => '2099-12-31'])
-            ->assertStatus(422);
-        $this->postJson($url, ['momento' => 'almoco', 'descricao' => 'x', 'data' => '2020-01-01'])
-            ->assertStatus(422);
-
-        // Ontem continua valendo: quem sincroniza atrasado não pode ser barrado.
-        $this->postJson($url, [
-            'momento' => 'almoco', 'descricao' => 'x', 'data' => now()->subDay()->toDateString(),
+        // Deixar escolher a data permitia preencher a semana inteira no
+        // domingo, de memória — histórico inventado, que é pior que histórico
+        // nenhum porque o personal decide coisa em cima dele.
+        $this->postJson("/portal/{$student->invite_token}/nutricao/refeicoes", [
+            'momento' => 'almoco', 'descricao' => 'x', 'data' => '2020-01-01',
         ])->assertCreated();
+
+        $this->assertSame(now()->toDateString(), MealLog::first()->data->toDateString());
+    }
+
+    public function test_agua_tambem_ignora_data_enviada_pelo_cliente(): void
+    {
+        [, $student] = $this->cenario();
+
+        $this->postJson("/portal/{$student->invite_token}/nutricao/agua", [
+            'recipiente' => 'copo', 'sinal' => 1, 'data' => '2020-01-01',
+        ])->assertOk();
+
+        $this->assertSame(now()->toDateString(), HydrationLog::first()->data->toDateString());
+    }
+
+    public function test_aluno_ve_so_o_dia_de_hoje(): void
+    {
+        [, $student] = $this->cenario();
+
+        // Registro de ontem existe no banco (o personal vê), mas some da tela
+        // do aluno: ela é ritual diário, não arquivo.
+        MealLog::create([
+            'student_id' => $student->id,
+            'data' => now()->subDay()->toDateString(),
+            'momento' => 'jantar',
+            'descricao' => 'jantar de ontem',
+        ]);
+        MealLog::create([
+            'student_id' => $student->id,
+            'data' => now()->toDateString(),
+            'momento' => 'almoco',
+            'descricao' => 'almoço de hoje',
+        ]);
+
+        $this->getJson("/portal/{$student->invite_token}/nutricao")
+            ->assertOk()
+            ->assertJsonCount(1, 'refeicoes')
+            ->assertJsonPath('refeicoes.0.descricao', 'almoço de hoje');
     }
 
     public function test_rajada_de_upload_de_refeicao_e_barrada(): void
