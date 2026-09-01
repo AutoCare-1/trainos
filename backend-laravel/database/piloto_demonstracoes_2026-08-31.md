@@ -343,3 +343,63 @@ que vier no erro dela. Não cobra nada, mas custa uma viagem.
 84 vídeos, 336 créditos. **382 restantes = 95 vídeos.**
 Mobilidade: 15 dos 43. Faltam 190 da leva.
 Acumulado: **56 OK, 22 médios, 9 graves** — 7 dos 9 graves já refeitos e certos.
+
+# Lote 8 — 2 correções + 10 de mobilidade, 48 créditos (334 restantes)
+
+**12 OK · 0 MÉDIO · 0 GRAVE. Primeiro lote 100%.**
+
+| # | Exercício | Veredito |
+|---|---|---|
+| 141 | Mobilidade de quadril 90/90 (regeração) | **OK** — sentado, canelas no chão |
+| 142 | Mobilidade de tornozelo com elástico (regeração) | **OK** — faixa vermelha visível nos 5 frames |
+| 143 | Mobilidade cervical em flexão e extensão | **OK** |
+| 144 | Rotação cervical controlada | **OK** |
+| 145 | Alongamento dinâmico do flexor de quadril | **OK** |
+| 146 | Mobilidade de punho em quatro apoios | **OK** |
+| 147 | Rotação de quadril em pé (hip airplane) | **OK** |
+| 148 | Balanço de perna frontal | **OK** |
+| 149 | Balanço de perna lateral | **OK** |
+| 150 | Rotação de tronco sentado com bastão | **OK** |
+| 151 | Mobilidade de coluna em posição de criança | **OK** |
+| 152 | Cachorro olhando para baixo com pedalada | **OK** |
+
+## CORREÇÃO da conclusão do lote 7
+
+No lote 7 eu escrevi que o 90/90 era "posição que o gerador não tem no
+repertório, mesma família do disco deslizante" e que nenhuma quantidade de
+texto resolveria. **Estava errado, e os dois voltaram certos.**
+
+O que mudou não foi mais descrição da posição certa — a cena antiga já
+descrevia as duas canelas em L com detalhe. O que mudou foi **negar o erro
+observado**: "He is SEATED ON THE FLOOR the whole time: he never stands up
+and is never on his feet at any point in the clip." O erro era ele ficar em
+pé, e a frase que resolve é a que proíbe ficar em pé.
+
+Mesma coisa no elástico: descrever melhor a faixa não adiantava; nomear
+**cor e espessura** ("thick BRIGHT RED band, as wide as his hand, clearly
+visible against the dark floor in every single frame") fez ela renderizar.
+
+Isso é exatamente a regra que o arquivo de memória já tinha pra máquina e
+polia — *negação nominal da peça errada* — e que eu não estava aplicando a
+posição de corpo nem a prop. A regra geral, agora com três famílias de
+evidência:
+
+> **Descrever o certo com mais palavras não move. Negar por nome o errado que
+> apareceu move.** Vale pra aparelho (máquina/polia), pra montagem do corpo
+> (argolas, ponte, parede) e pra posição de chão (90/90).
+
+Consequência prática: quando um vídeo sai errado, a regeração NÃO deve ser
+"escrever a cena melhor" — deve ser "acrescentar uma frase que proíbe o que
+eu acabei de ver". É mais barato e tem taxa muito maior.
+
+Também revê o veredito do disco: ele foi condenado com negação genérica
+("never a BOSU, never a balance pad"). Pode ser que uma negação do erro
+específico observado — um pad único e redondo sob os dois pés — pegasse. Não
+vale desfazer a troca pra toalha, que já está certa e é mais realista, mas a
+conclusão "limite do gerador" era prematura ali também.
+
+## Placar
+
+96 vídeos, 384 créditos. **334 restantes = 83 vídeos.**
+Mobilidade: 27 dos 43. Faltam 178 da leva.
+Acumulado: **68 OK, 22 médios, 9 graves** — todos os 9 graves refeitos e certos.
