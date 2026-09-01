@@ -9,6 +9,7 @@ import {
   ClipboardList,
   TrendingUp,
   Building2,
+  Apple,
   Trophy,
   MessageCircle,
   Download,
@@ -18,6 +19,7 @@ import {
   Plus,
   ChevronLeft,
   ChevronRight,
+  X,
 } from 'lucide-react'
 import AtivarNotificacoesButton from '@/components/AtivarNotificacoesButton'
 import ChatBox from '@/components/ChatBox'
@@ -55,6 +57,9 @@ import {
   Workout,
   WorkoutExerciseDetail,
   WorkoutResumo,
+  DiaNutricao,
+  SugestaoNutricao,
+  MomentoRefeicao,
 } from '@/lib/types'
 import { agruparExercicios, rotuloEstrutura } from '@/lib/workoutStructures'
 
@@ -134,7 +139,7 @@ function FalhaAoCarregar({ onTentarDeNovo }: { onTentarDeNovo: () => void }) {
 export default function PortalAlunoClient({ token }: { token: string }) {
   const [data, setData] = useState<PortalData | null>(null)
   const [erro, setErro] = useState<string | null>(null)
-  const [aba, setAba] = useState<'treino' | 'checkin' | 'evolucao' | 'fotos' | 'academia' | 'desafio' | 'chat'>('treino')
+  const [aba, setAba] = useState<'treino' | 'checkin' | 'nutricao' | 'evolucao' | 'fotos' | 'academia' | 'desafio' | 'chat'>('treino')
   // Quais cargas falharam, pra cada aba poder mostrar "tentar de novo" em vez
   // de um estado vazio mentiroso. Ver FalhaAoCarregar.
   const [falhas, setFalhas] = useState<Record<string, boolean>>({})
@@ -199,6 +204,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   const menuItems: MenuItem[] = [
     { id: 'treino', label: 'Treino', icon: <Dumbbell size={20} />, cor: 'blue' },
     { id: 'checkin', label: 'Check-in', icon: <CalendarCheck size={20} />, cor: 'teal' },
+    { id: 'nutricao', label: 'Alimentação', icon: <Apple size={20} />, cor: 'teal' },
     { id: 'evolucao', label: 'Avaliação Física', icon: <ClipboardList size={20} />, cor: 'sky' },
     { id: 'fotos', label: 'Evolução', icon: <TrendingUp size={20} />, cor: 'violet' },
     { id: 'academia', label: 'Academia', icon: <Building2 size={20} />, cor: 'pink' },
@@ -206,6 +212,94 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     { id: 'chat', label: naoLidas > 0 ? `Mensagens (${naoLidas})` : 'Mensagens', icon: <MessageCircle size={20} />, cor: 'amber' },
     { id: 'instalar', label: 'Instalar app', icon: <Download size={20} />, cor: 'blue' },
   ]
+
+  // nutrição — o aluno registra o que comeu e pode pedir orientação geral de
+  // pré/pós-treino. Nada aqui prescreve dieta (ver backend: prescrição
+  // dietética é privativa do nutricionista).
+  const [nutricao, setNutricao] = useState<DiaNutricao | null>(null)
+  const [sugestoesNutricao, setSugestoesNutricao] = useState<SugestaoNutricao[]>([])
+  const [momentoRefeicao, setMomentoRefeicao] = useState<MomentoRefeicao>('almoco')
+  const [descricaoRefeicao, setDescricaoRefeicao] = useState('')
+  const [fotoRefeicao, setFotoRefeicao] = useState<File | null>(null)
+  const [salvandoRefeicao, setSalvandoRefeicao] = useState(false)
+  const [pedindoSugestao, setPedindoSugestao] = useState<'pre_treino' | 'pos_treino' | null>(null)
+  const [erroNutricao, setErroNutricao] = useState<string | null>(null)
+  const fotoRefeicaoInputRef = useRef<HTMLInputElement | null>(null)
+
+  const carregarNutricao = useCallback(() => {
+    api
+      .get<DiaNutricao>(`/portal/${token}/nutricao`)
+      .then((d) => {
+        setNutricao(d)
+        marcarFalha('nutricao', false)
+      })
+      .catch(() => marcarFalha('nutricao', true))
+    api
+      .get<{ sugestoes: SugestaoNutricao[] }>(`/portal/${token}/nutricao/sugestoes`)
+      .then((d) => setSugestoesNutricao(d.sugestoes))
+      .catch(() => {})
+  }, [token, marcarFalha])
+
+  async function registrarRefeicao() {
+    if (!fotoRefeicao && !descricaoRefeicao.trim()) {
+      setErroNutricao('Manda uma foto ou escreve o que você comeu.')
+      return
+    }
+    setSalvandoRefeicao(true)
+    setErroNutricao(null)
+    try {
+      const form = new FormData()
+      form.append('momento', momentoRefeicao)
+      if (descricaoRefeicao.trim()) form.append('descricao', descricaoRefeicao.trim())
+      if (fotoRefeicao) form.append('foto', fotoRefeicao)
+      await api.postFile(`/portal/${token}/nutricao/refeicoes`, form)
+      setDescricaoRefeicao('')
+      setFotoRefeicao(null)
+      if (fotoRefeicaoInputRef.current) fotoRefeicaoInputRef.current.value = ''
+      carregarNutricao()
+    } catch (err) {
+      setErroNutricao(err instanceof ApiError ? err.message : 'Não consegui registrar agora.')
+    } finally {
+      setSalvandoRefeicao(false)
+    }
+  }
+
+  async function removerRefeicao(id: string) {
+    try {
+      await api.delete(`/portal/${token}/nutricao/refeicoes/${id}`)
+      carregarNutricao()
+    } catch {
+      setErroNutricao('Não consegui apagar agora.')
+    }
+  }
+
+  async function mudarAgua(delta: 1 | -1) {
+    // Otimista: o toque tem que responder na hora, e o servidor confirma
+    // logo em seguida com o valor real (que ele limita entre 0 e o teto).
+    setNutricao((atual) => (atual ? { ...atual, copos_agua: Math.max(0, atual.copos_agua + delta) } : atual))
+    try {
+      const { copos_agua } = await api.post<{ copos_agua: number }>(`/portal/${token}/nutricao/agua`, { delta })
+      setNutricao((atual) => (atual ? { ...atual, copos_agua } : atual))
+    } catch {
+      carregarNutricao()
+    }
+  }
+
+  async function pedirSugestao(momento: 'pre_treino' | 'pos_treino') {
+    setPedindoSugestao(momento)
+    setErroNutricao(null)
+    try {
+      const { sugestao } = await api.post<{ sugestao: SugestaoNutricao }>(
+        `/portal/${token}/nutricao/sugestoes`,
+        { momento }
+      )
+      setSugestoesNutricao((atuais) => [sugestao, ...atuais])
+    } catch (err) {
+      setErroNutricao(err instanceof ApiError ? err.message : 'Não consegui responder agora.')
+    } finally {
+      setPedindoSugestao(null)
+    }
+  }
 
   // strava
   const [stravaConectado, setStravaConectado] = useState(false)
@@ -517,6 +611,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
 
     if (aba === 'checkin') carregarResumoCheckins()
     if (aba === 'academia') carregarSubmissoesAcademia()
+    if (aba === 'nutricao') carregarNutricao()
     if (aba === 'evolucao') carregarStrava()
     if (aba === 'fotos') {
       carregarFotosEvolucao()
@@ -526,6 +621,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     aba,
     carregarResumoCheckins,
     carregarSubmissoesAcademia,
+    carregarNutricao,
     carregarStrava,
     carregarFotosEvolucao,
     carregarPosturais,
@@ -1552,6 +1648,194 @@ export default function PortalAlunoClient({ token }: { token: string }) {
               ))}
             </div>
           )}
+        </main>
+      </div>
+    )
+  }
+
+  if (aba === 'nutricao') {
+    const rotuloMomento: Record<MomentoRefeicao, string> = {
+      cafe: 'Café da manhã',
+      lanche: 'Lanche',
+      almoco: 'Almoço',
+      jantar: 'Jantar',
+      pre_treino: 'Pré-treino',
+      pos_treino: 'Pós-treino',
+    }
+    const META_COPOS = 8
+
+    return (
+      <div className="flex min-h-screen flex-col">
+        {cabecalho}
+        <SideMenu
+          open={menuAberto}
+          onClose={() => setMenuAberto(false)}
+          nome={data.student.name}
+          fotoUrl={data.student.photo_url}
+          subtitulo="Clube Mais"
+          items={menuItems}
+          ativo={aba}
+          onSelect={selecionarItemMenu}
+        />
+        <InstallAppModal open={instalarAberto} onClose={() => setInstalarAberto(false)} />
+        <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6">
+          {erroNutricao && <p className="mb-3 text-sm text-danger">{erroNutricao}</p>}
+
+          {falhas.nutricao && !nutricao && <FalhaAoCarregar onTentarDeNovo={carregarNutricao} />}
+
+          {/* Água primeiro: é o registro de menor esforço do dia inteiro. */}
+          <div className="glass mb-4 rounded-2xl p-5">
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className="font-semibold text-ink">Água hoje</h2>
+              <span className="stat-number text-sm text-ink-muted">
+                {nutricao?.copos_agua ?? 0} <span className="text-xs font-normal">de {META_COPOS} copos</span>
+              </span>
+            </div>
+            <div className="mb-4 flex flex-wrap gap-1.5">
+              {Array.from({ length: META_COPOS }, (_, i) => (
+                <span
+                  key={i}
+                  className={`h-7 w-5 rounded-b-md rounded-t-sm border transition ${
+                    i < (nutricao?.copos_agua ?? 0) ? 'border-brand bg-brand/70' : 'border-line bg-ink/5'
+                  }`}
+                  aria-hidden="true"
+                />
+              ))}
+            </div>
+            <div className="flex gap-2">
+              <button onClick={() => mudarAgua(1)} className="btn-primary flex-1 rounded-xl px-4 py-2.5 text-sm">
+                + 1 copo
+              </button>
+              <button
+                onClick={() => mudarAgua(-1)}
+                disabled={(nutricao?.copos_agua ?? 0) === 0}
+                className="glass glass-hover rounded-xl px-4 py-2.5 text-sm text-ink-soft disabled:opacity-40"
+              >
+                Tirar
+              </button>
+            </div>
+          </div>
+
+          {/* Orientação pré/pós-treino */}
+          <div className="glass mb-4 rounded-2xl p-5">
+            <h2 className="mb-1 font-semibold text-ink">Dúvida de pré ou pós-treino?</h2>
+            <p className="mb-4 text-sm text-ink-muted">
+              Ideias gerais do que costuma cair bem em volta do treino. Não é plano alimentar — pra
+              isso quem faz é o nutricionista.
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => pedirSugestao('pre_treino')}
+                disabled={pedindoSugestao !== null}
+                className="btn-secondary flex-1 rounded-xl px-4 py-2.5 text-sm disabled:opacity-50"
+              >
+                {pedindoSugestao === 'pre_treino' ? 'Pensando...' : 'Antes de treinar'}
+              </button>
+              <button
+                onClick={() => pedirSugestao('pos_treino')}
+                disabled={pedindoSugestao !== null}
+                className="btn-secondary flex-1 rounded-xl px-4 py-2.5 text-sm disabled:opacity-50"
+              >
+                {pedindoSugestao === 'pos_treino' ? 'Pensando...' : 'Depois de treinar'}
+              </button>
+            </div>
+
+            {sugestoesNutricao.length > 0 && (
+              <div className="mt-4 space-y-2">
+                {sugestoesNutricao.slice(0, 3).map((s) => (
+                  <div
+                    key={s.id}
+                    className={`rounded-xl p-3 text-sm ${
+                      s.encaminhou_nutricionista ? 'bg-warning-soft text-ink-soft' : 'glass-flat text-ink-soft'
+                    }`}
+                  >
+                    <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
+                      {s.momento === 'pre_treino' ? 'Antes de treinar' : 'Depois de treinar'}
+                    </p>
+                    {s.resposta}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Diário do dia */}
+          <div className="glass mb-4 rounded-2xl p-5">
+            <h2 className="mb-1 font-semibold text-ink">O que você comeu hoje</h2>
+            <p className="mb-4 text-sm text-ink-muted">
+              Uma foto já basta. Seu professor vê isso e usa pra te orientar.
+            </p>
+
+            <select
+              value={momentoRefeicao}
+              onChange={(e) => setMomentoRefeicao(e.target.value as MomentoRefeicao)}
+              className="mb-2 w-full rounded-xl border border-line px-3 py-2 text-sm"
+            >
+              {(Object.keys(rotuloMomento) as MomentoRefeicao[]).map((m) => (
+                <option key={m} value={m}>
+                  {rotuloMomento[m]}
+                </option>
+              ))}
+            </select>
+
+            <input
+              type="text"
+              value={descricaoRefeicao}
+              onChange={(e) => setDescricaoRefeicao(e.target.value)}
+              placeholder="Ex: arroz, feijão, frango e salada"
+              className="mb-2 w-full rounded-xl border border-line px-3 py-2 text-sm"
+            />
+
+            <input
+              ref={fotoRefeicaoInputRef}
+              type="file"
+              accept="image/*"
+              onChange={(e) => setFotoRefeicao(e.target.files?.[0] ?? null)}
+              className="mb-3 w-full text-xs text-ink-muted"
+            />
+
+            <button
+              onClick={registrarRefeicao}
+              disabled={salvandoRefeicao}
+              className="btn-primary w-full rounded-xl px-4 py-2.5 text-sm disabled:opacity-50"
+            >
+              {salvandoRefeicao ? 'Registrando...' : 'Registrar refeição'}
+            </button>
+          </div>
+
+          {nutricao && nutricao.refeicoes.length === 0 && !falhas.nutricao && (
+            <div className="glass rounded-2xl border-dashed p-8 text-center">
+              <p className="text-sm text-ink-muted">Nada registrado hoje ainda.</p>
+            </div>
+          )}
+
+          <div className="space-y-2">
+            {nutricao?.refeicoes.map((r) => (
+              <div key={r.id} className="glass flex items-start gap-3 rounded-2xl p-3">
+                {r.tem_foto && (
+                  // eslint-disable-next-line @next/next/no-img-element -- rota autenticada por token do portal, não next/image
+                  <img
+                    src={`${API_URL}/portal/${token}/nutricao/refeicoes/${r.id}/imagem`}
+                    alt={rotuloMomento[r.momento]}
+                    className="h-16 w-16 shrink-0 rounded-xl object-cover"
+                  />
+                )}
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-ink-muted">
+                    {rotuloMomento[r.momento]}
+                  </p>
+                  {r.descricao && <p className="text-sm text-ink-soft">{r.descricao}</p>}
+                </div>
+                <button
+                  onClick={() => removerRefeicao(r.id)}
+                  aria-label="Apagar registro"
+                  className="shrink-0 text-ink-muted transition hover:text-danger"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            ))}
+          </div>
         </main>
       </div>
     )

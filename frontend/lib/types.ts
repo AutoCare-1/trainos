@@ -701,3 +701,38 @@ export interface SemanaAgenda {
   inicio_semana: string
   dias: DiaAgenda[]
 }
+
+// ─── Nutrição ───
+// O aluno registra e pergunta; ninguém prescreve. Ver a migration de meal_logs
+// no backend pra o porquê (prescrição dietética é privativa do nutricionista).
+
+export type MomentoRefeicao = 'cafe' | 'lanche' | 'almoco' | 'jantar' | 'pre_treino' | 'pos_treino'
+
+export interface RefeicaoRegistrada {
+  id: string
+  data?: string
+  momento: MomentoRefeicao
+  descricao: string | null
+  tem_foto: boolean
+  created_at: string
+}
+
+export interface DiaNutricao {
+  data: string
+  refeicoes: RefeicaoRegistrada[]
+  copos_agua: number
+}
+
+export interface SugestaoNutricao {
+  id: string
+  momento: 'pre_treino' | 'pos_treino'
+  resposta: string
+  encaminhou_nutricionista: boolean
+  created_at: string
+}
+
+export interface NutricaoDoAluno {
+  refeicoes: RefeicaoRegistrada[]
+  agua: { data: string; copos: number }[]
+  sugestoes: SugestaoNutricao[]
+}
