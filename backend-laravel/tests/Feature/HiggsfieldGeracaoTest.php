@@ -432,6 +432,10 @@ class HiggsfieldGeracaoTest extends TestCase
         // se descobre revisando o vídeo — depois de já ter pago por ele.
         $this->seed(\Database\Seeders\ExerciseSeeder::class);
         $this->seed(\Database\Seeders\ExercicioBibliotecaAmpliadaSeeder::class);
+        // A biblioteca complementar entrou depois e trouxe dica junto — sem
+        // semear aqui, as 174 dicas dela apareciam como "exercício que não
+        // existe" e o teste acusava um problema que não era real.
+        $this->seed(\Database\Seeders\ExercicioBibliotecaComplementarSeeder::class);
 
         $comDica = array_keys(require database_path('dicas_demonstracao.php'));
         $existentes = Exercise::whereIn('name', $comDica)->pluck('name')->all();
