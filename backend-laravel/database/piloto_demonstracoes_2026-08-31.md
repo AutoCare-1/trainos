@@ -680,3 +680,75 @@ Faltam 106 da leva.
 Acumulado: **125 OK, 28 médios, 15 graves.**
 
 **O crédito acaba no próximo lote.**
+
+# Lote 15 — 11 de equilíbrio, 44 créditos (2,18 restantes). CRÉDITO ACABOU
+
+**11 OK · ZERO MÉDIO · ZERO GRAVE — 100%.** Segundo lote perfeito da série, e
+o último que o crédito comprou.
+
+Marcha tandem, caminhada para trás, os quatro alcances unipodais, espuma com
+giro de cabeça, perturbação no elástico, agachamento unipodal no disco,
+agachamento no bosu e prancha no bosu.
+
+**Os quatro alcances unipodais eram o risco do lote** — são variantes quase
+idênticas, o padrão que custou caro nos alongamentos. Escrevi antes de gerar
+uma cena por exercício dizendo O QUE alcança e PARA ONDE (pé à frente / pé em
+três direções / MÃO pegando objeto no chão / BRAÇOS em três planos) e os
+quatro saíram distintos.
+
+---
+
+# FECHAMENTO DA RODADA DE CRÉDITO
+
+**179 vídeos gerados, 716 créditos, 15 lotes.**
+
+## Cobertura por grupo
+
+| Grupo | Com vídeo | Total |
+|---|---|---|
+| Alongamento | 46 | 46 ✅ |
+| Prevenção | 30 | 30 ✅ |
+| Mobilidade | 42 | 43 |
+| Equilíbrio | 14 | 24 |
+| Ativação | 0 | 22 |
+| Esportivo | 0 | 74 |
+| Reforço de musculação | ~5 (do piloto) | 35 |
+
+**Cerca de 137 dos 274 — metade da leva.**
+
+## Qualidade
+
+**Placar final: 136 OK, 28 médios, 15 graves** (contando cada exercício uma
+vez, no melhor resultado que ele teve). **Todos os 15 graves foram
+corrigidos.** Sobram 6 médios encerrados por não convergirem, todos da mesma
+família: distinção de face de segmento pequeno.
+
+Evolução por lote: 42% → 75% → 67% → 75% → 75% → 67% → 67% → 100% → 75% →
+92% → 50% → 67% → 75% → 83% → **100%**.
+
+## O que aprendemos, em ordem de valor
+
+1. **Negar o erro observado > descrever o certo.** Vale pra aparelho,
+   montagem de corpo e posição de chão. Custou 8 lotes pra virar regra.
+2. **Com a negação escrita, RE-ROLAR antes de reescrever.** Provado três
+   vezes com texto idêntico (Copenhague, barra, 90/90).
+3. **Cena de família, escrita ANTES de gerar.** A varredura preventiva das 58
+   evitou algo da ordem de 15 vídeos errados.
+4. **Nunca sacrificar a figura inteira pela legibilidade do detalhe** — o
+   enquadramento é identidade do catálogo. (Apontado pelo Filipe.)
+5. **Elástico: vermelho, grosso, largura de mão, ancoragem nomeada.** Receita
+   fechada, ~30 vídeos sem falha.
+6. **Limites reais, não insistir:** face do mesmo segmento (dorso x palma,
+   joelho dobrado x estendido) e disco deslizante (resolvido trocando o
+   equipamento pra toalha na biblioteca).
+
+## Para retomar quando comprar crédito
+
+Faltam **137 exercícios ≈ 548 créditos**. Ordem sugerida:
+1. Equilíbrio (10 restantes) — grupo quase fechado, taxa alta.
+2. Ativação (22) — peso corporal, faixa boa.
+3. Reforço de musculação (30) — argolas e calistenia, já testados no piloto.
+4. Esportivo (74) — o maior e o mais desconhecido; nenhum vídeo ainda.
+
+Todas as cena já estão escritas em `dicas_demonstracao.php` para os 58
+varridos preventivamente; o Esportivo tem 12 cobertos e 62 sem cena.
