@@ -147,6 +147,10 @@ class AplicarDemonstracoesTest extends TestCase
         // teste que lê a lista real — e só lê.
         $this->seed(\Database\Seeders\ExerciseSeeder::class);
         $this->seed(\Database\Seeders\ExercicioBibliotecaAmpliadaSeeder::class);
+        // A leva complementar entrou em 31/08 e 131 dela já têm vídeo — sem
+        // semear aqui, o mapa real aparece inteiro como "exercício que não
+        // existe" e o teste acusa órfão onde não há.
+        $this->seed(\Database\Seeders\ExercicioBibliotecaComplementarSeeder::class);
 
         $doMapa = array_keys(require database_path('demonstracoes_geradas.php'));
         $existentes = Exercise::whereIn('name', $doMapa)->pluck('name')->all();
