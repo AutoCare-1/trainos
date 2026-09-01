@@ -540,3 +540,50 @@ negação que faltou. Custam 16 créditos pra corrigir.
 132 vídeos, 528 créditos. **190 restantes = 47 vídeos.**
 Prevenção: 12 de 30. Faltam 142 da leva.
 Acumulado: **98 OK, 21 médios, 13 graves.**
+
+# Lote 12 — 6 correções + 6 novos de prevenção, 48 créditos (142 restantes)
+
+**8 OK · 3 MÉDIO · 1 GRAVE — 67%.** Das 6 correções, 4 pegaram.
+
+| # | Exercício | Tentativa | Veredito |
+|---|---|---|---|
+| 221 | Prancha de Copenhague | 2ª | **GRAVE** — ainda prancha frontal |
+| 222 | Prancha de Copenhague com joelho apoiado | 2ª | **OK** — agora de lado, num antebraço |
+| 223 | Deslizamento de isquiotibiais na toalha | 2ª | **OK** — texto sumiu |
+| 224 | Deslizamento de calcanhar bilateral na toalha | 2ª | **OK** — uma cabeça só |
+| 225 | Estabilização de tronco em posição de urso | 2ª | **MÉDIO** — toque no ombro não acontece |
+| 226 | Estabilização escapular em prancha na parede | 2ª | **MÉDIO** — segue apoiando a mão |
+| 227 | Rotação externa de ombro a 90° com elástico | novo | **OK** |
+| 228 | Elevação de calcanhar excêntrica | novo | **OK** |
+| 229 | Excêntrico de sóleo unilateral no degrau | novo | **MÉDIO** — joelho sai estendido |
+| 230 | Inversão de tornozelo com elástico | novo | **OK** |
+| 231 | Eversão de tornozelo com elástico | novo | **OK** |
+| 232 | Dorsiflexão de tornozelo com elástico | novo | **OK** |
+
+## O achado mais útil deste lote
+
+**Os dois Copenhague levaram a MESMA frase de negação e deram resultados
+opostos.** Texto idêntico, palavra por palavra: um saiu prancha lateral certa
+e o outro seguiu frontal. Não é limite e não é a redação — é sorteio.
+
+Isso fecha uma dúvida que vinha desde o lote 8: quando a negação está escrita
+e mesmo assim erra, **a primeira coisa a fazer é re-rolar, não reescrever**.
+Reescrever custa o mesmo 4 créditos e ainda gasta meu tempo montando texto
+que já estava certo. Só depois de duas re-rolagens com a mesma negação é que
+vale mexer no texto.
+
+**O elástico vermelho grosso está consolidado:** quatro exercícios de tornozelo
+e ombro neste lote, todos com a faixa visível e íntegra nos 5 frames. É a
+receita definitiva pra elástico (nasceu no lote 8, depois do que sumiu).
+
+**O sóleo com joelho flexionado errou de novo** (agora na versão de degrau) —
+é o terceiro vídeo em que "joelho dobrado x estendido" não lê. Confirma que
+essa distinção específica é limite, não sorteio.
+
+## Placar
+
+144 vídeos, 576 créditos. **142 restantes = 35 vídeos.**
+Prevenção: 18 de 30. Faltam 130 da leva.
+Acumulado: **106 OK, 24 médios, 14 graves.**
+
+**O crédito acaba em ~3 lotes.** Restam 130 exercícios e dá pra 35.

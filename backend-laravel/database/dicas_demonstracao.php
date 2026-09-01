@@ -1062,6 +1062,17 @@ $varreduraPreventiva['Liberação de fáscia plantar na bolinha'] = 'He stands u
 // vira quatro apoios comum com toque no ombro, que já existe na biblioteca.
 $varreduraPreventiva['Estabilização de tronco em posição de urso com toque'] = 'He is on ALL FOURS with hands under shoulders and knees under hips, then lifts BOTH KNEES a few centimetres off the floor and holds them hovering there. Keeping the knees hovering and the hips completely level, he lifts one hand and taps the opposite shoulder, then swaps. His hips never rock from side to side and his knees never touch back down.';
 
+// Lote 12: as negações que faltaram no lote 11. Eu tinha descrito a posição
+// CERTA dos dois Copenhague e não proibido a errada — e os dois saíram como
+// prancha frontal, que é o default do gerador pra "prancha". Mesmo caso da
+// posição de urso (o toque não acontecia) e da escapular na parede (apoiava
+// a mão em vez do antebraço).
+$copenhagueNegacao = ' His body is turned SIDEWAYS: one shoulder points at the ceiling and the other at the floor, and he carries his weight on ONE forearm only. This is never a normal front plank on two forearms, his chest never points down at the ground, and both feet are never on the bench together.';
+$varreduraPreventiva['Prancha de Copenhague'] = 'He lies ON HIS SIDE propped on the bottom FOREARM, with the TOP leg lifted and its inner ankle resting on top of a flat bench beside him. He lifts his hips until the body is a straight line, the bottom leg hanging free in the air below the bench.'.$copenhagueNegacao;
+$varreduraPreventiva['Prancha de Copenhague com joelho apoiado'] = 'He lies ON HIS SIDE propped on the bottom FOREARM, with the TOP leg resting its KNEE and shin on a flat bench beside him. He lifts his hips until the body is a straight line, the bottom leg hanging free below the bench.'.$copenhagueNegacao;
+$varreduraPreventiva['Estabilização de tronco em posição de urso com toque'] = 'He is on all fours with hands under shoulders, then lifts BOTH KNEES a few centimetres off the floor and holds them hovering. He then clearly LIFTS ONE HAND completely off the floor, taps the opposite shoulder with it, and puts it back, then does the same with the other hand. At least one hand is off the ground and touching a shoulder during the clip: he never just holds the position with both hands planted. His knees never touch back down.';
+$varreduraPreventiva['Estabilização escapular em prancha com apoio na parede'] = 'He leans forward against a wall resting on BOTH FOREARMS, elbows bent and the whole forearm from elbow to fist flat against the wall, body straight from head to heels. His palms are never flat on the wall with straight arms — this is a forearm position, not a push-up against the wall. He pushes his chest away so the shoulder blades spread apart, then lets them come together.';
+
 foreach ($varreduraPreventiva as $nome => $cenaDoExercicio) {
     // Não sobrescreve cena de prop já montada acima (rolo, bosu, argolas,
     // elástico): ali as duas precisam conviver.
