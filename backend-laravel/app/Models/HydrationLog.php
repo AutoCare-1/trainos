@@ -19,7 +19,11 @@ class HydrationLog extends Model
     protected $fillable = ['student_id', 'data', 'copos'];
 
     protected $casts = [
-        'data' => 'date',
+        // date:Y-m-d e não 'date': é data pura, e sem o formato o Eloquent
+        // serializa como ISO completo ("...T03:00:00Z"), que quebra os
+        // helpers de data do frontend — eles fatiam a string de propósito,
+        // pra não deslocar o dia por fuso.
+        'data' => 'date:Y-m-d',
         'copos' => 'integer',
     ];
 

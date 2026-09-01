@@ -9,7 +9,7 @@ import BackLink from '@/components/BackLink'
 import Avatar from '@/components/Avatar'
 import ChatBox from '@/components/ChatBox'
 import WeightChart from '@/components/WeightChart'
-import { api, ApiError, fetchImagemAutenticada } from '@/lib/api'
+import { api, API_URL, ApiError, fetchImagemAutenticada } from '@/lib/api'
 import { ANAMNESE_VAZIA, anamneseTemConteudo, LOCAL_TREINO_OPCOES, normalizarAnamnese, OBJETIVOS_OPCOES } from '@/lib/anamnese'
 import { ASPECTOS_PROGRESSO_OPCOES } from '@/lib/anamneseRevisao'
 import { copiarTexto, linkWhatsApp, mensagemConvite } from '@/lib/compartilharLink'
@@ -29,6 +29,8 @@ import {
   ResumoCheckins,
   Student,
   Workout,
+  MomentoRefeicao,
+  NutricaoDoAluno,
 } from '@/lib/types'
 
 /** Uma linha de "pergunta: resposta" na anamnese — não mostra nada se a resposta
@@ -71,6 +73,24 @@ function FotoAutenticada({ src, alt }: { src: string; alt: string }) {
   return <img src={url} alt={alt} className="h-full w-full object-cover" />
 }
 
+const ROTULO_MOMENTO: Record<MomentoRefeicao, string> = {
+  cafe: 'Café da manhã',
+  lanche: 'Lanche',
+  almoco: 'Almoço',
+  jantar: 'Jantar',
+  pre_treino: 'Pré-treino',
+  pos_treino: 'Pós-treino',
+}
+
+/** Miniatura da refeição — mesma rota autenticada das fotos de evolução. */
+function ImagemRefeicao({ src, alt }: { src: string; alt: string }) {
+  return (
+    <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg">
+      <FotoAutenticada src={src} alt={alt} />
+    </div>
+  )
+}
+
 export default function AlunoDetalheClient({ studentId }: { studentId: string }) {
   const router = useRouter()
   const [student, setStudent] = useState<Student | null>(null)
@@ -82,6 +102,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
   const [posturais, setPosturais] = useState<PosturalAssessment[]>([])
   const [revisoes, setRevisoes] = useState<WorkoutReview[]>([])
   const [resumoCheckins, setResumoCheckins] = useState<ResumoCheckins | null>(null)
+  const [nutricao, setNutricao] = useState<NutricaoDoAluno | null>(null)
   const [periodoCheckins, setPeriodoCheckins] = useState<'week' | 'month' | 'year'>('week')
   const [refCheckins, setRefCheckins] = useState<string | null>(null)
   const [historicoCheckins, setHistoricoCheckins] = useState<HistoricoCheckins | null>(null)
@@ -171,6 +192,11 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
     api
       .get<ResumoCheckins>(`/alunos/${studentId}/checkins/summary`)
       .then(setResumoCheckins)
+      .catch(() => {})
+
+    api
+      .get<NutricaoDoAluno>(`/alunos/${studentId}/nutricao`)
+      .then(setNutricao)
       .catch(() => {})
 
     return () => clearInterval(intervalo)
@@ -915,6 +941,90 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
             </div>
           </section>
         )}
+
+        {/* Alimentação: só leitura. O personal olha o padrão e orienta de forma
+            geral — montar cardápio é privativo do nutricionista. */}
+        <section className="mb-6">
+          <h2 className="mb-3 font-semibold text-ink">Alimentação</h2>
+
+          {!nutricao && <p className="text-sm text-ink-muted">Carregando...</p>}
+
+          {nutricao && nutricao.refeicoes.length === 0 && nutricao.sugestoes.length === 0 && (
+            <div className="glass rounded-2xl p-6 text-center text-sm text-ink-muted">
+              O aluno ainda não registrou nada. Ele registra pelo portal, na aba Alimentação.
+            </div>
+          )}
+
+          {nutricao && (nutricao.refeicoes.length > 0 || nutricao.sugestoes.length > 0) && (
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="glass rounded-2xl p-4">
+                <h3 className="mb-3 text-sm font-semibold text-ink">Últimos 7 dias</h3>
+
+                {nutricao.agua.length > 0 && (
+                  <p className="mb-3 text-xs text-ink-muted">
+                    Água:{' '}
+                    {nutricao.agua
+                      .slice(0, 7)
+                      .map((a) => `${formatarDataCurta(a.data)} ${a.copos}`)
+                      .join(' · ')}{' '}
+                    copos
+                  </p>
+                )}
+
+                {nutricao.refeicoes.length === 0 && (
+                  <p className="text-sm text-ink-muted">Nenhuma refeição registrada no período.</p>
+                )}
+
+                <div className="space-y-2">
+                  {nutricao.refeicoes.slice(0, 12).map((r) => (
+                    <div key={r.id} className="flex items-start gap-2.5">
+                      {r.tem_foto && (
+                        <ImagemRefeicao
+                          src={`${API_URL}/alunos/${student.id}/nutricao/refeicoes/${r.id}/imagem`}
+                          alt={ROTULO_MOMENTO[r.momento]}
+                        />
+                      )}
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
+                          {r.data ? formatarDataCurta(r.data) : ''} · {ROTULO_MOMENTO[r.momento]}
+                        </p>
+                        {r.descricao && <p className="truncate text-sm text-ink-soft">{r.descricao}</p>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="glass rounded-2xl p-4">
+                <h3 className="mb-1 text-sm font-semibold text-ink">Orientações que o app deu</h3>
+                <p className="mb-3 text-xs text-ink-muted">
+                  Você vê aqui tudo que a IA respondeu ao aluno sobre alimentação.
+                </p>
+
+                {nutricao.sugestoes.length === 0 && (
+                  <p className="text-sm text-ink-muted">O aluno ainda não pediu nenhuma orientação.</p>
+                )}
+
+                <div className="space-y-2">
+                  {nutricao.sugestoes.slice(0, 5).map((sg) => (
+                    <div
+                      key={sg.id}
+                      className={`rounded-xl p-3 text-sm ${
+                        sg.encaminhou_nutricionista ? 'bg-warning-soft text-ink-soft' : 'glass-flat text-ink-soft'
+                      }`}
+                    >
+                      <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
+                        {sg.momento === 'pre_treino' ? 'Antes de treinar' : 'Depois de treinar'}
+                        {sg.encaminhou_nutricionista && ' · encaminhado ao nutricionista'}
+                      </p>
+                      {sg.resposta}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </section>
 
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Coluna: treinos */}

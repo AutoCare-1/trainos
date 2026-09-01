@@ -42,7 +42,11 @@ class AlunoNutricaoController extends Controller
             ->orderBy('created_at')
             ->get(['id', 'data', 'momento', 'descricao', 'created_at', 'file_path'])
             ->map(fn (MealLog $r) => [
-                ...$r->only(['id', 'data', 'momento', 'descricao', 'created_at']),
+                ...$r->only(['id', 'momento', 'descricao', 'created_at']),
+                // toDateString explícito: only() devolve o Carbon cru, sem
+                // passar pelo cast date:Y-m-d do model — e aí a data chegava
+                // como ISO completo e quebrava a formatação no frontend.
+                'data' => $r->data->toDateString(),
                 'tem_foto' => $r->file_path !== null,
             ]);
 
