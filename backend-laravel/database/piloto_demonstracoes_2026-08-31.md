@@ -587,3 +587,53 @@ Prevenção: 18 de 30. Faltam 130 da leva.
 Acumulado: **106 OK, 24 médios, 14 graves.**
 
 **O crédito acaba em ~3 lotes.** Restam 130 exercícios e dá pra 35.
+
+# Lote 13 — 5 re-rolagens + 7 novos de prevenção, 48 créditos (94 restantes)
+
+**9 OK · 3 MÉDIO · ZERO GRAVE — 75%.**
+
+| # | Exercício | Tentativa | Veredito |
+|---|---|---|---|
+| 241 | Prancha de Copenhague | 3ª (re-rolagem, texto idêntico) | **OK** |
+| 242 | Estabilização de tronco em posição de urso | 3ª | **MÉDIO** — toque no ombro nunca acontece |
+| 243 | Estabilização escapular em prancha na parede | 3ª | **MÉDIO** — segue apoiando a mão |
+| 244 | Agachamento em cócoras com rotação | 2ª | **MÉDIO** — meio agachamento |
+| 245 | Coluna suspenso na barra com pés no chão | 3ª (re-rolagem, texto idêntico) | **OK** |
+| 246 | Elevação do arco plantar (short foot) | novo | **OK** |
+| 247 | Fortalecimento de pé com toalha | novo | **OK** |
+| 248 | Propriocepção de joelho com elástico | novo | **OK** |
+| 249 | Controle de valgo dinâmico no step | novo | **OK** |
+| 250 | Descida controlada do step em apoio único | novo | **OK** |
+| 251 | Mobilização de quadril com elástico | novo | **OK** |
+| 252 | Mobilização neural do nervo ciático sentado | novo | **OK** |
+
+## A regra da re-rolagem se confirmou duas vezes
+
+O Copenhague e o suspenso na barra voltaram **certos na terceira rolagem, com
+o texto idêntico ao que tinha falhado duas vezes**. Nenhuma palavra mudou.
+Fecha o método: quando a negação já está escrita, re-rolar é a primeira ação,
+não reescrever.
+
+## Técnica nova: enquadramento fechado para detalhe pequeno
+
+O arco plantar e o fortalecimento de pé com toalha saíram OK de primeira, e
+os dois pedem uma distinção minúscula (dedos que não dobram, dedos que
+arrastam pano). O que mudou foi mandar `framed low on his feet` em vez do
+`full body in frame` padrão.
+
+Isso abre caminho pros médios teimosos da família "face de segmento pequeno"
+(dorso x palma no punho, cotovelo dobrado x estendido): pode ser que o
+problema nunca tenha sido a negação e sim o tamanho do detalhe em 480p de
+corpo inteiro. Vale testar em enquadramento fechado quando houver crédito.
+
+## Encerrados
+
+`Estabilização de tronco em posição de urso` e `Estabilização escapular em
+prancha na parede` chegaram à 3ª tentativa sem convergir — pela regra, param
+aqui. `Agachamento em cócoras` fica na 2ª e ganha mais uma chance depois.
+
+## Placar
+
+156 vídeos, 624 créditos. **94 restantes = 23 vídeos.**
+Prevenção: 25 de 30. Faltam 118 da leva.
+Acumulado: **115 OK, 26 médios, 15 graves.**
