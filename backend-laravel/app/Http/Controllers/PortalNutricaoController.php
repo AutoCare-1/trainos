@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BodyMeasurement;
 use App\Models\HydrationLog;
 use App\Models\MealLog;
 use App\Models\NutritionSuggestion;
+use App\Models\Student;
 use App\Support\ErrorReporting;
 use App\Support\KillSwitchIa;
 use App\Support\Nutricao;
@@ -46,7 +48,32 @@ class PortalNutricaoController extends Controller
             'data' => $data,
             'refeicoes' => $refeicoes,
             'agua_ml' => (int) $agua,
+            // A meta vem do servidor pra regra morar num lugar só — o
+            // frontend só desenha o que recebe.
+            'agua_meta_ml' => HydrationLog::metaDiariaMl($this->pesoAtual($student)),
+            // O frontend precisa saber se a meta é do aluno ou o padrão, pra
+            // não dizer "referência pro seu peso" a quem nunca foi pesado.
+            'agua_meta_do_peso' => $this->pesoAtual($student) !== null,
         ]);
+    }
+
+    /**
+     * Peso mais recente conhecido do aluno.
+     *
+     * A pesagem que o personal registra vai pra body_measurements e NÃO mexe
+     * em students.weight_kg (que é só o que foi digitado no cadastro, e
+     * costuma estar vazio). Usar a medição mais nova é o que faz a meta
+     * acompanhar o aluno em vez de congelar no dia do cadastro.
+     */
+    private function pesoAtual(Student $student): ?float
+    {
+        $daMedicao = BodyMeasurement::where('student_id', $student->id)
+            ->orderByDesc('recorded_at')
+            ->value('weight_kg');
+
+        $peso = $daMedicao ?? $student->weight_kg;
+
+        return $peso ? (float) $peso : null;
     }
 
     // POST /:token/nutricao/refeicoes — registra uma refeição (foto e/ou texto)

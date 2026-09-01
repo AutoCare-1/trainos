@@ -143,6 +143,72 @@ class NutricaoTest extends TestCase
             ->assertStatus(422);
     }
 
+    public function test_meta_de_agua_sai_do_peso_do_aluno(): void
+    {
+        [, $student] = $this->cenario();
+
+        // Sem peso informado: o que a fórmula daria pra um adulto médio, em vez
+        // de um número escolhido no olho.
+        $this->getJson("/portal/{$student->invite_token}/nutricao")
+            ->assertOk()
+            ->assertJsonPath('agua_meta_ml', HydrationLog::META_PADRAO_ML);
+
+        // Com peso: ~35 ml por kg, que é o ponto — quem é maior bebe mais, e
+        // não fica com uma meta chutada igual pra todo mundo.
+        $student->update(['weight_kg' => 90]);
+        $this->getJson("/portal/{$student->invite_token}/nutricao")
+            ->assertOk()
+            ->assertJsonPath('agua_meta_ml', 3200);
+    }
+
+    public function test_meta_acompanha_a_pesagem_mais_recente(): void
+    {
+        [, $student, $headers] = $this->cenario();
+
+        // A pesagem do personal vai pra body_measurements e não mexe em
+        // students.weight_kg — sem olhar a medição, a meta congelaria no dia
+        // do cadastro (quando quase ninguém preenche peso).
+        $this->postJson("/alunos/{$student->id}/medicoes", ['weight_kg' => 90], $headers)->assertCreated();
+
+        $this->getJson("/portal/{$student->invite_token}/nutricao")
+            ->assertOk()
+            ->assertJsonPath('agua_meta_ml', 3200)
+            ->assertJsonPath('agua_meta_do_peso', true);
+
+        // Emagreceu: a meta acompanha.
+        $this->postJson("/alunos/{$student->id}/medicoes", [
+            'weight_kg' => 70, 'recorded_at' => now()->addDay()->toDateString(),
+        ], $headers)->assertCreated();
+
+        $this->getJson("/portal/{$student->invite_token}/nutricao")
+            ->assertOk()
+            ->assertJsonPath('agua_meta_ml', 2500);
+    }
+
+    public function test_aluno_sem_peso_nenhum_recebe_a_meta_padrao_marcada_como_generica(): void
+    {
+        [, $student] = $this->cenario();
+
+        $this->getJson("/portal/{$student->invite_token}/nutricao")
+            ->assertOk()
+            ->assertJsonPath('agua_meta_ml', HydrationLog::META_PADRAO_ML)
+            // Falso: a tela não pode dizer "referência pro seu peso" a quem
+            // nunca foi pesado.
+            ->assertJsonPath('agua_meta_do_peso', false);
+    }
+
+    public function test_peso_absurdo_nao_gera_meta_absurda(): void
+    {
+        [, $student] = $this->cenario();
+
+        // "7" no lugar de "70" na hora de cadastrar não pode virar meta de 245 ml.
+        $student->update(['weight_kg' => 7]);
+        $this->assertSame(1500, HydrationLog::metaDiariaMl(7.0));
+
+        $student->update(['weight_kg' => 300]);
+        $this->assertSame(4500, HydrationLog::metaDiariaMl(300.0));
+    }
+
     // ─── a fronteira: quando a IA não pode responder ───
 
     public function test_aluno_com_condicao_de_saude_e_encaminhado_ao_nutricionista(): void

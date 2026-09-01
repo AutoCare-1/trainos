@@ -1678,7 +1678,8 @@ export default function PortalAlunoClient({ token }: { token: string }) {
       pre_treino: 'Pré-treino',
       pos_treino: 'Pós-treino',
     }
-    const META_ML = 2000
+    const metaMl = nutricao?.agua_meta_ml ?? 2000
+    const bateuMeta = (nutricao?.agua_ml ?? 0) >= metaMl
 
     return (
       <div className="flex min-h-screen flex-col">
@@ -1704,17 +1705,32 @@ export default function PortalAlunoClient({ token }: { token: string }) {
             <div className="mb-3 flex items-baseline justify-between">
               <h2 className="font-semibold text-ink">Água hoje</h2>
               <span className="text-sm text-ink-muted">
-                <span className="stat-number text-lg text-ink">{formatarLitros(nutricao?.agua_ml ?? 0)}</span>{' '}
-                de {formatarLitros(META_ML)}
+                <span className={`stat-number text-lg ${bateuMeta ? 'text-success' : 'text-ink'}`}>
+                  {formatarLitros(nutricao?.agua_ml ?? 0)}
+                </span>{' '}
+                de {formatarLitros(metaMl)}
               </span>
             </div>
 
-            <div className="mb-4 h-2.5 overflow-hidden rounded-full bg-ink/8">
+            <div className="mb-2 h-2.5 overflow-hidden rounded-full bg-ink/8">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-brand to-accent transition-all"
-                style={{ width: `${Math.min(100, ((nutricao?.agua_ml ?? 0) / META_ML) * 100)}%` }}
+                className={`h-full rounded-full transition-all ${
+                  bateuMeta ? 'bg-success' : 'bg-gradient-to-r from-brand to-accent'
+                }`}
+                style={{ width: `${Math.min(100, ((nutricao?.agua_ml ?? 0) / metaMl) * 100)}%` }}
               />
             </div>
+
+            {/* Dois avisos diferentes, e nenhum deles pode mentir: a meta é
+                referência (não teto), e ela só é "pro seu peso" quando o aluno
+                de fato foi pesado. Quem nunca foi vê de onde vem o número e o
+                que fazer pra ele virar o dele. */}
+            <p className="mb-4 text-xs text-ink-muted">
+              {bateuMeta && 'Meta do dia batida — pode continuar, o registro segue contando. '}
+              {nutricao?.agua_meta_do_peso
+                ? 'Essa meta é calculada pelo seu peso e muda sozinha a cada pesagem.'
+                : 'Essa é uma referência geral. Quando seu professor registrar seu peso, ela se ajusta a você.'}
+            </p>
 
             <div className="flex gap-2">
               <button

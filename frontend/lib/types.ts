@@ -723,6 +723,11 @@ export interface DiaNutricao {
   /** Em mililitros. "Copo" não é unidade (200 ml? 300?) — litro é o que o
    *  aluno compara com a referência que ele conhece ("2 litros por dia"). */
   agua_ml: number
+  /** Referência do dia, calculada pelo servidor a partir do peso do aluno. */
+  agua_meta_ml: number
+  /** Se a meta saiu do peso do aluno ou é o padrão genérico — a tela não pode
+   *  dizer "pro seu peso" a quem nunca foi pesado. */
+  agua_meta_do_peso: boolean
 }
 
 /** Recipientes que um toque registra. O volume de cada um mora no servidor. */
