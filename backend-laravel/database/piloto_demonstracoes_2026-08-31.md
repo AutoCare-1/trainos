@@ -494,3 +494,49 @@ antes de fechar os grupos que ainda não têm vídeo nenhum.
 120 vídeos, 480 créditos. **238 restantes = 59 vídeos.**
 Mobilidade: 42 de 43. Faltam 154 da leva.
 Acumulado: **92 OK, 19 médios, 9 graves.**
+
+# Lote 11 — 12 de prevenção, 48 créditos (190 restantes)
+
+**6 OK · 2 MÉDIO · 4 GRAVE — 50%. Pior lote desde o piloto.**
+
+| # | Exercício | Veredito |
+|---|---|---|
+| 201 | Prancha de Copenhague | **GRAVE** — prancha FRONTAL, não lateral |
+| 202 | Prancha de Copenhague com joelho apoiado | **GRAVE** — mesma coisa |
+| 203 | Ponte de glúteo com aperto de adutores | **OK** |
+| 204 | Deslizamento de isquiotibiais na toalha | **GRAVE** — texto "Hamstring slide Towel" queimado nos 5 frames |
+| 205 | Deslizamento de calcanhar bilateral na toalha | **GRAVE** — duplicação, duas cabeças |
+| 206 | Excêntrico de isquiotibiais na toalha com uma perna | **OK** |
+| 207 | Estabilização lombar em quatro apoios com elástico | **OK** — elástico vermelho visível |
+| 208 | Ativação de transverso do abdome deitado | **OK** |
+| 209 | Estabilização lombar em ponte com marcha | **OK** |
+| 210 | Estabilização de tronco em posição de urso com toque | **MÉDIO** — posição certa, toque no ombro não acontece |
+| 211 | Estabilização escapular em prancha na parede | **MÉDIO** — apoia as MÃOS, devia ser antebraços |
+| 212 | Retração e depressão escapular em decúbito ventral | **OK** |
+
+## Os quatro graves, e por que este lote caiu
+
+**Copenhague (2): a cena descreve prancha LATERAL e saiu prancha FRONTAL nos
+dois.** É montagem clássica, do tipo que a negação resolve — só que eu escrevi
+a cena descrevendo a posição certa ("lies ON HIS SIDE propped on the bottom
+forearm") sem NEGAR a errada. Exatamente o erro que o lote 8 documentou e que
+eu deixei passar aqui. Falta a frase: *this is never a normal front plank
+facing the floor; his chest never points down at the ground*.
+
+**Texto queimado na tela (1). Primeira vez em 132 vídeos.** O prompt termina
+com "no text on screen" e mesmo assim ele carimbou "Hamstring slide Towel"
+em todos os frames. Provável contaminação do nome do exercício em inglês
+dentro do prompt. Vale re-rolar, e se repetir, tirar a frase em inglês que
+parece legenda.
+
+**Duplicação (1): duas cabeças no deslizamento de calcanhar.** Mesmo modo de
+falha do figura 4 no lote 2, que a re-rolagem resolveu.
+
+Nenhum dos quatro é limite do gerador: dois são re-rolagem e dois são a
+negação que faltou. Custam 16 créditos pra corrigir.
+
+## Placar
+
+132 vídeos, 528 créditos. **190 restantes = 47 vídeos.**
+Prevenção: 12 de 30. Faltam 142 da leva.
+Acumulado: **98 OK, 21 médios, 13 graves.**

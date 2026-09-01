@@ -1058,6 +1058,10 @@ $varreduraPreventiva['Mobilidade de joelho em círculos controlados'] = 'He stan
 $varreduraPreventiva['Mobilidade de cotovelo com rotação controlada'] = 'He stands with one arm held straight out to the side at shoulder height, elbow locked, and slowly rotates the whole forearm so the palm turns fully UP at the ceiling and then fully DOWN at the floor. Only the forearm rotates: the shoulder and the elbow never move.';
 $varreduraPreventiva['Liberação de fáscia plantar na bolinha'] = 'He stands upright next to a rack, holding it with one hand, with a small firm massage ball under the ARCH of one bare foot. He rolls that foot slowly forward and back over the ball, from heel to toes, pressing down. The ball stays under the sole of the foot and never moves to the hand.';
 
+// Lote 11: a posição de urso precisa dizer que os joelhos FLUTUAM — sem isso
+// vira quatro apoios comum com toque no ombro, que já existe na biblioteca.
+$varreduraPreventiva['Estabilização de tronco em posição de urso com toque'] = 'He is on ALL FOURS with hands under shoulders and knees under hips, then lifts BOTH KNEES a few centimetres off the floor and holds them hovering there. Keeping the knees hovering and the hips completely level, he lifts one hand and taps the opposite shoulder, then swaps. His hips never rock from side to side and his knees never touch back down.';
+
 foreach ($varreduraPreventiva as $nome => $cenaDoExercicio) {
     // Não sobrescreve cena de prop já montada acima (rolo, bosu, argolas,
     // elástico): ali as duas precisam conviver.
