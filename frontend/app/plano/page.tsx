@@ -48,6 +48,11 @@ export default function PlanoPage() {
       const { checkout_url } = await api.post<{ checkout_url: string }>('/assinatura/checkout', {
         plano_chave: planoChave,
       })
+      // Falso positivo do react-hooks/immutability: window é global do navegador,
+      // não estado do React. Redirecionar pro checkout do Mercado Pago (domínio
+      // externo) exige navegação de página inteira; o router.push() do Next só
+      // sabe navegar dentro do próprio app.
+      // eslint-disable-next-line react-hooks/immutability
       window.location.href = checkout_url
     } catch (err) {
       setErro(err instanceof ApiError ? err.message : 'Não foi possível iniciar o checkout')
