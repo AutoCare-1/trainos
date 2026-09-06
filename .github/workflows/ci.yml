@@ -52,6 +52,18 @@ jobs:
           JWT_SECRET: ${{ env.CI_JWT_SECRET }}
         run: php artisan test --configuration=phpunit.ci.xml
 
+  docker-build:
+    name: Backend builda no Docker (mesma imagem do Railway)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build da imagem (sem publicar — só confirma que builda)
+        uses: docker/build-push-action@v6
+        with:
+          context: backend-laravel
+          push: false
+
   frontend:
     name: Frontend (lint, typecheck, build)
     runs-on: ubuntu-latest

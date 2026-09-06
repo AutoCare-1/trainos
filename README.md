@@ -67,6 +67,10 @@ npm run dev               # http://localhost:3101 (via .claude/launch.json)
 | Notificações push | Web Push via PWA (`laravel-notification-channels/webpush`), fila `database` |
 | Frontend | Next.js 16 (App Router) + Tailwind CSS |
 
+## Deploy
+
+Ver [DEPLOY.md](DEPLOY.md) — checklist de contas/serviços (Railway, Vercel, Cloudflare R2) pra colocar no ar.
+
 ## Estrutura
 
 ```

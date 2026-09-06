@@ -1,0 +1,16 @@
+# Não vai pra imagem: pesado, gerado no build, ou específico da sua máquina.
+vendor
+node_modules
+.env
+.env.*
+!.env.example
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+# Os vídeos ficam no R2 em produção — não fazem sentido dentro da imagem, e
+# subiriam 546 MB no build toda vez.
+public/uploads
+tests
+.git
+.github
