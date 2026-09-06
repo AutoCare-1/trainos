@@ -60,6 +60,7 @@ import {
   DiaNutricao,
   SugestaoNutricao,
   MomentoRefeicao,
+  MomentoSugestao,
   RecipienteAgua,
   Alimento,
 } from '@/lib/types'
@@ -112,6 +113,14 @@ interface PortalData {
   desafio: Challenge | null
   onboardingCompleted: boolean
   revisaoPendente: RevisaoPendente | null
+}
+
+const ROTULO_SUGESTAO: Record<MomentoSugestao, string> = {
+  pre_treino: 'Antes de treinar',
+  pos_treino: 'Depois de treinar',
+  cafe: 'Café da manhã',
+  almoco: 'Almoço',
+  jantar: 'Jantar',
 }
 
 /** Volume de cada recipiente, só pro palpite otimista da barra — o número
@@ -241,7 +250,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   const [resultadosAlimento, setResultadosAlimento] = useState<Alimento[]>([])
   const [buscandoAlimento, setBuscandoAlimento] = useState(false)
   const [salvandoRefeicao, setSalvandoRefeicao] = useState(false)
-  const [pedindoSugestao, setPedindoSugestao] = useState<'pre_treino' | 'pos_treino' | null>(null)
+  const [pedindoSugestao, setPedindoSugestao] = useState<MomentoSugestao | null>(null)
   const [erroNutricao, setErroNutricao] = useState<string | null>(null)
   // Dois inputs escondidos, mesmo padrão do check-in: um abre a câmera
   // (capture) e o outro a galeria. Um input de arquivo cru mostraria
@@ -348,7 +357,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
     }
   }
 
-  async function pedirSugestao(momento: 'pre_treino' | 'pos_treino') {
+  async function pedirSugestao(momento: MomentoSugestao) {
     setPedindoSugestao(momento)
     setErroNutricao(null)
     try {
@@ -1805,26 +1814,34 @@ export default function PortalAlunoClient({ token }: { token: string }) {
 
           {/* Orientação pré/pós-treino */}
           <div className="glass mb-4 rounded-2xl p-5">
-            <h2 className="mb-1 font-semibold text-ink">Dúvida de pré ou pós-treino?</h2>
+            <h2 className="mb-1 font-semibold text-ink">Dúvida sobre alimentação?</h2>
             <p className="mb-4 text-sm text-ink-muted">
-              Ideias gerais do que costuma cair bem em volta do treino. Não é plano alimentar — pra
-              isso quem faz é o nutricionista.
+              Ideias gerais do que costuma compor cada refeição. Não é plano alimentar nem dieta —
+              pra isso quem faz é o nutricionista.
             </p>
-            <div className="flex gap-2">
-              <button
-                onClick={() => pedirSugestao('pre_treino')}
-                disabled={pedindoSugestao !== null}
-                className="btn-secondary flex-1 rounded-xl px-4 py-2.5 text-sm disabled:opacity-50"
-              >
-                {pedindoSugestao === 'pre_treino' ? 'Pensando...' : 'Antes de treinar'}
-              </button>
-              <button
-                onClick={() => pedirSugestao('pos_treino')}
-                disabled={pedindoSugestao !== null}
-                className="btn-secondary flex-1 rounded-xl px-4 py-2.5 text-sm disabled:opacity-50"
-              >
-                {pedindoSugestao === 'pos_treino' ? 'Pensando...' : 'Depois de treinar'}
-              </button>
+            <div className="grid grid-cols-2 gap-2">
+              {(
+                [
+                  ['pre_treino', 'Antes de treinar'],
+                  ['pos_treino', 'Depois de treinar'],
+                  ['cafe', 'Café da manhã'],
+                  ['almoco', 'Almoço'],
+                  ['jantar', 'Jantar'],
+                ] as [MomentoSugestao, string][]
+              ).map(([valor, rotulo], i, todos) => (
+                <button
+                  key={valor}
+                  onClick={() => pedirSugestao(valor)}
+                  disabled={pedindoSugestao !== null}
+                  // O último de uma lista ímpar ocupa a linha inteira, pra não
+                  // sobrar um botão solto e torto no fim da grade.
+                  className={`btn-secondary rounded-xl px-3 py-2.5 text-sm disabled:opacity-50 ${
+                    i === todos.length - 1 && todos.length % 2 === 1 ? 'col-span-2' : ''
+                  }`}
+                >
+                  {pedindoSugestao === valor ? 'Pensando...' : rotulo}
+                </button>
+              ))}
             </div>
 
             {sugestoesNutricao.length > 0 && (
@@ -1837,7 +1854,7 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                     }`}
                   >
                     <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
-                      {s.momento === 'pre_treino' ? 'Antes de treinar' : 'Depois de treinar'}
+                      {ROTULO_SUGESTAO[s.momento]}
                     </p>
                     {s.resposta}
                   </div>

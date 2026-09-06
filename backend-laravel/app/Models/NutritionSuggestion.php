@@ -11,7 +11,15 @@ class NutritionSuggestion extends Model
 {
     use HasUuids;
 
-    public const MOMENTOS = ['pre_treino', 'pos_treino'];
+    /**
+     * Momentos sobre os quais o aluno pode pedir orientação.
+     *
+     * Pré/pós-treino nasceram primeiro por serem os mais ligados ao treino —
+     * território direto de quem acompanha. As refeições do dia entraram
+     * depois, e valem a mesma regra: orientação geral e educativa, nunca "seu
+     * café da manhã deve ser X". Ver App\Support\Nutricao.
+     */
+    public const MOMENTOS = ['pre_treino', 'pos_treino', 'cafe', 'almoco', 'jantar'];
 
     public $timestamps = false;
 

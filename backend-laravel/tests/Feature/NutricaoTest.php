@@ -354,6 +354,35 @@ class NutricaoTest extends TestCase
         ];
     }
 
+    #[\PHPUnit\Framework\Attributes\DataProvider('momentosDeSugestao')]
+    public function test_todo_momento_gera_prompt_com_as_travas(string $momento): void
+    {
+        [, $student] = $this->cenario();
+
+        // As refeições do dia entraram depois do pré/pós-treino e ficam mais
+        // perto da fronteira da prescrição — então a trava tem que valer
+        // igual pra todas, não só pras duas originais.
+        $metodo = new \ReflectionMethod(Nutricao::class, 'systemPrompt');
+        $prompt = mb_strtolower($metodo->invoke(null, $momento, $student));
+
+        foreach (['gramas', 'calorias', 'suplemento', 'cardápio', 'nutricionista'] as $obrigatorio) {
+            $this->assertStringContainsString($obrigatorio, $prompt);
+        }
+    }
+
+    public static function momentosDeSugestao(): array
+    {
+        return array_map(fn (string $m) => [$m], NutritionSuggestion::MOMENTOS);
+    }
+
+    public function test_momento_de_sugestao_invalido_e_rejeitado(): void
+    {
+        [, $student] = $this->cenario();
+
+        $this->postJson("/portal/{$student->invite_token}/nutricao/sugestoes", ['momento' => 'ceia'])
+            ->assertStatus(422);
+    }
+
     public function test_prompt_proibe_quantidade_caloria_e_suplemento(): void
     {
         [, $student] = $this->cenario();

@@ -734,9 +734,12 @@ export interface DiaNutricao {
 /** Recipientes que um toque registra. O volume de cada um mora no servidor. */
 export type RecipienteAgua = 'copo' | 'garrafa'
 
+/** Momentos sobre os quais o aluno pode pedir orientação geral. */
+export type MomentoSugestao = 'pre_treino' | 'pos_treino' | 'cafe' | 'almoco' | 'jantar'
+
 export interface SugestaoNutricao {
   id: string
-  momento: 'pre_treino' | 'pos_treino'
+  momento: MomentoSugestao
   resposta: string
   encaminhou_nutricionista: boolean
   created_at: string

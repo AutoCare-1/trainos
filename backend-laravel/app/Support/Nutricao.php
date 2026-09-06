@@ -107,11 +107,20 @@ class Nutricao
             .'Fala com seu professor que ele te encaminha. Enquanto isso, seu treino segue normal.';
     }
 
+    /** Como cada momento é descrito pro modelo, e como aparece pro aluno. */
+    private const DESCRICAO_DO_MOMENTO = [
+        'pre_treino' => 'ANTES do treino',
+        'pos_treino' => 'DEPOIS do treino',
+        'cafe' => 'no CAFÉ DA MANHÃ',
+        'almoco' => 'no ALMOÇO',
+        'jantar' => 'no JANTAR',
+    ];
+
     private static function systemPrompt(string $momento, Student $student): string
     {
         $primeiroNome = explode(' ', $student->name)[0];
         $objetivo = $student->objective ?: 'não informado';
-        $quando = $momento === 'pre_treino' ? 'ANTES do treino' : 'DEPOIS do treino';
+        $quando = self::DESCRICAO_DO_MOMENTO[$momento] ?? 'em volta do treino';
 
         return <<<PROMPT
         Você responde no app de um profissional de Educação Física, para o aluno {$primeiroNome},
@@ -133,6 +142,9 @@ class Nutricao
         - NÃO monte cardápio, plano alimentar, lista de refeições do dia nem rotina fechada.
         - NÃO dê orientação para emagrecer ou ganhar peso como objetivo — isso é dieta, e dieta é
           do nutricionista.
+        - NÃO diga o que ELE deve comer ("seu café da manhã deve ser..."). Fale do que COSTUMA
+          compor a refeição, de forma geral e educativa. A diferença entre as duas coisas é
+          exatamente a diferença entre orientar e prescrever.
         - NÃO oriente sobre nenhuma condição de saúde, doença, alergia ou restrição. Se o aluno
           mencionar qualquer uma, diga que isso é com o nutricionista e pare por aí.
 
@@ -149,6 +161,19 @@ class Nutricao
         PROMPT;
     }
 
+    /** A pergunta como o aluno faria, pra a resposta sair no mesmo tom. */
+    private static function perguntaDoAluno(string $momento): string
+    {
+        return match ($momento) {
+            'pre_treino' => 'O que dá pra comer antes de treinar?',
+            'pos_treino' => 'O que dá pra comer depois de treinar?',
+            'cafe' => 'O que costuma ter num café da manhã equilibrado?',
+            'almoco' => 'O que costuma ter num almoço equilibrado?',
+            'jantar' => 'O que costuma ter num jantar equilibrado?',
+            default => 'O que dá pra comer em volta do treino?',
+        };
+    }
+
     /**
      * @return array{resposta: string, encaminhou: bool}
      */
@@ -162,12 +187,7 @@ class Nutricao
             model: self::MODEL,
             maxTokens: 400,
             system: self::systemPrompt($momento, $student),
-            messages: [[
-                'role' => 'user',
-                'content' => $momento === 'pre_treino'
-                    ? 'O que dá pra comer antes de treinar?'
-                    : 'O que dá pra comer depois de treinar?',
-            ]],
+            messages: [['role' => 'user', 'content' => self::perguntaDoAluno($momento)]],
         );
 
         IaUsage::registrar('nutricao_sugestao', $response, $student->professional_id);
