@@ -714,6 +714,7 @@ export interface RefeicaoRegistrada {
   momento: MomentoRefeicao
   descricao: string | null
   tem_foto: boolean
+  alimentos: AlimentoDaRefeicao[]
   created_at: string
 }
 
@@ -745,4 +746,22 @@ export interface NutricaoDoAluno {
   refeicoes: RefeicaoRegistrada[]
   agua: { data: string; ml: number }[]
   sugestoes: SugestaoNutricao[]
+}
+
+/** Alimento da TACO (NEPA/UNICAMP). Valores por 100 g; null = não analisado. */
+export interface Alimento {
+  id: string
+  nome: string
+  categoria: string
+  kcal: number | null
+  proteina_g: number | null
+  carboidrato_g: number | null
+  lipideos_g: number | null
+}
+
+/** Alimento escolhido numa refeição. Quantidade é opcional de propósito. */
+export interface AlimentoDaRefeicao {
+  id?: string
+  nome: string
+  quantidade_g: number | null
 }

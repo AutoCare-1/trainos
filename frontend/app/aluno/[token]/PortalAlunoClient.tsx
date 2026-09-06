@@ -61,6 +61,7 @@ import {
   SugestaoNutricao,
   MomentoRefeicao,
   RecipienteAgua,
+  Alimento,
 } from '@/lib/types'
 import { agruparExercicios, rotuloEstrutura } from '@/lib/workoutStructures'
 
@@ -232,6 +233,13 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   const [momentoRefeicao, setMomentoRefeicao] = useState<MomentoRefeicao>('almoco')
   const [descricaoRefeicao, setDescricaoRefeicao] = useState('')
   const [fotoRefeicao, setFotoRefeicao] = useState<File | null>(null)
+  // Alimentos escolhidos da tabela (TACO). Ficam junto do texto livre e da
+  // foto — nem tudo que o aluno come está na tabela (marmita da mãe, prato de
+  // restaurante), então obrigar a encaixar faria ele parar de registrar.
+  const [alimentosEscolhidos, setAlimentosEscolhidos] = useState<Alimento[]>([])
+  const [buscaAlimento, setBuscaAlimento] = useState('')
+  const [resultadosAlimento, setResultadosAlimento] = useState<Alimento[]>([])
+  const [buscandoAlimento, setBuscandoAlimento] = useState(false)
   const [salvandoRefeicao, setSalvandoRefeicao] = useState(false)
   const [pedindoSugestao, setPedindoSugestao] = useState<'pre_treino' | 'pos_treino' | null>(null)
   const [erroNutricao, setErroNutricao] = useState<string | null>(null)
@@ -256,22 +264,56 @@ export default function PortalAlunoClient({ token }: { token: string }) {
       .catch(() => {})
   }, [token, marcarFalha])
 
+  // Busca com atraso: sem isso cada tecla vira uma requisição, e o aluno
+  // digitando "frango" dispara seis.
+  useEffect(() => {
+    const termo = buscaAlimento.trim()
+    // Resultado de termo curto nem chega a ser renderizado (a lista abaixo é
+    // condicionada ao mesmo tamanho), então não precisa limpar estado aqui —
+    // limpar de forma síncrona no effect dispararia render em cascata.
+    if (aba !== 'nutricao' || termo.length < 2) return
+
+    const id = setTimeout(() => {
+      setBuscandoAlimento(true)
+      api
+        .get<{ alimentos: Alimento[] }>(`/portal/${token}/nutricao/alimentos?busca=${encodeURIComponent(termo)}`)
+        .then((d) => setResultadosAlimento(d.alimentos))
+        .catch(() => setResultadosAlimento([]))
+        .finally(() => setBuscandoAlimento(false))
+    }, 300)
+
+    return () => clearTimeout(id)
+  }, [aba, buscaAlimento, token])
+
   async function registrarRefeicao() {
-    if (!fotoRefeicao && !descricaoRefeicao.trim()) {
-      setErroNutricao('Manda uma foto ou escreve o que você comeu.')
+    if (!fotoRefeicao && !descricaoRefeicao.trim() && alimentosEscolhidos.length === 0) {
+      setErroNutricao('Escolha um alimento, manda uma foto ou escreve o que você comeu.')
       return
     }
     setSalvandoRefeicao(true)
     setErroNutricao(null)
     try {
-      const form = new FormData()
-      form.append('momento', momentoRefeicao)
-      if (descricaoRefeicao.trim()) form.append('descricao', descricaoRefeicao.trim())
-      if (fotoRefeicao) form.append('foto', fotoRefeicao)
-      await api.postFile(`/portal/${token}/nutricao/refeicoes`, form)
+      if (fotoRefeicao) {
+        // Com foto tem que ser multipart. Os alimentos vão em chaves
+        // indexadas, que é como o Laravel remonta array de objeto.
+        const form = new FormData()
+        form.append('momento', momentoRefeicao)
+        if (descricaoRefeicao.trim()) form.append('descricao', descricaoRefeicao.trim())
+        form.append('foto', fotoRefeicao)
+        alimentosEscolhidos.forEach((a, i) => form.append(`alimentos[${i}][food_id]`, a.id))
+        await api.postFile(`/portal/${token}/nutricao/refeicoes`, form)
+      } else {
+        await api.post(`/portal/${token}/nutricao/refeicoes`, {
+          momento: momentoRefeicao,
+          descricao: descricaoRefeicao.trim() || undefined,
+          alimentos: alimentosEscolhidos.map((a) => ({ food_id: a.id })),
+        })
+      }
       setDescricaoRefeicao('')
       setFotoRefeicao(null)
-
+      setAlimentosEscolhidos([])
+      setBuscaAlimento('')
+      setResultadosAlimento([])
       carregarNutricao()
     } catch (err) {
       setErroNutricao(err instanceof ApiError ? err.message : 'Não consegui registrar agora.')
@@ -1825,11 +1867,66 @@ export default function PortalAlunoClient({ token }: { token: string }) {
               ))}
             </select>
 
+            {/* Escolher da tabela é o caminho principal: digitar é o que faz
+                o aluno abandonar o diário, e texto solto não dá pra comparar
+                entre dias. O campo livre continua logo abaixo pro que não
+                está na tabela. */}
+            <input
+              type="text"
+              value={buscaAlimento}
+              onChange={(e) => setBuscaAlimento(e.target.value)}
+              placeholder="Buscar alimento (ex: arroz, frango)"
+              className="mb-2 w-full rounded-xl border border-line px-3 py-2 text-sm"
+            />
+
+            {alimentosEscolhidos.length > 0 && (
+              <div className="mb-2 flex flex-wrap gap-1.5">
+                {alimentosEscolhidos.map((a) => (
+                  <button
+                    key={a.id}
+                    onClick={() => setAlimentosEscolhidos((atuais) => atuais.filter((x) => x.id !== a.id))}
+                    className="flex items-center gap-1 rounded-full bg-brand/10 px-2.5 py-1 text-xs text-brand"
+                  >
+                    {a.nome}
+                    <X size={12} aria-label="Tirar" />
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {buscaAlimento.trim().length >= 2 && (
+              <div className="mb-2 max-h-52 overflow-y-auto rounded-xl border border-line">
+                {buscandoAlimento && (
+                  <p className="px-3 py-2 text-xs text-ink-muted">Procurando...</p>
+                )}
+                {!buscandoAlimento && resultadosAlimento.length === 0 && (
+                  <p className="px-3 py-2 text-xs text-ink-muted">
+                    Não achei esse aqui. Escreve no campo de baixo que seu professor entende.
+                  </p>
+                )}
+                {resultadosAlimento
+                  .filter((a) => !alimentosEscolhidos.some((e) => e.id === a.id))
+                  .map((a) => (
+                    <button
+                      key={a.id}
+                      onClick={() => {
+                        setAlimentosEscolhidos((atuais) => [...atuais, a])
+                        setBuscaAlimento('')
+                      }}
+                      className="flex w-full items-center justify-between gap-2 border-b border-line-soft px-3 py-2 text-left last:border-b-0 hover:bg-ink/5"
+                    >
+                      <span className="min-w-0 flex-1 truncate text-sm text-ink-soft">{a.nome}</span>
+                      <Plus size={14} className="shrink-0 text-ink-muted" />
+                    </button>
+                  ))}
+              </div>
+            )}
+
             <input
               type="text"
               value={descricaoRefeicao}
               onChange={(e) => setDescricaoRefeicao(e.target.value)}
-              placeholder="Ex: arroz, feijão, frango e salada"
+              placeholder="Ou escreva (ex: marmita da minha mãe)"
               className="mb-2 w-full rounded-xl border border-line px-3 py-2 text-sm"
             />
 
@@ -1914,6 +2011,9 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                   <p className="text-xs font-semibold uppercase tracking-wide text-ink-muted">
                     {rotuloMomento[r.momento]}
                   </p>
+                  {r.alimentos.length > 0 && (
+                    <p className="text-sm text-ink-soft">{r.alimentos.map((a) => a.nome).join(', ')}</p>
+                  )}
                   {r.descricao && <p className="text-sm text-ink-soft">{r.descricao}</p>}
                 </div>
                 <button
