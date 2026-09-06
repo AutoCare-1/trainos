@@ -16,7 +16,7 @@ class MealLogItem extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['meal_log_id', 'food_id', 'quantidade_g'];
+    protected $fillable = ['meal_log_id', 'food_id', 'quantidade_g', 'medida_nome'];
 
     protected $casts = ['quantidade_g' => 'integer'];
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BodyMeasurement;
 use App\Models\Food;
+use App\Models\FoodMeasure;
 use App\Models\HydrationLog;
 use App\Models\MealLog;
 use App\Models\MealLogItem;
@@ -58,6 +59,58 @@ class PortalNutricaoController extends Controller
     }
 
     /**
+     * Gramas de um item, vindo da medida caseira quando o aluno escolheu uma.
+     *
+     * A conversão mora aqui e não no cliente porque quem sabe quanto pesa uma
+     * concha é o servidor — mandar o cliente calcular abriria espaço pra
+     * qualquer número entrar no registro.
+     *
+     * @param  array<string, mixed>  $item
+     */
+    private function gramasDoItem(array $item): ?int
+    {
+        if (! empty($item['medida_id'])) {
+            $medida = FoodMeasure::find($item['medida_id']);
+            if ($medida && $medida->food_id === $item['food_id']) {
+                return (int) round($medida->gramas * (float) ($item['medida_qtd'] ?? 1));
+            }
+        }
+
+        return $item['quantidade_g'] ?? null;
+    }
+
+    /** "2 conchas" pro aluno reler depois — a grama sozinha não diz nada a ele. */
+    private function rotuloDaMedida(array $item): ?string
+    {
+        if (empty($item['medida_id'])) {
+            return null;
+        }
+        $medida = FoodMeasure::find($item['medida_id']);
+        if (! $medida || $medida->food_id !== $item['food_id']) {
+            return null;
+        }
+        $qtd = (float) ($item['medida_qtd'] ?? 1);
+        $quantia = $qtd == (int) $qtd ? (string) (int) $qtd : str_replace('.', ',', (string) $qtd);
+
+        // Plural na primeira palavra: "2 conchas", "2 colheres de sopa" — o
+        // "de sopa" não vai pro plural junto. Meia porção fica no singular
+        // ("0,5 concha"), como se fala.
+        $nome = mb_strtolower($medida->nome);
+        if ($qtd > 1) {
+            $partes = explode(' ', $nome, 2);
+            $partes[0] = match (true) {
+                str_ends_with($partes[0], 'r') => $partes[0].'es',      // colher -> colheres
+                str_ends_with($partes[0], 'l') => mb_substr($partes[0], 0, -1).'is', // pastel -> pasteis
+                str_ends_with($partes[0], 's') => $partes[0],           // já plural
+                default => $partes[0].'s',
+            };
+            $nome = implode(' ', $partes);
+        }
+
+        return trim($quantia.' '.$nome);
+    }
+
+    /**
      * Formato de uma refeição pro cliente.
      *
      * file_path é caminho de disco e não sai daqui: o cliente só precisa saber
@@ -75,6 +128,7 @@ class PortalNutricaoController extends Controller
                 'nome' => $i->food->nome,
                 'categoria' => $i->food->categoria,
                 'quantidade_g' => $i->quantidade_g,
+                'medida' => $i->medida_nome,
             ])->values(),
         ];
     }
@@ -124,7 +178,15 @@ class PortalNutricaoController extends Controller
         }
 
         return response()->json([
-            'alimentos' => $query->limit(40)->get(['id', 'nome', 'categoria', 'kcal', 'proteina_g', 'carboidrato_g', 'lipideos_g']),
+            'alimentos' => $query->with('medidas:id,food_id,nome,gramas')
+                ->limit(40)
+                ->get(['id', 'nome', 'categoria', 'kcal', 'proteina_g', 'carboidrato_g', 'lipideos_g'])
+                ->map(fn (Food $f) => [
+                    ...$f->only(['id', 'nome', 'categoria', 'kcal', 'proteina_g', 'carboidrato_g', 'lipideos_g']),
+                    // Pode vir vazio: nem todo alimento tem medida caseira, e
+                    // a tela cai no campo de gramas nesses casos.
+                    'medidas' => $f->medidas->map(fn ($m) => $m->only(['id', 'nome', 'gramas']))->values(),
+                ]),
         ]);
     }
 
@@ -140,6 +202,10 @@ class PortalNutricaoController extends Controller
             'alimentos' => ['nullable', 'array', 'max:20'],
             'alimentos.*.food_id' => ['required', 'string', 'exists:foods,id'],
             'alimentos.*.quantidade_g' => ['nullable', 'integer', 'min:1', 'max:'.MealLogItem::MAX_QUANTIDADE_G],
+            // Medida caseira escolhida ("2 conchas"): o servidor converte pra
+            // grama, porque quem sabe quanto pesa cada medida é ele.
+            'alimentos.*.medida_id' => ['nullable', 'string', 'exists:food_measures,id'],
+            'alimentos.*.medida_qtd' => ['nullable', 'numeric', 'min:0.25', 'max:20'],
         ]);
 
         $descricao = trim($validated['descricao'] ?? '') ?: null;
@@ -172,7 +238,8 @@ class PortalNutricaoController extends Controller
             foreach ($alimentos as $item) {
                 $refeicao->itens()->create([
                     'food_id' => $item['food_id'],
-                    'quantidade_g' => $item['quantidade_g'] ?? null,
+                    'quantidade_g' => $this->gramasDoItem($item),
+                    'medida_nome' => $this->rotuloDaMedida($item),
                 ]);
             }
 

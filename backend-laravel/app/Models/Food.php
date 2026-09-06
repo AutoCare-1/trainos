@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Alimento da TACO (NEPA/UNICAMP). Valores por 100 g — ver a migration.
@@ -24,6 +25,12 @@ class Food extends Model
         'codigo_taco', 'categoria', 'nome',
         'kcal', 'proteina_g', 'carboidrato_g', 'lipideos_g', 'fibra_g',
     ];
+
+    /** Medidas caseiras conhecidas — pode ser vazio (ver FoodMeasure). */
+    public function medidas(): HasMany
+    {
+        return $this->hasMany(FoodMeasure::class);
+    }
 
     protected $casts = [
         'codigo_taco' => 'integer',

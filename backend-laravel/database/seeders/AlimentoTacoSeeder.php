@@ -44,5 +44,40 @@ class AlimentoTacoSeeder extends Seeder
                 ['categoria', 'nome', 'kcal', 'proteina_g', 'carboidrato_g', 'lipideos_g', 'fibra_g']
             );
         }
+
+        $this->semearMedidasCaseiras();
+    }
+
+    /**
+     * Medidas caseiras (IBGE/POF) dos alimentos que têm — ver
+     * database/medidas_caseiras.php. Roda depois dos alimentos porque depende
+     * do id deles.
+     */
+    private function semearMedidasCaseiras(): void
+    {
+        $porCodigo = Food::pluck('id', 'codigo_taco');
+        $existentes = DB::table('food_measures')->pluck('id', DB::raw("concat(food_id, '|', nome)"));
+        $agora = now();
+
+        $linhas = [];
+        foreach (require database_path('medidas_caseiras.php') as $codigo => $dados) {
+            $foodId = $porCodigo[$codigo] ?? null;
+            if (! $foodId) {
+                continue;
+            }
+            foreach ($dados['medidas'] as $medida) {
+                $linhas[] = [
+                    'id' => $existentes[$foodId.'|'.$medida['nome']] ?? (string) Str::uuid(),
+                    'food_id' => $foodId,
+                    'nome' => $medida['nome'],
+                    'gramas' => $medida['gramas'],
+                    'created_at' => $agora,
+                ];
+            }
+        }
+
+        foreach (array_chunk($linhas, 200) as $lote) {
+            DB::table('food_measures')->upsert($lote, ['food_id', 'nome'], ['gramas']);
+        }
     }
 }

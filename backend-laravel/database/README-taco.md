@@ -55,6 +55,38 @@ entrar proteína, por exemplo). Duas checagens pegam isso:
    Atwater específicos). Se a taxa de divergência subir muito além disso, é
    sinal de coluna trocada, não de particularidade do alimento.
 
+## Medidas caseiras (arquivo separado)
+
+`database/medidas_caseiras.php` liga cada alimento às suas medidas caseiras
+("1 concha = 140 g"). Fonte: **IBGE, POF 2008-2009 — Tabela de Medidas
+Referidas para os Alimentos Consumidos no Brasil**, baixada em
+`.../Tabela_de_Medidas_Referidas_para_os_Alimentos_Consumidos_no_Brasil/tabelamedidas_bd.zip`
+(planilha, não o PDF).
+
+Casar as duas tabelas **não é trivial** e foi onde quase entrou dado errado.
+TACO e IBGE usam taxonomias diferentes, e o pareamento automático ingênuo
+produz erro grosseiro:
+
+| Erro observado | Causa |
+| --- | --- |
+| Gema de ovo com 45 g (peso do ovo inteiro) | IBGE não distingue a parte |
+| Molho de tomate com a medida do tomate fruta | forma processada herdando a base |
+| Leite em pó com "caneca 300 g" do leite líquido | `pó` tem 2 letras e o filtro de tokens descartava |
+| Arroz casando com um "alimento" chamado *cozido* | linha malformada na fonte |
+
+Por isso o arquivo marca a origem de cada alimento:
+
+- **`curado`** — par conferido à mão, um por um. São os campeões do diário
+  brasileiro (arroz, feijão, ovo, frango, pão, banana...), e justamente os que
+  o pareamento automático errava, porque a TACO os nomeia com muito
+  qualificador ("Frango, peito, sem pele, grelhado") e o IBGE não.
+- **`automatico`** — casamento estrito: todo qualificador do nome na TACO
+  precisa existir também no nome do IBGE.
+
+A cobertura é baixa de propósito (87 de 597 alimentos). Alimento **sem** medida
+cai no campo de gramas, que já existe; alimento com medida **errada** vira
+decisão errada do personal, e isso não tem conserto na tela.
+
 ## Escopo
 
 Esta tabela existe para o aluno **registrar** o que comeu e para o personal

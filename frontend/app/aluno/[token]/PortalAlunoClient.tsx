@@ -115,6 +115,13 @@ interface PortalData {
   revisaoPendente: RevisaoPendente | null
 }
 
+/** Um alimento escolhido na tela, antes de virar registro. */
+interface EscolhaAlimento {
+  alimento: Alimento
+  medidaId: string | null
+  quantas: number
+}
+
 const ROTULO_SUGESTAO: Record<MomentoSugestao, string> = {
   pre_treino: 'Antes de treinar',
   pos_treino: 'Depois de treinar',
@@ -245,7 +252,9 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   // Alimentos escolhidos da tabela (TACO). Ficam junto do texto livre e da
   // foto — nem tudo que o aluno come está na tabela (marmita da mãe, prato de
   // restaurante), então obrigar a encaixar faria ele parar de registrar.
-  const [alimentosEscolhidos, setAlimentosEscolhidos] = useState<Alimento[]>([])
+  // Cada escolha guarda o alimento e, quando ele tem medida caseira, qual e
+  // quantas. A conversão pra grama é do servidor.
+  const [alimentosEscolhidos, setAlimentosEscolhidos] = useState<EscolhaAlimento[]>([])
   const [buscaAlimento, setBuscaAlimento] = useState('')
   const [resultadosAlimento, setResultadosAlimento] = useState<Alimento[]>([])
   const [buscandoAlimento, setBuscandoAlimento] = useState(false)
@@ -309,13 +318,23 @@ export default function PortalAlunoClient({ token }: { token: string }) {
         form.append('momento', momentoRefeicao)
         if (descricaoRefeicao.trim()) form.append('descricao', descricaoRefeicao.trim())
         form.append('foto', fotoRefeicao)
-        alimentosEscolhidos.forEach((a, i) => form.append(`alimentos[${i}][food_id]`, a.id))
+        alimentosEscolhidos.forEach((e, i) => {
+          form.append(`alimentos[${i}][food_id]`, e.alimento.id)
+          if (e.medidaId) {
+            form.append(`alimentos[${i}][medida_id]`, e.medidaId)
+            form.append(`alimentos[${i}][medida_qtd]`, String(e.quantas))
+          }
+        })
         await api.postFile(`/portal/${token}/nutricao/refeicoes`, form)
       } else {
         await api.post(`/portal/${token}/nutricao/refeicoes`, {
           momento: momentoRefeicao,
           descricao: descricaoRefeicao.trim() || undefined,
-          alimentos: alimentosEscolhidos.map((a) => ({ food_id: a.id })),
+          alimentos: alimentosEscolhidos.map((e) => ({
+            food_id: e.alimento.id,
+            medida_id: e.medidaId ?? undefined,
+            medida_qtd: e.medidaId ? e.quantas : undefined,
+          })),
         })
       }
       setDescricaoRefeicao('')
@@ -1897,16 +1916,65 @@ export default function PortalAlunoClient({ token }: { token: string }) {
             />
 
             {alimentosEscolhidos.length > 0 && (
-              <div className="mb-2 flex flex-wrap gap-1.5">
-                {alimentosEscolhidos.map((a) => (
-                  <button
-                    key={a.id}
-                    onClick={() => setAlimentosEscolhidos((atuais) => atuais.filter((x) => x.id !== a.id))}
-                    className="flex items-center gap-1 rounded-full bg-brand/10 px-2.5 py-1 text-xs text-brand"
-                  >
-                    {a.nome}
-                    <X size={12} aria-label="Tirar" />
-                  </button>
+              <div className="mb-2 space-y-1.5">
+                {alimentosEscolhidos.map((e) => (
+                  <div key={e.alimento.id} className="glass-flat rounded-xl p-2">
+                    <div className="flex items-start justify-between gap-2">
+                      <span className="min-w-0 flex-1 text-xs font-medium text-ink-soft">{e.alimento.nome}</span>
+                      <button
+                        onClick={() =>
+                          setAlimentosEscolhidos((atuais) => atuais.filter((x) => x.alimento.id !== e.alimento.id))
+                        }
+                        aria-label="Tirar"
+                        className="shrink-0 text-ink-muted transition hover:text-danger"
+                      >
+                        <X size={14} />
+                      </button>
+                    </div>
+
+                    {/* Quanto é opcional. Alimento sem medida caseira conhecida
+                        nem mostra os campos — melhor não perguntar do que
+                        perguntar em grama, que ninguém acerta no olho. */}
+                    {e.alimento.medidas.length > 0 && (
+                      <div className="mt-1.5 flex gap-1.5">
+                        <select
+                          value={e.quantas}
+                          onChange={(ev) =>
+                            setAlimentosEscolhidos((atuais) =>
+                              atuais.map((x) =>
+                                x.alimento.id === e.alimento.id ? { ...x, quantas: Number(ev.target.value) } : x
+                              )
+                            )
+                          }
+                          className="w-20 rounded-lg border border-line px-2 py-1 text-xs"
+                        >
+                          {[0.5, 1, 1.5, 2, 3, 4].map((n) => (
+                            <option key={n} value={n}>
+                              {String(n).replace('.', ',')}
+                            </option>
+                          ))}
+                        </select>
+                        <select
+                          value={e.medidaId ?? ''}
+                          onChange={(ev) =>
+                            setAlimentosEscolhidos((atuais) =>
+                              atuais.map((x) =>
+                                x.alimento.id === e.alimento.id ? { ...x, medidaId: ev.target.value || null } : x
+                              )
+                            )
+                          }
+                          className="min-w-0 flex-1 rounded-lg border border-line px-2 py-1 text-xs"
+                        >
+                          <option value="">Não sei a quantidade</option>
+                          {e.alimento.medidas.map((m) => (
+                            <option key={m.id} value={m.id}>
+                              {m.nome}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
+                  </div>
                 ))}
               </div>
             )}
@@ -1922,12 +1990,15 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                   </p>
                 )}
                 {resultadosAlimento
-                  .filter((a) => !alimentosEscolhidos.some((e) => e.id === a.id))
+                  .filter((a) => !alimentosEscolhidos.some((e) => e.alimento.id === a.id))
                   .map((a) => (
                     <button
                       key={a.id}
                       onClick={() => {
-                        setAlimentosEscolhidos((atuais) => [...atuais, a])
+                        setAlimentosEscolhidos((atuais) => [
+                          ...atuais,
+                          { alimento: a, medidaId: null, quantas: 1 },
+                        ])
                         setBuscaAlimento('')
                       }}
                       className="flex w-full items-center justify-between gap-2 border-b border-line-soft px-3 py-2 text-left last:border-b-0 hover:bg-ink/5"
@@ -2029,7 +2100,9 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                     {rotuloMomento[r.momento]}
                   </p>
                   {r.alimentos.length > 0 && (
-                    <p className="text-sm text-ink-soft">{r.alimentos.map((a) => a.nome).join(', ')}</p>
+                    <p className="text-sm text-ink-soft">
+                      {r.alimentos.map((a) => (a.medida ? `${a.medida} de ${a.nome}` : a.nome)).join(', ')}
+                    </p>
                   )}
                   {r.descricao && <p className="text-sm text-ink-soft">{r.descricao}</p>}
                 </div>

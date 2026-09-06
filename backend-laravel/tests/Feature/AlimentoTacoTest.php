@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Food;
+use App\Models\FoodMeasure;
 use App\Models\MealLog;
 use App\Models\MealLogItem;
 use App\Models\Professional;
@@ -211,6 +212,94 @@ class AlimentoTacoTest extends TestCase
 
         $this->assertSame(0, MealLog::count());
         $this->assertSame(0, MealLogItem::count());
+    }
+
+    // ─── medidas caseiras ───
+
+    public function test_alimentos_comuns_tem_medida_caseira(): void
+    {
+        $this->seed(AlimentoTacoSeeder::class);
+
+        // Os campeões do diário brasileiro foram pareados à mão justamente
+        // porque o pareamento automático errava neles. Se algum sumir numa
+        // reimportação, é aqui que aparece.
+        foreach (['Feijão, carioca, cozido', 'Arroz, tipo 1, cozido', 'Ovo, de galinha, inteiro, cozido/10minutos'] as $nome) {
+            $alimento = Food::where('nome', $nome)->with('medidas')->first();
+            $this->assertNotNull($alimento, "{$nome} sumiu da tabela");
+            $this->assertNotEmpty($alimento->medidas, "{$nome} ficou sem medida caseira");
+        }
+
+        // Conferido contra o IBGE: 1 concha de feijão = 140 g.
+        $concha = Food::where('nome', 'Feijão, carioca, cozido')->first()
+            ->medidas()->where('nome', 'Concha')->value('gramas');
+        $this->assertEqualsWithDelta(140, $concha, 0.01);
+    }
+
+    public function test_busca_devolve_as_medidas_junto(): void
+    {
+        $this->seed(AlimentoTacoSeeder::class);
+        [$student] = $this->cenario();
+
+        $resposta = $this->getJson("/portal/{$student->invite_token}/nutricao/alimentos?busca=feijão carioca cozido")
+            ->assertOk();
+
+        $medidas = collect($resposta->json('alimentos'))->firstWhere('nome', 'Feijão, carioca, cozido')['medidas'] ?? [];
+        $this->assertNotEmpty($medidas);
+    }
+
+    public function test_medida_caseira_vira_grama_no_servidor(): void
+    {
+        $this->seed(AlimentoTacoSeeder::class);
+        [$student] = $this->cenario();
+        $feijao = Food::where('nome', 'Feijão, carioca, cozido')->first();
+        $concha = $feijao->medidas()->where('nome', 'Concha')->first();
+
+        $this->postJson("/portal/{$student->invite_token}/nutricao/refeicoes", [
+            'momento' => 'almoco',
+            'alimentos' => [['food_id' => $feijao->id, 'medida_id' => $concha->id, 'medida_qtd' => 2]],
+        ])->assertCreated()
+            // 2 conchas = 280 g. Quem converte é o servidor: quem sabe quanto
+            // pesa uma concha é ele, não o cliente.
+            ->assertJsonPath('refeicao.alimentos.0.quantidade_g', 280)
+            // E o rótulo fica guardado, porque "280 g" não diz nada pro aluno.
+            ->assertJsonPath('refeicao.alimentos.0.medida', '2 conchas');
+    }
+
+    public function test_rotulo_da_medida_vai_pro_plural_certo(): void
+    {
+        $this->seed(AlimentoTacoSeeder::class);
+        [$student] = $this->cenario();
+        $feijao = Food::where('nome', 'Feijão, carioca, cozido')->first();
+        $colher = $feijao->medidas()->where('nome', 'Colher de sopa')->first();
+
+        $registrar = fn (float $qtd) => $this->postJson("/portal/{$student->invite_token}/nutricao/refeicoes", [
+            'momento' => 'almoco',
+            'alimentos' => [['food_id' => $feijao->id, 'medida_id' => $colher->id, 'medida_qtd' => $qtd]],
+        ])->assertCreated()->json('refeicao.alimentos.0.medida');
+
+        // Só a primeira palavra vai pro plural: "colheres de sopa", não
+        // "colheres de sopas".
+        $this->assertSame('3 colheres de sopa', $registrar(3));
+        $this->assertSame('1 colher de sopa', $registrar(1));
+        // Meia porção fica no singular, como se fala.
+        $this->assertSame('0,5 colher de sopa', $registrar(0.5));
+    }
+
+    public function test_medida_de_outro_alimento_e_ignorada(): void
+    {
+        $this->seed(AlimentoTacoSeeder::class);
+        [$student] = $this->cenario();
+        $feijao = Food::where('nome', 'Feijão, carioca, cozido')->first();
+        $medidaDeOutro = FoodMeasure::where('food_id', '!=', $feijao->id)->first();
+
+        // Mandar a concha do arroz junto com o feijão não pode virar grama do
+        // arroz — seria número inventado no registro do aluno.
+        $this->postJson("/portal/{$student->invite_token}/nutricao/refeicoes", [
+            'momento' => 'almoco',
+            'alimentos' => [['food_id' => $feijao->id, 'medida_id' => $medidaDeOutro->id, 'medida_qtd' => 1]],
+        ])->assertCreated()
+            ->assertJsonPath('refeicao.alimentos.0.quantidade_g', null)
+            ->assertJsonPath('refeicao.alimentos.0.medida', null);
     }
 
     public function test_personal_ve_os_alimentos_que_o_aluno_escolheu(): void
