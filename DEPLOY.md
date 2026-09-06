@@ -30,10 +30,25 @@ e no comando `exercicios:publicar-demonstracoes`).
    DB_USERNAME=${{MySQL.MYSQLUSER}}
    DB_PASSWORD=${{MySQL.MYSQLPASSWORD}}
    ```
-   (o resto das variáveis — `APP_KEY`, `ANTHROPIC_API_KEY`, JWT, Mercado
-   Pago, R2 — eu preencho com você numa chamada de tela ou você cola aqui no
-   chat os nomes das chaves sem o valor, que eu digo onde cada uma vai.)
-5. Deploy. Railway dá uma URL pública tipo `algo.up.railway.app` de graça —
+5. **`APP_KEY` e `JWT_SECRET`** — o app não sobe sem os dois (criptografia de
+   sessão e assinatura de login). Não são segredo de conta nenhuma, são só um
+   valor aleatório — gere na hora, em qualquer computador com PHP instalado
+   (não precisa ser o mesmo onde o repo foi clonado):
+   ```
+   php -r 'echo "base64:".base64_encode(random_bytes(32));'
+   php -r 'echo bin2hex(random_bytes(32));'
+   ```
+   O primeiro comando dá o valor de `APP_KEY` (já vem com o prefixo
+   `base64:`), o segundo dá o `JWT_SECRET`. Cola cada um na variável
+   correspondente. **Nunca reaproveita um valor gerado numa sessão de chat
+   antiga** — gera um novo aqui, na hora.
+6. O resto das variáveis (`ANTHROPIC_API_KEY`, R2, Mercado Pago, Strava) —
+   ver seções seguintes pra R2; as outras podem ficar como o placeholder que
+   já vem no `.env.example` por enquanto, o app não quebra por causa delas
+   (assinatura/Strava só falham se alguém usar aquela tela específica, e IA
+   sem chave real dá erro tratado, não derruba o app — ver `DEPLOY.md`
+   seção "Como o personal reporta").
+7. Deploy. Railway dá uma URL pública tipo `algo.up.railway.app` de graça —
    não precisa de domínio próprio pra esta etapa.
 
 ### 2. Cloudflare R2 — os vídeos
@@ -56,8 +71,8 @@ e no comando `exercicios:publicar-demonstracoes`).
 
 ## O que eu faço depois que essas 3 contas existirem
 
-- Preencho o resto das variáveis de ambiente do Railway (`APP_KEY` gerada,
-  chaves de IA, JWT, R2) — sem nunca ver os valores que forem segredo puro:
+- Confiro as variáveis de ambiente do Railway (R2, e a `ANTHROPIC_API_KEY`
+  quando ela existir) — sem nunca ver os valores que forem segredo puro:
   você cola no painel do Railway/Cloudflare/Vercel diretamente, eu só digo
   qual variável recebe o quê.
 - Rodo `php artisan exercicios:publicar-demonstracoes` apontando pro bucket
