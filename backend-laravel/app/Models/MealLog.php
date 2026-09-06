@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /** Registro de refeição do diário alimentar — ver a migration pra o porquê do desenho. */
 class MealLog extends Model
@@ -29,5 +30,11 @@ class MealLog extends Model
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
+    }
+
+    /** Alimentos escolhidos da tabela — ver MealLogItem. */
+    public function itens(): HasMany
+    {
+        return $this->hasMany(MealLogItem::class);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\HydrationLog;
 use App\Models\MealLog;
+use App\Models\MealLogItem;
 use App\Models\NutritionSuggestion;
 use App\Models\Student;
 use App\Support\Uploads;
@@ -40,7 +41,8 @@ class AlunoNutricaoController extends Controller
             ->whereDate('data', '>=', $desde)
             ->orderByDesc('data')
             ->orderBy('created_at')
-            ->get(['id', 'data', 'momento', 'descricao', 'created_at', 'file_path'])
+            ->with('itens.food:id,nome,categoria')
+            ->get()
             ->map(fn (MealLog $r) => [
                 ...$r->only(['id', 'momento', 'descricao', 'created_at']),
                 // toDateString explícito: only() devolve o Carbon cru, sem
@@ -48,6 +50,12 @@ class AlunoNutricaoController extends Controller
                 // como ISO completo e quebrava a formatação no frontend.
                 'data' => $r->data->toDateString(),
                 'tem_foto' => $r->file_path !== null,
+                // O que troca "arroz feijão frango" por dado comparável entre
+                // dias — é isso que deixa o personal enxergar padrão.
+                'alimentos' => $r->itens->map(fn (MealLogItem $i) => [
+                    'nome' => $i->food->nome,
+                    'quantidade_g' => $i->quantidade_g,
+                ])->values(),
             ]);
 
         $agua = HydrationLog::where('student_id', $student->id)

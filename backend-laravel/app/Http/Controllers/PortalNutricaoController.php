@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\BodyMeasurement;
+use App\Models\Food;
 use App\Models\HydrationLog;
 use App\Models\MealLog;
+use App\Models\MealLogItem;
 use App\Models\NutritionSuggestion;
 use App\Models\Student;
 use App\Support\ErrorReporting;
@@ -13,6 +15,7 @@ use App\Support\Nutricao;
 use App\Support\Uploads;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -34,15 +37,10 @@ class PortalNutricaoController extends Controller
 
         $refeicoes = MealLog::where('student_id', $student->id)
             ->whereDate('data', $data)
+            ->with('itens.food:id,nome,categoria')
             ->orderBy('created_at')
-            ->get(['id', 'momento', 'descricao', 'created_at', 'file_path'])
-            // file_path é caminho de disco e não sai daqui: o cliente só
-            // precisa saber SE existe foto, e busca a imagem pelo endpoint
-            // autenticado abaixo.
-            ->map(fn (MealLog $r) => [
-                ...$r->only(['id', 'momento', 'descricao', 'created_at']),
-                'tem_foto' => $r->file_path !== null,
-            ]);
+            ->get()
+            ->map(fn (MealLog $r) => $this->formatarRefeicao($r));
 
         $agua = HydrationLog::where('student_id', $student->id)->whereDate('data', $data)->value('ml') ?? 0;
 
@@ -57,6 +55,28 @@ class PortalNutricaoController extends Controller
             // não dizer "referência pro seu peso" a quem nunca foi pesado.
             'agua_meta_do_peso' => $this->pesoAtual($student) !== null,
         ]);
+    }
+
+    /**
+     * Formato de uma refeição pro cliente.
+     *
+     * file_path é caminho de disco e não sai daqui: o cliente só precisa saber
+     * SE existe foto, e busca a imagem pelo endpoint autenticado.
+     *
+     * @return array<string, mixed>
+     */
+    private function formatarRefeicao(MealLog $refeicao): array
+    {
+        return [
+            ...$refeicao->only(['id', 'momento', 'descricao', 'created_at']),
+            'tem_foto' => $refeicao->file_path !== null,
+            'alimentos' => $refeicao->itens->map(fn (MealLogItem $i) => [
+                'id' => $i->id,
+                'nome' => $i->food->nome,
+                'categoria' => $i->food->categoria,
+                'quantidade_g' => $i->quantidade_g,
+            ])->values(),
+        ];
     }
 
     /**
@@ -78,6 +98,36 @@ class PortalNutricaoController extends Controller
         return $peso ? (float) $peso : null;
     }
 
+    /**
+     * GET /:token/nutricao/alimentos?busca=fran — busca na tabela TACO.
+     *
+     * Sem o termo devolve os mais comuns por categoria, pra a tela ter o que
+     * mostrar antes de o aluno digitar qualquer coisa.
+     */
+    public function buscarAlimentos(Request $request): JsonResponse
+    {
+        $this->alunoDoPortal($request);
+
+        $busca = trim((string) $request->query('busca', ''));
+
+        $query = Food::query()->orderBy('nome');
+
+        if ($busca !== '') {
+            // Uma palavra por vez: quem digita "frango grelhado" espera achar
+            // "Frango, peito, grelhado", que não contém a frase inteira.
+            foreach (preg_split('/\s+/', $busca) as $termo) {
+                if ($termo === '') {
+                    continue;
+                }
+                $query->where('nome', 'like', '%'.$termo.'%');
+            }
+        }
+
+        return response()->json([
+            'alimentos' => $query->limit(40)->get(['id', 'nome', 'categoria', 'kcal', 'proteina_g', 'carboidrato_g', 'lipideos_g']),
+        ]);
+    }
+
     // POST /:token/nutricao/refeicoes — registra uma refeição (foto e/ou texto)
     public function registrarRefeicao(Request $request): JsonResponse
     {
@@ -87,13 +137,17 @@ class PortalNutricaoController extends Controller
             'momento' => ['required', 'string', Rule::in(MealLog::MOMENTOS)],
             'descricao' => ['nullable', 'string', 'max:500'],
             'foto' => ['nullable', 'image', 'max:8192'],
+            'alimentos' => ['nullable', 'array', 'max:20'],
+            'alimentos.*.food_id' => ['required', 'string', 'exists:foods,id'],
+            'alimentos.*.quantidade_g' => ['nullable', 'integer', 'min:1', 'max:'.MealLogItem::MAX_QUANTIDADE_G],
         ]);
 
         $descricao = trim($validated['descricao'] ?? '') ?: null;
-        // Registro sem foto E sem texto não diz nada a ninguém — nem pro aluno
-        // que vai reler depois, nem pro personal que acompanha.
-        if (! $request->hasFile('foto') && $descricao === null) {
-            return response()->json(['error' => 'Manda uma foto ou escreve o que você comeu.'], 422);
+        $alimentos = $validated['alimentos'] ?? [];
+        // Registro sem alimento, sem foto E sem texto não diz nada a ninguém —
+        // nem pro aluno que vai reler depois, nem pro personal que acompanha.
+        if ($alimentos === [] && ! $request->hasFile('foto') && $descricao === null) {
+            return response()->json(['error' => 'Escolha um alimento, manda uma foto ou escreve o que você comeu.'], 422);
         }
 
         $filePath = $request->hasFile('foto')
@@ -104,20 +158,28 @@ class PortalNutricaoController extends Controller
         // permitia preencher a semana inteira no domingo, de memória. Isso é
         // histórico inventado — e o personal olha esse histórico pra decidir
         // coisa, então dado inventado é pior que dado nenhum.
-        $refeicao = MealLog::create([
-            'student_id' => $student->id,
-            'data' => now()->toDateString(),
-            'momento' => $validated['momento'],
-            'file_path' => $filePath,
-            'descricao' => $descricao,
-        ])->refresh();
+        // Transação: refeição sem os alimentos que o aluno escolheu seria um
+        // registro pela metade, e ele não teria como perceber que faltou.
+        $refeicao = DB::transaction(function () use ($student, $validated, $filePath, $descricao, $alimentos) {
+            $refeicao = MealLog::create([
+                'student_id' => $student->id,
+                'data' => now()->toDateString(),
+                'momento' => $validated['momento'],
+                'file_path' => $filePath,
+                'descricao' => $descricao,
+            ]);
 
-        return response()->json([
-            'refeicao' => [
-                ...$refeicao->only(['id', 'momento', 'descricao', 'created_at']),
-                'tem_foto' => $filePath !== null,
-            ],
-        ], 201);
+            foreach ($alimentos as $item) {
+                $refeicao->itens()->create([
+                    'food_id' => $item['food_id'],
+                    'quantidade_g' => $item['quantidade_g'] ?? null,
+                ]);
+            }
+
+            return $refeicao->refresh();
+        });
+
+        return response()->json(['refeicao' => $this->formatarRefeicao($refeicao->load('itens.food'))], 201);
     }
 
     // GET /:token/nutricao/refeicoes/{id}/imagem — foto da refeição

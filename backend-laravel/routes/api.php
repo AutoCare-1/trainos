@@ -246,6 +246,7 @@ Route::prefix('portal')->middleware('aluno.token')->group(function () {
     Route::post('/{token}/sessoes/{sessionId}/concluir', [PortalController::class, 'concluirSessao']);
 
     Route::get('/{token}/nutricao', [PortalNutricaoController::class, 'index']);
+    Route::get('/{token}/nutricao/alimentos', [PortalNutricaoController::class, 'buscarAlimentos']);
     Route::post('/{token}/nutricao/refeicoes', [PortalNutricaoController::class, 'registrarRefeicao'])
         ->middleware('throttle:refeicao-portal');
     Route::get('/{token}/nutricao/refeicoes/{id}/imagem', [PortalNutricaoController::class, 'imagem']);
