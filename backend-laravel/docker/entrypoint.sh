@@ -11,6 +11,19 @@ set -e
 
 php artisan storage:link --force || true
 php artisan migrate --force
+
+# Os 3 seeders da biblioteca de exercícios e o mapeamento de vídeo são
+# seguros de rodar em TODO deploy: nenhum dos três sobrescreve o que já
+# existe (ExerciseSeeder faz updateOrCreate pelo nome — mesmo dado sempre;
+# os outros dois só inserem o que falta) e aplicar-demonstracoes ignora
+# quem já tem vídeo. Isso é o que faz "corrigir um vídeo" ou "adicionar um
+# exercício" virar realidade em produção sozinho, só com git push — sem
+# precisar de ninguém entrar no painel do Railway pra rodar comando à mão.
+php artisan db:seed --class="Database\\Seeders\\ExerciseSeeder" --force
+php artisan db:seed --class="Database\\Seeders\\ExercicioBibliotecaAmpliadaSeeder" --force
+php artisan db:seed --class="Database\\Seeders\\ExercicioBibliotecaComplementarSeeder" --force
+php artisan exercicios:aplicar-demonstracoes || true
+
 php artisan config:cache
 php artisan route:cache
 
