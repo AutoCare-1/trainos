@@ -50,7 +50,15 @@ jobs:
       - name: Rodar testes (PHPUnit contra o serviço MySQL acima)
         env:
           JWT_SECRET: ${{ env.CI_JWT_SECRET }}
-        run: php artisan test --configuration=phpunit.ci.xml
+        # `php artisan test` (o wrapper do Laravel) passou a devolver exit
+        # code 1 mesmo com a suíte inteira passando, depois que o
+        # laravel/framework foi de v12.64.0 pra v12.69.1 (01/09/2026,
+        # `composer update` do fix de plataforma do PHP). Confirmado local:
+        # vendor/bin/phpunit sempre acerta o código de saída nos dois
+        # sentidos (0 quando passa, 1 quando falha de verdade); o wrapper
+        # do artisan, não. Chamando o binário direto até isso ser
+        # investigado a fundo ou corrigido por uma versão nova do Laravel.
+        run: vendor/bin/phpunit --configuration=phpunit.ci.xml
 
   docker-build:
     name: Backend builda no Docker (mesma imagem do Railway)
