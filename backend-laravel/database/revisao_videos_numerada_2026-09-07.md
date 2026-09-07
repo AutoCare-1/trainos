@@ -107,8 +107,8 @@ em [[feedback_trainos_video_higgsfield]]. Resultado conferido por tira de frames
 | #135 | Elevação lateral unilateral na polia | MÉDIO (puxada alta) | melhorou — braço abre pro lado | instalado |
 | #119 | Desenvolvimento por trás da nuca | MÉDIO | leve melhora, ainda limítrofe | instalado |
 | #7 | Crucifixo declinado com halteres | MÉDIO (inclinado) | arco ok, declínio fraco | instalado (plano > inclinado) |
-| #37 | Supino declinado | MÉDIO (plano) | sem melhora | **original mantido** |
-| #39 | Supino declinado na máquina | MÉDIO (press horizontal) | marginal | **original mantido** |
+| #37 | Supino declinado | MÉDIO (plano) | **re-roll 2: banco em ladeira de verdade** | instalado |
+| #39 | Supino declinado na máquina | MÉDIO (press horizontal) | re-roll 2 ainda saiu horizontal | **original mantido** |
 
 7 instalados em `public/uploads/exercise-demos/`, originais em
 `_backup-2026-09-07/`. Os `.mp4` seguem fora do git — Carol/produção só recebem
@@ -203,3 +203,19 @@ alongamentos passivos — todos batem com o nome.
   `_backup-2026-09-07/`. Carol / produção só recebem via R2 (pendência antiga).
 - **13/14 exercícios sem vídeo** continuam sem — limite confirmado do gerador
   (ver piloto_demonstracoes_2026-08-31.md).
+
+## Re-roll 2 dos supinos declinados (07/09, 8 créditos)
+
+Prompt reescrito copiando a estrutura do `#40 Supino declinado no smith` (pés
+ancorados sob os apoios da ponta alta, "head LOWER than hips", banco em ladeira
+visível).
+
+- **#37 Supino declinado** — pegou: agora o banco desce em direção à cabeça, pés
+  presos em cima, é declinado de verdade. **Instalado** (original v1 em
+  `_backup-2026-09-07/supino-declinado__v1.mp4`).
+- **#39 Supino declinado na máquina** — não pegou nem no re-roll 2: continua um
+  chest press sentado horizontal. **Original mantido.** Provável limite: não
+  existe hardware de "máquina de supino declinado" com silhueta forte pro
+  gerador ancorar; conviver com o médio.
+
+Total de regeração da sessão: **14 vídeos, ~56 créditos**. 10 instalados.
