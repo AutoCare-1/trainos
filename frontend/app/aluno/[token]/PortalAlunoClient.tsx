@@ -258,6 +258,10 @@ export default function PortalAlunoClient({ token }: { token: string }) {
   const [buscaAlimento, setBuscaAlimento] = useState('')
   const [resultadosAlimento, setResultadosAlimento] = useState<Alimento[]>([])
   const [buscandoAlimento, setBuscandoAlimento] = useState(false)
+  // Separado da lista vazia de propósito: busca que falhou não é alimento que
+  // não existe, e dizer "não achei" quando o problema é a conexão manda o aluno
+  // procurar defeito no lugar errado.
+  const [buscaAlimentoFalhou, setBuscaAlimentoFalhou] = useState(false)
   const [salvandoRefeicao, setSalvandoRefeicao] = useState(false)
   const [pedindoSugestao, setPedindoSugestao] = useState<MomentoSugestao | null>(null)
   const [erroNutricao, setErroNutricao] = useState<string | null>(null)
@@ -295,8 +299,14 @@ export default function PortalAlunoClient({ token }: { token: string }) {
       setBuscandoAlimento(true)
       api
         .get<{ alimentos: Alimento[] }>(`/portal/${token}/nutricao/alimentos?busca=${encodeURIComponent(termo)}`)
-        .then((d) => setResultadosAlimento(d.alimentos))
-        .catch(() => setResultadosAlimento([]))
+        .then((d) => {
+          setResultadosAlimento(d.alimentos)
+          setBuscaAlimentoFalhou(false)
+        })
+        .catch(() => {
+          setResultadosAlimento([])
+          setBuscaAlimentoFalhou(true)
+        })
         .finally(() => setBuscandoAlimento(false))
     }, 300)
 
@@ -1984,7 +1994,13 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                 {buscandoAlimento && (
                   <p className="px-3 py-2 text-xs text-ink-muted">Procurando...</p>
                 )}
-                {!buscandoAlimento && resultadosAlimento.length === 0 && (
+                {!buscandoAlimento && buscaAlimentoFalhou && (
+                  <p className="px-3 py-2 text-xs text-ink-muted">
+                    Não consegui buscar agora. Confere sua internet e tenta de novo — ou escreve no
+                    campo de baixo, que seu professor entende.
+                  </p>
+                )}
+                {!buscandoAlimento && !buscaAlimentoFalhou && resultadosAlimento.length === 0 && (
                   <p className="px-3 py-2 text-xs text-ink-muted">
                     Não achei esse aqui. Escreve no campo de baixo que seu professor entende.
                   </p>

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 /**
  * Alimento da TACO (NEPA/UNICAMP). Valores por 100 g — ver a migration.
@@ -22,9 +23,21 @@ class Food extends Model
     protected $table = 'foods';
 
     protected $fillable = [
-        'codigo_taco', 'categoria', 'nome',
+        'codigo_taco', 'categoria', 'nome', 'nome_busca',
         'kcal', 'proteina_g', 'carboidrato_g', 'lipideos_g', 'fibra_g',
     ];
+
+    /**
+     * Como nome e termo de busca são comparados: sem acento, em minúscula.
+     *
+     * Mora aqui, e não no controller, porque quem grava (o seeder) e quem
+     * consulta (a busca) precisam normalizar do mesmo jeito — se as duas
+     * pontas divergirem, a busca simplesmente para de achar.
+     */
+    public static function normalizarParaBusca(string $texto): string
+    {
+        return Str::ascii(mb_strtolower(trim($texto)));
+    }
 
     /** Medidas caseiras conhecidas — pode ser vazio (ver FoodMeasure). */
     public function medidas(): HasMany

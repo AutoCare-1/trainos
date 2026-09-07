@@ -169,11 +169,17 @@ class PortalNutricaoController extends Controller
         if ($busca !== '') {
             // Uma palavra por vez: quem digita "frango grelhado" espera achar
             // "Frango, peito, grelhado", que não contém a frase inteira.
-            foreach (preg_split('/\s+/', $busca) as $termo) {
+            //
+            // A comparação é na coluna sem acento, não em `nome`: a TACO
+            // escreve "Macarrão" e no teclado do celular sai "macarrao". Antes
+            // isso dependia da collation do banco — funcionava no MySQL, não
+            // achava nada no SQLite —, e busca que falha faz o aluno concluir
+            // que o alimento não existe no app.
+            foreach (preg_split('/\s+/', Food::normalizarParaBusca($busca)) as $termo) {
                 if ($termo === '') {
                     continue;
                 }
-                $query->where('nome', 'like', '%'.$termo.'%');
+                $query->where('nome_busca', 'like', '%'.$termo.'%');
             }
         }
 

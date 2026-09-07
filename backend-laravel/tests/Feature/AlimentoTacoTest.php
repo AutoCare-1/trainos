@@ -110,6 +110,23 @@ class AlimentoTacoTest extends TestCase
         }
     }
 
+    public function test_busca_acha_com_e_sem_acento(): void
+    {
+        $this->seed(AlimentoTacoSeeder::class);
+        [$student] = $this->cenario();
+
+        // Metade do teclado brasileiro no celular sai sem acento, e a TACO
+        // escreve tudo com. Se "macarrao" não achasse "Macarrão", o aluno
+        // concluiria que o alimento não está no app.
+        foreach (['macarrão', 'macarrao', 'MACARRAO'] as $termo) {
+            $nomes = collect($this->getJson("/portal/{$student->invite_token}/nutricao/alimentos?busca={$termo}")
+                ->assertOk()->json('alimentos'))->pluck('nome');
+
+            $this->assertNotEmpty($nomes, "busca por '{$termo}' não achou nada");
+            $this->assertTrue($nomes->contains(fn (string $n) => str_starts_with($n, 'Macarrão')), $termo);
+        }
+    }
+
     public function test_busca_sem_termo_devolve_alimentos(): void
     {
         $this->seed(AlimentoTacoSeeder::class);

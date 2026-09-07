@@ -29,6 +29,7 @@ class AlimentoTacoSeeder extends Seeder
             'codigo_taco' => $a['codigo'],
             'categoria' => $a['categoria'],
             'nome' => $a['nome'],
+            'nome_busca' => Food::normalizarParaBusca($a['nome']),
             'kcal' => $a['kcal'],
             'proteina_g' => $a['proteina_g'],
             'carboidrato_g' => $a['carboidrato_g'],
@@ -41,7 +42,7 @@ class AlimentoTacoSeeder extends Seeder
             DB::table('foods')->upsert(
                 $lote,
                 ['codigo_taco'],
-                ['categoria', 'nome', 'kcal', 'proteina_g', 'carboidrato_g', 'lipideos_g', 'fibra_g']
+                ['categoria', 'nome', 'nome_busca', 'kcal', 'proteina_g', 'carboidrato_g', 'lipideos_g', 'fibra_g']
             );
         }
 
