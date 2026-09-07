@@ -17,10 +17,10 @@ regeração em `RETOMAR_demonstracoes.md` / memória `feedback_trainos_video_hig
 |---|---|:--:|---|
 | Ombros | #113–153 | ✅ | 1 grave, 3 médios |
 | Peito | #1–52 | ✅ | 0 grave, 4 médios (todos "declinado" saindo plano/inclinado) |
-| Costas | #53–104 | — | |
+| Costas | #53–104 | ✅ | 1 grave (#70), resto OK |
 | Bíceps | #154–180 | — | |
 | Tríceps | #181–213 | — | |
-| (demais 13 grupos) | | — | |
+| (demais 12 grupos) | | — | |
 
 ## Ombros
 
@@ -58,3 +58,16 @@ prompt dos outros.
 
 Sem vídeo (não são erro, são limite do gerador já documentado): #11 Crucifixo
 na polia deitado no banco, #28 Paralelas nas argolas.
+
+## Costas
+
+**GRAVE**
+- **#70 Pull-up negativa** — o vídeo é um **desenvolvimento / push press com barra
+  em pé** (barra do ombro pra cima da cabeça). Pull-up negativa é a descida lenta
+  da barra fixa. Exatamente o tipo de erro que o personal descreveu ("virou
+  desenvolvimento e não era pra ser").
+
+Resto do grupo **OK**: todas as barras fixas (#53–58), puxadas (#71–82),
+remadas (#83–103), terras (#66–69), face pulls (#62–64), Superman (#104). A
+`#99 Remada nas argolas com pés elevados` — que foi GRAVE no piloto de 31/08
+("em pé puxando") — aqui está com o corpo na horizontal, corrigida.
