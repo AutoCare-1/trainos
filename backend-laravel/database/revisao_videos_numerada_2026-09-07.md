@@ -26,7 +26,9 @@ regeração em `RETOMAR_demonstracoes.md` / memória `feedback_trainos_video_hig
 | Glúteos | #301–333 | ✅ | 0 — grupo limpo |
 | Panturrilha | #334–348 | ✅ | 0 — grupo limpo |
 | Pernas | #223–274 | ✅ | 0 grave; 2 médios (#249, #250) — não regerados |
-| (demais 6 grupos) | | — | |
+| Core | #349–395 | ✅ | 0 — grupo limpo |
+| Funcional | #396–437 | ✅ | 0 grave; 2 médios (#406, #416) — regerando |
+| (demais 4 grupos) | | — | |
 
 ## Ombros
 
@@ -129,3 +131,15 @@ Dois médios, nenhum é exercício trocado, **não regerados** (baixa chance):
   agosto (`RETOMAR_demonstracoes.md`).
 - **#250 Agachamento sumô com halter** — o peso parece barra e não halter; a
   base ampla e o movimento estão certos.
+
+## Core e Funcional
+
+**Core (47): limpo.** Pranchas (todas as variações), abdominais, L-sit, dragon
+flag, hollow, ab wheel, pallof, woodchop, russian twist — todos batem.
+
+**Funcional (42, 40 com vídeo): 2 médios, regerando.**
+- **#406 Caminhada inclinada na esteira** — saía correndo, e a esteira não
+  parecia inclinada. Ganhou `cena` em inglês negando a corrida.
+- **#416 Deslocamento lateral (skater)** — saía correndo pra frente em vez de
+  saltar de lado. Ganhou `cena` descrevendo o salto lateral de patinador.
+Sem vídeo (não são erro): #399 Back lever progressivo, #423 Muscle-up nas argolas.

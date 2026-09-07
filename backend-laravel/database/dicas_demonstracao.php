@@ -1226,6 +1226,15 @@ $revisaoNumerada = [
 
     // #135 Ombros: a mão subia perto do rosto, parecia puxada alta.
     'Elevação lateral unilateral na polia' => ['cena' => 'He stands SIDEWAYS to a cable tower, torso fully vertical and upright, his free hand holding the tower or resting on his hip, the working hand holding a single D-handle down by the hip furthest from the tower. The cable comes from a pulley at FLOOR level and crosses low in front of his body. Keeping the elbow almost straight, he raises that working arm OUT TO THE SIDE, away from the tower, until it is horizontal at shoulder height, then lowers it back down. The hand travels sideways and stops at shoulder height: it never rises toward his face or the side of his head, and it is never pulled up to the chin. '.$caboUnico],
+
+    // #406 Funcional: saía correndo, não caminhando; esteira não parecia inclinada.
+    'Caminhada inclinada na esteira' => [
+        'execucao' => 'Caminhando na esteira com a plataforma bem inclinada, passos firmes e tronco ereto, sem se apoiar no corrimão.',
+        'cena' => 'The treadmill deck is tilted up at a steep uphill angle, clearly visible from the side. He WALKS up it at a brisk pace: one foot is always in contact with the belt and he is never airborne, never with both feet off the ground at once. This is a fast uphill walk, never a run or a jog, and he never holds the side rails.',
+    ],
+
+    // #416 Funcional: saía correndo pra frente, não pulando de lado.
+    'Deslocamento lateral (skater)' => ['cena' => 'He bounds SIDEWAYS across the frame: he pushes off explosively from one leg and jumps laterally, landing on the opposite foot far out to the side, letting the free leg swing behind him, like a speed skater. He moves left and right, side to side, and never travels forward toward the camera. It is never running, jogging or high knees.'],
 ];
 
 return array_replace($base, $maquinas, $outras, $complementar, $revisaoNumerada);
