@@ -1215,8 +1215,15 @@ $revisaoNumerada = [
     // #70 Costas: o vídeo saiu como desenvolvimento com barra em pé.
     'Pull-up negativa' => ['cena' => 'He hangs at full height from a fixed horizontal pull-up bar mounted above him, both hands gripping the bar overhead with palms facing away, and his feet stay off the floor the entire time. He STARTS at the top with his chin already above the bar, then lowers his whole body straight down as slowly as possible under control until his arms are completely straight and he hangs at full stretch, then the clip repeats from the top. There is never a barbell, he is never standing on the ground, and nothing is ever pushed upward above his head: the only movement is his body sinking slowly down from a fixed overhead bar.'],
 
+    // #37 e #39 Peito: re-roll 2 (07/09). A rodada 1 não mexeu o ponteiro —
+    // o banco saía plano e a máquina saía como chest press horizontal. Agora
+    // copiando a estrutura do #40 'Supino declinado no smith', que é o único
+    // "declinado" que saiu certo: ancorar os pés sob os apoios da ponta alta
+    // e afirmar "head LOWER than hips" com o banco visivelmente em ladeira.
+    'Supino declinado' => ['cena' => 'He lies on a steep DECLINE bench: his head is clearly LOWER than his hips, his knees are bent over the roller pads at the high end, and his feet are hooked under those pads to anchor him. The whole bench visibly slopes downhill toward his head. He is never lying flat, never on an incline bench, and never sitting upright. From this head-down position he presses the loaded barbell straight up above his lower chest and lowers it back to the lower chest.'],
+
     // #39 Peito: saiu como chest press sentado horizontal, sem nada de declínio.
-    'Supino declinado na máquina' => ['cena' => 'He sits leaning back in a chest press machine whose seat is set LOW so the handles sit up near the top of his chest. He presses both handles forward and clearly DOWNWARD, away from his lower chest, until his arms are almost straight, then lets them come back. The press path angles downward toward the lower chest — it is never level and never angled up. '.$placaSobe],
+    'Supino declinado na máquina' => ['cena' => 'He sits in a chest press machine with the SEAT dropped to its lowest position, so the two handles sit up high, level with the top of his chest and his collarbones. From there he presses both handles forward AND downward together, finishing with his hands lower than where they started, driving toward the lower chest, then lets them travel back up and in. The press path clearly slopes downhill — it is never a level horizontal press and never angled up. '.$placaSobe],
 
     // #119 Ombros: não dava pra ver a barra passar atrás da cabeça.
     'Desenvolvimento por trás da nuca' => ['cena' => 'He sits upright on a bench holding a barbell with a wide overhand grip. The bar travels BEHIND his head the whole time: he lowers it down behind his neck until it is level with his ears, passing close behind the back of his head, then presses it straight back up to arms\' length overhead. The bar stays behind the plane of his face for the entire movement and never comes down in front of his chin or chest.'],
