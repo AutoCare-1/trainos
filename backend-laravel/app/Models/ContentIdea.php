@@ -11,10 +11,11 @@ class ContentIdea extends Model
     use HasUuids;
 
     public $timestamps = false;
+
     protected $table = 'content_ideas';
 
     protected $fillable = [
-        'professional_id', 'batch_id', 'format', 'title', 'description', 'caption_suggestion', 'saved',
+        'professional_id', 'batch_id', 'objetivo', 'format', 'title', 'description', 'caption_suggestion', 'saved',
     ];
 
     protected $casts = [

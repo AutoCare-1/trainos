@@ -47,12 +47,18 @@ class ContentController extends Controller
             ], 429);
         }
 
-        $request->validate(['direcionamento' => ['nullable', 'string', 'max:2000']]);
+        $request->validate([
+            'direcionamento' => ['nullable', 'string', 'max:2000'],
+            // Qual botão o personal apertou: conteúdo de engajamento (padrão) ou
+            // post de captação. Só muda o system prompt lá dentro.
+            'objetivo' => ['nullable', 'string', 'in:'.ConteudoIdeias::OBJETIVO_ENGAJAR.','.ConteudoIdeias::OBJETIVO_ATRAIR_ALUNOS],
+        ]);
         $direcionamento = trim((string) $request->input('direcionamento')) ?: null;
+        $objetivo = $request->input('objetivo') ?: ConteudoIdeias::OBJETIVO_ENGAJAR;
 
         try {
             $resumoAgregado = ConteudoAgregados::montarResumoAgregadoAlunos($professionalId);
-            $ideias = ConteudoIdeias::gerarIdeiasConteudo($resumoAgregado, $direcionamento);
+            $ideias = ConteudoIdeias::gerarIdeiasConteudo($resumoAgregado, $direcionamento, $objetivo);
         } catch (\Throwable $e) {
             ErrorReporting::capturarFalhaIa('ideias_conteudo', $e, ['professional_id' => $professionalId]);
 
@@ -63,6 +69,7 @@ class ContentController extends Controller
         $inseridas = collect($ideias)->map(fn ($ideia) => ContentIdea::create([
             'professional_id' => $professionalId,
             'batch_id' => $batchId,
+            'objetivo' => $objetivo,
             'format' => $ideia['format'],
             'title' => $ideia['title'],
             'description' => $ideia['description'],

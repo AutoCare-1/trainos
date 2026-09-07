@@ -6,35 +6,34 @@ use Anthropic\Client;
 use App\Models\TrendCache;
 use RuntimeException;
 
-/** Espelha backend/src/services/conteudoIdeias.ts do Node. */
 class ConteudoIdeias
 {
     private const MODEL = 'claude-haiku-4-5-20251001';
 
     private const CACHE_VALIDADE_HORAS = 24;
 
-    private const SYSTEM_GERAR_IDEIAS = <<<'PROMPT'
-Você é um assistente de marketing de conteúdo pra Instagram de um personal trainer.
+    // Objetivos aceitos (o mesmo enum que o ContentController valida e a tela
+    // manda pelos dois botões).
+    public const OBJETIVO_ENGAJAR = 'engajar';
 
-Sua tarefa é gerar ideias de conteúdo (post, story ou reels) que FUNDEM duas coisas:
-1. Uma tendência de FORMATO em alta (tipo de edição, gancho, áudio, estilo de reels) — é a
-   "embalagem" da ideia.
-2. Um dado real e agregado da base de alunos desse personal — é o "conteúdo" que preenche
-   essa embalagem.
+    public const OBJETIVO_ATRAIR_ALUNOS = 'atrair_alunos';
 
-Regras importantes:
-- NUNCA gere duas listas separadas. Cada ideia já deve vir pronta mostrando a fusão: como
-  aplicar aquele formato em alta usando aquele dado real da base de alunos.
-- NUNCA cite nome, foto, ou qualquer detalhe que identifique um aluno específico — os dados
-  que você recebe já são agregados e anônimos, use-os só como número/padrão (ex: "3 alunos
-  bateram recorde essa semana", sem inventar quem).
-- Se o personal der um direcionamento (assunto específico), priorize esse tema nas ideias,
-  mas ainda assim funda com o formato em alta e o dado agregado.
+    // Trecho comum aos dois prompts: formato da resposta e regras que não mudam
+    // com o objetivo (anonimato, sem emoji, JSON puro).
+    private const REGRAS_COMUNS = <<<'PROMPT'
+Regras que valem sempre:
+- NUNCA gere duas listas separadas. Cada ideia já vem pronta, mostrando a fusão do formato
+  em alta com o dado real da base de alunos.
+- NUNCA cite nome, foto ou qualquer detalhe que identifique um aluno específico — os dados
+  são agregados e anônimos, use só como número/padrão (ex: "3 alunos bateram recorde essa
+  semana", sem inventar quem).
+- Se o personal der um direcionamento (assunto específico), priorize esse tema, mas ainda
+  fundindo com o formato em alta e o dado agregado.
 - Gere entre 3 e 5 ideias, variando os formatos (post, story, reels) quando fizer sentido.
-- Tom: direto, prático, como alguém que entende de marketing fitness — nada de textão.
-- NÃO usar emojis em nenhum campo, nem na legenda sugerida — só texto.
+- Tom: direto e prático, como quem entende de marketing fitness — nada de textão.
+- NÃO usar emojis em nenhum campo, nem na legenda — só texto.
 
-Responda SOMENTE com um array JSON válido, sem markdown, sem texto antes ou depois, no formato:
+Responda SOMENTE com um array JSON válido, sem markdown, sem texto antes ou depois:
 [{"format": "reels", "title": "...", "description": "...", "caption_suggestion": "..."}]
 
 - "format": um de "post", "story", "reels".
@@ -42,6 +41,60 @@ Responda SOMENTE com um array JSON válido, sem markdown, sem texto antes ou dep
 - "description": como executar (2 a 4 frases, prático, já citando a fusão formato+dado).
 - "caption_suggestion": uma legenda pronta pra usar, curta, sem hashtags genéricas demais.
 PROMPT;
+
+    // Modo "engajar" — o comportamento que a ferramenta sempre teve: conteúdo
+    // pra quem JÁ segue o personal (aluno atual, seguidor), mantendo ele na
+    // cabeça de quem já está por perto.
+    private const SYSTEM_ENGAJAR = <<<'PROMPT'
+Você é um assistente de marketing de conteúdo pra Instagram de um personal trainer.
+
+Sua tarefa é gerar ideias de conteúdo (post, story ou reels) que FUNDEM duas coisas:
+1. Uma tendência de FORMATO em alta (tipo de edição, gancho, áudio, estilo de reels) — a
+   "embalagem" da ideia.
+2. Um dado real e agregado da base de alunos desse personal — o "conteúdo" que preenche
+   essa embalagem.
+
+O público-alvo é quem JÁ acompanha o personal: alunos atuais e seguidores. O objetivo é
+manter esse público engajado e lembrando do trabalho dele — bastidor de treino, evolução
+da turma, dica rápida, prova de que o método funciona.
+PROMPT;
+
+    // Modo "atrair_alunos" — conteúdo de CAPTAÇÃO: fala com quem ainda NÃO é
+    // aluno e move essa pessoa pra um primeiro contato.
+    private const SYSTEM_ATRAIR_ALUNOS = <<<'PROMPT'
+Você é um assistente de marketing de captação pra Instagram de um personal trainer.
+
+Sua tarefa é gerar ideias de conteúdo (post, story ou reels) pensadas pra ATRAIR ALUNO NOVO
+— falar com quem ainda NÃO treina com esse personal (seguidor frio, indicação, quem caiu no
+perfil) e levar essa pessoa a dar o primeiro passo.
+
+Cada ideia FUNDE duas coisas:
+1. Uma tendência de FORMATO em alta (tipo de edição, gancho, áudio, estilo de reels) — a
+   "embalagem".
+2. O dado real e agregado da base de alunos — usado como PROVA SOCIAL ("meus alunos em
+   média...", "X pessoas bateram a meta esse mês"), não como o assunto em si.
+
+Cada ideia deve mirar uma dor ou objeção comum de quem pensa em contratar personal e não
+contrata: falta de tempo, falta de constância sozinho, "acho caro", "será que funciona pra
+mim", vergonha de começar, já tentou por conta e desistiu.
+
+A "caption_suggestion" SEMPRE termina com uma chamada pra ação clara e de baixo atrito:
+chamar no direct, comentar uma palavra, agendar uma aula experimental, link na bio. Sem
+pressão agressiva — um convite.
+PROMPT;
+
+    /**
+     * O system prompt do objetivo pedido. Público (função pura) pra dar pra
+     * testar que os dois modos geram instruções diferentes sem chamar a IA.
+     */
+    public static function sistemaPara(string $objetivo): string
+    {
+        $base = $objetivo === self::OBJETIVO_ATRAIR_ALUNOS
+            ? self::SYSTEM_ATRAIR_ALUNOS
+            : self::SYSTEM_ENGAJAR;
+
+        return $base."\n\n".self::REGRAS_COMUNS;
+    }
 
     private static ?Client $client = null;
 
@@ -155,7 +208,7 @@ PROMPT;
      *
      * @return array<int, array{format: string, title: string, description: string, caption_suggestion: string}>
      */
-    public static function gerarIdeiasConteudo(string $resumoAgregado, ?string $direcionamento): array
+    public static function gerarIdeiasConteudo(string $resumoAgregado, ?string $direcionamento, string $objetivo = self::OBJETIVO_ENGAJAR): array
     {
         $tendencias = self::obterTendenciasFormato();
 
@@ -168,7 +221,7 @@ PROMPT;
         $response = self::client()->messages->create(
             model: self::MODEL,
             maxTokens: 1200,
-            system: self::SYSTEM_GERAR_IDEIAS,
+            system: self::sistemaPara($objetivo),
             messages: [['role' => 'user', 'content' => $mensagemUsuario]],
         );
 

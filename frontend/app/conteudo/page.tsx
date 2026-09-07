@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Bookmark } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import { api, ApiError } from '@/lib/api'
-import { ContentFormat, ContentIdea } from '@/lib/types'
+import { ContentFormat, ContentIdea, ContentObjetivo } from '@/lib/types'
 
 const FORMATO_LABEL: Record<ContentFormat, string> = {
   post: 'Post',
@@ -19,6 +19,11 @@ const FORMATO_ESTILO: Record<ContentFormat, string> = {
   reels: 'bg-success/10 text-success',
 }
 
+const OBJETIVO_LABEL: Record<ContentObjetivo, string> = {
+  engajar: 'Conteúdo',
+  atrair_alunos: 'Atrair aluno',
+}
+
 function BookmarkIcon({ preenchido }: { preenchido: boolean }) {
   return <Bookmark size={16} fill={preenchido ? 'currentColor' : 'none'} />
 }
@@ -27,7 +32,7 @@ export default function ConteudoPage() {
   const router = useRouter()
   const [ideias, setIdeias] = useState<ContentIdea[] | null>(null)
   const [erro, setErro] = useState<string | null>(null)
-  const [gerando, setGerando] = useState(false)
+  const [gerando, setGerando] = useState<ContentObjetivo | null>(null)
   const [direcionamento, setDirecionamento] = useState('')
   const [filtroFormato, setFiltroFormato] = useState<'todos' | ContentFormat>('todos')
 
@@ -42,19 +47,21 @@ export default function ConteudoPage() {
       .catch((err) => setErro(err instanceof ApiError ? err.message : 'Erro ao carregar ideias'))
   }, [router])
 
-  async function gerarIdeias() {
-    setGerando(true)
+  async function gerarIdeias(objetivo: ContentObjetivo) {
+    if (gerando) return
+    setGerando(objetivo)
     setErro(null)
     try {
       const { ideas } = await api.post<{ ideas: ContentIdea[] }>('/conteudo', {
         direcionamento: direcionamento.trim() || undefined,
+        objetivo,
       })
       setIdeias((prev) => [...ideas, ...(prev ?? [])])
       setDirecionamento('')
     } catch (err) {
       setErro(err instanceof ApiError ? err.message : 'Erro ao gerar ideias')
     } finally {
-      setGerando(false)
+      setGerando(null)
     }
   }
 
@@ -77,27 +84,35 @@ export default function ConteudoPage() {
         <div className="mb-6">
           <h1 className="mb-1 font-display text-2xl font-bold tracking-tight text-ink">Ideias de Conteúdo</h1>
           <p className="text-sm text-ink-muted">
-            Ideias de post, story e reels pro seu Instagram — cada ideia já junta uma tendência de
-            formato em alta com um dado real (e anônimo) da sua base de alunos.
+            Ideias de post, story e reels pro seu Instagram — cada uma já junta uma tendência de
+            formato em alta com um dado real (e anônimo) da sua base. Escolha se quer conteúdo pra
+            quem já te segue ou post pra atrair aluno novo.
           </p>
         </div>
 
         <div className="glass mb-6 rounded-2xl p-5">
           <label className="mb-1.5 block text-xs text-ink-muted">Direcionamento (opcional)</label>
+          <input
+            type="text"
+            value={direcionamento}
+            onChange={(e) => setDirecionamento(e.target.value)}
+            placeholder="Ex: quero ideias sobre hipertrofia"
+            className="input-dark mb-3 w-full rounded-xl px-4 py-2.5 text-sm"
+          />
           <div className="flex flex-col gap-2 sm:flex-row">
-            <input
-              type="text"
-              value={direcionamento}
-              onChange={(e) => setDirecionamento(e.target.value)}
-              placeholder="Ex: quero ideias sobre hipertrofia"
-              className="input-dark flex-1 rounded-xl px-4 py-2.5 text-sm"
-            />
             <button
-              onClick={gerarIdeias}
-              disabled={gerando}
-              className="btn-primary shrink-0 rounded-xl px-5 py-2.5 text-sm"
+              onClick={() => gerarIdeias('engajar')}
+              disabled={gerando !== null}
+              className="btn-primary flex-1 rounded-xl px-5 py-2.5 text-sm"
             >
-              {gerando ? 'Gerando...' : 'Gerar ideias'}
+              {gerando === 'engajar' ? 'Gerando...' : 'Ideias de conteúdo'}
+            </button>
+            <button
+              onClick={() => gerarIdeias('atrair_alunos')}
+              disabled={gerando !== null}
+              className="glass glass-hover flex-1 rounded-xl px-5 py-2.5 text-sm font-medium text-ink-soft"
+            >
+              {gerando === 'atrair_alunos' ? 'Gerando...' : 'Post pra atrair aluno'}
             </button>
           </div>
           {erro && <p className="mt-3 text-sm text-danger">{erro}</p>}
@@ -122,7 +137,7 @@ export default function ConteudoPage() {
         {ideias !== null && ideiasFiltradas.length === 0 && (
           <div className="glass rounded-2xl border-dashed p-10 text-center">
             <p className="text-ink-muted">Nenhuma ideia por aqui ainda.</p>
-            <p className="mt-1 text-sm text-ink-muted">Clique em &quot;Gerar ideias&quot; pra começar.</p>
+            <p className="mt-1 text-sm text-ink-muted">Clique em um dos botões pra começar.</p>
           </div>
         )}
 
@@ -130,9 +145,16 @@ export default function ConteudoPage() {
           {ideiasFiltradas.map((idea) => (
             <div key={idea.id} className="glass rounded-2xl p-5">
               <div className="mb-2 flex items-start justify-between gap-2">
-                <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${FORMATO_ESTILO[idea.format]}`}>
-                  {FORMATO_LABEL[idea.format]}
-                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${FORMATO_ESTILO[idea.format]}`}>
+                    {FORMATO_LABEL[idea.format]}
+                  </span>
+                  {idea.objetivo === 'atrair_alunos' && (
+                    <span className="rounded-full bg-warning/10 px-2.5 py-1 text-xs font-medium text-warning">
+                      {OBJETIVO_LABEL.atrair_alunos}
+                    </span>
+                  )}
+                </div>
                 <button
                   onClick={() => alternarFavorito(idea)}
                   aria-label={idea.saved ? 'Remover dos favoritos' : 'Favoritar'}

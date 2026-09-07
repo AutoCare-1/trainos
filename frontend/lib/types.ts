@@ -471,10 +471,13 @@ export interface FormAnalysisResult {
 
 export type ContentFormat = 'post' | 'story' | 'reels'
 
+export type ContentObjetivo = 'engajar' | 'atrair_alunos'
+
 export interface ContentIdea {
   id: string
   professional_id: string
   batch_id: string
+  objetivo: ContentObjetivo
   format: ContentFormat
   title: string
   description: string
