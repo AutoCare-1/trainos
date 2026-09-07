@@ -580,8 +580,6 @@ $outras = [
     'Supino declinado no smith' => ['cena' => 'He lies on a DECLINE bench set inside a Smith machine, with his head LOWER than his hips and his feet hooked under the pads at the raised end. The bench slopes downward toward his head; it is never an incline bench and he is never sitting upright. He presses the guided Smith barbell straight up from his lower chest and lowers it back.'],
 ];
 
-
-
 // ---------------------------------------------------------------------------
 // LEVA COMPLEMENTAR (31/08/2026) — esportivo, mobilidade, alongamento,
 // ativação, equilíbrio, prevenção.
@@ -801,7 +799,7 @@ $execucaoComplementar = [
 $complementar = [];
 foreach ($propsComplementar as $equipamento => $nomes) {
     $cena = ['Rolo' => $roloDeEspuma, 'Bosu' => $bosu, 'Disco' => $discoDeslizante,
-             'Argolas' => $argolas, 'Bastão' => $bastao, 'Elástico' => $elasticoIntegro][$equipamento];
+        'Argolas' => $argolas, 'Bastão' => $bastao, 'Elástico' => $elasticoIntegro][$equipamento];
     foreach ($nomes as $nome) {
         $complementar[$nome]['cena'] = $cena;
     }
@@ -1204,4 +1202,30 @@ foreach ($varreduraPreventiva as $nome => $cenaDoExercicio) {
     }
 }
 
-return array_replace($base, $maquinas, $outras, $complementar);
+// ---------------------------------------------------------------------------
+// REVISÃO DA LISTA NUMERADA (07/09/2026) — Ombros, Peito e Costas revisados
+// vídeo a vídeo. Ver database/revisao_videos_numerada_2026-09-07.md.
+//
+// Só entram aqui os que NÃO tinham dica nenhuma e saíram com o exercício
+// trocado. Os que JÁ tinham cena curada e mesmo assim erraram (Elevação
+// frontal com barra, os três "supino/crucifixo declinado" com halteres/barra)
+// não ganham mais texto — a lição da rodada 2 é que descrever mais não move o
+// ponteiro; esses vão pra re-roll com o mesmo prompt.
+$revisaoNumerada = [
+    // #70 Costas: o vídeo saiu como desenvolvimento com barra em pé.
+    'Pull-up negativa' => ['cena' => 'He hangs at full height from a fixed horizontal pull-up bar mounted above him, both hands gripping the bar overhead with palms facing away, and his feet stay off the floor the entire time. He STARTS at the top with his chin already above the bar, then lowers his whole body straight down as slowly as possible under control until his arms are completely straight and he hangs at full stretch, then the clip repeats from the top. There is never a barbell, he is never standing on the ground, and nothing is ever pushed upward above his head: the only movement is his body sinking slowly down from a fixed overhead bar.'],
+
+    // #39 Peito: saiu como chest press sentado horizontal, sem nada de declínio.
+    'Supino declinado na máquina' => ['cena' => 'He sits leaning back in a chest press machine whose seat is set LOW so the handles sit up near the top of his chest. He presses both handles forward and clearly DOWNWARD, away from his lower chest, until his arms are almost straight, then lets them come back. The press path angles downward toward the lower chest — it is never level and never angled up. '.$placaSobe],
+
+    // #119 Ombros: não dava pra ver a barra passar atrás da cabeça.
+    'Desenvolvimento por trás da nuca' => ['cena' => 'He sits upright on a bench holding a barbell with a wide overhand grip. The bar travels BEHIND his head the whole time: he lowers it down behind his neck until it is level with his ears, passing close behind the back of his head, then presses it straight back up to arms\' length overhead. The bar stays behind the plane of his face for the entire movement and never comes down in front of his chin or chest.'],
+
+    // #125 Ombros: cotovelo muito dobrado, lia como rosca.
+    'Elevação frontal alternada' => ['cena' => 'He stands holding a dumbbell in each hand in front of his thighs, palms facing his legs. Keeping the arm almost completely straight, with only a tiny fixed bend at the elbow that never changes, he raises ONE dumbbell straight FORWARD in front of his body up to shoulder height, then lowers it as he raises the other, alternating. The elbow never bends to curl the dumbbell up toward the shoulder — the weight travels in a wide arc on a straight arm.'],
+
+    // #135 Ombros: a mão subia perto do rosto, parecia puxada alta.
+    'Elevação lateral unilateral na polia' => ['cena' => 'He stands SIDEWAYS to a cable tower, torso fully vertical and upright, his free hand holding the tower or resting on his hip, the working hand holding a single D-handle down by the hip furthest from the tower. The cable comes from a pulley at FLOOR level and crosses low in front of his body. Keeping the elbow almost straight, he raises that working arm OUT TO THE SIDE, away from the tower, until it is horizontal at shoulder height, then lowers it back down. The hand travels sideways and stops at shoulder height: it never rises toward his face or the side of his head, and it is never pulled up to the chin. '.$caboUnico],
+];
+
+return array_replace($base, $maquinas, $outras, $complementar, $revisaoNumerada);
