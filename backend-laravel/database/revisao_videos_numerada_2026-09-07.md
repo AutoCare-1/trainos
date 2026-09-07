@@ -25,7 +25,8 @@ regeração em `RETOMAR_demonstracoes.md` / memória `feedback_trainos_video_hig
 | Posterior | #275–300 | ✅ | 0 — grupo limpo |
 | Glúteos | #301–333 | ✅ | 0 — grupo limpo |
 | Panturrilha | #334–348 | ✅ | 0 — grupo limpo |
-| (demais 7 grupos) | | — | |
+| Pernas | #223–274 | ✅ | 0 grave; 2 médios (#249, #250) — não regerados |
+| (demais 6 grupos) | | — | |
 
 ## Ombros
 
@@ -113,3 +114,18 @@ digna de nota. Inclui a família de risco histórico — `#277 Cadeira flexora` 
 `#278 cadeira flexora unilateral` (que saíam como extensora nas auditorias de
 agosto) aqui estão como leg curl de verdade; e as remadas/terras/pontes/
 abduções todas batem com o nome. Nada a regerar nesta rodada.
+
+## Pernas
+
+**52 vídeos, praticamente limpo.** A família de risco histórico — leg press
+(#260–268, 42% de erro grave na auditoria de agosto) — aqui está toda **certa**:
+são leg press de verdade, sem virar cadeira extensora. Afundos, agachamentos
+(livre/frontal/hack/búlgaro/sumô/pistol/cossaco), passadas e step-ups todos
+batem com o nome.
+
+Dois médios, nenhum é exercício trocado, **não regerados** (baixa chance):
+- **#249 Agachamento sissy** — sai como agachamento raso comum, sem a inclinação
+  do tronco pra trás. Já era limite confirmado do gerador nas 3 tentativas de
+  agosto (`RETOMAR_demonstracoes.md`).
+- **#250 Agachamento sumô com halter** — o peso parece barra e não halter; a
+  base ampla e o movimento estão certos.
