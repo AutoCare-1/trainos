@@ -13,14 +13,14 @@
 // LFS ou cópia direta. Aplicado por `php artisan exercicios:aplicar-demonstracoes`,
 // que só grava o que existe no disco, pra não apontar pra arquivo quebrado.
 //
-// 594 entradas: os 402 da biblioteca original mais 192 da leva complementar
-// (31/08/2026 em diante). Grupos Equilíbrio (10), Ativação (22) e reforço de
-// musculação (29 de 34 — 5 confirmados como limite real do gerador, ver o
-// log) fechados em 07/09/2026. Falta só o Esportivo (74). Ver
-// database/piloto_demonstracoes_2026-08-31.md pra onde retomar.
+// 663 entradas: os 402 da biblioteca original mais 261 da leva complementar
+// (31/08/2026 em diante). Leva complementar FECHADA em 07/09/2026: Equilíbrio
+// (10), Ativação (22), reforço de musculação (29 de 34) e Esportivo (69 de
+// 74) — 14 exercícios no total ficaram sem vídeo, confirmados como limite
+// real do gerador depois de 2-3 tentativas cada, não por falta de tentativa.
+// Ver database/piloto_demonstracoes_2026-08-31.md para o histórico completo.
 //
 // Quando gerar vídeo novo, rode `exercicios:aplicar-demonstracoes --exportar`
-// pra atualizar esta lista.
 return [
     'Farmer walk' => '/uploads/exercise-demos/farmer-walk.mp4',
     'Rosca de punho' => '/uploads/exercise-demos/rosca-de-punho.mp4',
@@ -616,4 +616,73 @@ return [
     'Devil press com halteres' => '/uploads/exercise-demos/devil-press-com-halteres.mp4',
     'Man maker com halteres' => '/uploads/exercise-demos/man-maker-com-halteres.mp4',
     'Corrida de vai e vem (shuttle run)' => '/uploads/exercise-demos/corrida-de-vai-e-vem-shuttle-run.mp4',
+    'Rotação de tronco explosiva na polia (saque)' => '/uploads/exercise-demos/rotacao-de-tronco-explosiva-na-polia-saque.mp4',
+    'Golpe de forehand com elástico' => '/uploads/exercise-demos/golpe-de-forehand-com-elastico.mp4',
+    'Golpe de backhand com elástico' => '/uploads/exercise-demos/golpe-de-backhand-com-elastico.mp4',
+    'Saque de tênis com medicine ball' => '/uploads/exercise-demos/saque-de-tenis-com-medicine-ball.mp4',
+    'Arremesso rotacional de medicine ball na parede' => '/uploads/exercise-demos/arremesso-rotacional-de-medicine-ball-na-parede.mp4',
+    'Desaceleração lateral com passo de recuperação' => '/uploads/exercise-demos/desaceleracao-lateral-com-passo-de-recuperacao.mp4',
+    'Split step com salto' => '/uploads/exercise-demos/split-step-com-salto.mp4',
+    'Passo cruzado para a rede' => '/uploads/exercise-demos/passo-cruzado-para-a-rede.mp4',
+    'Deslocamento em leque na quadra' => '/uploads/exercise-demos/deslocamento-em-leque-na-quadra.mp4',
+    'Puxada rotacional na polia alta (topspin)' => '/uploads/exercise-demos/puxada-rotacional-na-polia-alta-topspin.mp4',
+    'Freio excêntrico de ombro na polia (pós-saque)' => '/uploads/exercise-demos/freio-excentrico-de-ombro-na-polia-pos-saque.mp4',
+    'Pronossupinação com bastão lastrado' => '/uploads/exercise-demos/pronossupinacao-com-bastao-lastrado.mp4',
+    'Deslocamento em quadra pequena com giro' => '/uploads/exercise-demos/deslocamento-em-quadra-pequena-com-giro.mp4',
+    'Educativo de corrida: skipping A' => '/uploads/exercise-demos/educativo-de-corrida-skipping-a.mp4',
+    'Educativo de corrida: skipping B' => '/uploads/exercise-demos/educativo-de-corrida-skipping-b.mp4',
+    'Educativo de corrida: dribling baixo' => '/uploads/exercise-demos/educativo-de-corrida-dribling-baixo.mp4',
+    'Passada saltada (bounding)' => '/uploads/exercise-demos/passada-saltada-bounding.mp4',
+    'Marcha atlética no plano' => '/uploads/exercise-demos/marcha-atletica-no-plano.mp4',
+    'Tiro em subida na rampa' => '/uploads/exercise-demos/tiro-em-subida-na-rampa.mp4',
+    'Corrida em curva fechada' => '/uploads/exercise-demos/corrida-em-curva-fechada.mp4',
+    'Aterrissagem de salto em profundidade (drop jump)' => '/uploads/exercise-demos/aterrissagem-de-salto-em-profundidade-drop-jump.mp4',
+    'Salto alternado em profundidade' => '/uploads/exercise-demos/salto-alternado-em-profundidade.mp4',
+    'Arranque de 10 metros a partir da posição deitada' => '/uploads/exercise-demos/arranque-de-10-metros-a-partir-da-posicao-deitada.mp4',
+    'Condução de bola em ziguezague' => '/uploads/exercise-demos/conducao-de-bola-em-ziguezague.mp4',
+    'Chute com resistência de elástico' => '/uploads/exercise-demos/chute-com-resistencia-de-elastico.mp4',
+    'Chute interno resistido no elástico' => '/uploads/exercise-demos/chute-interno-resistido-no-elastico.mp4',
+    'Deslocamento defensivo lateral com toque no cone' => '/uploads/exercise-demos/deslocamento-defensivo-lateral-com-toque-no-cone.mp4',
+    'Aceleração de 5 metros com mudança de direção' => '/uploads/exercise-demos/aceleracao-de-5-metros-com-mudanca-de-direcao.mp4',
+    'Salto de cabeceio com aterrissagem' => '/uploads/exercise-demos/salto-de-cabeceio-com-aterrissagem.mp4',
+    'Giro de 180 graus com arranque' => '/uploads/exercise-demos/giro-de-180-graus-com-arranque.mp4',
+    'Puxada de nado no elástico (crawl)' => '/uploads/exercise-demos/puxada-de-nado-no-elastico-crawl.mp4',
+    'Puxada de nado na polia deitado' => '/uploads/exercise-demos/puxada-de-nado-na-polia-deitado.mp4',
+    'Batida de pernas no banco' => '/uploads/exercise-demos/batida-de-pernas-no-banco.mp4',
+    'Rotação de ombro em decúbito ventral (nadador)' => '/uploads/exercise-demos/rotacao-de-ombro-em-decubito-ventral-nadador.mp4',
+    'Streamline na parede' => '/uploads/exercise-demos/streamline-na-parede.mp4',
+    'Remada de peito no elástico' => '/uploads/exercise-demos/remada-de-peito-no-elastico.mp4',
+    'Tríceps de finalização de braçada na polia' => '/uploads/exercise-demos/triceps-de-finalizacao-de-bracada-na-polia.mp4',
+    'Golpe reto com halteres leves' => '/uploads/exercise-demos/golpe-reto-com-halteres-leves.mp4',
+    'Cruzado com rotação de quadril no elástico' => '/uploads/exercise-demos/cruzado-com-rotacao-de-quadril-no-elastico.mp4',
+    'Joelhada com resistência de elástico' => '/uploads/exercise-demos/joelhada-com-resistencia-de-elastico.mp4',
+    'Sprawl' => '/uploads/exercise-demos/sprawl.mp4',
+    'Ponte de luta (ponte de pescoço assistida)' => '/uploads/exercise-demos/ponte-de-luta-ponte-de-pescoco-assistida.mp4',
+    'Levantada técnica (technical stand-up)' => '/uploads/exercise-demos/levantada-tecnica-technical-stand-up.mp4',
+    'Rotação de tronco com anilha em guarda' => '/uploads/exercise-demos/rotacao-de-tronco-com-anilha-em-guarda.mp4',
+    'Salto vertical com contramovimento e alcance' => '/uploads/exercise-demos/salto-vertical-com-contramovimento-e-alcance.mp4',
+    'Salto contínuo com joelhos ao peito' => '/uploads/exercise-demos/salto-continuo-com-joelhos-ao-peito.mp4',
+    'Manchete simulada com elástico' => '/uploads/exercise-demos/manchete-simulada-com-elastico.mp4',
+    'Arremesso acima da cabeça com medicine ball' => '/uploads/exercise-demos/arremesso-acima-da-cabeca-com-medicine-ball.mp4',
+    'Bloqueio duplo com salto lateral' => '/uploads/exercise-demos/bloqueio-duplo-com-salto-lateral.mp4',
+    'Salto lateral sobre linha com aterrissagem em apoio único' => '/uploads/exercise-demos/salto-lateral-sobre-linha-com-aterrissagem-em-apoio-unico.mp4',
+    'Troca rápida de pés no step (foot fire)' => '/uploads/exercise-demos/troca-rapida-de-pes-no-step-foot-fire.mp4',
+    'Pedalada em cadência alta na bicicleta' => '/uploads/exercise-demos/pedalada-em-cadencia-alta-na-bicicleta.mp4',
+    'Tiro sentado com carga alta na bicicleta' => '/uploads/exercise-demos/tiro-sentado-com-carga-alta-na-bicicleta.mp4',
+    'Pedalada unilateral na bicicleta' => '/uploads/exercise-demos/pedalada-unilateral-na-bicicleta.mp4',
+    'Sustentação de tronco em posição aero' => '/uploads/exercise-demos/sustentacao-de-tronco-em-posicao-aero.mp4',
+    'Extensão de tronco em posição de guidão' => '/uploads/exercise-demos/extensao-de-tronco-em-posicao-de-guidao.mp4',
+    'Rotação de tronco para swing de golfe na polia' => '/uploads/exercise-demos/rotacao-de-tronco-para-swing-de-golfe-na-polia.mp4',
+    'Swing de golfe resistido com elástico' => '/uploads/exercise-demos/swing-de-golfe-resistido-com-elastico.mp4',
+    'Desaceleração rotacional com medicine ball para golfe' => '/uploads/exercise-demos/desaceleracao-rotacional-com-medicine-ball-para-golfe.mp4',
+    'Suspensão em pegada aberta para escalada' => '/uploads/exercise-demos/suspensao-em-pegada-aberta-para-escalada.mp4',
+    'Puxada com pegada de pinça para escalada' => '/uploads/exercise-demos/puxada-com-pegada-de-pinca-para-escalada.mp4',
+    'Escalada horizontal na parede (traverse)' => '/uploads/exercise-demos/escalada-horizontal-na-parede-traverse.mp4',
+    'Pop-up de surf no solo' => '/uploads/exercise-demos/pop-up-de-surf-no-solo.mp4',
+    'Remada de surf em decúbito ventral' => '/uploads/exercise-demos/remada-de-surf-em-decubito-ventral.mp4',
+    'Equilíbrio na prancha de balanço' => '/uploads/exercise-demos/equilibrio-na-prancha-de-balanco.mp4',
+    'Agachamento em base de surf com rotação' => '/uploads/exercise-demos/agachamento-em-base-de-surf-com-rotacao.mp4',
+    'Aceleração de braço com elástico para arremesso' => '/uploads/exercise-demos/aceleracao-de-braco-com-elastico-para-arremesso.mp4',
+    'Freio excêntrico de cotovelo pós-arremesso na polia' => '/uploads/exercise-demos/freio-excentrico-de-cotovelo-pos-arremesso-na-polia.mp4',
+    'Passada lateral defensiva com elástico na cintura' => '/uploads/exercise-demos/passada-lateral-defensiva-com-elastico-na-cintura.mp4',
 ];

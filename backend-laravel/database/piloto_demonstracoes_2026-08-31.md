@@ -855,3 +855,50 @@ entradas.
 
 Falta só o **Esportivo (74 exercícios)** pra fechar a leva complementar
 inteira.
+
+## Esportivo (07/09/2026) — 69 de 74, leva complementar fechada
+
+Último grupo. 42 dos 74 não tinham cena nenhuma — escritas todas antes de
+gerar, seguindo o mesmo critério dos lotes anteriores: negar o desvio mais
+provável pro repertório padrão do gerador (corrida genérica em vez do
+padrão de agilidade descrito, "pulo" genérico em vez do salto específico).
+
+Gerado em 7 sub-lotes de ~11 (agrupados por tema — tênis/padel, corrida,
+agilidade, natação, luta, salto/golfe, ciclismo/escalada, surf) pra manter a
+revisão possível. Placar por lote: 10/11, 9/11, 10/11, **11/11**, 9/11,
+9/11, 7/8.
+
+**5 exercícios confirmados como limite real, não sorteio** — 2 tentativas
+cada com o mesmo erro, parado de gastar crédito:
+
+- **"Recuo em três passos para o fundo"**: 3 tentativas (incluindo uma
+  reescrita filmando do lado e pedindo explicitamente "ele NÃO está
+  correndo pra frente") — todas viraram corrida normal pra frente. O
+  gerador não renderiza "andar pra trás com o tronco de frente".
+- **"Smash aéreo simulado com elástico"** e **"Puxada de gola no elástico
+  (kuzushi)"**: as duas com elástico preso ACIMA DA CABEÇA viraram fitas de
+  TRX (duas alças amarelas) em vez de uma faixa elástica única, nas duas
+  tentativas. Parece um limite específico de "elástico + ancoragem alta",
+  não dos outros ~15 exercícios com elástico do lote que funcionaram bem
+  (ancoragem baixa ou nas costas).
+- **"Freio de desaceleração em uma perna"**: 2 tentativas, as duas
+  mostraram corrida contínua, nunca a parada e sustentação numa perna só.
+- **"Deslocamento defensivo em posição baixa"**: 2 tentativas, as duas
+  viraram corrida de perfil normal em vez do shuffle lateral em
+  meio-agachamento.
+
+**2 erros de equipamento pegos e corrigidos**: "Tiro sentado com carga alta
+na bicicleta" veio como remo (rowing machine) na primeira tentativa —
+corrigido explicitando "not a rowing machine" na reescrita. "Equilíbrio na
+prancha de balanço" veio como um disco tipo BOSU (cúpula) em vez de disco
+plano — aceito como variação legítima do equipamento, não é claramente
+errado.
+
+**Placar final da leva complementar inteira**: 402 (biblioteca original) +
+261 (leva complementar: 10 Equilíbrio + 22 Ativação + 29 reforço de
+musculação + 69 Esportivo + 131 dos lotes anteriores) = **663 exercícios
+com vídeo**. 14 exercícios ficaram sem vídeo em toda a leva complementar,
+todos documentados como limite confirmado do gerador — não itens
+esquecidos.
+
+**Leva complementar de 274 exercícios: fechada.**
