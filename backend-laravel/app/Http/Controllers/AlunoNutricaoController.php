@@ -55,6 +55,9 @@ class AlunoNutricaoController extends Controller
                 'alimentos' => $r->itens->map(fn (MealLogItem $i) => [
                     'nome' => $i->food->nome,
                     'quantidade_g' => $i->quantidade_g,
+                    // "2 conchas" lê melhor que "280 g" — e é o personal quem
+                    // mais precisa disso, porque é ele que compara os dias.
+                    'medida' => $i->medida_nome,
                 ])->values(),
             ]);
 

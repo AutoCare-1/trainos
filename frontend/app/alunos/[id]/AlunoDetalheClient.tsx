@@ -31,6 +31,7 @@ import {
   Workout,
   MomentoRefeicao,
   NutricaoDoAluno,
+  AlimentoDaRefeicao,
 } from '@/lib/types'
 
 /** Uma linha de "pergunta: resposta" na anamnese — não mostra nada se a resposta
@@ -80,6 +81,15 @@ const ROTULO_MOMENTO: Record<MomentoRefeicao, string> = {
   jantar: 'Jantar',
   pre_treino: 'Pré-treino',
   pos_treino: 'Pós-treino',
+}
+
+/** Como o personal lê um alimento do diário. A medida caseira vem primeiro
+ * porque é o que ele consegue comparar entre os dias ("2 conchas ontem, 4 hoje");
+ * a grama fica de reserva pra quando o alimento não tem medida conhecida. */
+function descreverAlimento(a: AlimentoDaRefeicao): string {
+  if (a.medida) return `${a.medida} de ${a.nome}`
+  if (a.quantidade_g) return `${a.nome} (${a.quantidade_g} g)`
+  return a.nome
 }
 
 /** Miniatura da refeição — mesma rota autenticada das fotos de evolução. */
@@ -987,6 +997,9 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
                         <p className="text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
                           {r.data ? formatarDataCurta(r.data) : ''} · {ROTULO_MOMENTO[r.momento]}
                         </p>
+                        {r.alimentos.length > 0 && (
+                          <p className="text-sm text-ink-soft">{r.alimentos.map(descreverAlimento).join(', ')}</p>
+                        )}
                         {r.descricao && <p className="truncate text-sm text-ink-soft">{r.descricao}</p>}
                       </div>
                     </div>

@@ -319,4 +319,24 @@ class AlimentoTacoTest extends TestCase
             ->assertJsonPath('refeicoes.0.alimentos.0.nome', 'Arroz, integral, cozido')
             ->assertJsonPath('refeicoes.0.alimentos.0.quantidade_g', 150);
     }
+
+    public function test_personal_ve_a_medida_caseira_e_nao_so_a_grama(): void
+    {
+        $this->seed(AlimentoTacoSeeder::class);
+        [$student, $headers] = $this->cenario();
+        $feijao = Food::where('nome', 'Feijão, carioca, cozido')->first();
+        $concha = $feijao->medidas()->where('nome', 'Concha')->first();
+
+        $this->postJson("/portal/{$student->invite_token}/nutricao/refeicoes", [
+            'momento' => 'almoco',
+            'alimentos' => [['food_id' => $feijao->id, 'medida_id' => $concha->id, 'medida_qtd' => 2]],
+        ])->assertCreated();
+
+        // É o personal quem compara os dias, e "2 conchas ontem, 4 hoje" é uma
+        // leitura que ele faz de cabeça; "280 g" e "560 g", não.
+        $this->getJson("/alunos/{$student->id}/nutricao", $headers)
+            ->assertOk()
+            ->assertJsonPath('refeicoes.0.alimentos.0.medida', '2 conchas')
+            ->assertJsonPath('refeicoes.0.alimentos.0.quantidade_g', 280);
+    }
 }
