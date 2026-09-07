@@ -24,6 +24,11 @@ php artisan db:seed --class="Database\\Seeders\\ExercicioBibliotecaAmpliadaSeede
 php artisan db:seed --class="Database\\Seeders\\ExercicioBibliotecaComplementarSeeder" --force
 php artisan exercicios:aplicar-demonstracoes || true
 
+# Tipos de notificação. Faltava aqui: sem eles a tela de notificações do
+# personal sobe vazia e nenhum aviso é disparado, porque tudo é resolvido por
+# esse catálogo. É updateOrCreate pela chave, então rodar sempre é seguro.
+php artisan db:seed --class="Database\\Seeders\\NotificationTypesSeeder" --force
+
 # Catálogo de alimentos (POF/IBGE) e as medidas caseiras. Mesma lógica dos
 # seeders acima: a chave é (codigo_pof, codigo_preparo), então rodar de novo
 # atualiza em vez de duplicar, e o id do alimento sobrevive — que é o que liga

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Maximize2 } from 'lucide-react'
 import { getMovementPattern, MovementPattern } from '@/lib/exercisePatterns'
 import { resolveMediaUrl } from '@/lib/api'
@@ -498,6 +498,11 @@ export default function ExerciseAnimation({
   const px = SIZES[size]
   const svgRef = useRef<SVGSVGElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
+  // Vídeo que não carrega (arquivo ainda não publicado, rede caída) não pode
+  // virar um retângulo preto com ícone de tela cheia: isso é pior que não ter
+  // vídeo nenhum. Caindo aqui, o desenho animado do exercício assume — que é o
+  // que este componente já sabia fazer antes de existir vídeo.
+  const [videoFalhou, setVideoFalhou] = useState(false)
 
   // Ao sair da tela cheia (botão nativo, gesto de voltar, ESC), devolve o
   // vídeo ao estado de miniatura — senão ele fica com controles e som
@@ -541,7 +546,7 @@ export default function ExerciseAnimation({
     return () => io.unobserve(svg)
   }, [])
 
-  if (videoUrl) {
+  if (videoUrl && !videoFalhou) {
     return (
       <div
         className={className}
@@ -553,6 +558,7 @@ export default function ExerciseAnimation({
         <video
           ref={videoRef}
           src={resolveMediaUrl(videoUrl)}
+          onError={() => setVideoFalhou(true)}
           aria-hidden="true"
           width={px}
           height={px}
