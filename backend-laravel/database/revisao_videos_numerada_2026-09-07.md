@@ -18,8 +18,8 @@ regeração em `RETOMAR_demonstracoes.md` / memória `feedback_trainos_video_hig
 | Ombros | #113–153 | ✅ | 1 grave, 3 médios |
 | Peito | #1–52 | ✅ | 0 grave, 4 médios (todos "declinado" saindo plano/inclinado) |
 | Costas | #53–104 | ✅ | 1 grave (#70), resto OK |
-| Bíceps | #154–180 | — | |
-| Tríceps | #181–213 | — | |
+| Bíceps | #146–172 | ✅ | 0 — grupo limpo |
+| Tríceps | #173–205 | ✅ | 0 — grupo limpo |
 | (demais 12 grupos) | | — | |
 
 ## Ombros
@@ -71,3 +71,32 @@ Resto do grupo **OK**: todas as barras fixas (#53–58), puxadas (#71–82),
 remadas (#83–103), terras (#66–69), face pulls (#62–64), Superman (#104). A
 `#99 Remada nas argolas com pés elevados` — que foi GRAVE no piloto de 31/08
 ("em pé puxando") — aqui está com o corpo na horizontal, corrigida.
+
+## Bíceps e Tríceps
+
+Os dois grupos **limpos** — 27 + 32 vídeos, nenhum exercício trocado, nenhuma
+variação errada digna de nota. Rosca (direta/martelo/scott/spider/concentrada/
+bayesiana/inversa), extensão, mergulho, testa, francês, coice, pushdown: todos
+batem com o nome.
+
+## Regeração (07/09, ~36 créditos Higgsfield, seedance_2_0_mini 480p)
+
+9 vídeos gerados: os 5 sem dica + os 4 que já tinham dica boa (re-roll). Método
+em [[feedback_trainos_video_higgsfield]]. Resultado conferido por tira de frames:
+
+| # | Exercício | Antes | Depois | Ação |
+|---|---|---|---|---|
+| #70 | Pull-up negativa | GRAVE (desenv. c/ barra em pé) | **corrigido** — pendurado na barra | instalado |
+| #127 | Elevação frontal com barra | GRAVE (remada alta) | **corrigido** — braço reto à frente | instalado |
+| #38 | Supino declinado com halteres | MÉDIO (banco inclinado) | **corrigido** — banco declinado | instalado |
+| #125 | Elevação frontal alternada | MÉDIO (parecia rosca) | melhorou — braço mais reto | instalado |
+| #135 | Elevação lateral unilateral na polia | MÉDIO (puxada alta) | melhorou — braço abre pro lado | instalado |
+| #119 | Desenvolvimento por trás da nuca | MÉDIO | leve melhora, ainda limítrofe | instalado |
+| #7 | Crucifixo declinado com halteres | MÉDIO (inclinado) | arco ok, declínio fraco | instalado (plano > inclinado) |
+| #37 | Supino declinado | MÉDIO (plano) | sem melhora | **original mantido** |
+| #39 | Supino declinado na máquina | MÉDIO (press horizontal) | marginal | **original mantido** |
+
+7 instalados em `public/uploads/exercise-demos/`, originais em
+`_backup-2026-09-07/`. Os `.mp4` seguem fora do git — Carol/produção só recebem
+via R2 (pendência antiga). `#37` e `#39` ficam pra re-roll futuro; o alvo é
+`#40 Supino declinado no smith`, que saiu com o declínio certo.
