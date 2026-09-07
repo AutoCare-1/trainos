@@ -20,7 +20,12 @@ regeração em `RETOMAR_demonstracoes.md` / memória `feedback_trainos_video_hig
 | Costas | #53–104 | ✅ | 1 grave (#70), resto OK |
 | Bíceps | #146–172 | ✅ | 0 — grupo limpo |
 | Tríceps | #173–205 | ✅ | 0 — grupo limpo |
-| (demais 12 grupos) | | — | |
+| Antebraço | #206–212 | ✅ | 0 — grupo limpo |
+| Trapézio | #213–222 | ✅ | 0 — grupo limpo |
+| Posterior | #275–300 | ✅ | 0 — grupo limpo |
+| Glúteos | #301–333 | ✅ | 0 — grupo limpo |
+| Panturrilha | #334–348 | ✅ | 0 — grupo limpo |
+| (demais 7 grupos) | | — | |
 
 ## Ombros
 
@@ -100,3 +105,11 @@ em [[feedback_trainos_video_higgsfield]]. Resultado conferido por tira de frames
 `_backup-2026-09-07/`. Os `.mp4` seguem fora do git — Carol/produção só recebem
 via R2 (pendência antiga). `#37` e `#39` ficam pra re-roll futuro; o alvo é
 `#40 Supino declinado no smith`, que saiu com o declínio certo.
+
+## Antebraço, Trapézio, Posterior, Glúteos, Panturrilha
+
+**91 vídeos, todos OK.** Nenhum exercício trocado, nenhuma variação errada
+digna de nota. Inclui a família de risco histórico — `#277 Cadeira flexora` e
+`#278 cadeira flexora unilateral` (que saíam como extensora nas auditorias de
+agosto) aqui estão como leg curl de verdade; e as remadas/terras/pontes/
+abduções todas batem com o nome. Nada a regerar nesta rodada.
