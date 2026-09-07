@@ -27,8 +27,9 @@ regeração em `RETOMAR_demonstracoes.md` / memória `feedback_trainos_video_hig
 | Panturrilha | #334–348 | ✅ | 0 — grupo limpo |
 | Pernas | #223–274 | ✅ | 0 grave; 2 médios (#249, #250) — não regerados |
 | Core | #349–395 | ✅ | 0 — grupo limpo |
-| Funcional | #396–437 | ✅ | 0 grave; #416 regerado e instalado; #406 mantido (regen ainda correndo) |
-| (demais 4 grupos) | | — | |
+| Funcional | #396–437 | ✅ | #416 regerado e instalado; #406 mantido |
+| Esportivo | #438–511 | ✅ | 0 — grupo limpo (74 vídeos) |
+| (demais 5 grupos: Ativação, Mobilidade, Equilíbrio, Prevenção, Alongamento) | | — | |
 
 ## Ombros
 
@@ -150,3 +151,13 @@ Sem vídeo (não são erro): #399 Back lever progressivo, #423 Muscle-up nas arg
 - **#406 Caminhada inclinada na esteira** — regeração ainda saiu correndo em
   esteira plana. **Original mantido.** É o mesmo tipo de limite do gerador que
   "andar pra trás de frente pra câmera" — a distinção andar×correr não pega.
+
+## Esportivo
+
+**74 vídeos (69 com vídeo), todos OK.** Era o grupo de maior risco — gesto
+esportivo específico que o gerador nunca tinha feito antes da leva complementar
+(tênis, corrida educativa, futebol, natação, luta, vôlei, ciclismo, golfe,
+escalada, surf). Nenhum exercício trocado. O método de escrever a cena da
+família ANTES de gerar (piloto de 31/08) rendeu aqui. Nada a regerar.
+
+Sem vídeo (não são erro): #454, #464, #484, #488, #501.
