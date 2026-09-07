@@ -15,10 +15,21 @@ export default defineRailway(() => {
 
   const backend = service("backend", {
     source: github("AutoCare-1/trainos", { rootDirectory: "backend-laravel" }),
-    // O Dockerfile e o railway.toml de backend-laravel cuidam do build; aqui
-    // fica só o que é do ambiente.
-    healthcheckPath: "/up",
-    healthcheckTimeout: 300,
+    // O build sai do Dockerfile de backend-laravel; o railway.toml de lá diz
+    // só isso. Todo o resto do deploy é decidido AQUI, de propósito: ter os
+    // mesmos campos nos dois arquivos com valores diferentes é pedir pra um
+    // silenciosamente vencer o outro.
+    deploy: {
+      healthcheckPath: "/up",
+      // O entrypoint faz migrations e semeia exercícios, notificações e o
+      // catálogo de alimentos ANTES do Apache subir — medido em 4s num banco
+      // vazio, mas é a única janela que existe pra isso e ela não pode ser
+      // apertada. 30s (o valor que estava no .toml) não deixa margem pra um
+      // banco que ainda está acordando no primeiro deploy.
+      healthcheckTimeout: 300,
+      restartPolicyType: "ON_FAILURE",
+      restartPolicyMaxRetries: 3,
+    },
     env: {
       APP_ENV: "production",
       APP_DEBUG: "false",
@@ -38,6 +49,12 @@ export default defineRailway(() => {
       SESSION_DRIVER: "file",
       CACHE_STORE: "file",
       QUEUE_CONNECTION: "sync",
+
+      // O CORS do Laravel lê daqui (config/cors.php). Escrito na sintaxe de
+      // referência do próprio Railway, e não como referência tipada, porque os
+      // dois serviços apontam um pro outro: em TypeScript isso é um ciclo que
+      // não compila, e no Railway é só um nome resolvido na hora do deploy.
+      FRONTEND_URL: "https://${{frontend.RAILWAY_PUBLIC_DOMAIN}}",
     },
   });
 
@@ -46,16 +63,16 @@ export default defineRailway(() => {
     env: {
       // Precisa existir no BUILD, não só em runtime: o Next.js embute
       // NEXT_PUBLIC_* no bundle na hora de compilar.
-      NEXT_PUBLIC_API_URL: `https://${backend.env.RAILWAY_PUBLIC_DOMAIN}`,
+      NEXT_PUBLIC_API_URL: "https://${{backend.RAILWAY_PUBLIC_DOMAIN}}",
       NODE_ENV: "production",
     },
   });
 
-  // O CORS do Laravel lê FRONTEND_URL (config/cors.php). Ficar aqui embaixo, e
-  // não no bloco do backend, é o que quebra o ciclo: os dois serviços já
-  // existem quando esta linha é resolvida.
-  backend.env.FRONTEND_URL = `https://${frontend.env.RAILWAY_PUBLIC_DOMAIN}`;
-
+  // ATENÇÃO no primeiro apply: as duas variáveis acima dependem de cada serviço
+  // ter um domínio público. Se o Railway não gerar sozinho, elas resolvem pra
+  // "https://" vazio — e o sintoma é o app abrir e nenhuma chamada funcionar.
+  // Conserto: "Generate Domain" nos dois serviços e redeploy (o frontend PRECISA
+  // ser reconstruído, porque NEXT_PUBLIC_* entra no bundle na hora do build).
   return project("trainos", {
     resources: [banco, backend, frontend],
   });
