@@ -14,6 +14,18 @@ set -e
 # na porta errada, o healthcheck de /up falha e o Railway derruba o container —
 # com log de "healthcheck failed" e nenhuma pista do motivo. Fora do Railway
 # (build local, docker run) o :-80 mantém o comportamento de sempre.
+# Reafirma um único MPM aqui também, não só no build.
+#
+# O build já deixa isso certo (apache2ctl -t passa com "Syntax OK"), e mesmo
+# assim o primeiro deploy morreu com "More than one MPM loaded" — ou seja,
+# alguma coisa entre o build e o start reabilita o mpm_event. Enquanto a causa
+# não aparece, reafirmar aqui é barato e idempotente; e o `ls` deixa a resposta
+# no log em vez de exigir outro deploy pra descobrir.
+a2dismod mpm_event mpm_worker >/dev/null 2>&1 || true
+a2enmod mpm_prefork >/dev/null 2>&1 || true
+echo "MPM carregados: $(ls /etc/apache2/mods-enabled/ | grep -c '^mpm_.*\.load$') -> $(ls /etc/apache2/mods-enabled/ | grep '^mpm_' | tr '\n' ' ')"
+echo "PORT recebida do ambiente: '${PORT:-<vazia>}'"
+
 PORTA="${PORT:-80}"
 sed -ri "s/^Listen 80$/Listen ${PORTA}/" /etc/apache2/ports.conf
 sed -ri "s/<VirtualHost \*:80>/<VirtualHost *:${PORTA}>/" /etc/apache2/sites-available/*.conf
