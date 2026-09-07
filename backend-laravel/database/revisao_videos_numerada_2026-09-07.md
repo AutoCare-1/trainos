@@ -27,7 +27,7 @@ regeração em `RETOMAR_demonstracoes.md` / memória `feedback_trainos_video_hig
 | Panturrilha | #334–348 | ✅ | 0 — grupo limpo |
 | Pernas | #223–274 | ✅ | 0 grave; 2 médios (#249, #250) — não regerados |
 | Core | #349–395 | ✅ | 0 — grupo limpo |
-| Funcional | #396–437 | ✅ | 0 grave; 2 médios (#406, #416) — regerando |
+| Funcional | #396–437 | ✅ | 0 grave; #416 regerado e instalado; #406 mantido (regen ainda correndo) |
 | (demais 4 grupos) | | — | |
 
 ## Ombros
@@ -143,3 +143,10 @@ flag, hollow, ab wheel, pallof, woodchop, russian twist — todos batem.
 - **#416 Deslocamento lateral (skater)** — saía correndo pra frente em vez de
   saltar de lado. Ganhou `cena` descrevendo o salto lateral de patinador.
 Sem vídeo (não são erro): #399 Back lever progressivo, #423 Muscle-up nas argolas.
+
+### Regeração Funcional (07/09, 8 créditos)
+- **#416 Deslocamento lateral (skater)** — regerado: agora salta de lado em base
+  atlética, não corre pra frente. **Instalado.**
+- **#406 Caminhada inclinada na esteira** — regeração ainda saiu correndo em
+  esteira plana. **Original mantido.** É o mesmo tipo de limite do gerador que
+  "andar pra trás de frente pra câmera" — a distinção andar×correr não pega.
