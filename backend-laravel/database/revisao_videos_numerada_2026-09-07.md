@@ -29,7 +29,12 @@ regeração em `RETOMAR_demonstracoes.md` / memória `feedback_trainos_video_hig
 | Core | #349–395 | ✅ | 0 — grupo limpo |
 | Funcional | #396–437 | ✅ | #416 regerado e instalado; #406 mantido |
 | Esportivo | #438–511 | ✅ | 0 — grupo limpo (74 vídeos) |
-| (demais 5 grupos: Ativação, Mobilidade, Equilíbrio, Prevenção, Alongamento) | | — | |
+| Ativação | #512–533 | ✅ | 0 — grupo limpo |
+| Mobilidade | #534–576 | ✅ | 0 — grupo limpo |
+| Equilíbrio | #577–600 | ✅ | 0 — grupo limpo |
+| Prevenção | #601–630 | ✅ | 0 — grupo limpo |
+| Alongamento | #631–676 | ✅ | 0 — grupo limpo |
+
 
 ## Ombros
 
@@ -161,3 +166,40 @@ escalada, surf). Nenhum exercício trocado. O método de escrever a cena da
 família ANTES de gerar (piloto de 31/08) rendeu aqui. Nada a regerar.
 
 Sem vídeo (não são erro): #454, #464, #484, #488, #501.
+
+## Ativação, Mobilidade, Equilíbrio, Prevenção, Alongamento
+
+**165 vídeos, todos OK.** Nenhum exercício trocado. Rolo/liberação miofascial,
+apoio unipodal, bosu, prancha de Copenhague, mobilizações neurais,
+alongamentos passivos — todos batem com o nome.
+
+---
+
+# FIM DA REVISÃO — 19 grupos, 663 vídeos, 100% conferidos
+
+## Resultado
+
+| | quantos | detalhe |
+|---|--:|---|
+| **GRAVE** (mostrava outro exercício) | 3 | #70 Pull-up negativa, #127 Elevação frontal com barra, #416 Deslocamento lateral (skater) — **todos regerados e corrigidos** |
+| **MÉDIO** regerado e melhorado | 5 | #38, #125, #135, #119, #7 |
+| **MÉDIO** sem melhora na regeração, original mantido | 3 | #37, #39 (supino declinado / na máquina), #406 (caminhada inclinada — sai correndo) |
+| **MÉDIO menor** não regerado (não é rótulo trocado) | ~5 | #249 sissy, #250 sumô, #530, #604 … |
+| **OK** | ~647 | — |
+
+**Taxa de erro real: ~1,6%** (11 vídeos precisando de ação em 663).
+
+## Custo
+
+12 vídeos regerados em 2 rodadas pelo MCP Higgsfield (`seedance_2_0_mini`
+480p), **~48 créditos** (saldo ~1.262). 9 instalados, 3 originais mantidos.
+
+## O que fica pra depois
+
+- **#37 e #39 (supino declinado)** — re-roll futuro com prompt inspirado no
+  `#40 Supino declinado no smith`, que saiu com o declínio certo.
+- **#406 Caminhada inclinada na esteira** — limite do gerador (andar × correr).
+- **`.mp4` fora do git** — os 9 regerados só existem no disco local + em
+  `_backup-2026-09-07/`. Carol / produção só recebem via R2 (pendência antiga).
+- **13/14 exercícios sem vídeo** continuam sem — limite confirmado do gerador
+  (ver piloto_demonstracoes_2026-08-31.md).
