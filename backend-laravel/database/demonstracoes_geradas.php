@@ -13,9 +13,9 @@
 // LFS ou cópia direta. Aplicado por `php artisan exercicios:aplicar-demonstracoes`,
 // que só grava o que existe no disco, pra não apontar pra arquivo quebrado.
 //
-// 533 entradas: os 402 da biblioteca original mais 131 da leva complementar
-// (31/08/2026). Os 143 restantes da leva complementar ainda não têm vídeo —
-// o crédito do Higgsfield acabou no meio. Ver
+// 565 entradas: os 402 da biblioteca original mais 163 da leva complementar
+// (31/08/2026 em diante). Grupos Equilíbrio (10) e Ativação (22) fechados em
+// 07/09/2026. Faltam ainda reforço de musculação e Esportivo. Ver
 // database/piloto_demonstracoes_2026-08-31.md pra onde retomar.
 //
 // Quando gerar vídeo novo, rode `exercicios:aplicar-demonstracoes --exportar`
@@ -564,4 +564,26 @@ return [
     'Cegonha com passagem de objeto' => '/uploads/exercise-demos/cegonha-com-passagem-de-objeto.mp4',
     'Deslocamento sobre linha com obstáculos baixos' => '/uploads/exercise-demos/deslocamento-sobre-linha-com-obstaculos-baixos.mp4',
     'Equilíbrio dinâmico em agachamento com transferência de peso' => '/uploads/exercise-demos/equilibrio-dinamico-em-agachamento-com-transferencia-de-peso.mp4',
+    'Aquecimento articular de ombros com círculos' => '/uploads/exercise-demos/aquecimento-articular-de-ombros-com-circulos.mp4',
+    'Aquecimento de agachamento com bastão acima da cabeça' => '/uploads/exercise-demos/aquecimento-de-agachamento-com-bastao-acima-da-cabeca.mp4',
+    'Aquecimento de coluna com rotações em pé' => '/uploads/exercise-demos/aquecimento-de-coluna-com-rotacoes-em-pe.mp4',
+    'Aquecimento de joelho com extensão sentado sem carga' => '/uploads/exercise-demos/aquecimento-de-joelho-com-extensao-sentado-sem-carga.mp4',
+    'Aquecimento de ombro com halteres leves em três planos' => '/uploads/exercise-demos/aquecimento-de-ombro-com-halteres-leves-em-tres-planos.mp4',
+    'Aquecimento de punhos e dedos' => '/uploads/exercise-demos/aquecimento-de-punhos-e-dedos.mp4',
+    'Aquecimento de quadril com círculos em pé' => '/uploads/exercise-demos/aquecimento-de-quadril-com-circulos-em-pe.mp4',
+    'Aquecimento de quadril em passada com rotação torácica' => '/uploads/exercise-demos/aquecimento-de-quadril-em-passada-com-rotacao-toracica.mp4',
+    'Aquecimento de tronco com rotação e toque no pé' => '/uploads/exercise-demos/aquecimento-de-tronco-com-rotacao-e-toque-no-pe.mp4',
+    'Ativação de core com respiração 360 graus' => '/uploads/exercise-demos/ativacao-de-core-com-respiracao-360-graus.mp4',
+    'Ativação de dorsal com puxada isométrica no elástico' => '/uploads/exercise-demos/ativacao-de-dorsal-com-puxada-isometrica-no-elastico.mp4',
+    'Aquecimento específico com barra vazia' => '/uploads/exercise-demos/aquecimento-especifico-com-barra-vazia.mp4',
+    'Ativação de peitoral com isometria de palmas' => '/uploads/exercise-demos/ativacao-de-peitoral-com-isometria-de-palmas.mp4',
+    'Flexão escapular (scapular push-up)' => '/uploads/exercise-demos/flexao-escapular-scapular-push-up.mp4',
+    'Polichinelo com abertura de braços em Y' => '/uploads/exercise-demos/polichinelo-com-abertura-de-bracos-em-y.mp4',
+    'Retração escapular na polia baixa sentado' => '/uploads/exercise-demos/retracao-escapular-na-polia-baixa-sentado.mp4',
+    'Bom dia sem carga para aquecimento' => '/uploads/exercise-demos/bom-dia-sem-carga-para-aquecimento.mp4',
+    'Corrida no lugar com toque de calcanhar lateral' => '/uploads/exercise-demos/corrida-no-lugar-com-toque-de-calcanhar-lateral.mp4',
+    'Ativação de quadril com agachamento pulsado' => '/uploads/exercise-demos/ativacao-de-quadril-com-agachamento-pulsado.mp4',
+    'Ativação de serrátil na parede' => '/uploads/exercise-demos/ativacao-de-serratil-na-parede.mp4',
+    'Marcha de ativação com elástico nos tornozelos' => '/uploads/exercise-demos/marcha-de-ativacao-com-elastico-nos-tornozelos.mp4',
+    'Elevação de ponta do pé no degrau (tibial)' => '/uploads/exercise-demos/elevacao-de-ponta-do-pe-no-degrau-tibial.mp4',
 ];

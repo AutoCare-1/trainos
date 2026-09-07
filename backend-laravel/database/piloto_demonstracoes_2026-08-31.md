@@ -752,3 +752,48 @@ Faltam **137 exercícios ≈ 548 créditos**. Ordem sugerida:
 
 Todas as cena já estão escritas em `dicas_demonstracao.php` para os 58
 varridos preventivamente; o Esportivo tem 12 cobertos e 62 sem cena.
+
+## Retomada em 07/09/2026 — Equilíbrio fechado, Ativação fechado
+
+Motivo da retomada: o personal testou o app e reclamou de nomes trocados e
+de vídeos "estranhos" (puxada por trás em especial). Antes de gerar mais
+nada, reconferimos a puxada por trás pela terceira vez com o texto idêntico
+já escrito desde 26/08 — resultado idêntico (barra na frente do rosto) pela
+terceira vez. **Confirmado limite real, não sorteio; parado de gastar
+crédito nela.**
+
+**Equilíbrio: 24/24 fechado** (commit `0b1817b`). Dois quase-erros no lote:
+"Passada com pausa em apoio único" e "Elevação de joelho com equilíbrio e
+rotação" saíram genéricos (corrida comum) na primeira tentativa; re-rolados
+com texto idêntico — o primeiro veio certo, o segundo veio ambíguo mas
+aceitável (não valia um terceiro crédito pra ambiguidade menor).
+
+**Ativação: 22/22 fechado.** A varredura dos 22 nomes do seeder contra o que
+já tinha vídeo achou 3 que nenhum lote anterior tinha nem tentado gerar
+("Ativação de serrátil na parede", "Marcha de ativação com elástico nos
+tornozelos", "Elevação de ponta do pé no degrau (tibial)") — o "faltam 7"
+do fim do lote 17 estava contando errado. Dois misses neste lote:
+
+- **"Ativação de quadril com agachamento pulsado"**: 2 tentativas com o
+  mesmo texto renderizaram um agachamento lento único, não pulsos. Diferente
+  da regra normal (re-rolar antes de reescrever), aqui os dois erros vieram
+  **idênticos** — sinal de que o texto guiava errado, não de sorteio ruim.
+  Reescrito afirmando a profundidade já no frame 1 e proibindo "ficar em pé"
+  e "descer completo" explicitamente — resolveu de primeira. Cena atualizada
+  em `dicas_demonstracao.php`.
+- **"Elevação de ponta do pé no degrau (tibial)"**: primeira tentativa virou
+  ele andando sobre o step em vez de ficar parado fazendo o movimento de
+  tibial. Re-rolado com texto idêntico — veio certo (calcanhar fixo, ponta
+  do pé subindo). Sorteio, não erro de prompt.
+- **"Aquecimento específico com barra vazia"** (arrastado do lote 17, onde
+  tinha vindo com anilhas apesar da negação): reconferido nesta retomada com
+  o MESMO texto pela segunda vez — veio certo. Confirma que era sorteio, não
+  limite — bom lembrete de não desistir cedo demais mesmo com negação já
+  escrita.
+
+**Placar do lote:** 8 exercícios OK de primeira, 2 corrigidos no re-roll
+idêntico, 1 corrigido só depois de reescrita. 0 abandonados neste lote (fora
+a puxada por trás, que já estava abandonada antes de começar).
+
+Faltam agora **~113 exercícios**: reforço de musculação (30) e Esportivo
+(74) — ordem original mantida.
