@@ -1,0 +1,8 @@
+{
+  "name": "trainos-infra",
+  "private": true,
+  "description": "Só o SDK que o Railway usa pra ler .railway/railway.ts. O app não vive aqui: o backend está em backend-laravel/ e o frontend em frontend/.",
+  "dependencies": {
+    "railway": "^3.11.0"
+  }
+}
