@@ -797,3 +797,61 @@ a puxada por trás, que já estava abandonada antes de começar).
 
 Faltam agora **~113 exercícios**: reforço de musculação (30) e Esportivo
 (74) — ordem original mantida.
+
+## Reforço de musculação (07/09/2026) — 29 de 34, 5 limites confirmados
+
+O grupo tinha 34 exercícios, não 30 — a contagem do fim do lote anterior
+estava errada. Gerados em 3 sub-lotes de ~12 pra manter a revisão possível.
+
+**16 dos 34 não tinham cena nenhuma** (dry-run confirmou: prompt saía só com
+o nome). Escritas todas antes de gerar, negando o desvio mais provável de
+cada um pro repertório padrão do gerador — ex.: "Corrida de vai e vem" nega
+corrida contínua numa direção só; "Belt squat" nega barra livre nas costas;
+"Flexão em pique" nega flexão comum (quadril na linha dos ombros).
+
+**5 exercícios confirmados como limite real, não sorteio** — parado de
+gastar crédito neles:
+
+- **"Paralelas nas argolas" e "Mergulho nas argolas"**: mesma cena-base
+  ($argolasApoiadoEmCima, já escrita desde antes desta sessão com negação
+  explícita "never hanging below the rings"). Testado 3x em paralelas e 2x
+  em mergulho (incluindo uma reescrita afirmando "pés já no ar desde o
+  frame 1") — toda vez o resultado foi o mesmo: ele em pé no chão, argolas
+  na altura do peito, se inclinando pra frente. O gerador parece ter um viés
+  forte pra "pessoa em pé segurando argola" que nenhuma negação testada
+  desmontou. Como as duas usam a mesma cena, a segunda falha confirma que é
+  a pose (apoio em cima das argolas, pés no ar) que o modelo não renderiza —
+  não uma coincidência de exercício.
+- **"Crucifixo na polia deitado no banco"**: 2 tentativas, 2 resultados
+  diferentes mas igualmente errados — primeiro virou puxada com polias
+  ALTAS (opostas ao "LOW cable pulleys" do texto), segundo virou uma
+  máquina de banco com encosto e polias ainda altas. O modelo parece ter um
+  molde forte de "banco + cabo = aparelho sentado com polia em cima" que não
+  cede pra "deitado, polias no chão".
+- **"Muscle-up nas argolas"**: 2 tentativas, as duas pararam na metade —
+  mostram a fase de puxada (pendurado, subindo) mas nunca completam a
+  virada pro apoio em cima das argolas. Vira, na prática, um vídeo
+  indistinguível de "Barra fixa nas argolas". "Muscle-up na barra" (mesma
+  transição, mas em barra fixa em vez de argolas) funcionou de primeira —
+  então o limite parece ser específico da combinação argolas + transição.
+- **"Back lever progressivo"**: 2 tentativas idênticas, as duas renderizaram
+  uma dependura vertical normal com flexão de joelho (visualmente uma
+  "elevação de joelho na barra"), nunca o corpo na horizontal. "Front lever
+  progressivo" — mesmo texto, trocando só a orientação do corpo — funcionou
+  de primeira. O "de costas, barriga para baixo" parece confundir o modelo
+  de um jeito que o "de frente, barriga para cima" não confunde.
+
+**Dois aceites por ambiguidade de câmera, não por certeza total**: "Prancha
+com abertura de pernas na toalha" e a checagem de abertura de pernas em
+geral sofrem de um problema estrutural — a câmera lateral fixa (exigida pra
+manter a pessoa inteira em quadro) não mostra bem separação de perna que
+acontece no eixo perpendicular à lente. Aceito depois de 1 re-roll idêntico
+sem mudança visível, porque um terceiro vídeo não ia resolver uma limitação
+de ângulo de câmera.
+
+**Placar do lote**: 29 OK (12 de primeira, 12 corrigidos em 1 re-roll ou
+reescrita, 5 confirmados limite). demonstracoes_geradas.php: 565 → 594
+entradas.
+
+Falta só o **Esportivo (74 exercícios)** pra fechar a leva complementar
+inteira.

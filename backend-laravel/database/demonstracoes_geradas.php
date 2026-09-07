@@ -13,9 +13,10 @@
 // LFS ou cópia direta. Aplicado por `php artisan exercicios:aplicar-demonstracoes`,
 // que só grava o que existe no disco, pra não apontar pra arquivo quebrado.
 //
-// 565 entradas: os 402 da biblioteca original mais 163 da leva complementar
-// (31/08/2026 em diante). Grupos Equilíbrio (10) e Ativação (22) fechados em
-// 07/09/2026. Faltam ainda reforço de musculação e Esportivo. Ver
+// 594 entradas: os 402 da biblioteca original mais 192 da leva complementar
+// (31/08/2026 em diante). Grupos Equilíbrio (10), Ativação (22) e reforço de
+// musculação (29 de 34 — 5 confirmados como limite real do gerador, ver o
+// log) fechados em 07/09/2026. Falta só o Esportivo (74). Ver
 // database/piloto_demonstracoes_2026-08-31.md pra onde retomar.
 //
 // Quando gerar vídeo novo, rode `exercicios:aplicar-demonstracoes --exportar`
@@ -586,4 +587,33 @@ return [
     'Ativação de serrátil na parede' => '/uploads/exercise-demos/ativacao-de-serratil-na-parede.mp4',
     'Marcha de ativação com elástico nos tornozelos' => '/uploads/exercise-demos/marcha-de-ativacao-com-elastico-nos-tornozelos.mp4',
     'Elevação de ponta do pé no degrau (tibial)' => '/uploads/exercise-demos/elevacao-de-ponta-do-pe-no-degrau-tibial.mp4',
+    'Supino inclinado unilateral com halter' => '/uploads/exercise-demos/supino-inclinado-unilateral-com-halter.mp4',
+    'Flexão de braço com deslocamento lateral' => '/uploads/exercise-demos/flexao-de-braco-com-deslocamento-lateral.mp4',
+    'Flexão de braço nas argolas' => '/uploads/exercise-demos/flexao-de-braco-nas-argolas.mp4',
+    'Flexão de braço com abertura na toalha' => '/uploads/exercise-demos/flexao-de-braco-com-abertura-na-toalha.mp4',
+    'Puxada frontal ajoelhado na polia' => '/uploads/exercise-demos/puxada-frontal-ajoelhado-na-polia.mp4',
+    'Remada nas argolas com pés elevados' => '/uploads/exercise-demos/remada-nas-argolas-com-pes-elevados.mp4',
+    'Barra fixa nas argolas' => '/uploads/exercise-demos/barra-fixa-nas-argolas.mp4',
+    'Prancha com abertura de pernas na toalha' => '/uploads/exercise-demos/prancha-com-abertura-de-pernas-na-toalha.mp4',
+    'Remada curvada no smith' => '/uploads/exercise-demos/remada-curvada-no-smith.mp4',
+    'Flexão de braço em pique (pike push-up)' => '/uploads/exercise-demos/flexao-de-braco-em-pique-pike-push-up.mp4',
+    'Parada de mão na parede' => '/uploads/exercise-demos/parada-de-mao-na-parede.mp4',
+    'Desenvolvimento em parada de mão na parede' => '/uploads/exercise-demos/desenvolvimento-em-parada-de-mao-na-parede.mp4',
+    'Rosca nas argolas' => '/uploads/exercise-demos/rosca-nas-argolas.mp4',
+    'Rosca bayesiana com o braço atrás do corpo' => '/uploads/exercise-demos/rosca-bayesiana-com-o-braco-atras-do-corpo.mp4',
+    'Extensão de tríceps nas argolas' => '/uploads/exercise-demos/extensao-de-triceps-nas-argolas.mp4',
+    'Agachamento com deslocamento lateral na toalha' => '/uploads/exercise-demos/agachamento-com-deslocamento-lateral-na-toalha.mp4',
+    'Belt squat na máquina' => '/uploads/exercise-demos/belt-squat-na-maquina.mp4',
+    'Leg press vertical' => '/uploads/exercise-demos/leg-press-vertical.mp4',
+    'L-sit no solo' => '/uploads/exercise-demos/l-sit-no-solo.mp4',
+    'L-sit nas paralelas' => '/uploads/exercise-demos/l-sit-nas-paralelas.mp4',
+    'Dragon flag' => '/uploads/exercise-demos/dragon-flag.mp4',
+    'Limpador de para-brisa suspenso na barra' => '/uploads/exercise-demos/limpador-de-para-brisa-suspenso-na-barra.mp4',
+    'Prancha com deslizamento de braços na toalha' => '/uploads/exercise-demos/prancha-com-deslizamento-de-bracos-na-toalha.mp4',
+    'Muscle-up na barra' => '/uploads/exercise-demos/muscle-up-na-barra.mp4',
+    'Front lever progressivo' => '/uploads/exercise-demos/front-lever-progressivo.mp4',
+    'Flexão em pseudo planche' => '/uploads/exercise-demos/flexao-em-pseudo-planche.mp4',
+    'Devil press com halteres' => '/uploads/exercise-demos/devil-press-com-halteres.mp4',
+    'Man maker com halteres' => '/uploads/exercise-demos/man-maker-com-halteres.mp4',
+    'Corrida de vai e vem (shuttle run)' => '/uploads/exercise-demos/corrida-de-vai-e-vem-shuttle-run.mp4',
 ];
