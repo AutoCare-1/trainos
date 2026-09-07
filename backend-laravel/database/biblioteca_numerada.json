@@ -1,0 +1,5414 @@
+{
+    "total": 676,
+    "com_video": 663,
+    "itens": [
+        {
+            "numero": 1,
+            "nome": "Chest press sentado",
+            "grupo": "Peito",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "chest-press-sentado"
+        },
+        {
+            "numero": 2,
+            "nome": "Chest press unilateral",
+            "grupo": "Peito",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "chest-press-unilateral"
+        },
+        {
+            "numero": 3,
+            "nome": "Crossover",
+            "grupo": "Peito",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "crossover"
+        },
+        {
+            "numero": 4,
+            "nome": "Crossover de baixo para cima",
+            "grupo": "Peito",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "crossover-de-baixo-para-cima"
+        },
+        {
+            "numero": 5,
+            "nome": "Crossover na polia média",
+            "grupo": "Peito",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "crossover-na-polia-media"
+        },
+        {
+            "numero": 6,
+            "nome": "Crossover unilateral",
+            "grupo": "Peito",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "crossover-unilateral"
+        },
+        {
+            "numero": 7,
+            "nome": "Crucifixo declinado com halteres",
+            "grupo": "Peito",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "crucifixo-declinado-com-halteres"
+        },
+        {
+            "numero": 8,
+            "nome": "Crucifixo inclinado com halteres",
+            "grupo": "Peito",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "crucifixo-inclinado-com-halteres"
+        },
+        {
+            "numero": 9,
+            "nome": "Crucifixo na polia alta",
+            "grupo": "Peito",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "crucifixo-na-polia-alta"
+        },
+        {
+            "numero": 10,
+            "nome": "Crucifixo na polia baixa",
+            "grupo": "Peito",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "crucifixo-na-polia-baixa"
+        },
+        {
+            "numero": 11,
+            "nome": "Crucifixo na polia deitado no banco",
+            "grupo": "Peito",
+            "equipamento": "Polia",
+            "tem_video": false,
+            "slug": "crucifixo-na-polia-deitado-no-banco"
+        },
+        {
+            "numero": 12,
+            "nome": "Crucifixo reto",
+            "grupo": "Peito",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "crucifixo-reto"
+        },
+        {
+            "numero": 13,
+            "nome": "Crucifixo unilateral na polia",
+            "grupo": "Peito",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "crucifixo-unilateral-na-polia"
+        },
+        {
+            "numero": 14,
+            "nome": "Flexão com rotação",
+            "grupo": "Peito",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "flexao-com-rotacao"
+        },
+        {
+            "numero": 15,
+            "nome": "Flexão de braço",
+            "grupo": "Peito",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "flexao-de-braco"
+        },
+        {
+            "numero": 16,
+            "nome": "Flexão de braço com abertura na toalha",
+            "grupo": "Peito",
+            "equipamento": "Toalha",
+            "tem_video": true,
+            "slug": "flexao-de-braco-com-abertura-na-toalha"
+        },
+        {
+            "numero": 17,
+            "nome": "Flexão de braço com deslocamento lateral",
+            "grupo": "Peito",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "flexao-de-braco-com-deslocamento-lateral"
+        },
+        {
+            "numero": 18,
+            "nome": "Flexão de braço com joelhos apoiados",
+            "grupo": "Peito",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "flexao-de-braco-com-joelhos-apoiados"
+        },
+        {
+            "numero": 19,
+            "nome": "Flexão de braço com pegada aberta",
+            "grupo": "Peito",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "flexao-de-braco-com-pegada-aberta"
+        },
+        {
+            "numero": 20,
+            "nome": "Flexão de braço declinada",
+            "grupo": "Peito",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "flexao-de-braco-declinada"
+        },
+        {
+            "numero": 21,
+            "nome": "Flexão de braço diamante",
+            "grupo": "Peito",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "flexao-de-braco-diamante"
+        },
+        {
+            "numero": 22,
+            "nome": "Flexão de braço inclinada",
+            "grupo": "Peito",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "flexao-de-braco-inclinada"
+        },
+        {
+            "numero": 23,
+            "nome": "Flexão de braço nas argolas",
+            "grupo": "Peito",
+            "equipamento": "Argolas",
+            "tem_video": true,
+            "slug": "flexao-de-braco-nas-argolas"
+        },
+        {
+            "numero": 24,
+            "nome": "Flexão de braço no TRX",
+            "grupo": "Peito",
+            "equipamento": "TRX",
+            "tem_video": true,
+            "slug": "flexao-de-braco-no-trx"
+        },
+        {
+            "numero": 25,
+            "nome": "Floor press com halteres",
+            "grupo": "Peito",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "floor-press-com-halteres"
+        },
+        {
+            "numero": 26,
+            "nome": "Paralelas (mergulho)",
+            "grupo": "Peito",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "paralelas-mergulho"
+        },
+        {
+            "numero": 27,
+            "nome": "Paralelas com peso",
+            "grupo": "Peito",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "paralelas-com-peso"
+        },
+        {
+            "numero": 28,
+            "nome": "Paralelas nas argolas",
+            "grupo": "Peito",
+            "equipamento": "Argolas",
+            "tem_video": false,
+            "slug": "paralelas-nas-argolas"
+        },
+        {
+            "numero": 29,
+            "nome": "Peck deck (voador)",
+            "grupo": "Peito",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "peck-deck-voador"
+        },
+        {
+            "numero": 30,
+            "nome": "Peck deck inclinado",
+            "grupo": "Peito",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "peck-deck-inclinado"
+        },
+        {
+            "numero": 31,
+            "nome": "Pullover",
+            "grupo": "Peito",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "pullover"
+        },
+        {
+            "numero": 32,
+            "nome": "Pullover com halter",
+            "grupo": "Peito",
+            "equipamento": "Halter",
+            "tem_video": true,
+            "slug": "pullover-com-halter"
+        },
+        {
+            "numero": 33,
+            "nome": "Pullover na polia alta",
+            "grupo": "Peito",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "pullover-na-polia-alta"
+        },
+        {
+            "numero": 34,
+            "nome": "Supino com halteres",
+            "grupo": "Peito",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "supino-com-halteres"
+        },
+        {
+            "numero": 35,
+            "nome": "Supino com pegada fechada",
+            "grupo": "Peito",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "supino-com-pegada-fechada"
+        },
+        {
+            "numero": 36,
+            "nome": "Supino com pegada neutra",
+            "grupo": "Peito",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "supino-com-pegada-neutra"
+        },
+        {
+            "numero": 37,
+            "nome": "Supino declinado",
+            "grupo": "Peito",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "supino-declinado"
+        },
+        {
+            "numero": 38,
+            "nome": "Supino declinado com halteres",
+            "grupo": "Peito",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "supino-declinado-com-halteres"
+        },
+        {
+            "numero": 39,
+            "nome": "Supino declinado na máquina",
+            "grupo": "Peito",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "supino-declinado-na-maquina"
+        },
+        {
+            "numero": 40,
+            "nome": "Supino declinado no smith",
+            "grupo": "Peito",
+            "equipamento": "Smith",
+            "tem_video": true,
+            "slug": "supino-declinado-no-smith"
+        },
+        {
+            "numero": 41,
+            "nome": "Supino inclinado",
+            "grupo": "Peito",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "supino-inclinado"
+        },
+        {
+            "numero": 42,
+            "nome": "Supino inclinado com halteres",
+            "grupo": "Peito",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "supino-inclinado-com-halteres"
+        },
+        {
+            "numero": 43,
+            "nome": "Supino inclinado com pegada neutra",
+            "grupo": "Peito",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "supino-inclinado-com-pegada-neutra"
+        },
+        {
+            "numero": 44,
+            "nome": "Supino inclinado na máquina",
+            "grupo": "Peito",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "supino-inclinado-na-maquina"
+        },
+        {
+            "numero": 45,
+            "nome": "Supino inclinado no smith",
+            "grupo": "Peito",
+            "equipamento": "Smith",
+            "tem_video": true,
+            "slug": "supino-inclinado-no-smith"
+        },
+        {
+            "numero": 46,
+            "nome": "Supino inclinado unilateral com halter",
+            "grupo": "Peito",
+            "equipamento": "Halter",
+            "tem_video": true,
+            "slug": "supino-inclinado-unilateral-com-halter"
+        },
+        {
+            "numero": 47,
+            "nome": "Supino máquina",
+            "grupo": "Peito",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "supino-maquina"
+        },
+        {
+            "numero": 48,
+            "nome": "Supino máquina convergente",
+            "grupo": "Peito",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "supino-maquina-convergente"
+        },
+        {
+            "numero": 49,
+            "nome": "Supino no chão (floor press)",
+            "grupo": "Peito",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "supino-no-chao-floor-press"
+        },
+        {
+            "numero": 50,
+            "nome": "Supino reto",
+            "grupo": "Peito",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "supino-reto"
+        },
+        {
+            "numero": 51,
+            "nome": "Supino reto no smith",
+            "grupo": "Peito",
+            "equipamento": "Smith",
+            "tem_video": true,
+            "slug": "supino-reto-no-smith"
+        },
+        {
+            "numero": 52,
+            "nome": "Voador na máquina unilateral",
+            "grupo": "Peito",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "voador-na-maquina-unilateral"
+        },
+        {
+            "numero": 53,
+            "nome": "Barra fixa (pull-up)",
+            "grupo": "Costas",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "barra-fixa-pull-up"
+        },
+        {
+            "numero": 54,
+            "nome": "Barra fixa com elástico (assistida)",
+            "grupo": "Costas",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "barra-fixa-com-elastico-assistida"
+        },
+        {
+            "numero": 55,
+            "nome": "Barra fixa com peso",
+            "grupo": "Costas",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "barra-fixa-com-peso"
+        },
+        {
+            "numero": 56,
+            "nome": "Barra fixa nas argolas",
+            "grupo": "Costas",
+            "equipamento": "Argolas",
+            "tem_video": true,
+            "slug": "barra-fixa-nas-argolas"
+        },
+        {
+            "numero": 57,
+            "nome": "Barra fixa pegada neutra",
+            "grupo": "Costas",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "barra-fixa-pegada-neutra"
+        },
+        {
+            "numero": 58,
+            "nome": "Barra fixa pegada supinada (chin-up)",
+            "grupo": "Costas",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "barra-fixa-pegada-supinada-chin-up"
+        },
+        {
+            "numero": 59,
+            "nome": "Bom dia com barra",
+            "grupo": "Costas",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "bom-dia-com-barra"
+        },
+        {
+            "numero": 60,
+            "nome": "Encolhimento na polia",
+            "grupo": "Costas",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "encolhimento-na-polia"
+        },
+        {
+            "numero": 61,
+            "nome": "Extensão lombar na máquina",
+            "grupo": "Costas",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "extensao-lombar-na-maquina"
+        },
+        {
+            "numero": 62,
+            "nome": "Face pull",
+            "grupo": "Costas",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "face-pull"
+        },
+        {
+            "numero": 63,
+            "nome": "Face pull com elástico",
+            "grupo": "Costas",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "face-pull-com-elastico"
+        },
+        {
+            "numero": 64,
+            "nome": "Face pull na polia alta",
+            "grupo": "Costas",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "face-pull-na-polia-alta"
+        },
+        {
+            "numero": 65,
+            "nome": "Hiperextensão lombar",
+            "grupo": "Costas",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "hiperextensao-lombar"
+        },
+        {
+            "numero": 66,
+            "nome": "Levantamento terra com halteres",
+            "grupo": "Costas",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "levantamento-terra-com-halteres"
+        },
+        {
+            "numero": 67,
+            "nome": "Levantamento terra com trap bar",
+            "grupo": "Costas",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "levantamento-terra-com-trap-bar"
+        },
+        {
+            "numero": 68,
+            "nome": "Levantamento terra romeno com halteres",
+            "grupo": "Costas",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "levantamento-terra-romeno-com-halteres"
+        },
+        {
+            "numero": 69,
+            "nome": "Levantamento terra sumô",
+            "grupo": "Costas",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "levantamento-terra-sumo"
+        },
+        {
+            "numero": 70,
+            "nome": "Pull-up negativa",
+            "grupo": "Costas",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "pull-up-negativa"
+        },
+        {
+            "numero": 71,
+            "nome": "Pulldown com braços estendidos",
+            "grupo": "Costas",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "pulldown-com-bracos-estendidos"
+        },
+        {
+            "numero": 72,
+            "nome": "Puxada articulada na máquina",
+            "grupo": "Costas",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "puxada-articulada-na-maquina"
+        },
+        {
+            "numero": 73,
+            "nome": "Puxada frontal",
+            "grupo": "Costas",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "puxada-frontal"
+        },
+        {
+            "numero": 74,
+            "nome": "Puxada frontal ajoelhado na polia",
+            "grupo": "Costas",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "puxada-frontal-ajoelhado-na-polia"
+        },
+        {
+            "numero": 75,
+            "nome": "Puxada frontal com pegada em V",
+            "grupo": "Costas",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "puxada-frontal-com-pegada-em-v"
+        },
+        {
+            "numero": 76,
+            "nome": "Puxada frontal pegada aberta",
+            "grupo": "Costas",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "puxada-frontal-pegada-aberta"
+        },
+        {
+            "numero": 77,
+            "nome": "Puxada frontal pegada neutra",
+            "grupo": "Costas",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "puxada-frontal-pegada-neutra"
+        },
+        {
+            "numero": 78,
+            "nome": "Puxada frontal pegada supinada",
+            "grupo": "Costas",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "puxada-frontal-pegada-supinada"
+        },
+        {
+            "numero": 79,
+            "nome": "Puxada frontal unilateral",
+            "grupo": "Costas",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "puxada-frontal-unilateral"
+        },
+        {
+            "numero": 80,
+            "nome": "Puxada na máquina sentado",
+            "grupo": "Costas",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "puxada-na-maquina-sentado"
+        },
+        {
+            "numero": 81,
+            "nome": "Puxada por trás",
+            "grupo": "Costas",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "puxada-por-tras"
+        },
+        {
+            "numero": 82,
+            "nome": "Puxador triângulo",
+            "grupo": "Costas",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "puxador-triangulo"
+        },
+        {
+            "numero": 83,
+            "nome": "Remada alta na polia",
+            "grupo": "Costas",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "remada-alta-na-polia"
+        },
+        {
+            "numero": 84,
+            "nome": "Remada baixa",
+            "grupo": "Costas",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "remada-baixa"
+        },
+        {
+            "numero": 85,
+            "nome": "Remada baixa com corda",
+            "grupo": "Costas",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "remada-baixa-com-corda"
+        },
+        {
+            "numero": 86,
+            "nome": "Remada baixa pegada aberta",
+            "grupo": "Costas",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "remada-baixa-pegada-aberta"
+        },
+        {
+            "numero": 87,
+            "nome": "Remada baixa unilateral",
+            "grupo": "Costas",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "remada-baixa-unilateral"
+        },
+        {
+            "numero": 88,
+            "nome": "Remada cavalinho",
+            "grupo": "Costas",
+            "equipamento": "Barra T",
+            "tem_video": true,
+            "slug": "remada-cavalinho"
+        },
+        {
+            "numero": 89,
+            "nome": "Remada cavalinho com pegada neutra",
+            "grupo": "Costas",
+            "equipamento": "Barra T",
+            "tem_video": true,
+            "slug": "remada-cavalinho-com-pegada-neutra"
+        },
+        {
+            "numero": 90,
+            "nome": "Remada com kettlebell",
+            "grupo": "Costas",
+            "equipamento": "Kettlebell",
+            "tem_video": true,
+            "slug": "remada-com-kettlebell"
+        },
+        {
+            "numero": 91,
+            "nome": "Remada curvada",
+            "grupo": "Costas",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "remada-curvada"
+        },
+        {
+            "numero": 92,
+            "nome": "Remada curvada com halteres",
+            "grupo": "Costas",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "remada-curvada-com-halteres"
+        },
+        {
+            "numero": 93,
+            "nome": "Remada curvada no smith",
+            "grupo": "Costas",
+            "equipamento": "Smith",
+            "tem_video": true,
+            "slug": "remada-curvada-no-smith"
+        },
+        {
+            "numero": 94,
+            "nome": "Remada curvada pegada supinada",
+            "grupo": "Costas",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "remada-curvada-pegada-supinada"
+        },
+        {
+            "numero": 95,
+            "nome": "Remada invertida no TRX",
+            "grupo": "Costas",
+            "equipamento": "TRX",
+            "tem_video": true,
+            "slug": "remada-invertida-no-trx"
+        },
+        {
+            "numero": 96,
+            "nome": "Remada máquina",
+            "grupo": "Costas",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "remada-maquina"
+        },
+        {
+            "numero": 97,
+            "nome": "Remada máquina pegada neutra",
+            "grupo": "Costas",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "remada-maquina-pegada-neutra"
+        },
+        {
+            "numero": 98,
+            "nome": "Remada máquina unilateral",
+            "grupo": "Costas",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "remada-maquina-unilateral"
+        },
+        {
+            "numero": 99,
+            "nome": "Remada nas argolas com pés elevados",
+            "grupo": "Costas",
+            "equipamento": "Argolas",
+            "tem_video": true,
+            "slug": "remada-nas-argolas-com-pes-elevados"
+        },
+        {
+            "numero": 100,
+            "nome": "Remada no banco inclinado",
+            "grupo": "Costas",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "remada-no-banco-inclinado"
+        },
+        {
+            "numero": 101,
+            "nome": "Remada Pendlay",
+            "grupo": "Costas",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "remada-pendlay"
+        },
+        {
+            "numero": 102,
+            "nome": "Remada serrote",
+            "grupo": "Costas",
+            "equipamento": "Halter",
+            "tem_video": true,
+            "slug": "remada-serrote"
+        },
+        {
+            "numero": 103,
+            "nome": "Remada unilateral com halter",
+            "grupo": "Costas",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "remada-unilateral-com-halter"
+        },
+        {
+            "numero": 104,
+            "nome": "Superman no solo",
+            "grupo": "Costas",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "superman-no-solo"
+        },
+        {
+            "numero": 105,
+            "nome": "Crucifixo invertido",
+            "grupo": "Ombros",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "crucifixo-invertido"
+        },
+        {
+            "numero": 106,
+            "nome": "Crucifixo invertido na máquina",
+            "grupo": "Ombros",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "crucifixo-invertido-na-maquina"
+        },
+        {
+            "numero": 107,
+            "nome": "Crucifixo invertido na polia",
+            "grupo": "Ombros",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "crucifixo-invertido-na-polia"
+        },
+        {
+            "numero": 108,
+            "nome": "Crucifixo invertido no banco inclinado",
+            "grupo": "Ombros",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "crucifixo-invertido-no-banco-inclinado"
+        },
+        {
+            "numero": 109,
+            "nome": "Crucifixo invertido sentado curvado",
+            "grupo": "Ombros",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "crucifixo-invertido-sentado-curvado"
+        },
+        {
+            "numero": 110,
+            "nome": "Desenvolvimento alternado com halteres",
+            "grupo": "Ombros",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "desenvolvimento-alternado-com-halteres"
+        },
+        {
+            "numero": 111,
+            "nome": "Desenvolvimento Arnold",
+            "grupo": "Ombros",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "desenvolvimento-arnold"
+        },
+        {
+            "numero": 112,
+            "nome": "Desenvolvimento com halteres",
+            "grupo": "Ombros",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "desenvolvimento-com-halteres"
+        },
+        {
+            "numero": 113,
+            "nome": "Desenvolvimento com pegada neutra",
+            "grupo": "Ombros",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "desenvolvimento-com-pegada-neutra"
+        },
+        {
+            "numero": 114,
+            "nome": "Desenvolvimento em parada de mão na parede",
+            "grupo": "Ombros",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "desenvolvimento-em-parada-de-mao-na-parede"
+        },
+        {
+            "numero": 115,
+            "nome": "Desenvolvimento em pé com halteres",
+            "grupo": "Ombros",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "desenvolvimento-em-pe-com-halteres"
+        },
+        {
+            "numero": 116,
+            "nome": "Desenvolvimento militar",
+            "grupo": "Ombros",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "desenvolvimento-militar"
+        },
+        {
+            "numero": 117,
+            "nome": "Desenvolvimento na máquina",
+            "grupo": "Ombros",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "desenvolvimento-na-maquina"
+        },
+        {
+            "numero": 118,
+            "nome": "Desenvolvimento no smith",
+            "grupo": "Ombros",
+            "equipamento": "Smith",
+            "tem_video": true,
+            "slug": "desenvolvimento-no-smith"
+        },
+        {
+            "numero": 119,
+            "nome": "Desenvolvimento por trás da nuca",
+            "grupo": "Ombros",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "desenvolvimento-por-tras-da-nuca"
+        },
+        {
+            "numero": 120,
+            "nome": "Desenvolvimento sentado com barra",
+            "grupo": "Ombros",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "desenvolvimento-sentado-com-barra"
+        },
+        {
+            "numero": 121,
+            "nome": "Desenvolvimento sentado com halteres",
+            "grupo": "Ombros",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "desenvolvimento-sentado-com-halteres"
+        },
+        {
+            "numero": 122,
+            "nome": "Desenvolvimento unilateral com halter",
+            "grupo": "Ombros",
+            "equipamento": "Halter",
+            "tem_video": true,
+            "slug": "desenvolvimento-unilateral-com-halter"
+        },
+        {
+            "numero": 123,
+            "nome": "Elevação em Y no banco inclinado",
+            "grupo": "Ombros",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "elevacao-em-y-no-banco-inclinado"
+        },
+        {
+            "numero": 124,
+            "nome": "Elevação frontal",
+            "grupo": "Ombros",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "elevacao-frontal"
+        },
+        {
+            "numero": 125,
+            "nome": "Elevação frontal alternada",
+            "grupo": "Ombros",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "elevacao-frontal-alternada"
+        },
+        {
+            "numero": 126,
+            "nome": "Elevação frontal com anilha",
+            "grupo": "Ombros",
+            "equipamento": "Anilha",
+            "tem_video": true,
+            "slug": "elevacao-frontal-com-anilha"
+        },
+        {
+            "numero": 127,
+            "nome": "Elevação frontal com barra",
+            "grupo": "Ombros",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "elevacao-frontal-com-barra"
+        },
+        {
+            "numero": 128,
+            "nome": "Elevação frontal na polia",
+            "grupo": "Ombros",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "elevacao-frontal-na-polia"
+        },
+        {
+            "numero": 129,
+            "nome": "Elevação lateral",
+            "grupo": "Ombros",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "elevacao-lateral"
+        },
+        {
+            "numero": 130,
+            "nome": "Elevação lateral com elástico",
+            "grupo": "Ombros",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "elevacao-lateral-com-elastico"
+        },
+        {
+            "numero": 131,
+            "nome": "Elevação lateral com halteres em pé",
+            "grupo": "Ombros",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "elevacao-lateral-com-halteres-em-pe"
+        },
+        {
+            "numero": 132,
+            "nome": "Elevação lateral na máquina",
+            "grupo": "Ombros",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "elevacao-lateral-na-maquina"
+        },
+        {
+            "numero": 133,
+            "nome": "Elevação lateral na polia",
+            "grupo": "Ombros",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "elevacao-lateral-na-polia"
+        },
+        {
+            "numero": 134,
+            "nome": "Elevação lateral sentado",
+            "grupo": "Ombros",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "elevacao-lateral-sentado"
+        },
+        {
+            "numero": 135,
+            "nome": "Elevação lateral unilateral na polia",
+            "grupo": "Ombros",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "elevacao-lateral-unilateral-na-polia"
+        },
+        {
+            "numero": 136,
+            "nome": "Face pull ajoelhado",
+            "grupo": "Ombros",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "face-pull-ajoelhado"
+        },
+        {
+            "numero": 137,
+            "nome": "Flexão de braço em pique (pike push-up)",
+            "grupo": "Ombros",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "flexao-de-braco-em-pique-pike-push-up"
+        },
+        {
+            "numero": 138,
+            "nome": "Parada de mão na parede",
+            "grupo": "Ombros",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "parada-de-mao-na-parede"
+        },
+        {
+            "numero": 139,
+            "nome": "Press militar estrito",
+            "grupo": "Ombros",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "press-militar-estrito"
+        },
+        {
+            "numero": 140,
+            "nome": "Push press",
+            "grupo": "Ombros",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "push-press"
+        },
+        {
+            "numero": 141,
+            "nome": "Remada alta",
+            "grupo": "Ombros",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "remada-alta"
+        },
+        {
+            "numero": 142,
+            "nome": "Remada alta na polia baixa",
+            "grupo": "Ombros",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "remada-alta-na-polia-baixa"
+        },
+        {
+            "numero": 143,
+            "nome": "Rotação externa com elástico",
+            "grupo": "Ombros",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "rotacao-externa-com-elastico"
+        },
+        {
+            "numero": 144,
+            "nome": "Rotação externa na polia",
+            "grupo": "Ombros",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "rotacao-externa-na-polia"
+        },
+        {
+            "numero": 145,
+            "nome": "Rotação interna na polia",
+            "grupo": "Ombros",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "rotacao-interna-na-polia"
+        },
+        {
+            "numero": 146,
+            "nome": "Rosca 21",
+            "grupo": "Bíceps",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "rosca-21"
+        },
+        {
+            "numero": 147,
+            "nome": "Rosca 21 com halteres",
+            "grupo": "Bíceps",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "rosca-21-com-halteres"
+        },
+        {
+            "numero": 148,
+            "nome": "Rosca alternada",
+            "grupo": "Bíceps",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "rosca-alternada"
+        },
+        {
+            "numero": 149,
+            "nome": "Rosca alternada com rotação",
+            "grupo": "Bíceps",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "rosca-alternada-com-rotacao"
+        },
+        {
+            "numero": 150,
+            "nome": "Rosca bayesiana com o braço atrás do corpo",
+            "grupo": "Bíceps",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "rosca-bayesiana-com-o-braco-atras-do-corpo"
+        },
+        {
+            "numero": 151,
+            "nome": "Rosca com corda na polia baixa",
+            "grupo": "Bíceps",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "rosca-com-corda-na-polia-baixa"
+        },
+        {
+            "numero": 152,
+            "nome": "Rosca concentrada",
+            "grupo": "Bíceps",
+            "equipamento": "Halter",
+            "tem_video": true,
+            "slug": "rosca-concentrada"
+        },
+        {
+            "numero": 153,
+            "nome": "Rosca concentrada na polia",
+            "grupo": "Bíceps",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "rosca-concentrada-na-polia"
+        },
+        {
+            "numero": 154,
+            "nome": "Rosca de bíceps na máquina",
+            "grupo": "Bíceps",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "rosca-de-biceps-na-maquina"
+        },
+        {
+            "numero": 155,
+            "nome": "Rosca de bíceps sentado com halteres",
+            "grupo": "Bíceps",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "rosca-de-biceps-sentado-com-halteres"
+        },
+        {
+            "numero": 156,
+            "nome": "Rosca direta",
+            "grupo": "Bíceps",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "rosca-direta"
+        },
+        {
+            "numero": 157,
+            "nome": "Rosca direta com barra W",
+            "grupo": "Bíceps",
+            "equipamento": "Barra W",
+            "tem_video": true,
+            "slug": "rosca-direta-com-barra-w"
+        },
+        {
+            "numero": 158,
+            "nome": "Rosca direta com elástico",
+            "grupo": "Bíceps",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "rosca-direta-com-elastico"
+        },
+        {
+            "numero": 159,
+            "nome": "Rosca direta com halteres",
+            "grupo": "Bíceps",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "rosca-direta-com-halteres"
+        },
+        {
+            "numero": 160,
+            "nome": "Rosca direta na polia",
+            "grupo": "Bíceps",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "rosca-direta-na-polia"
+        },
+        {
+            "numero": 161,
+            "nome": "Rosca inclinada no banco",
+            "grupo": "Bíceps",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "rosca-inclinada-no-banco"
+        },
+        {
+            "numero": 162,
+            "nome": "Rosca inversa",
+            "grupo": "Bíceps",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "rosca-inversa"
+        },
+        {
+            "numero": 163,
+            "nome": "Rosca invertida na polia",
+            "grupo": "Bíceps",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "rosca-invertida-na-polia"
+        },
+        {
+            "numero": 164,
+            "nome": "Rosca martelo",
+            "grupo": "Bíceps",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "rosca-martelo"
+        },
+        {
+            "numero": 165,
+            "nome": "Rosca martelo alternada",
+            "grupo": "Bíceps",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "rosca-martelo-alternada"
+        },
+        {
+            "numero": 166,
+            "nome": "Rosca martelo na corda",
+            "grupo": "Bíceps",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "rosca-martelo-na-corda"
+        },
+        {
+            "numero": 167,
+            "nome": "Rosca nas argolas",
+            "grupo": "Bíceps",
+            "equipamento": "Argolas",
+            "tem_video": true,
+            "slug": "rosca-nas-argolas"
+        },
+        {
+            "numero": 168,
+            "nome": "Rosca Scott",
+            "grupo": "Bíceps",
+            "equipamento": "Barra W",
+            "tem_video": true,
+            "slug": "rosca-scott"
+        },
+        {
+            "numero": 169,
+            "nome": "Rosca Scott com barra W",
+            "grupo": "Bíceps",
+            "equipamento": "Barra W",
+            "tem_video": true,
+            "slug": "rosca-scott-com-barra-w"
+        },
+        {
+            "numero": 170,
+            "nome": "Rosca Scott com halter unilateral",
+            "grupo": "Bíceps",
+            "equipamento": "Halter",
+            "tem_video": true,
+            "slug": "rosca-scott-com-halter-unilateral"
+        },
+        {
+            "numero": 171,
+            "nome": "Rosca Scott na máquina",
+            "grupo": "Bíceps",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "rosca-scott-na-maquina"
+        },
+        {
+            "numero": 172,
+            "nome": "Rosca spider",
+            "grupo": "Bíceps",
+            "equipamento": "Barra W",
+            "tem_video": true,
+            "slug": "rosca-spider"
+        },
+        {
+            "numero": 173,
+            "nome": "Extensão de tríceps com elástico",
+            "grupo": "Tríceps",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "extensao-de-triceps-com-elastico"
+        },
+        {
+            "numero": 174,
+            "nome": "Extensão de tríceps deitado com halteres neutro",
+            "grupo": "Tríceps",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "extensao-de-triceps-deitado-com-halteres-neutro"
+        },
+        {
+            "numero": 175,
+            "nome": "Extensão de tríceps na máquina",
+            "grupo": "Tríceps",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "extensao-de-triceps-na-maquina"
+        },
+        {
+            "numero": 176,
+            "nome": "Extensão de tríceps nas argolas",
+            "grupo": "Tríceps",
+            "equipamento": "Argolas",
+            "tem_video": true,
+            "slug": "extensao-de-triceps-nas-argolas"
+        },
+        {
+            "numero": 177,
+            "nome": "Extensão de tríceps unilateral",
+            "grupo": "Tríceps",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "extensao-de-triceps-unilateral"
+        },
+        {
+            "numero": 178,
+            "nome": "Flexão diamante para tríceps",
+            "grupo": "Tríceps",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "flexao-diamante-para-triceps"
+        },
+        {
+            "numero": 179,
+            "nome": "Mergulho entre bancos",
+            "grupo": "Tríceps",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "mergulho-entre-bancos"
+        },
+        {
+            "numero": 180,
+            "nome": "Mergulho na máquina assistida",
+            "grupo": "Tríceps",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "mergulho-na-maquina-assistida"
+        },
+        {
+            "numero": 181,
+            "nome": "Mergulho nas argolas",
+            "grupo": "Tríceps",
+            "equipamento": "Argolas",
+            "tem_video": false,
+            "slug": "mergulho-nas-argolas"
+        },
+        {
+            "numero": 182,
+            "nome": "Mergulho nas paralelas",
+            "grupo": "Tríceps",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "mergulho-nas-paralelas"
+        },
+        {
+            "numero": 183,
+            "nome": "Mergulho no banco",
+            "grupo": "Tríceps",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "mergulho-no-banco"
+        },
+        {
+            "numero": 184,
+            "nome": "Supino fechado com halteres",
+            "grupo": "Tríceps",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "supino-fechado-com-halteres"
+        },
+        {
+            "numero": 185,
+            "nome": "Supino fechado no smith",
+            "grupo": "Tríceps",
+            "equipamento": "Smith",
+            "tem_video": true,
+            "slug": "supino-fechado-no-smith"
+        },
+        {
+            "numero": 186,
+            "nome": "Tríceps coice bilateral",
+            "grupo": "Tríceps",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "triceps-coice-bilateral"
+        },
+        {
+            "numero": 187,
+            "nome": "Tríceps coice com halter",
+            "grupo": "Tríceps",
+            "equipamento": "Halter",
+            "tem_video": true,
+            "slug": "triceps-coice-com-halter"
+        },
+        {
+            "numero": 188,
+            "nome": "Tríceps coice na polia",
+            "grupo": "Tríceps",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "triceps-coice-na-polia"
+        },
+        {
+            "numero": 189,
+            "nome": "Tríceps corda",
+            "grupo": "Tríceps",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "triceps-corda"
+        },
+        {
+            "numero": 190,
+            "nome": "Tríceps corda acima da cabeça",
+            "grupo": "Tríceps",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "triceps-corda-acima-da-cabeca"
+        },
+        {
+            "numero": 191,
+            "nome": "Tríceps francês",
+            "grupo": "Tríceps",
+            "equipamento": "Halter",
+            "tem_video": true,
+            "slug": "triceps-frances"
+        },
+        {
+            "numero": 192,
+            "nome": "Tríceps francês na polia",
+            "grupo": "Tríceps",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "triceps-frances-na-polia"
+        },
+        {
+            "numero": 193,
+            "nome": "Tríceps francês sentado com halter",
+            "grupo": "Tríceps",
+            "equipamento": "Halter",
+            "tem_video": true,
+            "slug": "triceps-frances-sentado-com-halter"
+        },
+        {
+            "numero": 194,
+            "nome": "Tríceps francês unilateral",
+            "grupo": "Tríceps",
+            "equipamento": "Halter",
+            "tem_video": true,
+            "slug": "triceps-frances-unilateral"
+        },
+        {
+            "numero": 195,
+            "nome": "Tríceps na máquina unilateral",
+            "grupo": "Tríceps",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "triceps-na-maquina-unilateral"
+        },
+        {
+            "numero": 196,
+            "nome": "Tríceps na polia com barra V",
+            "grupo": "Tríceps",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "triceps-na-polia-com-barra-v"
+        },
+        {
+            "numero": 197,
+            "nome": "Tríceps na polia com pegada cruzada",
+            "grupo": "Tríceps",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "triceps-na-polia-com-pegada-cruzada"
+        },
+        {
+            "numero": 198,
+            "nome": "Tríceps na polia pegada supinada",
+            "grupo": "Tríceps",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "triceps-na-polia-pegada-supinada"
+        },
+        {
+            "numero": 199,
+            "nome": "Tríceps na polia unilateral",
+            "grupo": "Tríceps",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "triceps-na-polia-unilateral"
+        },
+        {
+            "numero": 200,
+            "nome": "Tríceps pulley barra reta",
+            "grupo": "Tríceps",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "triceps-pulley-barra-reta"
+        },
+        {
+            "numero": 201,
+            "nome": "Tríceps testa",
+            "grupo": "Tríceps",
+            "equipamento": "Barra W",
+            "tem_video": true,
+            "slug": "triceps-testa"
+        },
+        {
+            "numero": 202,
+            "nome": "Tríceps testa com barra W",
+            "grupo": "Tríceps",
+            "equipamento": "Barra W",
+            "tem_video": true,
+            "slug": "triceps-testa-com-barra-w"
+        },
+        {
+            "numero": 203,
+            "nome": "Tríceps testa com elástico",
+            "grupo": "Tríceps",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "triceps-testa-com-elastico"
+        },
+        {
+            "numero": 204,
+            "nome": "Tríceps testa com halteres",
+            "grupo": "Tríceps",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "triceps-testa-com-halteres"
+        },
+        {
+            "numero": 205,
+            "nome": "Tríceps testa na polia baixa",
+            "grupo": "Tríceps",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "triceps-testa-na-polia-baixa"
+        },
+        {
+            "numero": 206,
+            "nome": "Farmer walk",
+            "grupo": "Antebraço",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "farmer-walk"
+        },
+        {
+            "numero": 207,
+            "nome": "Rosca de punho",
+            "grupo": "Antebraço",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "rosca-de-punho"
+        },
+        {
+            "numero": 208,
+            "nome": "Rosca de punho com halteres",
+            "grupo": "Antebraço",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "rosca-de-punho-com-halteres"
+        },
+        {
+            "numero": 209,
+            "nome": "Rosca de punho invertida",
+            "grupo": "Antebraço",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "rosca-de-punho-invertida"
+        },
+        {
+            "numero": 210,
+            "nome": "Rosca de punho invertida com halteres",
+            "grupo": "Antebraço",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "rosca-de-punho-invertida-com-halteres"
+        },
+        {
+            "numero": 211,
+            "nome": "Rosca inversa em pé",
+            "grupo": "Antebraço",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "rosca-inversa-em-pe"
+        },
+        {
+            "numero": 212,
+            "nome": "Suspensão na barra (dead hang)",
+            "grupo": "Antebraço",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "suspensao-na-barra-dead-hang"
+        },
+        {
+            "numero": 213,
+            "nome": "Elevação em Y na polia",
+            "grupo": "Trapézio",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "elevacao-em-y-na-polia"
+        },
+        {
+            "numero": 214,
+            "nome": "Encolhimento com halteres",
+            "grupo": "Trapézio",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "encolhimento-com-halteres"
+        },
+        {
+            "numero": 215,
+            "nome": "Encolhimento com kettlebell",
+            "grupo": "Trapézio",
+            "equipamento": "Kettlebell",
+            "tem_video": true,
+            "slug": "encolhimento-com-kettlebell"
+        },
+        {
+            "numero": 216,
+            "nome": "Encolhimento de ombros com barra",
+            "grupo": "Trapézio",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "encolhimento-de-ombros-com-barra"
+        },
+        {
+            "numero": 217,
+            "nome": "Encolhimento inclinado no banco",
+            "grupo": "Trapézio",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "encolhimento-inclinado-no-banco"
+        },
+        {
+            "numero": 218,
+            "nome": "Encolhimento na máquina",
+            "grupo": "Trapézio",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "encolhimento-na-maquina"
+        },
+        {
+            "numero": 219,
+            "nome": "Encolhimento no smith",
+            "grupo": "Trapézio",
+            "equipamento": "Smith",
+            "tem_video": true,
+            "slug": "encolhimento-no-smith"
+        },
+        {
+            "numero": 220,
+            "nome": "Encolhimento unilateral com halter",
+            "grupo": "Trapézio",
+            "equipamento": "Halter",
+            "tem_video": true,
+            "slug": "encolhimento-unilateral-com-halter"
+        },
+        {
+            "numero": 221,
+            "nome": "Puxada alta no cavalete",
+            "grupo": "Trapézio",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "puxada-alta-no-cavalete"
+        },
+        {
+            "numero": 222,
+            "nome": "Remada alta explosiva",
+            "grupo": "Trapézio",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "remada-alta-explosiva"
+        },
+        {
+            "numero": 223,
+            "nome": "Afundo",
+            "grupo": "Pernas",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "afundo"
+        },
+        {
+            "numero": 224,
+            "nome": "Afundo com barra",
+            "grupo": "Pernas",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "afundo-com-barra"
+        },
+        {
+            "numero": 225,
+            "nome": "Afundo com halteres",
+            "grupo": "Pernas",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "afundo-com-halteres"
+        },
+        {
+            "numero": 226,
+            "nome": "Afundo lateral",
+            "grupo": "Pernas",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "afundo-lateral"
+        },
+        {
+            "numero": 227,
+            "nome": "Afundo reverso",
+            "grupo": "Pernas",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "afundo-reverso"
+        },
+        {
+            "numero": 228,
+            "nome": "Afundo reverso com barra",
+            "grupo": "Pernas",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "afundo-reverso-com-barra"
+        },
+        {
+            "numero": 229,
+            "nome": "Agachamento box squat",
+            "grupo": "Pernas",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "agachamento-box-squat"
+        },
+        {
+            "numero": 230,
+            "nome": "Agachamento búlgaro",
+            "grupo": "Pernas",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "agachamento-bulgaro"
+        },
+        {
+            "numero": 231,
+            "nome": "Agachamento búlgaro com halteres",
+            "grupo": "Pernas",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "agachamento-bulgaro-com-halteres"
+        },
+        {
+            "numero": 232,
+            "nome": "Agachamento com barra alta",
+            "grupo": "Pernas",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "agachamento-com-barra-alta"
+        },
+        {
+            "numero": 233,
+            "nome": "Agachamento com barra baixa",
+            "grupo": "Pernas",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "agachamento-com-barra-baixa"
+        },
+        {
+            "numero": 234,
+            "nome": "Agachamento com deslocamento lateral na toalha",
+            "grupo": "Pernas",
+            "equipamento": "Toalha",
+            "tem_video": true,
+            "slug": "agachamento-com-deslocamento-lateral-na-toalha"
+        },
+        {
+            "numero": 235,
+            "nome": "Agachamento com elástico",
+            "grupo": "Pernas",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "agachamento-com-elastico"
+        },
+        {
+            "numero": 236,
+            "nome": "Agachamento com halteres",
+            "grupo": "Pernas",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "agachamento-com-halteres"
+        },
+        {
+            "numero": 237,
+            "nome": "Agachamento com kettlebell (goblet)",
+            "grupo": "Pernas",
+            "equipamento": "Kettlebell",
+            "tem_video": true,
+            "slug": "agachamento-com-kettlebell-goblet"
+        },
+        {
+            "numero": 238,
+            "nome": "Agachamento com peso corporal",
+            "grupo": "Pernas",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "agachamento-com-peso-corporal"
+        },
+        {
+            "numero": 239,
+            "nome": "Agachamento com salto",
+            "grupo": "Pernas",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "agachamento-com-salto"
+        },
+        {
+            "numero": 240,
+            "nome": "Agachamento cossaco",
+            "grupo": "Pernas",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "agachamento-cossaco"
+        },
+        {
+            "numero": 241,
+            "nome": "Agachamento frontal",
+            "grupo": "Pernas",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "agachamento-frontal"
+        },
+        {
+            "numero": 242,
+            "nome": "Agachamento frontal no smith",
+            "grupo": "Pernas",
+            "equipamento": "Smith",
+            "tem_video": true,
+            "slug": "agachamento-frontal-no-smith"
+        },
+        {
+            "numero": 243,
+            "nome": "Agachamento isométrico na parede",
+            "grupo": "Pernas",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "agachamento-isometrico-na-parede"
+        },
+        {
+            "numero": 244,
+            "nome": "Agachamento livre",
+            "grupo": "Pernas",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "agachamento-livre"
+        },
+        {
+            "numero": 245,
+            "nome": "Agachamento livre com halteres (goblet squat)",
+            "grupo": "Pernas",
+            "equipamento": "Halter",
+            "tem_video": true,
+            "slug": "agachamento-livre-com-halteres-goblet-squat"
+        },
+        {
+            "numero": 246,
+            "nome": "Agachamento no smith",
+            "grupo": "Pernas",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "agachamento-no-smith"
+        },
+        {
+            "numero": 247,
+            "nome": "Agachamento no TRX",
+            "grupo": "Pernas",
+            "equipamento": "TRX",
+            "tem_video": true,
+            "slug": "agachamento-no-trx"
+        },
+        {
+            "numero": 248,
+            "nome": "Agachamento pausado",
+            "grupo": "Pernas",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "agachamento-pausado"
+        },
+        {
+            "numero": 249,
+            "nome": "Agachamento sissy",
+            "grupo": "Pernas",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "agachamento-sissy"
+        },
+        {
+            "numero": 250,
+            "nome": "Agachamento sumô com halter",
+            "grupo": "Pernas",
+            "equipamento": "Halter",
+            "tem_video": true,
+            "slug": "agachamento-sumo-com-halter"
+        },
+        {
+            "numero": 251,
+            "nome": "Agachamento sumô com kettlebell",
+            "grupo": "Pernas",
+            "equipamento": "Kettlebell",
+            "tem_video": true,
+            "slug": "agachamento-sumo-com-kettlebell"
+        },
+        {
+            "numero": 252,
+            "nome": "Agachamento unilateral (pistol)",
+            "grupo": "Pernas",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "agachamento-unilateral-pistol"
+        },
+        {
+            "numero": 253,
+            "nome": "Avanço em diagonal",
+            "grupo": "Pernas",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "avanco-em-diagonal"
+        },
+        {
+            "numero": 254,
+            "nome": "Avanço estático",
+            "grupo": "Pernas",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "avanco-estatico"
+        },
+        {
+            "numero": 255,
+            "nome": "Belt squat na máquina",
+            "grupo": "Pernas",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "belt-squat-na-maquina"
+        },
+        {
+            "numero": 256,
+            "nome": "Cadeira extensora",
+            "grupo": "Pernas",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "cadeira-extensora"
+        },
+        {
+            "numero": 257,
+            "nome": "Cadeira extensora unilateral",
+            "grupo": "Pernas",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "cadeira-extensora-unilateral"
+        },
+        {
+            "numero": 258,
+            "nome": "Extensão de joelho com caneleira",
+            "grupo": "Pernas",
+            "equipamento": "Caneleira",
+            "tem_video": true,
+            "slug": "extensao-de-joelho-com-caneleira"
+        },
+        {
+            "numero": 259,
+            "nome": "Hack machine",
+            "grupo": "Pernas",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "hack-machine"
+        },
+        {
+            "numero": 260,
+            "nome": "Leg press 45°",
+            "grupo": "Pernas",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "leg-press-45"
+        },
+        {
+            "numero": 261,
+            "nome": "Leg press 45° unilateral",
+            "grupo": "Pernas",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "leg-press-45-unilateral"
+        },
+        {
+            "numero": 262,
+            "nome": "Leg press horizontal",
+            "grupo": "Pernas",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "leg-press-horizontal"
+        },
+        {
+            "numero": 263,
+            "nome": "Leg press pés afastados",
+            "grupo": "Pernas",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "leg-press-pes-afastados"
+        },
+        {
+            "numero": 264,
+            "nome": "Leg press pés altos",
+            "grupo": "Pernas",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "leg-press-pes-altos"
+        },
+        {
+            "numero": 265,
+            "nome": "Leg press pés baixos",
+            "grupo": "Pernas",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "leg-press-pes-baixos"
+        },
+        {
+            "numero": 266,
+            "nome": "Leg press pés juntos",
+            "grupo": "Pernas",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "leg-press-pes-juntos"
+        },
+        {
+            "numero": 267,
+            "nome": "Leg press unilateral",
+            "grupo": "Pernas",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "leg-press-unilateral"
+        },
+        {
+            "numero": 268,
+            "nome": "Leg press vertical",
+            "grupo": "Pernas",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "leg-press-vertical"
+        },
+        {
+            "numero": 269,
+            "nome": "Passada (walking lunge)",
+            "grupo": "Pernas",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "passada-walking-lunge"
+        },
+        {
+            "numero": 270,
+            "nome": "Passada com barra",
+            "grupo": "Pernas",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "passada-com-barra"
+        },
+        {
+            "numero": 271,
+            "nome": "Passada com halteres",
+            "grupo": "Pernas",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "passada-com-halteres"
+        },
+        {
+            "numero": 272,
+            "nome": "Subida no step (step-up)",
+            "grupo": "Pernas",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "subida-no-step-step-up"
+        },
+        {
+            "numero": 273,
+            "nome": "Subida no step lateral",
+            "grupo": "Pernas",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "subida-no-step-lateral"
+        },
+        {
+            "numero": 274,
+            "nome": "Terra sumô com halteres",
+            "grupo": "Pernas",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "terra-sumo-com-halteres"
+        },
+        {
+            "numero": 275,
+            "nome": "Balanço com kettlebell (swing)",
+            "grupo": "Posterior",
+            "equipamento": "Kettlebell",
+            "tem_video": true,
+            "slug": "balanco-com-kettlebell-swing"
+        },
+        {
+            "numero": 276,
+            "nome": "Bom dia sentado",
+            "grupo": "Posterior",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "bom-dia-sentado"
+        },
+        {
+            "numero": 277,
+            "nome": "Cadeira flexora",
+            "grupo": "Posterior",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "cadeira-flexora"
+        },
+        {
+            "numero": 278,
+            "nome": "Cadeira flexora unilateral",
+            "grupo": "Posterior",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "cadeira-flexora-unilateral"
+        },
+        {
+            "numero": 279,
+            "nome": "Elevação pélvica com perna estendida",
+            "grupo": "Posterior",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "elevacao-pelvica-com-perna-estendida"
+        },
+        {
+            "numero": 280,
+            "nome": "Extensão de quadril na polia",
+            "grupo": "Posterior",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "extensao-de-quadril-na-polia"
+        },
+        {
+            "numero": 281,
+            "nome": "Flexão de joelho com caneleira",
+            "grupo": "Posterior",
+            "equipamento": "Caneleira",
+            "tem_video": true,
+            "slug": "flexao-de-joelho-com-caneleira"
+        },
+        {
+            "numero": 282,
+            "nome": "Flexão nórdica",
+            "grupo": "Posterior",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "flexao-nordica"
+        },
+        {
+            "numero": 283,
+            "nome": "Flexora em pé na máquina",
+            "grupo": "Posterior",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "flexora-em-pe-na-maquina"
+        },
+        {
+            "numero": 284,
+            "nome": "Glute ham raise",
+            "grupo": "Posterior",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "glute-ham-raise"
+        },
+        {
+            "numero": 285,
+            "nome": "Good morning",
+            "grupo": "Posterior",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "good-morning"
+        },
+        {
+            "numero": 286,
+            "nome": "Good morning no smith",
+            "grupo": "Posterior",
+            "equipamento": "Smith",
+            "tem_video": true,
+            "slug": "good-morning-no-smith"
+        },
+        {
+            "numero": 287,
+            "nome": "Hiperextensão com foco em posterior",
+            "grupo": "Posterior",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "hiperextensao-com-foco-em-posterior"
+        },
+        {
+            "numero": 288,
+            "nome": "Levantamento terra",
+            "grupo": "Posterior",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "levantamento-terra"
+        },
+        {
+            "numero": 289,
+            "nome": "Levantamento terra romeno",
+            "grupo": "Posterior",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "levantamento-terra-romeno"
+        },
+        {
+            "numero": 290,
+            "nome": "Levantamento terra romeno unilateral",
+            "grupo": "Posterior",
+            "equipamento": "Halter",
+            "tem_video": true,
+            "slug": "levantamento-terra-romeno-unilateral"
+        },
+        {
+            "numero": 291,
+            "nome": "Mesa flexora",
+            "grupo": "Posterior",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "mesa-flexora"
+        },
+        {
+            "numero": 292,
+            "nome": "Mesa flexora com pausa",
+            "grupo": "Posterior",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "mesa-flexora-com-pausa"
+        },
+        {
+            "numero": 293,
+            "nome": "Mesa flexora unilateral",
+            "grupo": "Posterior",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "mesa-flexora-unilateral"
+        },
+        {
+            "numero": 294,
+            "nome": "Ponte de glúteo com uma perna",
+            "grupo": "Posterior",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "ponte-de-gluteo-com-uma-perna"
+        },
+        {
+            "numero": 295,
+            "nome": "Stiff",
+            "grupo": "Posterior",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "stiff"
+        },
+        {
+            "numero": 296,
+            "nome": "Stiff com halteres",
+            "grupo": "Posterior",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "stiff-com-halteres"
+        },
+        {
+            "numero": 297,
+            "nome": "Stiff no smith",
+            "grupo": "Posterior",
+            "equipamento": "Smith",
+            "tem_video": true,
+            "slug": "stiff-no-smith"
+        },
+        {
+            "numero": 298,
+            "nome": "Stiff unilateral",
+            "grupo": "Posterior",
+            "equipamento": "Halter",
+            "tem_video": true,
+            "slug": "stiff-unilateral"
+        },
+        {
+            "numero": 299,
+            "nome": "Terra romeno com elástico",
+            "grupo": "Posterior",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "terra-romeno-com-elastico"
+        },
+        {
+            "numero": 300,
+            "nome": "Terra romeno com kettlebell",
+            "grupo": "Posterior",
+            "equipamento": "Kettlebell",
+            "tem_video": true,
+            "slug": "terra-romeno-com-kettlebell"
+        },
+        {
+            "numero": 301,
+            "nome": "Abdução com elástico deitado (clamshell)",
+            "grupo": "Glúteos",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "abducao-com-elastico-deitado-clamshell"
+        },
+        {
+            "numero": 302,
+            "nome": "Abdução de quadril deitado de lado",
+            "grupo": "Glúteos",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "abducao-de-quadril-deitado-de-lado"
+        },
+        {
+            "numero": 303,
+            "nome": "Abdução de quadril na máquina",
+            "grupo": "Glúteos",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "abducao-de-quadril-na-maquina"
+        },
+        {
+            "numero": 304,
+            "nome": "Abdução de quadril na polia",
+            "grupo": "Glúteos",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "abducao-de-quadril-na-polia"
+        },
+        {
+            "numero": 305,
+            "nome": "Abdução em pé com elástico",
+            "grupo": "Glúteos",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "abducao-em-pe-com-elastico"
+        },
+        {
+            "numero": 306,
+            "nome": "Adução de quadril na polia",
+            "grupo": "Glúteos",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "aducao-de-quadril-na-polia"
+        },
+        {
+            "numero": 307,
+            "nome": "Agachamento búlgaro com foco em glúteo",
+            "grupo": "Glúteos",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "agachamento-bulgaro-com-foco-em-gluteo"
+        },
+        {
+            "numero": 308,
+            "nome": "Agachamento com elástico nos joelhos",
+            "grupo": "Glúteos",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "agachamento-com-elastico-nos-joelhos"
+        },
+        {
+            "numero": 309,
+            "nome": "Agachamento sumô profundo",
+            "grupo": "Glúteos",
+            "equipamento": "Halter",
+            "tem_video": true,
+            "slug": "agachamento-sumo-profundo"
+        },
+        {
+            "numero": 310,
+            "nome": "Cadeira abdutora",
+            "grupo": "Glúteos",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "cadeira-abdutora"
+        },
+        {
+            "numero": 311,
+            "nome": "Cadeira adutora",
+            "grupo": "Glúteos",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "cadeira-adutora"
+        },
+        {
+            "numero": 312,
+            "nome": "Caminhada lateral com elástico",
+            "grupo": "Glúteos",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "caminhada-lateral-com-elastico"
+        },
+        {
+            "numero": 313,
+            "nome": "Chute de glúteo na polia (kickback)",
+            "grupo": "Glúteos",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "chute-de-gluteo-na-polia-kickback"
+        },
+        {
+            "numero": 314,
+            "nome": "Coice de glúteo com caneleira",
+            "grupo": "Glúteos",
+            "equipamento": "Caneleira",
+            "tem_video": true,
+            "slug": "coice-de-gluteo-com-caneleira"
+        },
+        {
+            "numero": 315,
+            "nome": "Coice de glúteo com elástico",
+            "grupo": "Glúteos",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "coice-de-gluteo-com-elastico"
+        },
+        {
+            "numero": 316,
+            "nome": "Coice de glúteo na máquina",
+            "grupo": "Glúteos",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "coice-de-gluteo-na-maquina"
+        },
+        {
+            "numero": 317,
+            "nome": "Elevação de quadril (hip thrust)",
+            "grupo": "Glúteos",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "elevacao-de-quadril-hip-thrust"
+        },
+        {
+            "numero": 318,
+            "nome": "Elevação de quadril com elástico",
+            "grupo": "Glúteos",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "elevacao-de-quadril-com-elastico"
+        },
+        {
+            "numero": 319,
+            "nome": "Elevação de quadril com halter",
+            "grupo": "Glúteos",
+            "equipamento": "Halter",
+            "tem_video": true,
+            "slug": "elevacao-de-quadril-com-halter"
+        },
+        {
+            "numero": 320,
+            "nome": "Elevação de quadril com pés no banco",
+            "grupo": "Glúteos",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "elevacao-de-quadril-com-pes-no-banco"
+        },
+        {
+            "numero": 321,
+            "nome": "Elevação de quadril na máquina",
+            "grupo": "Glúteos",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "elevacao-de-quadril-na-maquina"
+        },
+        {
+            "numero": 322,
+            "nome": "Elevação de quadril no smith",
+            "grupo": "Glúteos",
+            "equipamento": "Smith",
+            "tem_video": true,
+            "slug": "elevacao-de-quadril-no-smith"
+        },
+        {
+            "numero": 323,
+            "nome": "Elevação de quadril unilateral",
+            "grupo": "Glúteos",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "elevacao-de-quadril-unilateral"
+        },
+        {
+            "numero": 324,
+            "nome": "Extensão de quadril em quatro apoios",
+            "grupo": "Glúteos",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "extensao-de-quadril-em-quatro-apoios"
+        },
+        {
+            "numero": 325,
+            "nome": "Fire hydrant",
+            "grupo": "Glúteos",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "fire-hydrant"
+        },
+        {
+            "numero": 326,
+            "nome": "Frog pump",
+            "grupo": "Glúteos",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "frog-pump"
+        },
+        {
+            "numero": 327,
+            "nome": "Glúteo no cabo (coice)",
+            "grupo": "Glúteos",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "gluteo-no-cabo-coice"
+        },
+        {
+            "numero": 328,
+            "nome": "Glúteo quatro apoios",
+            "grupo": "Glúteos",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "gluteo-quatro-apoios"
+        },
+        {
+            "numero": 329,
+            "nome": "Passada profunda para glúteo",
+            "grupo": "Glúteos",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "passada-profunda-para-gluteo"
+        },
+        {
+            "numero": 330,
+            "nome": "Ponte de glúteo com barra",
+            "grupo": "Glúteos",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "ponte-de-gluteo-com-barra"
+        },
+        {
+            "numero": 331,
+            "nome": "Ponte de glúteo com elevação alternada",
+            "grupo": "Glúteos",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "ponte-de-gluteo-com-elevacao-alternada"
+        },
+        {
+            "numero": 332,
+            "nome": "Ponte de glúteo no solo",
+            "grupo": "Glúteos",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "ponte-de-gluteo-no-solo"
+        },
+        {
+            "numero": 333,
+            "nome": "Subida no step alta para glúteo",
+            "grupo": "Glúteos",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "subida-no-step-alta-para-gluteo"
+        },
+        {
+            "numero": 334,
+            "nome": "Panturrilha burro (donkey calf)",
+            "grupo": "Panturrilha",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "panturrilha-burro-donkey-calf"
+        },
+        {
+            "numero": 335,
+            "nome": "Panturrilha com pés para dentro",
+            "grupo": "Panturrilha",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "panturrilha-com-pes-para-dentro"
+        },
+        {
+            "numero": 336,
+            "nome": "Panturrilha com pés para fora",
+            "grupo": "Panturrilha",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "panturrilha-com-pes-para-fora"
+        },
+        {
+            "numero": 337,
+            "nome": "Panturrilha em pé",
+            "grupo": "Panturrilha",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "panturrilha-em-pe"
+        },
+        {
+            "numero": 338,
+            "nome": "Panturrilha em pé com halteres",
+            "grupo": "Panturrilha",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "panturrilha-em-pe-com-halteres"
+        },
+        {
+            "numero": 339,
+            "nome": "Panturrilha em pé na máquina",
+            "grupo": "Panturrilha",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "panturrilha-em-pe-na-maquina"
+        },
+        {
+            "numero": 340,
+            "nome": "Panturrilha em pé no step",
+            "grupo": "Panturrilha",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "panturrilha-em-pe-no-step"
+        },
+        {
+            "numero": 341,
+            "nome": "Panturrilha no leg press",
+            "grupo": "Panturrilha",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "panturrilha-no-leg-press"
+        },
+        {
+            "numero": 342,
+            "nome": "Panturrilha no smith",
+            "grupo": "Panturrilha",
+            "equipamento": "Smith",
+            "tem_video": true,
+            "slug": "panturrilha-no-smith"
+        },
+        {
+            "numero": 343,
+            "nome": "Panturrilha sentado",
+            "grupo": "Panturrilha",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "panturrilha-sentado"
+        },
+        {
+            "numero": 344,
+            "nome": "Panturrilha sentado com anilha",
+            "grupo": "Panturrilha",
+            "equipamento": "Anilha",
+            "tem_video": true,
+            "slug": "panturrilha-sentado-com-anilha"
+        },
+        {
+            "numero": 345,
+            "nome": "Panturrilha sentado unilateral",
+            "grupo": "Panturrilha",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "panturrilha-sentado-unilateral"
+        },
+        {
+            "numero": 346,
+            "nome": "Panturrilha unilateral com halter",
+            "grupo": "Panturrilha",
+            "equipamento": "Halter",
+            "tem_video": true,
+            "slug": "panturrilha-unilateral-com-halter"
+        },
+        {
+            "numero": 347,
+            "nome": "Panturrilha unilateral no leg press",
+            "grupo": "Panturrilha",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "panturrilha-unilateral-no-leg-press"
+        },
+        {
+            "numero": 348,
+            "nome": "Tibial anterior com elástico",
+            "grupo": "Panturrilha",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "tibial-anterior-com-elastico"
+        },
+        {
+            "numero": 349,
+            "nome": "Abdominal bicicleta",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "abdominal-bicicleta"
+        },
+        {
+            "numero": 350,
+            "nome": "Abdominal canivete",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "abdominal-canivete"
+        },
+        {
+            "numero": 351,
+            "nome": "Abdominal declinado",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "abdominal-declinado"
+        },
+        {
+            "numero": 352,
+            "nome": "Abdominal infra (elevação de pernas)",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "abdominal-infra-elevacao-de-pernas"
+        },
+        {
+            "numero": 353,
+            "nome": "Abdominal na máquina com carga",
+            "grupo": "Core",
+            "equipamento": "Máquina",
+            "tem_video": true,
+            "slug": "abdominal-na-maquina-com-carga"
+        },
+        {
+            "numero": 354,
+            "nome": "Abdominal na polia alta (ajoelhado)",
+            "grupo": "Core",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "abdominal-na-polia-alta-ajoelhado"
+        },
+        {
+            "numero": 355,
+            "nome": "Abdominal oblíquo",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "abdominal-obliquo"
+        },
+        {
+            "numero": 356,
+            "nome": "Abdominal oblíquo na polia",
+            "grupo": "Core",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "abdominal-obliquo-na-polia"
+        },
+        {
+            "numero": 357,
+            "nome": "Abdominal remador",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "abdominal-remador"
+        },
+        {
+            "numero": 358,
+            "nome": "Abdominal supra (crunch)",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "abdominal-supra-crunch"
+        },
+        {
+            "numero": 359,
+            "nome": "Abdominal supra com pés apoiados",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "abdominal-supra-com-pes-apoiados"
+        },
+        {
+            "numero": 360,
+            "nome": "Abdominal V-up",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "abdominal-v-up"
+        },
+        {
+            "numero": 361,
+            "nome": "Bird dog",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "bird-dog"
+        },
+        {
+            "numero": 362,
+            "nome": "Dead bug",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "dead-bug"
+        },
+        {
+            "numero": 363,
+            "nome": "Dragon flag",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "dragon-flag"
+        },
+        {
+            "numero": 364,
+            "nome": "Elevação de joelhos suspenso",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "elevacao-de-joelhos-suspenso"
+        },
+        {
+            "numero": 365,
+            "nome": "Elevação de pernas no banco",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "elevacao-de-pernas-no-banco"
+        },
+        {
+            "numero": 366,
+            "nome": "Elevação de pernas suspenso na barra",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "elevacao-de-pernas-suspenso-na-barra"
+        },
+        {
+            "numero": 367,
+            "nome": "Flexão lateral com halter",
+            "grupo": "Core",
+            "equipamento": "Halter",
+            "tem_video": true,
+            "slug": "flexao-lateral-com-halter"
+        },
+        {
+            "numero": 368,
+            "nome": "Hollow hold",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "hollow-hold"
+        },
+        {
+            "numero": 369,
+            "nome": "Hollow rock",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "hollow-rock"
+        },
+        {
+            "numero": 370,
+            "nome": "L-sit nas paralelas",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "l-sit-nas-paralelas"
+        },
+        {
+            "numero": 371,
+            "nome": "L-sit no solo",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "l-sit-no-solo"
+        },
+        {
+            "numero": 372,
+            "nome": "Limpador de para-brisa suspenso na barra",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "limpador-de-para-brisa-suspenso-na-barra"
+        },
+        {
+            "numero": 373,
+            "nome": "Mountain climber lento",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "mountain-climber-lento"
+        },
+        {
+            "numero": 374,
+            "nome": "Pallof press",
+            "grupo": "Core",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "pallof-press"
+        },
+        {
+            "numero": 375,
+            "nome": "Prancha abdominal",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "prancha-abdominal"
+        },
+        {
+            "numero": 376,
+            "nome": "Prancha alta",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "prancha-alta"
+        },
+        {
+            "numero": 377,
+            "nome": "Prancha com abertura de pernas na toalha",
+            "grupo": "Core",
+            "equipamento": "Toalha",
+            "tem_video": true,
+            "slug": "prancha-com-abertura-de-pernas-na-toalha"
+        },
+        {
+            "numero": 378,
+            "nome": "Prancha com apoio dos antebraços",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "prancha-com-apoio-dos-antebracos"
+        },
+        {
+            "numero": 379,
+            "nome": "Prancha com deslizamento de braços na toalha",
+            "grupo": "Core",
+            "equipamento": "Toalha",
+            "tem_video": true,
+            "slug": "prancha-com-deslizamento-de-bracos-na-toalha"
+        },
+        {
+            "numero": 380,
+            "nome": "Prancha com elevação de braço",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "prancha-com-elevacao-de-braco"
+        },
+        {
+            "numero": 381,
+            "nome": "Prancha com elevação de perna",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "prancha-com-elevacao-de-perna"
+        },
+        {
+            "numero": 382,
+            "nome": "Prancha com remada (renegade)",
+            "grupo": "Core",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "prancha-com-remada-renegade"
+        },
+        {
+            "numero": 383,
+            "nome": "Prancha com toque no ombro",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "prancha-com-toque-no-ombro"
+        },
+        {
+            "numero": 384,
+            "nome": "Prancha dinâmica (up-down)",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "prancha-dinamica-up-down"
+        },
+        {
+            "numero": 385,
+            "nome": "Prancha lateral com elevação de quadril",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "prancha-lateral-com-elevacao-de-quadril"
+        },
+        {
+            "numero": 386,
+            "nome": "Prancha lateral com rotação",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "prancha-lateral-com-rotacao"
+        },
+        {
+            "numero": 387,
+            "nome": "Roda abdominal (ab wheel)",
+            "grupo": "Core",
+            "equipamento": "Equipamento",
+            "tem_video": true,
+            "slug": "roda-abdominal-ab-wheel"
+        },
+        {
+            "numero": 388,
+            "nome": "Roda abdominal ajoelhado",
+            "grupo": "Core",
+            "equipamento": "Equipamento",
+            "tem_video": true,
+            "slug": "roda-abdominal-ajoelhado"
+        },
+        {
+            "numero": 389,
+            "nome": "Rollout na barra",
+            "grupo": "Core",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "rollout-na-barra"
+        },
+        {
+            "numero": 390,
+            "nome": "Rotação de tronco na polia (woodchop)",
+            "grupo": "Core",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "rotacao-de-tronco-na-polia-woodchop"
+        },
+        {
+            "numero": 391,
+            "nome": "Rotação russa (russian twist)",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "rotacao-russa-russian-twist"
+        },
+        {
+            "numero": 392,
+            "nome": "Rotação russa com medicine ball",
+            "grupo": "Core",
+            "equipamento": "Medicine ball",
+            "tem_video": true,
+            "slug": "rotacao-russa-com-medicine-ball"
+        },
+        {
+            "numero": 393,
+            "nome": "Serra abdominal na toalha",
+            "grupo": "Core",
+            "equipamento": "Toalha",
+            "tem_video": true,
+            "slug": "serra-abdominal-na-toalha"
+        },
+        {
+            "numero": 394,
+            "nome": "Sit-up completo",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "sit-up-completo"
+        },
+        {
+            "numero": 395,
+            "nome": "Toes to bar",
+            "grupo": "Core",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "toes-to-bar"
+        },
+        {
+            "numero": 396,
+            "nome": "Agachamento com salto sobre a caixa",
+            "grupo": "Funcional",
+            "equipamento": "Step",
+            "tem_video": true,
+            "slug": "agachamento-com-salto-sobre-a-caixa"
+        },
+        {
+            "numero": 397,
+            "nome": "Arremesso de medicine ball no solo",
+            "grupo": "Funcional",
+            "equipamento": "Medicine ball",
+            "tem_video": true,
+            "slug": "arremesso-de-medicine-ball-no-solo"
+        },
+        {
+            "numero": 398,
+            "nome": "Assault bike",
+            "grupo": "Funcional",
+            "equipamento": "Bicicleta",
+            "tem_video": true,
+            "slug": "assault-bike"
+        },
+        {
+            "numero": 399,
+            "nome": "Back lever progressivo",
+            "grupo": "Funcional",
+            "equipamento": "Peso corporal",
+            "tem_video": false,
+            "slug": "back-lever-progressivo"
+        },
+        {
+            "numero": 400,
+            "nome": "Battle rope com agachamento",
+            "grupo": "Funcional",
+            "equipamento": "Corda",
+            "tem_video": true,
+            "slug": "battle-rope-com-agachamento"
+        },
+        {
+            "numero": 401,
+            "nome": "Bear crawl",
+            "grupo": "Funcional",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "bear-crawl"
+        },
+        {
+            "numero": 402,
+            "nome": "Bicicleta ergométrica",
+            "grupo": "Funcional",
+            "equipamento": "Bicicleta",
+            "tem_video": true,
+            "slug": "bicicleta-ergometrica"
+        },
+        {
+            "numero": 403,
+            "nome": "Burpee com flexão",
+            "grupo": "Funcional",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "burpee-com-flexao"
+        },
+        {
+            "numero": 404,
+            "nome": "Burpee com salto na caixa",
+            "grupo": "Funcional",
+            "equipamento": "Step",
+            "tem_video": true,
+            "slug": "burpee-com-salto-na-caixa"
+        },
+        {
+            "numero": 405,
+            "nome": "Burpee sem flexão",
+            "grupo": "Funcional",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "burpee-sem-flexao"
+        },
+        {
+            "numero": 406,
+            "nome": "Caminhada inclinada na esteira",
+            "grupo": "Funcional",
+            "equipamento": "Esteira",
+            "tem_video": true,
+            "slug": "caminhada-inclinada-na-esteira"
+        },
+        {
+            "numero": 407,
+            "nome": "Clean and press com barra",
+            "grupo": "Funcional",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "clean-and-press-com-barra"
+        },
+        {
+            "numero": 408,
+            "nome": "Clean com kettlebell",
+            "grupo": "Funcional",
+            "equipamento": "Kettlebell",
+            "tem_video": true,
+            "slug": "clean-com-kettlebell"
+        },
+        {
+            "numero": 409,
+            "nome": "Corda naval alternada",
+            "grupo": "Funcional",
+            "equipamento": "Corda",
+            "tem_video": true,
+            "slug": "corda-naval-alternada"
+        },
+        {
+            "numero": 410,
+            "nome": "Corda naval simultânea",
+            "grupo": "Funcional",
+            "equipamento": "Corda",
+            "tem_video": true,
+            "slug": "corda-naval-simultanea"
+        },
+        {
+            "numero": 411,
+            "nome": "Corrida com calcanhar no glúteo",
+            "grupo": "Funcional",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "corrida-com-calcanhar-no-gluteo"
+        },
+        {
+            "numero": 412,
+            "nome": "Corrida com elevação de joelhos",
+            "grupo": "Funcional",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "corrida-com-elevacao-de-joelhos"
+        },
+        {
+            "numero": 413,
+            "nome": "Corrida de vai e vem (shuttle run)",
+            "grupo": "Funcional",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "corrida-de-vai-e-vem-shuttle-run"
+        },
+        {
+            "numero": 414,
+            "nome": "Corrida estacionária",
+            "grupo": "Funcional",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "corrida-estacionaria"
+        },
+        {
+            "numero": 415,
+            "nome": "Corrida na esteira",
+            "grupo": "Funcional",
+            "equipamento": "Esteira",
+            "tem_video": true,
+            "slug": "corrida-na-esteira"
+        },
+        {
+            "numero": 416,
+            "nome": "Deslocamento lateral (skater)",
+            "grupo": "Funcional",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "deslocamento-lateral-skater"
+        },
+        {
+            "numero": 417,
+            "nome": "Devil press com halteres",
+            "grupo": "Funcional",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "devil-press-com-halteres"
+        },
+        {
+            "numero": 418,
+            "nome": "Elíptico",
+            "grupo": "Funcional",
+            "equipamento": "Equipamento",
+            "tem_video": true,
+            "slug": "eliptico"
+        },
+        {
+            "numero": 419,
+            "nome": "Flexão em pseudo planche",
+            "grupo": "Funcional",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "flexao-em-pseudo-planche"
+        },
+        {
+            "numero": 420,
+            "nome": "Front lever progressivo",
+            "grupo": "Funcional",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "front-lever-progressivo"
+        },
+        {
+            "numero": 421,
+            "nome": "Man maker com halteres",
+            "grupo": "Funcional",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "man-maker-com-halteres"
+        },
+        {
+            "numero": 422,
+            "nome": "Muscle-up na barra",
+            "grupo": "Funcional",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "muscle-up-na-barra"
+        },
+        {
+            "numero": 423,
+            "nome": "Muscle-up nas argolas",
+            "grupo": "Funcional",
+            "equipamento": "Argolas",
+            "tem_video": false,
+            "slug": "muscle-up-nas-argolas"
+        },
+        {
+            "numero": 424,
+            "nome": "Polichinelo com agachamento",
+            "grupo": "Funcional",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "polichinelo-com-agachamento"
+        },
+        {
+            "numero": 425,
+            "nome": "Pular corda alternando os pés",
+            "grupo": "Funcional",
+            "equipamento": "Corda",
+            "tem_video": true,
+            "slug": "pular-corda-alternando-os-pes"
+        },
+        {
+            "numero": 426,
+            "nome": "Pular corda duplo",
+            "grupo": "Funcional",
+            "equipamento": "Corda",
+            "tem_video": true,
+            "slug": "pular-corda-duplo"
+        },
+        {
+            "numero": 427,
+            "nome": "Remo ergômetro",
+            "grupo": "Funcional",
+            "equipamento": "Remo",
+            "tem_video": true,
+            "slug": "remo-ergometro"
+        },
+        {
+            "numero": 428,
+            "nome": "Salto com afundo alternado",
+            "grupo": "Funcional",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "salto-com-afundo-alternado"
+        },
+        {
+            "numero": 429,
+            "nome": "Salto horizontal",
+            "grupo": "Funcional",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "salto-horizontal"
+        },
+        {
+            "numero": 430,
+            "nome": "Salto no step alternado",
+            "grupo": "Funcional",
+            "equipamento": "Step",
+            "tem_video": true,
+            "slug": "salto-no-step-alternado"
+        },
+        {
+            "numero": 431,
+            "nome": "Salto vertical",
+            "grupo": "Funcional",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "salto-vertical"
+        },
+        {
+            "numero": 432,
+            "nome": "Sprint na esteira",
+            "grupo": "Funcional",
+            "equipamento": "Esteira",
+            "tem_video": true,
+            "slug": "sprint-na-esteira"
+        },
+        {
+            "numero": 433,
+            "nome": "Swing com kettlebell americano",
+            "grupo": "Funcional",
+            "equipamento": "Kettlebell",
+            "tem_video": true,
+            "slug": "swing-com-kettlebell-americano"
+        },
+        {
+            "numero": 434,
+            "nome": "Thruster com barra",
+            "grupo": "Funcional",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "thruster-com-barra"
+        },
+        {
+            "numero": 435,
+            "nome": "Thruster com halteres",
+            "grupo": "Funcional",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "thruster-com-halteres"
+        },
+        {
+            "numero": 436,
+            "nome": "Turkish get-up",
+            "grupo": "Funcional",
+            "equipamento": "Kettlebell",
+            "tem_video": true,
+            "slug": "turkish-get-up"
+        },
+        {
+            "numero": 437,
+            "nome": "Wall ball",
+            "grupo": "Funcional",
+            "equipamento": "Medicine ball",
+            "tem_video": true,
+            "slug": "wall-ball"
+        },
+        {
+            "numero": 438,
+            "nome": "Aceleração de 5 metros com mudança de direção",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "aceleracao-de-5-metros-com-mudanca-de-direcao"
+        },
+        {
+            "numero": 439,
+            "nome": "Aceleração de braço com elástico para arremesso",
+            "grupo": "Esportivo",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "aceleracao-de-braco-com-elastico-para-arremesso"
+        },
+        {
+            "numero": 440,
+            "nome": "Agachamento em base de surf com rotação",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "agachamento-em-base-de-surf-com-rotacao"
+        },
+        {
+            "numero": 441,
+            "nome": "Arranque de 10 metros a partir da posição deitada",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "arranque-de-10-metros-a-partir-da-posicao-deitada"
+        },
+        {
+            "numero": 442,
+            "nome": "Arremesso acima da cabeça com medicine ball",
+            "grupo": "Esportivo",
+            "equipamento": "Medicine ball",
+            "tem_video": true,
+            "slug": "arremesso-acima-da-cabeca-com-medicine-ball"
+        },
+        {
+            "numero": 443,
+            "nome": "Arremesso rotacional de medicine ball na parede",
+            "grupo": "Esportivo",
+            "equipamento": "Medicine ball",
+            "tem_video": true,
+            "slug": "arremesso-rotacional-de-medicine-ball-na-parede"
+        },
+        {
+            "numero": 444,
+            "nome": "Aterrissagem de salto em profundidade (drop jump)",
+            "grupo": "Esportivo",
+            "equipamento": "Step",
+            "tem_video": true,
+            "slug": "aterrissagem-de-salto-em-profundidade-drop-jump"
+        },
+        {
+            "numero": 445,
+            "nome": "Batida de pernas no banco",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "batida-de-pernas-no-banco"
+        },
+        {
+            "numero": 446,
+            "nome": "Bloqueio duplo com salto lateral",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "bloqueio-duplo-com-salto-lateral"
+        },
+        {
+            "numero": 447,
+            "nome": "Chute com resistência de elástico",
+            "grupo": "Esportivo",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "chute-com-resistencia-de-elastico"
+        },
+        {
+            "numero": 448,
+            "nome": "Chute interno resistido no elástico",
+            "grupo": "Esportivo",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "chute-interno-resistido-no-elastico"
+        },
+        {
+            "numero": 449,
+            "nome": "Condução de bola em ziguezague",
+            "grupo": "Esportivo",
+            "equipamento": "Bola",
+            "tem_video": true,
+            "slug": "conducao-de-bola-em-ziguezague"
+        },
+        {
+            "numero": 450,
+            "nome": "Corrida em curva fechada",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "corrida-em-curva-fechada"
+        },
+        {
+            "numero": 451,
+            "nome": "Cruzado com rotação de quadril no elástico",
+            "grupo": "Esportivo",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "cruzado-com-rotacao-de-quadril-no-elastico"
+        },
+        {
+            "numero": 452,
+            "nome": "Desaceleração lateral com passo de recuperação",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "desaceleracao-lateral-com-passo-de-recuperacao"
+        },
+        {
+            "numero": 453,
+            "nome": "Desaceleração rotacional com medicine ball para golfe",
+            "grupo": "Esportivo",
+            "equipamento": "Medicine ball",
+            "tem_video": true,
+            "slug": "desaceleracao-rotacional-com-medicine-ball-para-golfe"
+        },
+        {
+            "numero": 454,
+            "nome": "Deslocamento defensivo em posição baixa",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": false,
+            "slug": "deslocamento-defensivo-em-posicao-baixa"
+        },
+        {
+            "numero": 455,
+            "nome": "Deslocamento defensivo lateral com toque no cone",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "deslocamento-defensivo-lateral-com-toque-no-cone"
+        },
+        {
+            "numero": 456,
+            "nome": "Deslocamento em leque na quadra",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "deslocamento-em-leque-na-quadra"
+        },
+        {
+            "numero": 457,
+            "nome": "Deslocamento em quadra pequena com giro",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "deslocamento-em-quadra-pequena-com-giro"
+        },
+        {
+            "numero": 458,
+            "nome": "Educativo de corrida: dribling baixo",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "educativo-de-corrida-dribling-baixo"
+        },
+        {
+            "numero": 459,
+            "nome": "Educativo de corrida: skipping A",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "educativo-de-corrida-skipping-a"
+        },
+        {
+            "numero": 460,
+            "nome": "Educativo de corrida: skipping B",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "educativo-de-corrida-skipping-b"
+        },
+        {
+            "numero": 461,
+            "nome": "Equilíbrio na prancha de balanço",
+            "grupo": "Esportivo",
+            "equipamento": "Disco",
+            "tem_video": true,
+            "slug": "equilibrio-na-prancha-de-balanco"
+        },
+        {
+            "numero": 462,
+            "nome": "Escalada horizontal na parede (traverse)",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "escalada-horizontal-na-parede-traverse"
+        },
+        {
+            "numero": 463,
+            "nome": "Extensão de tronco em posição de guidão",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "extensao-de-tronco-em-posicao-de-guidao"
+        },
+        {
+            "numero": 464,
+            "nome": "Freio de desaceleração em uma perna",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": false,
+            "slug": "freio-de-desaceleracao-em-uma-perna"
+        },
+        {
+            "numero": 465,
+            "nome": "Freio excêntrico de cotovelo pós-arremesso na polia",
+            "grupo": "Esportivo",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "freio-excentrico-de-cotovelo-pos-arremesso-na-polia"
+        },
+        {
+            "numero": 466,
+            "nome": "Freio excêntrico de ombro na polia (pós-saque)",
+            "grupo": "Esportivo",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "freio-excentrico-de-ombro-na-polia-pos-saque"
+        },
+        {
+            "numero": 467,
+            "nome": "Giro de 180 graus com arranque",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "giro-de-180-graus-com-arranque"
+        },
+        {
+            "numero": 468,
+            "nome": "Golpe de backhand com elástico",
+            "grupo": "Esportivo",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "golpe-de-backhand-com-elastico"
+        },
+        {
+            "numero": 469,
+            "nome": "Golpe de forehand com elástico",
+            "grupo": "Esportivo",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "golpe-de-forehand-com-elastico"
+        },
+        {
+            "numero": 470,
+            "nome": "Golpe reto com halteres leves",
+            "grupo": "Esportivo",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "golpe-reto-com-halteres-leves"
+        },
+        {
+            "numero": 471,
+            "nome": "Joelhada com resistência de elástico",
+            "grupo": "Esportivo",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "joelhada-com-resistencia-de-elastico"
+        },
+        {
+            "numero": 472,
+            "nome": "Levantada técnica (technical stand-up)",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "levantada-tecnica-technical-stand-up"
+        },
+        {
+            "numero": 473,
+            "nome": "Manchete simulada com elástico",
+            "grupo": "Esportivo",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "manchete-simulada-com-elastico"
+        },
+        {
+            "numero": 474,
+            "nome": "Marcha atlética no plano",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "marcha-atletica-no-plano"
+        },
+        {
+            "numero": 475,
+            "nome": "Passada lateral defensiva com elástico na cintura",
+            "grupo": "Esportivo",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "passada-lateral-defensiva-com-elastico-na-cintura"
+        },
+        {
+            "numero": 476,
+            "nome": "Passada saltada (bounding)",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "passada-saltada-bounding"
+        },
+        {
+            "numero": 477,
+            "nome": "Passo cruzado para a rede",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "passo-cruzado-para-a-rede"
+        },
+        {
+            "numero": 478,
+            "nome": "Pedalada em cadência alta na bicicleta",
+            "grupo": "Esportivo",
+            "equipamento": "Bicicleta",
+            "tem_video": true,
+            "slug": "pedalada-em-cadencia-alta-na-bicicleta"
+        },
+        {
+            "numero": 479,
+            "nome": "Pedalada unilateral na bicicleta",
+            "grupo": "Esportivo",
+            "equipamento": "Bicicleta",
+            "tem_video": true,
+            "slug": "pedalada-unilateral-na-bicicleta"
+        },
+        {
+            "numero": 480,
+            "nome": "Ponte de luta (ponte de pescoço assistida)",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "ponte-de-luta-ponte-de-pescoco-assistida"
+        },
+        {
+            "numero": 481,
+            "nome": "Pop-up de surf no solo",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "pop-up-de-surf-no-solo"
+        },
+        {
+            "numero": 482,
+            "nome": "Pronossupinação com bastão lastrado",
+            "grupo": "Esportivo",
+            "equipamento": "Bastão",
+            "tem_video": true,
+            "slug": "pronossupinacao-com-bastao-lastrado"
+        },
+        {
+            "numero": 483,
+            "nome": "Puxada com pegada de pinça para escalada",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "puxada-com-pegada-de-pinca-para-escalada"
+        },
+        {
+            "numero": 484,
+            "nome": "Puxada de gola no elástico (kuzushi)",
+            "grupo": "Esportivo",
+            "equipamento": "Elástico",
+            "tem_video": false,
+            "slug": "puxada-de-gola-no-elastico-kuzushi"
+        },
+        {
+            "numero": 485,
+            "nome": "Puxada de nado na polia deitado",
+            "grupo": "Esportivo",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "puxada-de-nado-na-polia-deitado"
+        },
+        {
+            "numero": 486,
+            "nome": "Puxada de nado no elástico (crawl)",
+            "grupo": "Esportivo",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "puxada-de-nado-no-elastico-crawl"
+        },
+        {
+            "numero": 487,
+            "nome": "Puxada rotacional na polia alta (topspin)",
+            "grupo": "Esportivo",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "puxada-rotacional-na-polia-alta-topspin"
+        },
+        {
+            "numero": 488,
+            "nome": "Recuo em três passos para o fundo",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": false,
+            "slug": "recuo-em-tres-passos-para-o-fundo"
+        },
+        {
+            "numero": 489,
+            "nome": "Remada de peito no elástico",
+            "grupo": "Esportivo",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "remada-de-peito-no-elastico"
+        },
+        {
+            "numero": 490,
+            "nome": "Remada de surf em decúbito ventral",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "remada-de-surf-em-decubito-ventral"
+        },
+        {
+            "numero": 491,
+            "nome": "Rotação de ombro em decúbito ventral (nadador)",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "rotacao-de-ombro-em-decubito-ventral-nadador"
+        },
+        {
+            "numero": 492,
+            "nome": "Rotação de tronco com anilha em guarda",
+            "grupo": "Esportivo",
+            "equipamento": "Anilha",
+            "tem_video": true,
+            "slug": "rotacao-de-tronco-com-anilha-em-guarda"
+        },
+        {
+            "numero": 493,
+            "nome": "Rotação de tronco explosiva na polia (saque)",
+            "grupo": "Esportivo",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "rotacao-de-tronco-explosiva-na-polia-saque"
+        },
+        {
+            "numero": 494,
+            "nome": "Rotação de tronco para swing de golfe na polia",
+            "grupo": "Esportivo",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "rotacao-de-tronco-para-swing-de-golfe-na-polia"
+        },
+        {
+            "numero": 495,
+            "nome": "Salto alternado em profundidade",
+            "grupo": "Esportivo",
+            "equipamento": "Step",
+            "tem_video": true,
+            "slug": "salto-alternado-em-profundidade"
+        },
+        {
+            "numero": 496,
+            "nome": "Salto contínuo com joelhos ao peito",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "salto-continuo-com-joelhos-ao-peito"
+        },
+        {
+            "numero": 497,
+            "nome": "Salto de cabeceio com aterrissagem",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "salto-de-cabeceio-com-aterrissagem"
+        },
+        {
+            "numero": 498,
+            "nome": "Salto lateral sobre linha com aterrissagem em apoio único",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "salto-lateral-sobre-linha-com-aterrissagem-em-apoio-unico"
+        },
+        {
+            "numero": 499,
+            "nome": "Salto vertical com contramovimento e alcance",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "salto-vertical-com-contramovimento-e-alcance"
+        },
+        {
+            "numero": 500,
+            "nome": "Saque de tênis com medicine ball",
+            "grupo": "Esportivo",
+            "equipamento": "Medicine ball",
+            "tem_video": true,
+            "slug": "saque-de-tenis-com-medicine-ball"
+        },
+        {
+            "numero": 501,
+            "nome": "Smash aéreo simulado com elástico",
+            "grupo": "Esportivo",
+            "equipamento": "Elástico",
+            "tem_video": false,
+            "slug": "smash-aereo-simulado-com-elastico"
+        },
+        {
+            "numero": 502,
+            "nome": "Split step com salto",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "split-step-com-salto"
+        },
+        {
+            "numero": 503,
+            "nome": "Sprawl",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "sprawl"
+        },
+        {
+            "numero": 504,
+            "nome": "Streamline na parede",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "streamline-na-parede"
+        },
+        {
+            "numero": 505,
+            "nome": "Suspensão em pegada aberta para escalada",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "suspensao-em-pegada-aberta-para-escalada"
+        },
+        {
+            "numero": 506,
+            "nome": "Sustentação de tronco em posição aero",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "sustentacao-de-tronco-em-posicao-aero"
+        },
+        {
+            "numero": 507,
+            "nome": "Swing de golfe resistido com elástico",
+            "grupo": "Esportivo",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "swing-de-golfe-resistido-com-elastico"
+        },
+        {
+            "numero": 508,
+            "nome": "Tiro em subida na rampa",
+            "grupo": "Esportivo",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "tiro-em-subida-na-rampa"
+        },
+        {
+            "numero": 509,
+            "nome": "Tiro sentado com carga alta na bicicleta",
+            "grupo": "Esportivo",
+            "equipamento": "Bicicleta",
+            "tem_video": true,
+            "slug": "tiro-sentado-com-carga-alta-na-bicicleta"
+        },
+        {
+            "numero": 510,
+            "nome": "Tríceps de finalização de braçada na polia",
+            "grupo": "Esportivo",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "triceps-de-finalizacao-de-bracada-na-polia"
+        },
+        {
+            "numero": 511,
+            "nome": "Troca rápida de pés no step (foot fire)",
+            "grupo": "Esportivo",
+            "equipamento": "Step",
+            "tem_video": true,
+            "slug": "troca-rapida-de-pes-no-step-foot-fire"
+        },
+        {
+            "numero": 512,
+            "nome": "Aquecimento articular de ombros com círculos",
+            "grupo": "Ativação",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "aquecimento-articular-de-ombros-com-circulos"
+        },
+        {
+            "numero": 513,
+            "nome": "Aquecimento de agachamento com bastão acima da cabeça",
+            "grupo": "Ativação",
+            "equipamento": "Bastão",
+            "tem_video": true,
+            "slug": "aquecimento-de-agachamento-com-bastao-acima-da-cabeca"
+        },
+        {
+            "numero": 514,
+            "nome": "Aquecimento de coluna com rotações em pé",
+            "grupo": "Ativação",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "aquecimento-de-coluna-com-rotacoes-em-pe"
+        },
+        {
+            "numero": 515,
+            "nome": "Aquecimento de joelho com extensão sentado sem carga",
+            "grupo": "Ativação",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "aquecimento-de-joelho-com-extensao-sentado-sem-carga"
+        },
+        {
+            "numero": 516,
+            "nome": "Aquecimento de ombro com halteres leves em três planos",
+            "grupo": "Ativação",
+            "equipamento": "Halteres",
+            "tem_video": true,
+            "slug": "aquecimento-de-ombro-com-halteres-leves-em-tres-planos"
+        },
+        {
+            "numero": 517,
+            "nome": "Aquecimento de punhos e dedos",
+            "grupo": "Ativação",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "aquecimento-de-punhos-e-dedos"
+        },
+        {
+            "numero": 518,
+            "nome": "Aquecimento de quadril com círculos em pé",
+            "grupo": "Ativação",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "aquecimento-de-quadril-com-circulos-em-pe"
+        },
+        {
+            "numero": 519,
+            "nome": "Aquecimento de quadril em passada com rotação torácica",
+            "grupo": "Ativação",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "aquecimento-de-quadril-em-passada-com-rotacao-toracica"
+        },
+        {
+            "numero": 520,
+            "nome": "Aquecimento de tronco com rotação e toque no pé",
+            "grupo": "Ativação",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "aquecimento-de-tronco-com-rotacao-e-toque-no-pe"
+        },
+        {
+            "numero": 521,
+            "nome": "Aquecimento específico com barra vazia",
+            "grupo": "Ativação",
+            "equipamento": "Barra",
+            "tem_video": true,
+            "slug": "aquecimento-especifico-com-barra-vazia"
+        },
+        {
+            "numero": 522,
+            "nome": "Ativação de core com respiração 360 graus",
+            "grupo": "Ativação",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "ativacao-de-core-com-respiracao-360-graus"
+        },
+        {
+            "numero": 523,
+            "nome": "Ativação de dorsal com puxada isométrica no elástico",
+            "grupo": "Ativação",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "ativacao-de-dorsal-com-puxada-isometrica-no-elastico"
+        },
+        {
+            "numero": 524,
+            "nome": "Ativação de peitoral com isometria de palmas",
+            "grupo": "Ativação",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "ativacao-de-peitoral-com-isometria-de-palmas"
+        },
+        {
+            "numero": 525,
+            "nome": "Ativação de quadril com agachamento pulsado",
+            "grupo": "Ativação",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "ativacao-de-quadril-com-agachamento-pulsado"
+        },
+        {
+            "numero": 526,
+            "nome": "Ativação de serrátil na parede",
+            "grupo": "Ativação",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "ativacao-de-serratil-na-parede"
+        },
+        {
+            "numero": 527,
+            "nome": "Bom dia sem carga para aquecimento",
+            "grupo": "Ativação",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "bom-dia-sem-carga-para-aquecimento"
+        },
+        {
+            "numero": 528,
+            "nome": "Corrida no lugar com toque de calcanhar lateral",
+            "grupo": "Ativação",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "corrida-no-lugar-com-toque-de-calcanhar-lateral"
+        },
+        {
+            "numero": 529,
+            "nome": "Elevação de ponta do pé no degrau (tibial)",
+            "grupo": "Ativação",
+            "equipamento": "Step",
+            "tem_video": true,
+            "slug": "elevacao-de-ponta-do-pe-no-degrau-tibial"
+        },
+        {
+            "numero": 530,
+            "nome": "Flexão escapular (scapular push-up)",
+            "grupo": "Ativação",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "flexao-escapular-scapular-push-up"
+        },
+        {
+            "numero": 531,
+            "nome": "Marcha de ativação com elástico nos tornozelos",
+            "grupo": "Ativação",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "marcha-de-ativacao-com-elastico-nos-tornozelos"
+        },
+        {
+            "numero": 532,
+            "nome": "Polichinelo com abertura de braços em Y",
+            "grupo": "Ativação",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "polichinelo-com-abertura-de-bracos-em-y"
+        },
+        {
+            "numero": 533,
+            "nome": "Retração escapular na polia baixa sentado",
+            "grupo": "Ativação",
+            "equipamento": "Polia",
+            "tem_video": true,
+            "slug": "retracao-escapular-na-polia-baixa-sentado"
+        },
+        {
+            "numero": 534,
+            "nome": "Agachamento em cócoras com rotação alternada",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "agachamento-em-cocoras-com-rotacao-alternada"
+        },
+        {
+            "numero": 535,
+            "nome": "Alongamento dinâmico do flexor de quadril",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-dinamico-do-flexor-de-quadril"
+        },
+        {
+            "numero": 536,
+            "nome": "Balanço de perna frontal",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "balanco-de-perna-frontal"
+        },
+        {
+            "numero": 537,
+            "nome": "Balanço de perna lateral",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "balanco-de-perna-lateral"
+        },
+        {
+            "numero": 538,
+            "nome": "Cachorro olhando para baixo com pedalada",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "cachorro-olhando-para-baixo-com-pedalada"
+        },
+        {
+            "numero": 539,
+            "nome": "Círculo de ombro com bastão",
+            "grupo": "Mobilidade",
+            "equipamento": "Bastão",
+            "tem_video": true,
+            "slug": "circulo-de-ombro-com-bastao"
+        },
+        {
+            "numero": 540,
+            "nome": "Círculo de quadril em quatro apoios",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "circulo-de-quadril-em-quatro-apoios"
+        },
+        {
+            "numero": 541,
+            "nome": "Deslizamento de escápula na parede (wall slide)",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "deslizamento-de-escapula-na-parede-wall-slide"
+        },
+        {
+            "numero": 542,
+            "nome": "Escorpião deitado",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "escorpiao-deitado"
+        },
+        {
+            "numero": 543,
+            "nome": "Gato e camelo",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "gato-e-camelo"
+        },
+        {
+            "numero": 544,
+            "nome": "Liberação de fáscia plantar na bolinha",
+            "grupo": "Mobilidade",
+            "equipamento": "Bola",
+            "tem_video": true,
+            "slug": "liberacao-de-fascia-plantar-na-bolinha"
+        },
+        {
+            "numero": 545,
+            "nome": "Liberação de peitoral na bola na parede",
+            "grupo": "Mobilidade",
+            "equipamento": "Bola",
+            "tem_video": false,
+            "slug": "liberacao-de-peitoral-na-bola-na-parede"
+        },
+        {
+            "numero": 546,
+            "nome": "Liberação miofascial de banda iliotibial no rolo",
+            "grupo": "Mobilidade",
+            "equipamento": "Rolo",
+            "tem_video": true,
+            "slug": "liberacao-miofascial-de-banda-iliotibial-no-rolo"
+        },
+        {
+            "numero": 547,
+            "nome": "Liberação miofascial de dorsal no rolo",
+            "grupo": "Mobilidade",
+            "equipamento": "Rolo",
+            "tem_video": true,
+            "slug": "liberacao-miofascial-de-dorsal-no-rolo"
+        },
+        {
+            "numero": 548,
+            "nome": "Liberação miofascial de glúteo na bola",
+            "grupo": "Mobilidade",
+            "equipamento": "Bola",
+            "tem_video": false,
+            "slug": "liberacao-miofascial-de-gluteo-na-bola"
+        },
+        {
+            "numero": 549,
+            "nome": "Liberação miofascial de panturrilha no rolo",
+            "grupo": "Mobilidade",
+            "equipamento": "Rolo",
+            "tem_video": true,
+            "slug": "liberacao-miofascial-de-panturrilha-no-rolo"
+        },
+        {
+            "numero": 550,
+            "nome": "Liberação miofascial de posterior de coxa no rolo",
+            "grupo": "Mobilidade",
+            "equipamento": "Rolo",
+            "tem_video": true,
+            "slug": "liberacao-miofascial-de-posterior-de-coxa-no-rolo"
+        },
+        {
+            "numero": 551,
+            "nome": "Liberação miofascial de quadríceps no rolo",
+            "grupo": "Mobilidade",
+            "equipamento": "Rolo",
+            "tem_video": true,
+            "slug": "liberacao-miofascial-de-quadriceps-no-rolo"
+        },
+        {
+            "numero": 552,
+            "nome": "Liberação miofascial de tibial anterior no rolo",
+            "grupo": "Mobilidade",
+            "equipamento": "Rolo",
+            "tem_video": false,
+            "slug": "liberacao-miofascial-de-tibial-anterior-no-rolo"
+        },
+        {
+            "numero": 553,
+            "nome": "Mobilidade cervical em flexão e extensão",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "mobilidade-cervical-em-flexao-e-extensao"
+        },
+        {
+            "numero": 554,
+            "nome": "Mobilidade de coluna em posição de criança",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "mobilidade-de-coluna-em-posicao-de-crianca"
+        },
+        {
+            "numero": 555,
+            "nome": "Mobilidade de coluna torácica sobre o rolo",
+            "grupo": "Mobilidade",
+            "equipamento": "Rolo",
+            "tem_video": true,
+            "slug": "mobilidade-de-coluna-toracica-sobre-o-rolo"
+        },
+        {
+            "numero": 556,
+            "nome": "Mobilidade de cotovelo com rotação controlada",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "mobilidade-de-cotovelo-com-rotacao-controlada"
+        },
+        {
+            "numero": 557,
+            "nome": "Mobilidade de joelho em círculos controlados",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "mobilidade-de-joelho-em-circulos-controlados"
+        },
+        {
+            "numero": 558,
+            "nome": "Mobilidade de ombro em suspensão passiva com pés apoiados",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "mobilidade-de-ombro-em-suspensao-passiva-com-pes-apoiados"
+        },
+        {
+            "numero": 559,
+            "nome": "Mobilidade de punho em quatro apoios",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "mobilidade-de-punho-em-quatro-apoios"
+        },
+        {
+            "numero": 560,
+            "nome": "Mobilidade de quadril 90/90",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "mobilidade-de-quadril-9090"
+        },
+        {
+            "numero": 561,
+            "nome": "Mobilidade de quadril em passada com apoio no cotovelo",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "mobilidade-de-quadril-em-passada-com-apoio-no-cotovelo"
+        },
+        {
+            "numero": 562,
+            "nome": "Mobilidade de quadril em pé com joelho alto e rotação",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "mobilidade-de-quadril-em-pe-com-joelho-alto-e-rotacao"
+        },
+        {
+            "numero": 563,
+            "nome": "Mobilidade de tornozelo com elástico",
+            "grupo": "Mobilidade",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "mobilidade-de-tornozelo-com-elastico"
+        },
+        {
+            "numero": 564,
+            "nome": "Mobilidade de tornozelo na parede",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "mobilidade-de-tornozelo-na-parede"
+        },
+        {
+            "numero": 565,
+            "nome": "Mobilidade torácica em quatro apoios (open book)",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "mobilidade-toracica-em-quatro-apoios-open-book"
+        },
+        {
+            "numero": 566,
+            "nome": "Passagem de bastão pela cabeça",
+            "grupo": "Mobilidade",
+            "equipamento": "Bastão",
+            "tem_video": true,
+            "slug": "passagem-de-bastao-pela-cabeca"
+        },
+        {
+            "numero": 567,
+            "nome": "Ponte torácica lateral",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "ponte-toracica-lateral"
+        },
+        {
+            "numero": 568,
+            "nome": "Respiração diafragmática deitada",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "respiracao-diafragmatica-deitada"
+        },
+        {
+            "numero": 569,
+            "nome": "Rotação cervical controlada",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "rotacao-cervical-controlada"
+        },
+        {
+            "numero": 570,
+            "nome": "Rotação de ombro no batente da porta",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "rotacao-de-ombro-no-batente-da-porta"
+        },
+        {
+            "numero": 571,
+            "nome": "Rotação de quadril em pé (hip airplane)",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "rotacao-de-quadril-em-pe-hip-airplane"
+        },
+        {
+            "numero": 572,
+            "nome": "Rotação de tronco sentado com bastão",
+            "grupo": "Mobilidade",
+            "equipamento": "Bastão",
+            "tem_video": true,
+            "slug": "rotacao-de-tronco-sentado-com-bastao"
+        },
+        {
+            "numero": 573,
+            "nome": "Rotação em quatro apoios com mão na nuca",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "rotacao-em-quatro-apoios-com-mao-na-nuca"
+        },
+        {
+            "numero": 574,
+            "nome": "Rotação torácica deitado de lado",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "rotacao-toracica-deitado-de-lado"
+        },
+        {
+            "numero": 575,
+            "nome": "Sustentação em agachamento profundo com apoio",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "sustentacao-em-agachamento-profundo-com-apoio"
+        },
+        {
+            "numero": 576,
+            "nome": "Transição 90/90 com rotação",
+            "grupo": "Mobilidade",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "transicao-9090-com-rotacao"
+        },
+        {
+            "numero": 577,
+            "nome": "Agachamento no bosu com apoio bipodal",
+            "grupo": "Equilíbrio",
+            "equipamento": "Bosu",
+            "tem_video": true,
+            "slug": "agachamento-no-bosu-com-apoio-bipodal"
+        },
+        {
+            "numero": 578,
+            "nome": "Agachamento unipodal no disco de equilíbrio",
+            "grupo": "Equilíbrio",
+            "equipamento": "Disco",
+            "tem_video": true,
+            "slug": "agachamento-unipodal-no-disco-de-equilibrio"
+        },
+        {
+            "numero": 579,
+            "nome": "Apoio unipodal com alcance de objeto no solo",
+            "grupo": "Equilíbrio",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "apoio-unipodal-com-alcance-de-objeto-no-solo"
+        },
+        {
+            "numero": 580,
+            "nome": "Apoio unipodal com alcance frontal",
+            "grupo": "Equilíbrio",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "apoio-unipodal-com-alcance-frontal"
+        },
+        {
+            "numero": 581,
+            "nome": "Apoio unipodal com alcance multidirecional",
+            "grupo": "Equilíbrio",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "apoio-unipodal-com-alcance-multidirecional"
+        },
+        {
+            "numero": 582,
+            "nome": "Apoio unipodal com movimento de braços em três planos",
+            "grupo": "Equilíbrio",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "apoio-unipodal-com-movimento-de-bracos-em-tres-planos"
+        },
+        {
+            "numero": 583,
+            "nome": "Apoio unipodal com olhos abertos",
+            "grupo": "Equilíbrio",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "apoio-unipodal-com-olhos-abertos"
+        },
+        {
+            "numero": 584,
+            "nome": "Apoio unipodal com olhos fechados",
+            "grupo": "Equilíbrio",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "apoio-unipodal-com-olhos-fechados"
+        },
+        {
+            "numero": 585,
+            "nome": "Apoio unipodal com perturbação no elástico",
+            "grupo": "Equilíbrio",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "apoio-unipodal-com-perturbacao-no-elastico"
+        },
+        {
+            "numero": 586,
+            "nome": "Apoio unipodal em superfície instável",
+            "grupo": "Equilíbrio",
+            "equipamento": "Bosu",
+            "tem_video": true,
+            "slug": "apoio-unipodal-em-superficie-instavel"
+        },
+        {
+            "numero": 587,
+            "nome": "Apoio unipodal sobre espuma com giro de cabeça",
+            "grupo": "Equilíbrio",
+            "equipamento": "Disco",
+            "tem_video": true,
+            "slug": "apoio-unipodal-sobre-espuma-com-giro-de-cabeca"
+        },
+        {
+            "numero": 588,
+            "nome": "Caminhada para trás em linha reta",
+            "grupo": "Equilíbrio",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "caminhada-para-tras-em-linha-reta"
+        },
+        {
+            "numero": 589,
+            "nome": "Cegonha com passagem de objeto",
+            "grupo": "Equilíbrio",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "cegonha-com-passagem-de-objeto"
+        },
+        {
+            "numero": 590,
+            "nome": "Deslocamento sobre linha com obstáculos baixos",
+            "grupo": "Equilíbrio",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "deslocamento-sobre-linha-com-obstaculos-baixos"
+        },
+        {
+            "numero": 591,
+            "nome": "Elevação de joelho com equilíbrio e rotação",
+            "grupo": "Equilíbrio",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "elevacao-de-joelho-com-equilibrio-e-rotacao"
+        },
+        {
+            "numero": 592,
+            "nome": "Equilíbrio dinâmico em agachamento com transferência de peso",
+            "grupo": "Equilíbrio",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "equilibrio-dinamico-em-agachamento-com-transferencia-de-peso"
+        },
+        {
+            "numero": 593,
+            "nome": "Marcha em linha (tandem)",
+            "grupo": "Equilíbrio",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "marcha-em-linha-tandem"
+        },
+        {
+            "numero": 594,
+            "nome": "Passada com pausa em apoio único",
+            "grupo": "Equilíbrio",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "passada-com-pausa-em-apoio-unico"
+        },
+        {
+            "numero": 595,
+            "nome": "Prancha com apoio no bosu",
+            "grupo": "Equilíbrio",
+            "equipamento": "Bosu",
+            "tem_video": true,
+            "slug": "prancha-com-apoio-no-bosu"
+        },
+        {
+            "numero": 596,
+            "nome": "Salto frontal com aterrissagem em apoio único",
+            "grupo": "Equilíbrio",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "salto-frontal-com-aterrissagem-em-apoio-unico"
+        },
+        {
+            "numero": 597,
+            "nome": "Salto sobre o bosu com aterrissagem estável",
+            "grupo": "Equilíbrio",
+            "equipamento": "Bosu",
+            "tem_video": true,
+            "slug": "salto-sobre-o-bosu-com-aterrissagem-estavel"
+        },
+        {
+            "numero": 598,
+            "nome": "Subida no step com pausa em apoio único",
+            "grupo": "Equilíbrio",
+            "equipamento": "Step",
+            "tem_video": true,
+            "slug": "subida-no-step-com-pausa-em-apoio-unico"
+        },
+        {
+            "numero": 599,
+            "nome": "Transferência de peso em base tandem com resistência elástica",
+            "grupo": "Equilíbrio",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "transferencia-de-peso-em-base-tandem-com-resistencia-elastica"
+        },
+        {
+            "numero": 600,
+            "nome": "Transferência de peso lateral controlada",
+            "grupo": "Equilíbrio",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "transferencia-de-peso-lateral-controlada"
+        },
+        {
+            "numero": 601,
+            "nome": "Ativação de transverso do abdome deitado",
+            "grupo": "Prevenção",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "ativacao-de-transverso-do-abdome-deitado"
+        },
+        {
+            "numero": 602,
+            "nome": "Controle de valgo dinâmico no step",
+            "grupo": "Prevenção",
+            "equipamento": "Step",
+            "tem_video": true,
+            "slug": "controle-de-valgo-dinamico-no-step"
+        },
+        {
+            "numero": 603,
+            "nome": "Descida controlada do step em apoio único",
+            "grupo": "Prevenção",
+            "equipamento": "Step",
+            "tem_video": true,
+            "slug": "descida-controlada-do-step-em-apoio-unico"
+        },
+        {
+            "numero": 604,
+            "nome": "Descompressão lombar com elevação de pernas na cadeira",
+            "grupo": "Prevenção",
+            "equipamento": "Cadeira",
+            "tem_video": true,
+            "slug": "descompressao-lombar-com-elevacao-de-pernas-na-cadeira"
+        },
+        {
+            "numero": 605,
+            "nome": "Deslizamento de calcanhar bilateral na toalha",
+            "grupo": "Prevenção",
+            "equipamento": "Toalha",
+            "tem_video": true,
+            "slug": "deslizamento-de-calcanhar-bilateral-na-toalha"
+        },
+        {
+            "numero": 606,
+            "nome": "Deslizamento de isquiotibiais na toalha",
+            "grupo": "Prevenção",
+            "equipamento": "Toalha",
+            "tem_video": true,
+            "slug": "deslizamento-de-isquiotibiais-na-toalha"
+        },
+        {
+            "numero": 607,
+            "nome": "Dorsiflexão de tornozelo com elástico",
+            "grupo": "Prevenção",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "dorsiflexao-de-tornozelo-com-elastico"
+        },
+        {
+            "numero": 608,
+            "nome": "Elevação de calcanhar excêntrica para tendão de aquiles",
+            "grupo": "Prevenção",
+            "equipamento": "Step",
+            "tem_video": true,
+            "slug": "elevacao-de-calcanhar-excentrica-para-tendao-de-aquiles"
+        },
+        {
+            "numero": 609,
+            "nome": "Elevação do arco plantar (short foot)",
+            "grupo": "Prevenção",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "elevacao-do-arco-plantar-short-foot"
+        },
+        {
+            "numero": 610,
+            "nome": "Estabilização de tronco em posição de urso com toque",
+            "grupo": "Prevenção",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "estabilizacao-de-tronco-em-posicao-de-urso-com-toque"
+        },
+        {
+            "numero": 611,
+            "nome": "Estabilização escapular em prancha com apoio na parede",
+            "grupo": "Prevenção",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "estabilizacao-escapular-em-prancha-com-apoio-na-parede"
+        },
+        {
+            "numero": 612,
+            "nome": "Estabilização lombar em ponte com marcha",
+            "grupo": "Prevenção",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "estabilizacao-lombar-em-ponte-com-marcha"
+        },
+        {
+            "numero": 613,
+            "nome": "Estabilização lombar em quatro apoios com elástico",
+            "grupo": "Prevenção",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "estabilizacao-lombar-em-quatro-apoios-com-elastico"
+        },
+        {
+            "numero": 614,
+            "nome": "Eversão de tornozelo com elástico",
+            "grupo": "Prevenção",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "eversao-de-tornozelo-com-elastico"
+        },
+        {
+            "numero": 615,
+            "nome": "Excêntrico de isquiotibiais na toalha com uma perna",
+            "grupo": "Prevenção",
+            "equipamento": "Toalha",
+            "tem_video": true,
+            "slug": "excentrico-de-isquiotibiais-na-toalha-com-uma-perna"
+        },
+        {
+            "numero": 616,
+            "nome": "Excêntrico de sóleo unilateral no degrau",
+            "grupo": "Prevenção",
+            "equipamento": "Step",
+            "tem_video": true,
+            "slug": "excentrico-de-soleo-unilateral-no-degrau"
+        },
+        {
+            "numero": 617,
+            "nome": "Fortalecimento de pé com toalha",
+            "grupo": "Prevenção",
+            "equipamento": "Toalha",
+            "tem_video": true,
+            "slug": "fortalecimento-de-pe-com-toalha"
+        },
+        {
+            "numero": 618,
+            "nome": "Fortalecimento de pescoço com elástico em quatro direções",
+            "grupo": "Prevenção",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "fortalecimento-de-pescoco-com-elastico-em-quatro-direcoes"
+        },
+        {
+            "numero": 619,
+            "nome": "Fortalecimento de pescoço em isometria manual",
+            "grupo": "Prevenção",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "fortalecimento-de-pescoco-em-isometria-manual"
+        },
+        {
+            "numero": 620,
+            "nome": "Inversão de tornozelo com elástico",
+            "grupo": "Prevenção",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "inversao-de-tornozelo-com-elastico"
+        },
+        {
+            "numero": 621,
+            "nome": "Isometria de cervical em decúbito dorsal",
+            "grupo": "Prevenção",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "isometria-de-cervical-em-decubito-dorsal"
+        },
+        {
+            "numero": 622,
+            "nome": "Mobilização de quadril em decúbito dorsal com elástico",
+            "grupo": "Prevenção",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "mobilizacao-de-quadril-em-decubito-dorsal-com-elastico"
+        },
+        {
+            "numero": 623,
+            "nome": "Mobilização neural do nervo ciático sentado",
+            "grupo": "Prevenção",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "mobilizacao-neural-do-nervo-ciatico-sentado"
+        },
+        {
+            "numero": 624,
+            "nome": "Mobilização neural do nervo mediano",
+            "grupo": "Prevenção",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "mobilizacao-neural-do-nervo-mediano"
+        },
+        {
+            "numero": 625,
+            "nome": "Ponte de glúteo com aperto de adutores",
+            "grupo": "Prevenção",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "ponte-de-gluteo-com-aperto-de-adutores"
+        },
+        {
+            "numero": 626,
+            "nome": "Prancha de Copenhague",
+            "grupo": "Prevenção",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "prancha-de-copenhague"
+        },
+        {
+            "numero": 627,
+            "nome": "Prancha de Copenhague com joelho apoiado",
+            "grupo": "Prevenção",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "prancha-de-copenhague-com-joelho-apoiado"
+        },
+        {
+            "numero": 628,
+            "nome": "Propriocepção de joelho em semiagachamento com elástico",
+            "grupo": "Prevenção",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "propriocepcao-de-joelho-em-semiagachamento-com-elastico"
+        },
+        {
+            "numero": 629,
+            "nome": "Retração e depressão escapular em decúbito ventral",
+            "grupo": "Prevenção",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "retracao-e-depressao-escapular-em-decubito-ventral"
+        },
+        {
+            "numero": 630,
+            "nome": "Rotação externa de ombro a 90 graus com elástico",
+            "grupo": "Prevenção",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "rotacao-externa-de-ombro-a-90-graus-com-elastico"
+        },
+        {
+            "numero": 631,
+            "nome": "Alongamento cervical lateral",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-cervical-lateral"
+        },
+        {
+            "numero": 632,
+            "nome": "Alongamento de abdome em decúbito ventral (esfinge)",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-abdome-em-decubito-ventral-esfinge"
+        },
+        {
+            "numero": 633,
+            "nome": "Alongamento de adutores em afastamento lateral",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-adutores-em-afastamento-lateral"
+        },
+        {
+            "numero": 634,
+            "nome": "Alongamento de adutores sentado (borboleta)",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-adutores-sentado-borboleta"
+        },
+        {
+            "numero": 635,
+            "nome": "Alongamento de antebraço em extensão",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-antebraco-em-extensao"
+        },
+        {
+            "numero": 636,
+            "nome": "Alongamento de antebraço em flexão",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-antebraco-em-flexao"
+        },
+        {
+            "numero": 637,
+            "nome": "Alongamento de banda iliotibial em pé",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-banda-iliotibial-em-pe"
+        },
+        {
+            "numero": 638,
+            "nome": "Alongamento de bíceps na parede",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-biceps-na-parede"
+        },
+        {
+            "numero": 639,
+            "nome": "Alongamento de cadeia anterior em pé na parede",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-cadeia-anterior-em-pe-na-parede"
+        },
+        {
+            "numero": 640,
+            "nome": "Alongamento de cadeia lateral em pé com braço acima da cabeça",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-cadeia-lateral-em-pe-com-braco-acima-da-cabeca"
+        },
+        {
+            "numero": 641,
+            "nome": "Alongamento de cadeia posterior com toalha",
+            "grupo": "Alongamento",
+            "equipamento": "Toalha",
+            "tem_video": true,
+            "slug": "alongamento-de-cadeia-posterior-com-toalha"
+        },
+        {
+            "numero": 642,
+            "nome": "Alongamento de coluna em torção sentado",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-coluna-em-torcao-sentado"
+        },
+        {
+            "numero": 643,
+            "nome": "Alongamento de coluna suspenso na barra com pés no chão",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-coluna-suspenso-na-barra-com-pes-no-chao"
+        },
+        {
+            "numero": 644,
+            "nome": "Alongamento de deltoide posterior cruzando o braço",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-deltoide-posterior-cruzando-o-braco"
+        },
+        {
+            "numero": 645,
+            "nome": "Alongamento de dorsal ajoelhado no banco",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-dorsal-ajoelhado-no-banco"
+        },
+        {
+            "numero": 646,
+            "nome": "Alongamento de dorsal na barra",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-dorsal-na-barra"
+        },
+        {
+            "numero": 647,
+            "nome": "Alongamento de escaleno e cervical anterior",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-escaleno-e-cervical-anterior"
+        },
+        {
+            "numero": 648,
+            "nome": "Alongamento de flexores do quadril ajoelhado",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-flexores-do-quadril-ajoelhado"
+        },
+        {
+            "numero": 649,
+            "nome": "Alongamento de glúteo deitado (figura 4)",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-gluteo-deitado-figura-4"
+        },
+        {
+            "numero": 650,
+            "nome": "Alongamento de glúteo sentado na cadeira",
+            "grupo": "Alongamento",
+            "equipamento": "Cadeira",
+            "tem_video": true,
+            "slug": "alongamento-de-gluteo-sentado-na-cadeira"
+        },
+        {
+            "numero": 651,
+            "nome": "Alongamento de isquiotibiais deitado com elástico",
+            "grupo": "Alongamento",
+            "equipamento": "Elástico",
+            "tem_video": true,
+            "slug": "alongamento-de-isquiotibiais-deitado-com-elastico"
+        },
+        {
+            "numero": 652,
+            "nome": "Alongamento de isquiotibiais em passada com apoio no banco",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-isquiotibiais-em-passada-com-apoio-no-banco"
+        },
+        {
+            "numero": 653,
+            "nome": "Alongamento de isquiotibiais em pé",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-isquiotibiais-em-pe"
+        },
+        {
+            "numero": 654,
+            "nome": "Alongamento de isquiotibiais sentado",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-isquiotibiais-sentado"
+        },
+        {
+            "numero": 655,
+            "nome": "Alongamento de lombar com joelhos cruzados",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-lombar-com-joelhos-cruzados"
+        },
+        {
+            "numero": 656,
+            "nome": "Alongamento de lombar em posição fetal",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-lombar-em-posicao-fetal"
+        },
+        {
+            "numero": 657,
+            "nome": "Alongamento de manguito rotador na porta",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-manguito-rotador-na-porta"
+        },
+        {
+            "numero": 658,
+            "nome": "Alongamento de ombro em rotação interna com toalha",
+            "grupo": "Alongamento",
+            "equipamento": "Toalha",
+            "tem_video": true,
+            "slug": "alongamento-de-ombro-em-rotacao-interna-com-toalha"
+        },
+        {
+            "numero": 659,
+            "nome": "Alongamento de panturrilha na parede",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-panturrilha-na-parede"
+        },
+        {
+            "numero": 660,
+            "nome": "Alongamento de peitoral com as mãos atrás da cabeça",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-peitoral-com-as-maos-atras-da-cabeca"
+        },
+        {
+            "numero": 661,
+            "nome": "Alongamento de peitoral no batente",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-peitoral-no-batente"
+        },
+        {
+            "numero": 662,
+            "nome": "Alongamento de piriforme sentado",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-piriforme-sentado"
+        },
+        {
+            "numero": 663,
+            "nome": "Alongamento de psoas em decúbito dorsal na maca",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-psoas-em-decubito-dorsal-na-maca"
+        },
+        {
+            "numero": 664,
+            "nome": "Alongamento de punho em extensão na mesa",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-punho-em-extensao-na-mesa"
+        },
+        {
+            "numero": 665,
+            "nome": "Alongamento de quadríceps deitado de lado",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-quadriceps-deitado-de-lado"
+        },
+        {
+            "numero": 666,
+            "nome": "Alongamento de quadríceps em pé",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-quadriceps-em-pe"
+        },
+        {
+            "numero": 667,
+            "nome": "Alongamento de quadríceps na parede ajoelhado",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-quadriceps-na-parede-ajoelhado"
+        },
+        {
+            "numero": 668,
+            "nome": "Alongamento de quadril em passada profunda com rotação",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-quadril-em-passada-profunda-com-rotacao"
+        },
+        {
+            "numero": 669,
+            "nome": "Alongamento de rotadores externos deitado (sleeper stretch)",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-rotadores-externos-deitado-sleeper-stretch"
+        },
+        {
+            "numero": 670,
+            "nome": "Alongamento de sóleo com joelho flexionado",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-soleo-com-joelho-flexionado"
+        },
+        {
+            "numero": 671,
+            "nome": "Alongamento de tibial anterior ajoelhado",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-tibial-anterior-ajoelhado"
+        },
+        {
+            "numero": 672,
+            "nome": "Alongamento de trapézio superior sentado",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-trapezio-superior-sentado"
+        },
+        {
+            "numero": 673,
+            "nome": "Alongamento de tríceps acima da cabeça",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-triceps-acima-da-cabeca"
+        },
+        {
+            "numero": 674,
+            "nome": "Alongamento de virilha em agachamento profundo",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "alongamento-de-virilha-em-agachamento-profundo"
+        },
+        {
+            "numero": 675,
+            "nome": "Postura da criança",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "postura-da-crianca"
+        },
+        {
+            "numero": 676,
+            "nome": "Postura do pombo",
+            "grupo": "Alongamento",
+            "equipamento": "Peso corporal",
+            "tem_video": true,
+            "slug": "postura-do-pombo"
+        }
+    ]
+}

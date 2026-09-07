@@ -101,6 +101,32 @@ export function filtrarEAgrupar(
   }
 
   return [...porGrupo.entries()]
-    .map(([grupo, itens]) => ({ grupo, itens }))
+    .map(([grupo, itens]) => ({ grupo, itens: [...itens].sort(porNome) }))
     .sort((a, b) => posicao(a.grupo) - posicao(b.grupo) || a.grupo.localeCompare(b.grupo, 'pt-BR'))
+}
+
+/** Ordem alfabética estável, ignorando acento — igual à do backend. */
+function porNome(a: Exercise, b: Exercise): number {
+  return normalizar(a.name).localeCompare(normalizar(b.name), 'pt-BR')
+}
+
+/**
+ * Número de cada exercício na biblioteca inteira: mesma ordem da tela (grupo em
+ * ORDEM_GRUPOS, alfabético dentro do grupo), 1..N sem buraco. É o número que o
+ * personal usa pra apontar qual vídeo de demonstração está errado.
+ *
+ * Tem que bater com `php artisan exercicios:numerar-biblioteca` — se a ordem
+ * mudar de um lado, muda dos dois. O número não é fixo: entrou exercício novo
+ * num grupo anterior, todo o resto anda pra frente.
+ */
+export function numerarBiblioteca(exercises: Exercise[]): Map<string, number> {
+  const ordenados = [...exercises].sort(
+    (a, b) =>
+      posicao(a.muscle_group) - posicao(b.muscle_group) ||
+      a.muscle_group.localeCompare(b.muscle_group, 'pt-BR') ||
+      porNome(a, b)
+  )
+  const numeros = new Map<string, number>()
+  ordenados.forEach((ex, i) => numeros.set(ex.id, i + 1))
+  return numeros
 }

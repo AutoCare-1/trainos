@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar'
 import BackLink from '@/components/BackLink'
 import ExerciseAnimation from '@/components/ExerciseAnimation'
 import FiltroGrupoMuscular from '@/components/FiltroGrupoMuscular'
-import { contarPorGrupo, filtrarEAgrupar } from '@/lib/bibliotecaExercicios'
+import { contarPorGrupo, filtrarEAgrupar, numerarBiblioteca } from '@/lib/bibliotecaExercicios'
 import { api, ApiError } from '@/lib/api'
 import { Exercise } from '@/lib/types'
 
@@ -70,6 +70,9 @@ export default function VideosPage() {
 
   const gruposDisponiveis = contarPorGrupo(exercises ?? [])
   const gruposFiltrados = filtrarEAgrupar(exercises ?? [], buscaExercicio, grupoMuscular)
+  // Número fixo da biblioteca inteira (não muda com busca/filtro): é o que o
+  // personal informa quando um vídeo de demonstração está errado.
+  const numeros = numerarBiblioteca(exercises ?? [])
 
   return (
     <>
@@ -79,7 +82,8 @@ export default function VideosPage() {
         <h1 className="mb-1 font-display text-2xl font-bold tracking-tight text-ink">Vídeos dos exercícios</h1>
         <p className="mb-6 text-sm text-ink-muted">
           Envie ou grave seu próprio vídeo de demonstração pra qualquer exercício. Ele substitui o padrão só para os
-          seus alunos — os outros profissionais continuam vendo o vídeo original.
+          seus alunos — os outros profissionais continuam vendo o vídeo original. O número (#) antes do nome
+          identifica o exercício: se algum vídeo estiver errado, é só informar o número.
         </p>
 
         {erro && <p className="mb-4 text-sm text-danger">{erro}</p>}
@@ -124,7 +128,10 @@ export default function VideosPage() {
                       className="shrink-0 rounded-xl text-brand"
                     />
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-ink">{ex.name}</p>
+                      <p className="text-sm font-medium text-ink">
+                        <span className="text-ink-muted tabular-nums">#{numeros.get(ex.id)}</span>{' '}
+                        {ex.name}
+                      </p>
                       <p className="text-xs text-ink-muted">
                         {ex.video_customizado ? 'Vídeo personalizado' : 'Vídeo/imagem padrão'}
                       </p>
