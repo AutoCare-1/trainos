@@ -41,7 +41,7 @@ class AlunoNutricaoController extends Controller
             ->whereDate('data', '>=', $desde)
             ->orderByDesc('data')
             ->orderBy('created_at')
-            ->with('itens.food:id,nome,categoria')
+            ->with('itens.food:id,nome')
             ->get()
             ->map(fn (MealLog $r) => [
                 ...$r->only(['id', 'momento', 'descricao', 'created_at']),

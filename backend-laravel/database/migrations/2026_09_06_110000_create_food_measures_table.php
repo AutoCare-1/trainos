@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Schema;
  * Nem todo alimento tem medida, e isso é de propósito: casar a TACO com a
  * tabela do IBGE não é trivial (taxonomias diferentes), e alimento com medida
  * ERRADA é pior que alimento sem medida. Quem não tem cai no campo de gramas,
- * que continua existindo. Ver database/medidas_caseiras.php.
+ * que continua existindo. Ver database/medidas_pof.php.
  */
 return new class extends Migration
 {

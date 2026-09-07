@@ -751,7 +751,6 @@ export interface NutricaoDoAluno {
   sugestoes: SugestaoNutricao[]
 }
 
-/** Alimento da TACO (NEPA/UNICAMP). Valores por 100 g; null = não analisado. */
 /** Medida caseira de um alimento ("Concha", 140 g). Fonte: IBGE/POF. */
 export interface MedidaCaseira {
   id: string
@@ -759,10 +758,11 @@ export interface MedidaCaseira {
   gramas: number
 }
 
+/** Alimento da POF/IBGE, já com o preparo ("Macarrão, cozido"). Valores por
+ *  100 g; null = a fonte não traz (nunca 0). */
 export interface Alimento {
   id: string
   nome: string
-  categoria: string
   kcal: number | null
   proteina_g: number | null
   carboidrato_g: number | null

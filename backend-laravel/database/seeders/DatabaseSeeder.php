@@ -21,5 +21,7 @@ class DatabaseSeeder extends Seeder
         // duas anteriores: elas é que são donas dos nomes que compartilham.
         $this->call(ExercicioBibliotecaComplementarSeeder::class);
         $this->call(NotificationTypesSeeder::class);
+        // Catálogo de alimentos + medidas caseiras (POF/IBGE). Reexecutável.
+        $this->call(AlimentoPofSeeder::class);
     }
 }

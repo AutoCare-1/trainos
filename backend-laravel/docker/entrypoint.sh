@@ -24,6 +24,13 @@ php artisan db:seed --class="Database\\Seeders\\ExercicioBibliotecaAmpliadaSeede
 php artisan db:seed --class="Database\\Seeders\\ExercicioBibliotecaComplementarSeeder" --force
 php artisan exercicios:aplicar-demonstracoes || true
 
+# Catálogo de alimentos (POF/IBGE) e as medidas caseiras. Mesma lógica dos
+# seeders acima: a chave é (codigo_pof, codigo_preparo), então rodar de novo
+# atualiza em vez de duplicar, e o id do alimento sobrevive — que é o que liga
+# o alimento à refeição que o aluno já registrou. É isso que faz uma correção
+# na tabela (nome torto, medida errada) chegar em produção só com git push.
+php artisan db:seed --class="Database\\Seeders\\AlimentoPofSeeder" --force
+
 php artisan config:cache
 php artisan route:cache
 

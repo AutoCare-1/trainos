@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 /**
- * Alimento da TACO (NEPA/UNICAMP). Valores por 100 g — ver a migration.
+ * Alimento da POF/IBGE, já com o preparo ("Macarrão, cozido"). Valores por
+ * 100 g — ver database/README-alimentos.md.
  *
  * Somente leitura na prática: a tabela vem do seeder e ninguém edita pelo app.
  */
@@ -23,7 +24,7 @@ class Food extends Model
     protected $table = 'foods';
 
     protected $fillable = [
-        'codigo_taco', 'categoria', 'nome', 'nome_busca',
+        'codigo_pof', 'codigo_preparo', 'nome', 'nome_busca',
         'kcal', 'proteina_g', 'carboidrato_g', 'lipideos_g', 'fibra_g',
     ];
 
@@ -46,7 +47,8 @@ class Food extends Model
     }
 
     protected $casts = [
-        'codigo_taco' => 'integer',
+        'codigo_pof' => 'integer',
+        'codigo_preparo' => 'integer',
         // float e não decimal:2 no cast porque o cast decimal do Eloquent
         // devolve string; aqui o valor é somado e comparado.
         'kcal' => 'float',

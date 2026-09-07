@@ -38,7 +38,7 @@ class PortalNutricaoController extends Controller
 
         $refeicoes = MealLog::where('student_id', $student->id)
             ->whereDate('data', $data)
-            ->with('itens.food:id,nome,categoria')
+            ->with('itens.food:id,nome')
             ->orderBy('created_at')
             ->get()
             ->map(fn (MealLog $r) => $this->formatarRefeicao($r));
@@ -126,7 +126,6 @@ class PortalNutricaoController extends Controller
             'alimentos' => $refeicao->itens->map(fn (MealLogItem $i) => [
                 'id' => $i->id,
                 'nome' => $i->food->nome,
-                'categoria' => $i->food->categoria,
                 'quantidade_g' => $i->quantidade_g,
                 'medida' => $i->medida_nome,
             ])->values(),
@@ -153,10 +152,10 @@ class PortalNutricaoController extends Controller
     }
 
     /**
-     * GET /:token/nutricao/alimentos?busca=fran — busca na tabela TACO.
+     * GET /:token/nutricao/alimentos?busca=fran — busca no catálogo da POF.
      *
-     * Sem o termo devolve os mais comuns por categoria, pra a tela ter o que
-     * mostrar antes de o aluno digitar qualquer coisa.
+     * Sem o termo devolve uma primeira leva, pra a tela ter o que mostrar
+     * antes de o aluno digitar qualquer coisa.
      */
     public function buscarAlimentos(Request $request): JsonResponse
     {
@@ -164,31 +163,58 @@ class PortalNutricaoController extends Controller
 
         $busca = trim((string) $request->query('busca', ''));
 
-        $query = Food::query()->orderBy('nome');
+        $query = Food::query();
 
-        if ($busca !== '') {
+        if ($busca === '') {
+            $query->orderBy('nome');
+        } else {
             // Uma palavra por vez: quem digita "frango grelhado" espera achar
-            // "Frango, peito, grelhado", que não contém a frase inteira.
+            // "Filé de frango, grelhado", que não contém a frase inteira.
             //
-            // A comparação é na coluna sem acento, não em `nome`: a TACO
+            // A comparação é na coluna sem acento, não em `nome`: a fonte
             // escreve "Macarrão" e no teclado do celular sai "macarrao". Antes
             // isso dependia da collation do banco — funcionava no MySQL, não
             // achava nada no SQLite —, e busca que falha faz o aluno concluir
             // que o alimento não existe no app.
-            foreach (preg_split('/\s+/', Food::normalizarParaBusca($busca)) as $termo) {
-                if ($termo === '') {
-                    continue;
-                }
+            $termos = array_values(array_filter(preg_split('/\s+/', Food::normalizarParaBusca($busca))));
+            foreach ($termos as $termo) {
                 $query->where('nome_busca', 'like', '%'.$termo.'%');
             }
+
+            // Quem digita "arroz" quer "Arroz" primeiro, não "Amido de arroz"
+            // nem "Arrozina". Sem isso a ordem alfabética manda o alimento
+            // óbvio pro fim de uma lista de 40, e o aluno conclui que o app não
+            // tem o que ele comeu — que é a queixa que originou esta tabela.
+            //
+            // A ordem é: o nome COMEÇA com o termo como palavra inteira, depois
+            // começa com o termo, depois o resto; e dentro de cada faixa o nome
+            // mais curto primeiro (nome curto é o alimento genérico, nome longo
+            // é a variação). "arroz" acha "Arroz (polido...)" antes de
+            // "Arrozina", porque em "arrozina" o termo não fecha palavra.
+            //
+            // Faixa 0: o alimento É o termo — sozinho, com o preparo depois da
+            //          vírgula ("macarrao, cozido") ou com a lista de variedades
+            //          entre parênteses ("arroz (polido, parboilizado, ...)"),
+            //          que é como a POF nomeia o alimento genérico.
+            // Faixa 1: o termo abre o nome, mas qualificado ("arroz a grega").
+            // Faixa 2: o termo é começo de palavra ("arrozina").
+            // Faixa 3: o termo aparece em algum lugar ("amido de arroz").
+            $primeiro = $termos[0] ?? '';
+            $query->orderByRaw(
+                'case when nome_busca = ? or nome_busca like ? or nome_busca like ? then 0'
+                .' when nome_busca like ? then 1 when nome_busca like ? then 2 else 3 end',
+                [$primeiro, $primeiro.',%', $primeiro.' (%', $primeiro.' %', $primeiro.'%']
+            )
+                ->orderByRaw('length(nome)')
+                ->orderBy('nome');
         }
 
         return response()->json([
             'alimentos' => $query->with('medidas:id,food_id,nome,gramas')
                 ->limit(40)
-                ->get(['id', 'nome', 'categoria', 'kcal', 'proteina_g', 'carboidrato_g', 'lipideos_g'])
+                ->get(['id', 'nome', 'kcal', 'proteina_g', 'carboidrato_g', 'lipideos_g'])
                 ->map(fn (Food $f) => [
-                    ...$f->only(['id', 'nome', 'categoria', 'kcal', 'proteina_g', 'carboidrato_g', 'lipideos_g']),
+                    ...$f->only(['id', 'nome', 'kcal', 'proteina_g', 'carboidrato_g', 'lipideos_g']),
                     // Pode vir vazio: nem todo alimento tem medida caseira, e
                     // a tela cai no campo de gramas nesses casos.
                     'medidas' => $f->medidas->map(fn ($m) => $m->only(['id', 'nome', 'gramas']))->values(),
