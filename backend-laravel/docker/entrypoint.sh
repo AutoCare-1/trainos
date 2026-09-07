@@ -9,6 +9,15 @@
 # setadas no deploy não apareceriam.
 set -e
 
+# O Railway injeta a porta em $PORT e faz o healthcheck nela; a imagem
+# php:8.3-apache escuta na 80 fixa. Sem casar os dois o deploy sobe, responde
+# na porta errada, o healthcheck de /up falha e o Railway derruba o container —
+# com log de "healthcheck failed" e nenhuma pista do motivo. Fora do Railway
+# (build local, docker run) o :-80 mantém o comportamento de sempre.
+PORTA="${PORT:-80}"
+sed -ri "s/^Listen 80$/Listen ${PORTA}/" /etc/apache2/ports.conf
+sed -ri "s/<VirtualHost \*:80>/<VirtualHost *:${PORTA}>/" /etc/apache2/sites-available/*.conf
+
 php artisan storage:link --force || true
 php artisan migrate --force
 
