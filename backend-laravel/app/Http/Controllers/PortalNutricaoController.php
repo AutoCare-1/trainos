@@ -13,9 +13,11 @@ use App\Models\Student;
 use App\Support\ErrorReporting;
 use App\Support\KillSwitchIa;
 use App\Support\Nutricao;
+use App\Support\NutricaoTotais;
 use App\Support\Uploads;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -38,16 +40,29 @@ class PortalNutricaoController extends Controller
 
         $refeicoes = MealLog::where('student_id', $student->id)
             ->whereDate('data', $data)
-            ->with('itens.food:id,nome')
+            ->with('itens.food:id,nome,kcal,proteina_g,carboidrato_g,lipideos_g')
             ->orderBy('created_at')
             ->get()
             ->map(fn (MealLog $r) => $this->formatarRefeicao($r));
 
         $agua = HydrationLog::where('student_id', $student->id)->whereDate('data', $data)->value('ml') ?? 0;
 
+        // Totais do dia: aproximados, e o frontend precisa dizer isso — item
+        // sem quantidade e refeição só de foto não entram (ver NutricaoTotais).
+        $refeicoesHoje = MealLog::where('student_id', $student->id)
+            ->whereDate('data', $data)
+            ->with('itens.food:id,kcal,proteina_g,carboidrato_g,lipideos_g')
+            ->get();
+
         return response()->json([
             'data' => $data,
             'refeicoes' => $refeicoes,
+            'totais' => NutricaoTotais::somar($refeicoesHoje),
+            'sequencia_dias' => $this->sequenciaDeDias($student),
+            'recado_professor' => $student->nutricao_recado === null ? null : [
+                'texto' => $student->nutricao_recado,
+                'em' => $student->nutricao_recado_em,
+            ],
             'agua_ml' => (int) $agua,
             // A meta vem do servidor pra regra morar num lugar só — o
             // frontend só desenha o que recebe.
@@ -56,6 +71,46 @@ class PortalNutricaoController extends Controller
             // não dizer "referência pro seu peso" a quem nunca foi pesado.
             'agua_meta_do_peso' => $this->pesoAtual($student) !== null,
         ]);
+    }
+
+    /**
+     * Dias seguidos com pelo menos uma refeição registrada, terminando hoje ou
+     * ontem. Termina em "ontem" de propósito: quem abre o app de manhã, antes
+     * de comer, não devia ver a sequência zerar por isso.
+     */
+    private function sequenciaDeDias(Student $student): int
+    {
+        $datas = MealLog::where('student_id', $student->id)
+            ->where('data', '>=', now()->subDays(90)->toDateString())
+            ->orderByDesc('data')
+            ->pluck('data')
+            ->map(fn ($d) => Carbon::parse($d)->toDateString())
+            ->unique()
+            ->values();
+
+        if ($datas->isEmpty()) {
+            return 0;
+        }
+
+        $hoje = now()->startOfDay();
+        $ancora = $datas->first() === $hoje->toDateString()
+            ? $hoje
+            : $hoje->copy()->subDay();
+
+        // A sequência só vale se o registro mais recente é de hoje ou ontem.
+        if ($datas->first() !== $ancora->toDateString()) {
+            return 0;
+        }
+
+        $sequencia = 0;
+        $dia = $ancora->copy();
+        $conjunto = $datas->flip();
+        while ($conjunto->has($dia->toDateString())) {
+            $sequencia++;
+            $dia->subDay();
+        }
+
+        return $sequencia;
     }
 
     /**
@@ -123,6 +178,7 @@ class PortalNutricaoController extends Controller
         return [
             ...$refeicao->only(['id', 'momento', 'descricao', 'created_at']),
             'tem_foto' => $refeicao->file_path !== null,
+            'totais' => NutricaoTotais::daRefeicao($refeicao),
             'alimentos' => $refeicao->itens->map(fn (MealLogItem $i) => [
                 'id' => $i->id,
                 'nome' => $i->food->nome,

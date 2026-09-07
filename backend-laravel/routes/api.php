@@ -1,19 +1,19 @@
 <?php
 
+use App\Http\Controllers\AcademiaController;
 use App\Http\Controllers\AdminCrmController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\AlunoBodyPhotoController;
+use App\Http\Controllers\AlunoChatController;
+use App\Http\Controllers\AlunoCheckinController;
+use App\Http\Controllers\AlunoController;
+use App\Http\Controllers\AlunoNutricaoController;
 use App\Http\Controllers\AlunoPosturalController;
 use App\Http\Controllers\AlunoProgressaoController;
 use App\Http\Controllers\AlunoRevisaoController;
-use App\Http\Controllers\AlunoChatController;
-use App\Http\Controllers\AlunoNutricaoController;
-use App\Http\Controllers\AlunoCheckinController;
-use App\Http\Controllers\AlunoController;
 use App\Http\Controllers\AssinaturaController;
 use App\Http\Controllers\AssinaturaWebhookController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\AcademiaController;
 use App\Http\Controllers\ConsultorIaController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\DesafioController;
@@ -24,12 +24,12 @@ use App\Http\Controllers\NegocioController;
 use App\Http\Controllers\NotificacaoController;
 use App\Http\Controllers\PortalAcademiaController;
 use App\Http\Controllers\PortalBodyPhotoController;
-use App\Http\Controllers\PortalPosturalController;
 use App\Http\Controllers\PortalChatController;
-use App\Http\Controllers\PortalNutricaoController;
 use App\Http\Controllers\PortalCheckinController;
 use App\Http\Controllers\PortalController;
 use App\Http\Controllers\PortalFormaController;
+use App\Http\Controllers\PortalNutricaoController;
+use App\Http\Controllers\PortalPosturalController;
 use App\Http\Controllers\PortalPushController;
 use App\Http\Controllers\PushSubscriptionController;
 use App\Http\Controllers\StravaController;
@@ -85,6 +85,7 @@ Route::middleware('auth.jwt')->group(function () {
         Route::get('/{id}/checkins/{checkinId}/imagem', [AlunoCheckinController::class, 'imagem']);
 
         Route::get('/{id}/nutricao', [AlunoNutricaoController::class, 'index']);
+        Route::patch('/{id}/nutricao/recado', [AlunoNutricaoController::class, 'salvarRecado']);
         Route::get('/{id}/nutricao/refeicoes/{refeicaoId}/imagem', [AlunoNutricaoController::class, 'imagem']);
 
         Route::get('/{id}/mensagens', [AlunoChatController::class, 'index']);

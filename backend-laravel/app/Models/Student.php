@@ -11,18 +11,19 @@ use NotificationChannels\WebPush\HasPushSubscriptions;
 
 class Student extends Model
 {
+    use HasPushSubscriptions;
     use HasUuids;
     use Notifiable;
-    use HasPushSubscriptions;
 
     public $timestamps = false;
+
     protected $table = 'students';
 
     protected $fillable = [
         'professional_id', 'name', 'email', 'phone', 'objective', 'birth_date',
         'weight_kg', 'height_cm', 'invite_token', 'status', 'ai_autopilot',
         'par_q_answers', 'health_notes', 'anamnese', 'onboarding_completed_at', 'photo_url',
-        'lembrar_pagamento_vencimento',
+        'lembrar_pagamento_vencimento', 'nutricao_recado', 'nutricao_recado_em',
     ];
 
     protected $casts = [
@@ -34,6 +35,7 @@ class Student extends Model
         'weight_kg' => 'decimal:2',
         'height_cm' => 'decimal:2',
         'onboarding_completed_at' => 'datetime',
+        'nutricao_recado_em' => 'datetime',
     ];
 
     public function professional(): BelongsTo
