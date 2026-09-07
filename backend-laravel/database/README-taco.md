@@ -83,6 +83,20 @@ Por isso o arquivo marca a origem de cada alimento:
 - **`automatico`** — casamento estrito: todo qualificador do nome na TACO
   precisa existir também no nome do IBGE.
 
+A planilha do IBGE também **perde acento** em alguns nomes de medida. Como
+esse nome aparece na tela do aluno e no diário que o personal lê ("2 pedaços de
+queijo"), os três casos observados são corrigidos no arquivo gerado: `Copo
+medio` → `Copo médio`, `File` → `Filé`, `Pedaco` → `Pedaço`. Numa reimportação,
+conferir se a lista de nomes distintos ainda tem só esses três.
+
+A fonte também traz, para alguns alimentos, **dois pesos para a mesma medida**
+(a maçã Fuji vinha com "1 unidade" valendo 150 g e 320 g). O seeder faz `upsert`
+por `(food_id, nome)`, então nesses casos a última linha calava a primeira em
+silêncio — e a maçã ficou com 320 g, que é o peso do prato, não da fruta. Como
+não dá pra saber qual das duas é a certa, a medida em conflito é **removida**:
+o alimento cai no campo de gramas. `test_fonte_nao_da_dois_pesos_pra_mesma_medida`
+olha o arquivo de origem (no banco o conflito já não é mais visível).
+
 A cobertura é baixa de propósito (87 de 597 alimentos). Alimento **sem** medida
 cai no campo de gramas, que já existe; alimento com medida **errada** vira
 decisão errada do personal, e isso não tem conserto na tela.

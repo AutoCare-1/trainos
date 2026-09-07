@@ -79,5 +79,12 @@ class AlimentoTacoSeeder extends Seeder
         foreach (array_chunk($linhas, 200) as $lote) {
             DB::table('food_measures')->upsert($lote, ['food_id', 'nome'], ['gramas']);
         }
+
+        // Poda o que saiu do arquivo. Sem isso, upsert só sabe criar e atualizar:
+        // uma medida errada que já foi semeada uma vez ficaria pra sempre no
+        // banco, mesmo depois de corrigida aqui. Isso importa agora que o deploy
+        // roda os seeders sozinho a cada subida — a correção precisa chegar lá.
+        $mantidos = array_map(fn (array $l) => $l['id'], $linhas);
+        DB::table('food_measures')->whereNotIn('id', $mantidos)->delete();
     }
 }

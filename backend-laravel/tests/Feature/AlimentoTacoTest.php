@@ -320,6 +320,77 @@ class AlimentoTacoTest extends TestCase
             ->assertJsonPath('refeicoes.0.alimentos.0.quantidade_g', 150);
     }
 
+    public function test_nomes_de_medida_sao_exatamente_os_conferidos(): void
+    {
+        // A planilha do IBGE perde acento em alguns nomes ("Copo medio",
+        // "Pedaco", "File"), e esse nome é lido pelo aluno na hora de escolher
+        // e pelo personal no diário. Texto torto é o tipo de coisa que ninguém
+        // reporta e todo mundo vê.
+        //
+        // O teste trava a lista inteira em vez de procurar acento faltando:
+        // numa reimportação, nome novo é justamente o que precisa de olho
+        // humano. E lê o arquivo, não o banco — o MySQL daqui compara com
+        // collation que ignora acento, então 'Copo medio' casaria com
+        // 'Copo médio' e o teste passaria sem querer.
+        $esperados = [
+            'Bife', 'Caneca', 'Colher de chá', 'Colher de servir', 'Colher de sobremesa',
+            'Colher de sopa', 'Concha', 'Copo americano', 'Copo grande', 'Copo médio',
+            'Escumadeira', 'Fatia', 'Filé', 'Folha', 'Lata', 'Metade', 'Pacote',
+            'Pedaço', 'Pote', 'Prato raso', 'Rodela', 'Unidade', 'Unidade pequena',
+            'Xícara de café',
+        ];
+
+        $nomes = [];
+        foreach (require database_path('medidas_caseiras.php') as $dados) {
+            foreach ($dados['medidas'] as $medida) {
+                $nomes[$medida['nome']] = true;
+            }
+        }
+
+        $nomes = array_keys($nomes);
+        sort($nomes);
+
+        $this->assertSame($esperados, $nomes);
+    }
+
+    public function test_resemear_apaga_medida_que_saiu_do_arquivo(): void
+    {
+        $this->seed(AlimentoTacoSeeder::class);
+        $feijao = Food::where('nome', 'Feijão, carioca, cozido')->first();
+
+        // Simula uma medida errada que já foi pro banco numa versão anterior
+        // do arquivo. O deploy roda os seeders a cada subida, então é assim que
+        // a correção precisa chegar na produção — upsert sozinho só sabe criar.
+        $intrusa = FoodMeasure::create(['food_id' => $feijao->id, 'nome' => 'Balde', 'gramas' => 9000]);
+
+        $this->seed(AlimentoTacoSeeder::class);
+
+        $this->assertNull(FoodMeasure::find($intrusa->id));
+        // E o que está no arquivo continua lá, com o peso certo.
+        $this->assertSame(140.0, (float) $feijao->medidas()->where('nome', 'Concha')->value('gramas'));
+    }
+
+    public function test_fonte_nao_da_dois_pesos_pra_mesma_medida(): void
+    {
+        // Isso NÃO dá pra testar no banco: o seeder usa upsert com chave
+        // (food_id, nome), então duas linhas conflitantes viram uma só e a
+        // última cala a primeira em silêncio. Foi assim que "1 unidade de maçã"
+        // virou 320 g (o peso do prato, não da fruta) sem ninguém ver.
+        // Por isso o teste olha o arquivo de origem, que é onde dá pra enxergar.
+        $conflitos = [];
+
+        foreach (require database_path('medidas_caseiras.php') as $codigo => $dados) {
+            $nomes = array_column($dados['medidas'], 'nome');
+            foreach (array_unique(array_diff_assoc($nomes, array_unique($nomes))) as $repetido) {
+                $conflitos[] = "codigo {$codigo}: {$repetido}";
+            }
+        }
+
+        // Na dúvida, medida nenhuma: o alimento cai no campo de gramas, que já
+        // existe. Medida errada vira decisão errada, e isso não tem conserto.
+        $this->assertSame([], $conflitos, 'medida repetida com pesos diferentes: '.implode(', ', $conflitos));
+    }
+
     public function test_personal_ve_a_medida_caseira_e_nao_so_a_grama(): void
     {
         $this->seed(AlimentoTacoSeeder::class);
