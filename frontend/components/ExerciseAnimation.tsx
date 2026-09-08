@@ -67,6 +67,45 @@ function obterObservador(): IntersectionObserver | null {
   return observador
 }
 
+/**
+ * Mesmo problema dos SVGs, e pior: a biblioteca monta um <video> por exercício
+ * (são ~660) e o iPhone decodifica só um punhado de vídeos ao mesmo tempo. Sem
+ * controle, os primeiros tocam e o resto fica um retângulo transparente — e
+ * como não é erro de carga, não dispara o onError nem cai no desenho de
+ * fallback. Um observer só (singleton, como o dos SVGs) toca quem está na tela
+ * e pausa o resto; fora da viewport quem aparece é o poster.
+ */
+let observadorVideo: IntersectionObserver | null = null
+function obterObservadorVideo(): IntersectionObserver | null {
+  if (typeof IntersectionObserver === 'undefined') return null
+  observadorVideo ??= new IntersectionObserver(
+    (entradas) => {
+      for (const entrada of entradas) {
+        const video = entrada.target as HTMLVideoElement
+        if (entrada.isIntersecting) {
+          // play() rejeita se o browser negar autoplay (Economia de Energia no
+          // iOS) — o catch evita o unhandled rejection; o poster segura a tela.
+          void video.play().catch(() => {})
+        } else {
+          video.pause()
+        }
+      }
+    },
+    { rootMargin: '200px' }
+  )
+  return observadorVideo
+}
+
+/**
+ * O comando exercicios:publicar-demonstracoes sobe, ao lado de cada <slug>.mp4,
+ * um <slug>.jpg com o primeiro quadro. O poster é a URL do vídeo com a extensão
+ * trocada — se o .jpg ainda não existir (vídeo antigo, publicação parcial), o
+ * browser só ignora, sem erro.
+ */
+function posterDoVideo(src: string): string | undefined {
+  return /\.mp4(\?|$)/i.test(src) ? src.replace(/\.mp4(\?|$)/i, '.jpg$1') : undefined
+}
+
 // "md" aumentado de 64 pra 112 — é o tamanho usado onde o aluno/personal
 // realmente assiste a demonstração pra executar o exercício certo (treino do
 // aluno, ficha do treino, gestão de vídeos), então precisa ser bem visível.
@@ -546,7 +585,20 @@ export default function ExerciseAnimation({
     return () => io.unobserve(svg)
   }, [])
 
+  // Liga o <video> ao observer só quando é ele que renderiza — nos outros
+  // ramos videoRef.current é null e o efeito é no-op. Sem isso, autoPlay em
+  // ~660 elementos ao mesmo tempo (a biblioteca inteira) trava o decode no
+  // iPhone e a maioria não pinta quadro nenhum.
+  useEffect(() => {
+    const video = videoRef.current
+    const io = obterObservadorVideo()
+    if (!video || !io) return
+    io.observe(video)
+    return () => io.unobserve(video)
+  }, [videoFalhou])
+
   if (videoUrl && !videoFalhou) {
+    const src = resolveMediaUrl(videoUrl)
     return (
       <div
         className={className}
@@ -557,16 +609,30 @@ export default function ExerciseAnimation({
       >
         <video
           ref={videoRef}
-          src={resolveMediaUrl(videoUrl)}
+          src={src}
+          poster={posterDoVideo(src)}
           onError={() => setVideoFalhou(true)}
+          onLoadedMetadata={(e) => {
+            // iOS não pinta quadro nenhum até ter um decodificado; com autoplay
+            // negado e sem poster o elemento fica transparente. Um passo mínimo
+            // força o primeiro quadro a aparecer.
+            const v = e.currentTarget
+            if (v.currentTime === 0) {
+              try {
+                v.currentTime = 0.05
+              } catch {
+                /* range ainda indisponível — sem problema, o poster cobre */
+              }
+            }
+          }}
           aria-hidden="true"
           width={px}
           height={px}
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          autoPlay
           muted
           loop
           playsInline
+          preload="metadata"
         />
         <span
           className="pointer-events-none absolute bottom-1 right-1 flex items-center justify-center rounded-full bg-black/50 p-1 text-white"

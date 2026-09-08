@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Exercise;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Process\Process;
 use Throwable;
 
 /**
@@ -24,26 +25,43 @@ use Throwable;
  * depois de gerar um vídeo novo só ele sobe. E quem volta a ter caminho local
  * — que é o que a importação faz — sobe de novo mesmo já existindo no destino,
  * porque isso significa que o arquivo mudou.
+ *
+ * Junto de cada <slug>.mp4 sobe um <slug>.jpg com o primeiro quadro (poster do
+ * <video> — sem ele o iPhone mostra retângulo transparente enquanto o autoplay
+ * não é liberado). O app monta a URL do poster trocando a extensão, então nada
+ * disso entra no mapa nem no banco. Pra preencher poster de vídeo já publicado
+ * numa rodada antiga, `--posters` lê os .mp4 locais e sobe só os .jpg.
  */
 class PublicarDemonstracoes extends Command
 {
     protected $signature = 'exercicios:publicar-demonstracoes
-        {--dry-run : Mostra o que subiria, sem enviar nada}';
+        {--dry-run : Mostra o que subiria, sem enviar nada}
+        {--posters : Só (re)gera e sobe os posters .jpg a partir dos .mp4 locais}';
 
     protected $description = 'Envia os vídeos de demonstração para o storage configurado e atualiza video_url.';
+
+    /** Resolvido uma vez por execução por gerarPoster(). */
+    private ?bool $temFfmpeg = null;
 
     public function handle(): int
     {
         $disco = (string) config('demonstracoes.disco');
         $baseUrl = (string) config('demonstracoes.base_url');
         $prefixo = trim((string) config('demonstracoes.prefixo'), '/');
+        $soPosters = (bool) $this->option('posters');
 
-        if ($disco === '' || $baseUrl === '') {
+        // base_url só é obrigatória pra gravar video_url no banco — o modo
+        // --posters não grava nada, só precisa do disco de destino.
+        if ($disco === '' || (! $soPosters && $baseUrl === '')) {
             $this->error('DEMONSTRACOES_DISCO e DEMONSTRACOES_BASE_URL precisam estar no .env.');
             $this->line('Sem os dois o comando não sabe pra onde enviar nem que URL gravar no banco.');
             $this->line('Ver config/demonstracoes.php.');
 
             return self::FAILURE;
+        }
+
+        if ($soPosters) {
+            return $this->publicarPosters($disco, $prefixo);
         }
 
         $exercicios = Exercise::whereNotNull('video_url')->orderBy('name')->get();
@@ -108,6 +126,7 @@ class PublicarDemonstracoes extends Command
                 // e em silêncio, porque o comando reporta "ok" pelo upload, que
                 // de fato deu certo. Só aparece quando alguém abre o app.
                 $ex->forceFill(['video_url' => $baseUrl.'/'.$nomeRemoto])->save();
+                $this->subirPoster($disco, $prefixo, $local, $nomeRemoto);
                 $enviados++;
                 $this->line("  <fg=green>ok</> {$ex->name}");
             } catch (Throwable $e) {
@@ -139,11 +158,155 @@ class PublicarDemonstracoes extends Command
 
         if (! $dryRun && $enviados > 0) {
             $this->newLine();
+            $this->comment('Subiu o vídeo e o poster (<slug>.jpg) de cada um.');
             $this->comment('Agora rode `exercicios:aplicar-demonstracoes --exportar` e commite o mapeamento,');
             $this->comment('pra quem clonar receber as URLs sem precisar dos arquivos.');
         }
 
         return self::SUCCESS;
+    }
+
+    /**
+     * Sobe só os posters, lendo os .mp4 de public/uploads. Serve pra preencher
+     * o primeiro quadro dos vídeos já publicados numa rodada antiga — esses
+     * aparecem como "já publicado(s)" no fluxo normal e não seriam reenviados.
+     */
+    private function publicarPosters(string $disco, string $prefixo): int
+    {
+        $pastas = array_values(array_filter([
+            public_path('uploads/'.$prefixo),
+            public_path($prefixo),
+        ], 'is_dir'));
+
+        if ($pastas === []) {
+            $this->error('Nenhuma pasta de vídeo local encontrada (public/uploads/'.$prefixo.').');
+            $this->line('Os .mp4 não vêm pelo git — peça a cópia a quem gerou.');
+
+            return self::FAILURE;
+        }
+
+        $mp4s = [];
+        foreach ($pastas as $pasta) {
+            foreach (glob($pasta.'/*.mp4') ?: [] as $arquivo) {
+                $mp4s[basename($arquivo)] ??= $arquivo; // dedup por nome, 1ª pasta vence
+            }
+        }
+
+        if ($mp4s === []) {
+            $this->info('Nenhum .mp4 nas pastas locais. Nada a fazer.');
+
+            return self::SUCCESS;
+        }
+
+        $dryRun = (bool) $this->option('dry-run');
+        $enviados = 0;
+        $semPoster = 0;
+
+        foreach ($mp4s as $nome => $caminho) {
+            $poster = $this->gerarPoster($caminho);
+            if ($poster === null) {
+                $semPoster++;
+
+                continue;
+            }
+
+            $remoto = $prefixo.'/'.pathinfo($nome, PATHINFO_FILENAME).'.jpg';
+
+            if ($dryRun) {
+                $this->line("  subiria <fg=cyan>{$remoto}</>");
+                @unlink($poster);
+                $enviados++;
+
+                continue;
+            }
+
+            try {
+                $stream = fopen($poster, 'rb');
+                Storage::disk($disco)->put($remoto, $stream);
+                if (is_resource($stream)) {
+                    fclose($stream);
+                }
+                $enviados++;
+                $this->line("  <fg=green>ok</> {$remoto}");
+            } catch (Throwable $e) {
+                $this->line("  <fg=red>falhou</> {$remoto}: ".$e->getMessage());
+            } finally {
+                @unlink($poster);
+            }
+        }
+
+        $this->newLine();
+        $this->info("{$enviados} poster(s) ".($dryRun ? 'subiriam' : 'enviado(s)').'.');
+        if ($semPoster > 0) {
+            $this->warn("{$semPoster} sem poster (ffmpeg falhou nesses arquivos).");
+        }
+
+        return self::SUCCESS;
+    }
+
+    /** Gera e sobe o poster de um vídeo recém-enviado. Falha aqui não derruba o lote. */
+    private function subirPoster(string $disco, string $prefixo, string $videoLocal, string $nomeRemotoVideo): void
+    {
+        $poster = $this->gerarPoster($videoLocal);
+        if ($poster === null) {
+            return;
+        }
+
+        $remoto = $prefixo.'/'.pathinfo($nomeRemotoVideo, PATHINFO_FILENAME).'.jpg';
+        try {
+            $stream = fopen($poster, 'rb');
+            Storage::disk($disco)->put($remoto, $stream);
+            if (is_resource($stream)) {
+                fclose($stream);
+            }
+        } catch (Throwable $e) {
+            $this->line("  <fg=yellow>poster falhou</> {$remoto}: ".$e->getMessage());
+        } finally {
+            @unlink($poster);
+        }
+    }
+
+    /**
+     * Primeiro quadro do vídeo, em JPG. Precisa de ffmpeg no PATH; sem ele
+     * avisa uma vez e devolve null — os vídeos sobem sem poster e o app degrada
+     * pro comportamento de hoje (retângulo até o autoplay liberar).
+     */
+    private function gerarPoster(string $videoLocal): ?string
+    {
+        if ($this->temFfmpeg === null) {
+            $probe = new Process(['ffmpeg', '-version']);
+            $probe->run();
+            $this->temFfmpeg = $probe->isSuccessful();
+            if (! $this->temFfmpeg) {
+                $this->warn('ffmpeg não encontrado no PATH — vídeos vão sem poster.');
+                $this->line('Instale o ffmpeg e rode `exercicios:publicar-demonstracoes --posters` pra preencher depois.');
+            }
+        }
+
+        if (! $this->temFfmpeg) {
+            return null;
+        }
+
+        // tempnam cria o arquivo sem extensão; o ffmpeg infere o formato pela
+        // extensão, então move-se pro .jpg e apaga-se o stub.
+        $stub = tempnam(sys_get_temp_dir(), 'poster_');
+        $destino = $stub.'.jpg';
+        @unlink($stub);
+
+        $proc = new Process([
+            'ffmpeg', '-y', '-ss', '0.1', '-i', $videoLocal,
+            '-frames:v', '1', '-q:v', '3', $destino,
+        ]);
+        $proc->run();
+
+        if (! $proc->isSuccessful() || ! is_file($destino) || filesize($destino) === 0) {
+            $this->line('  <fg=yellow>sem poster</> '.basename($videoLocal));
+            @unlink($destino);
+
+            return null;
+        }
+
+        return $destino;
     }
 
     private function tamanho(string $caminho): string
