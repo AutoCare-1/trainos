@@ -1,6 +1,10 @@
 *.log
 .DS_Store
 .env
+# Cópias de segurança do .env — o ignore de ".env" não pega ".env.bak-2301",
+# e um backup desses quase foi parar num repositório PÚBLICO com a chave dentro.
+.env.*
+!.env.example
 .env.backup
 .env.production
 .phpactor.json
