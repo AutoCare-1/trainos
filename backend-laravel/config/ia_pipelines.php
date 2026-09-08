@@ -20,6 +20,10 @@ return [
     // expira nem rotaciona) para nela em vez de tirar a feature do ar pros
     // outros clientes. Chamada sem personal resolvido cai no teto global.
     // 0 ou negativo desliga a checagem.
-    'teto_diario_usd_por_personal' => (float) env('IA_TETO_DIARIO_USD_POR_PERSONAL', 5.0),
-    'teto_diario_usd_global' => (float) env('IA_TETO_DIARIO_USD_GLOBAL', 50.0),
+    // Tetos baixos de propósito nesta fase de teste (a chave da Anthropic é nova
+    // e o saldo é pequeno): ao cruzar o teto do dia, o pipeline devolve 503 e
+    // degrada — não gasta mais. Subir por env quando for pra valer, sem deploy:
+    // IA_TETO_DIARIO_USD_POR_PERSONAL / IA_TETO_DIARIO_USD_GLOBAL.
+    'teto_diario_usd_por_personal' => (float) env('IA_TETO_DIARIO_USD_POR_PERSONAL', 1.0),
+    'teto_diario_usd_global' => (float) env('IA_TETO_DIARIO_USD_GLOBAL', 3.0),
 ];

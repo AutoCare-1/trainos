@@ -10,7 +10,10 @@ class ConteudoIdeias
 {
     private const MODEL = 'claude-haiku-4-5-20251001';
 
-    private const CACHE_VALIDADE_HORAS = 24;
+    // A tendência de formato muda devagar e a busca na web é o item mais caro
+    // desta feature (cobrada por consulta). 72h em vez de 24h corta o custo em
+    // ~2/3 sem custo prático de atualidade.
+    private const CACHE_VALIDADE_HORAS = 72;
 
     // Objetivos aceitos (o mesmo enum que o ContentController valida e a tela
     // manda pelos dois botões).
@@ -155,7 +158,10 @@ PROMPT;
         $response = self::client()->messages->create(
             model: self::MODEL,
             maxTokens: 700,
-            tools: [['type' => 'web_search_20250305', 'name' => 'web_search', 'max_uses' => 3]],
+            // 1 busca já responde "que formato está em alta" — as 3 anteriores
+            // triplicavam o custo (web_search é cobrada por consulta) por pouco
+            // ganho, e o resultado ainda fica 72h em cache.
+            tools: [['type' => 'web_search_20250305', 'name' => 'web_search', 'max_uses' => 1]],
             messages: [[
                 'role' => 'user',
                 'content' => <<<'TEXT'
