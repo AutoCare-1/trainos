@@ -133,6 +133,19 @@ Confirmado no código, não só na intenção:
 Ou seja: dá pra lançar **hoje** e ligar cada uma dessas depois, sem mexer em
 código — é variável de ambiente, o Railway reinicia sozinho quando você salva.
 
+## Pendências pra próxima subida (Carol — 08/09)
+
+Contexto: o Filipe testou no iPhone. Vídeo de exercício não aparecia — corrigido
+em `0c95b75` + `22f2d3d` (o teu). Os 663 posters `.jpg` já estão no R2
+(`exercicios:publicar-demonstracoes --posters`, rodado local).
+
+1. **Redeploy do frontend** (Railway `frontend`) — o commit `22f2d3d` não
+   disparou deploy sozinho; o bundle no ar ainda é o antigo.
+2. **`php artisan exercicios:podar-biblioteca --force`** uma vez em produção.
+   `1af0218` tirou 13 exercícios sem vídeo do seeder e botou na
+   `biblioteca_podada.php`, mas a poda nunca roda no entrypoint — sem esse
+   comando os 13 (e os 244 cortes antigos) seguem no banco de produção.
+
 ## Depois que estiver no ar
 
 - Conferir o app de ponta a ponta no navegador de verdade: criar conta, criar
