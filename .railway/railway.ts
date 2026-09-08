@@ -27,6 +27,11 @@ export default defineRailway(() => {
       // apertada. 30s (o valor que estava no .toml) não deixa margem pra um
       // banco que ainda está acordando no primeiro deploy.
       healthcheckTimeout: 300,
+      // A poda da biblioteca (exercicios:podar-biblioteca) foi rodada UMA VEZ
+      // aqui, em 08/09/2026, como preDeployCommand, e depois removida: nenhum
+      // dos 257 nomes podados é reinserido pelos seeders, então não volta. Fica
+      // registrado porque é o tipo de comando que alguém vai procurar "onde foi
+      // que rodou" daqui a três meses — a resposta é: aqui, uma vez, e saiu.
       restartPolicyType: "ON_FAILURE",
       restartPolicyMaxRetries: 3,
     },
