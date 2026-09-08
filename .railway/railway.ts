@@ -1,4 +1,4 @@
-import { defineRailway, github, mysql, project, service } from "railway/iac";
+import { defineRailway, github, mysql, preserve, project, service } from "railway/iac";
 
 /**
  * Infraestrutura do TrainOS no Railway, descrita em código.
@@ -33,6 +33,20 @@ export default defineRailway(() => {
     env: {
       APP_ENV: "production",
       APP_DEBUG: "false",
+
+      // Gerados uma vez e gravados direto no Railway — nunca passaram por
+      // arquivo versionado nem por conversa. preserve() diz "existe, mantém o
+      // valor": sem isso o `apply` entende que variável fora do arquivo é
+      // variável pra apagar, e APAGARIA os dois. Sem APP_KEY e JWT_SECRET o
+      // Laravel não sobe e todo mundo perde a sessão.
+      APP_KEY: preserve(),
+      JWT_SECRET: preserve(),
+
+      // O Apache escuta nesta porta (ver docker/entrypoint.sh) e o domínio
+      // público aponta pra ela. Fixa nos dois lados de propósito: quando o
+      // valor injetado pelo Railway não batia com o do domínio, tudo respondia
+      // 502 com o serviço marcado como "Online".
+      PORT: "80",
       APP_URL: "https://${{RAILWAY_PUBLIC_DOMAIN}}",
       LOG_CHANNEL: "stderr",
       LOG_LEVEL: "warning",
