@@ -57,6 +57,39 @@ export function pushSuportado(): boolean {
   return typeof window !== 'undefined' && 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window
 }
 
+const CHAVE_APP_INSTALADO = 'clubemais_app_instalado'
+
+/**
+ * Marca (na aba do navegador) que este app já foi instalado na tela inicial.
+ *
+ * Existe porque `estaInstalado()` só é true DENTRO do app instalado — a aba
+ * comum do navegador continua achando que não está instalado e o convite de
+ * instalar seguiria aparecendo lá. No Android/Chrome o storage é o mesmo entre
+ * a aba e o app instalado, então gravar isso aqui faz o convite sumir dos dois
+ * lados; no iOS o Safari e o app têm storage separado, então lá isso só vale
+ * quando o próprio usuário confirma ("já instalei") na aba.
+ */
+export function marcarAppInstalado(): void {
+  try {
+    localStorage.setItem(CHAVE_APP_INSTALADO, '1')
+  } catch {
+    // modo privado / storage bloqueado — sem persistência, mas não quebra
+  }
+}
+
+export function appMarcadoComoInstalado(): boolean {
+  try {
+    return localStorage.getItem(CHAVE_APP_INSTALADO) === '1'
+  } catch {
+    return false
+  }
+}
+
+/** Instalado de verdade (rodando standalone) OU já confirmado antes. */
+export function jaInstalado(): boolean {
+  return estaInstalado() || appMarcadoComoInstalado()
+}
+
 // applicationServerKey exige um Uint8Array com ArrayBuffer de verdade (não
 // ArrayBufferLike) — não a string base64url que a API entrega.
 function urlBase64ToUint8Array(base64String: string): Uint8Array<ArrayBuffer> {

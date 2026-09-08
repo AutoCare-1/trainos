@@ -3,7 +3,18 @@
 import { X } from 'lucide-react'
 import InstallAppInstructions from '@/components/InstallAppInstructions'
 
-export default function InstallAppModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+export default function InstallAppModal({
+  open,
+  onClose,
+  onJaInstalei,
+}: {
+  open: boolean
+  onClose: () => void
+  /** Quando presente, mostra um "Já instalei" que dispensa o convite de vez.
+   *  É o único jeito de o convite sumir na aba do Safari no iOS, que não avisa
+   *  quando o app é instalado. */
+  onJaInstalei?: () => void
+}) {
   if (!open) return null
 
   return (
@@ -23,6 +34,15 @@ export default function InstallAppModal({ open, onClose }: { open: boolean; onCl
           </button>
         </div>
         <InstallAppInstructions />
+
+        {onJaInstalei && (
+          <button
+            onClick={onJaInstalei}
+            className="mt-5 w-full rounded-xl border border-ink/10 py-2.5 text-sm font-medium text-ink-soft transition hover:bg-ink/5"
+          >
+            Já instalei, não mostrar de novo
+          </button>
+        )}
       </div>
     </div>
   )
