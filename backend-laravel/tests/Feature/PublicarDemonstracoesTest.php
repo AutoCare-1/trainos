@@ -26,7 +26,10 @@ class PublicarDemonstracoesTest extends TestCase
         Storage::fake('midia');
         config([
             'demonstracoes.disco' => 'midia',
-            'demonstracoes.base_url' => 'https://midia.exemplo/exercise-demos',
+            // Sem o prefixo na base, como o R2 entrega de verdade
+            // (https://pub-xxx.r2.dev). Ter o prefixo aqui foi o que escondeu
+            // o bug de URL sem prefixo por tanto tempo.
+            'demonstracoes.base_url' => 'https://midia.exemplo',
             'demonstracoes.prefixo' => 'exercise-demos',
         ]);
     }
@@ -88,6 +91,29 @@ class PublicarDemonstracoesTest extends TestCase
         Storage::disk('midia')->assertExists('exercise-demos/'.self::SLUG.'.mp4');
         $this->assertSame(
             'https://midia.exemplo/exercise-demos/'.self::SLUG.'.mp4',
+            $ex->fresh()->video_url
+        );
+    }
+
+    public function test_url_gravada_inclui_o_prefixo_do_bucket(): void
+    {
+        // O teste acima passava mesmo com o bug, porque a base_url dele já
+        // continha "exercise-demos" — a conta fechava por acidente. No R2 de
+        // verdade a base vem sem prefixo (https://pub-xxx.r2.dev) e o prefixo é
+        // uma configuração separada. Com o bug, o arquivo subia pra
+        // "exercise-demos/x.mp4" e a URL gravada apontava pra "/x.mp4":
+        // 404 em TODOS os vídeos, e em silêncio, porque o upload em si deu
+        // certo e o comando reportava "ok".
+        config(['demonstracoes.base_url' => 'https://pub-abc123.r2.dev']);
+
+        $this->criarArquivo();
+        $ex = $this->exercicio($this->caminhoRelativo());
+
+        $this->artisan('exercicios:publicar-demonstracoes')->assertSuccessful();
+
+        Storage::disk('midia')->assertExists('exercise-demos/'.self::SLUG.'.mp4');
+        $this->assertSame(
+            'https://pub-abc123.r2.dev/exercise-demos/'.self::SLUG.'.mp4',
             $ex->fresh()->video_url
         );
     }

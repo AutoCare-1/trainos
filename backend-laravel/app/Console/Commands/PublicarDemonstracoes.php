@@ -102,7 +102,12 @@ class PublicarDemonstracoes extends Command
                     fclose($stream);
                 }
 
-                $ex->forceFill(['video_url' => $baseUrl.'/'.basename($local)])->save();
+                // $nomeRemoto, não basename(): o arquivo sobe DENTRO do prefixo
+                // ("exercise-demos/x.mp4") e a URL precisa apontar pro mesmo
+                // lugar. Gravar só o basename gerava 404 em todos os vídeos —
+                // e em silêncio, porque o comando reporta "ok" pelo upload, que
+                // de fato deu certo. Só aparece quando alguém abre o app.
+                $ex->forceFill(['video_url' => $baseUrl.'/'.$nomeRemoto])->save();
                 $enviados++;
                 $this->line("  <fg=green>ok</> {$ex->name}");
             } catch (Throwable $e) {
