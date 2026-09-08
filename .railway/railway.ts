@@ -64,6 +64,13 @@ export default defineRailway(() => {
       CACHE_STORE: "file",
       QUEUE_CONNECTION: "sync",
 
+      // Teto de gasto diário com IA (config/ia_pipelines.php). O padrão do código
+      // é 5/50; enquanto for teste com um personal só, 1/5 é folgado e protege
+      // quem for dono da chave. Aqui, e não só no painel, porque variável que
+      // não está neste arquivo o `apply` entende como variável pra apagar.
+      IA_TETO_DIARIO_USD_POR_PERSONAL: "1.0",
+      IA_TETO_DIARIO_USD_GLOBAL: "5.0",
+
       // O CORS do Laravel lê daqui (config/cors.php). Escrito na sintaxe de
       // referência do próprio Railway, e não como referência tipada, porque os
       // dois serviços apontam um pro outro: em TypeScript isso é um ciclo que
