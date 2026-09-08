@@ -113,6 +113,9 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
   const [revisoes, setRevisoes] = useState<WorkoutReview[]>([])
   const [resumoCheckins, setResumoCheckins] = useState<ResumoCheckins | null>(null)
   const [nutricao, setNutricao] = useState<NutricaoDoAluno | null>(null)
+  const [diasNutricao, setDiasNutricao] = useState<7 | 14 | 30>(7)
+  const [recadoNutricao, setRecadoNutricao] = useState('')
+  const [salvandoRecado, setSalvandoRecado] = useState(false)
   const [periodoCheckins, setPeriodoCheckins] = useState<'week' | 'month' | 'year'>('week')
   const [refCheckins, setRefCheckins] = useState<string | null>(null)
   const [historicoCheckins, setHistoricoCheckins] = useState<HistoricoCheckins | null>(null)
@@ -204,13 +207,32 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
       .then(setResumoCheckins)
       .catch(() => {})
 
-    api
-      .get<NutricaoDoAluno>(`/alunos/${studentId}/nutricao`)
-      .then(setNutricao)
-      .catch(() => {})
-
     return () => clearInterval(intervalo)
   }, [studentId, router, carregarMensagens])
+
+  const carregarNutricao = useCallback(() => {
+    api
+      .get<NutricaoDoAluno>(`/alunos/${studentId}/nutricao?dias=${diasNutricao}`)
+      .then((d) => {
+        setNutricao(d)
+        setRecadoNutricao(d.recado.texto ?? '')
+      })
+      .catch(() => {})
+  }, [studentId, diasNutricao])
+
+  useEffect(() => {
+    carregarNutricao()
+  }, [carregarNutricao])
+
+  async function salvarRecadoNutricao() {
+    setSalvandoRecado(true)
+    try {
+      await api.patch(`/alunos/${studentId}/nutricao/recado`, { texto: recadoNutricao.trim() })
+      carregarNutricao()
+    } finally {
+      setSalvandoRecado(false)
+    }
+  }
 
   const carregarHistoricoCheckins = useCallback(
     (period: 'week' | 'month' | 'year', ref: string | null) => {
@@ -952,10 +974,55 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
           </section>
         )}
 
-        {/* Alimentação: só leitura. O personal olha o padrão e orienta de forma
-            geral — montar cardápio é privativo do nutricionista. */}
+        {/* Alimentação: leitura + um recado geral. O personal olha o padrão e
+            orienta de forma geral — montar cardápio é privativo do nutricionista. */}
         <section className="mb-6">
-          <h2 className="mb-3 font-semibold text-ink">Alimentação</h2>
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="font-semibold text-ink">Alimentação</h2>
+            <div className="flex gap-1 rounded-lg bg-ink/5 p-1">
+              {([7, 14, 30] as const).map((d) => (
+                <button
+                  key={d}
+                  onClick={() => setDiasNutricao(d)}
+                  className={`rounded-md px-2.5 py-1 text-xs font-medium transition ${
+                    diasNutricao === d ? 'bg-white text-ink shadow' : 'text-ink-muted'
+                  }`}
+                >
+                  {d}d
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Recado do professor: o aluno vê fixado no topo da aba dele. É
+              orientação geral, não cardápio. */}
+          <div className="glass mb-4 rounded-2xl p-4">
+            <label className="mb-1.5 block text-xs font-semibold text-ink">
+              Recado sobre alimentação (o aluno vê isso)
+            </label>
+            <textarea
+              value={recadoNutricao}
+              onChange={(e) => setRecadoNutricao(e.target.value)}
+              rows={2}
+              maxLength={600}
+              placeholder="Ex: tenta puxar mais proteína no café da manhã. Sem montar cardápio — isso é com o nutricionista."
+              className="input-dark w-full rounded-xl px-3 py-2 text-sm"
+            />
+            <div className="mt-2 flex items-center justify-between">
+              <span className="text-xs text-ink-muted">
+                {nutricao?.recado.em
+                  ? `no ar desde ${new Date(nutricao.recado.em).toLocaleDateString('pt-BR')}`
+                  : 'nada publicado'}
+              </span>
+              <button
+                onClick={salvarRecadoNutricao}
+                disabled={salvandoRecado || recadoNutricao.trim() === (nutricao?.recado.texto ?? '')}
+                className="btn-primary rounded-lg px-3 py-1.5 text-xs disabled:opacity-40"
+              >
+                {salvandoRecado ? 'Salvando...' : 'Salvar recado'}
+              </button>
+            </div>
+          </div>
 
           {!nutricao && <p className="text-sm text-ink-muted">Carregando...</p>}
 
@@ -968,13 +1035,22 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
           {nutricao && (nutricao.refeicoes.length > 0 || nutricao.sugestoes.length > 0) && (
             <div className="grid gap-4 md:grid-cols-2">
               <div className="glass rounded-2xl p-4">
-                <h3 className="mb-3 text-sm font-semibold text-ink">Últimos 7 dias</h3>
+                <h3 className="mb-2 text-sm font-semibold text-ink">Últimos {diasNutricao} dias</h3>
+
+                {/* Média aproximada — só dos dias com registro, e só do que tinha
+                    quantidade. Não é meta. */}
+                {nutricao.resumo.media_kcal_dia !== null && (
+                  <p className="mb-2 text-xs text-ink-muted">
+                    Média ~{nutricao.resumo.media_kcal_dia} kcal/dia · proteína ~{nutricao.resumo.media_proteina_dia} g/dia
+                    <span className="text-ink-muted/70"> (em {nutricao.resumo.dias_com_registro} dia{nutricao.resumo.dias_com_registro === 1 ? '' : 's'} com registro, aproximado)</span>
+                  </p>
+                )}
 
                 {nutricao.agua.length > 0 && (
                   <p className="mb-3 text-xs text-ink-muted">
                     Água:{' '}
                     {nutricao.agua
-                      .slice(0, 7)
+                      .slice(0, diasNutricao)
                       .map((a) => `${formatarDataCurta(a.data)} ${(a.ml / 1000).toLocaleString('pt-BR', { maximumFractionDigits: 2 })} L`)
                       .join(' · ')}
                   </p>
@@ -985,7 +1061,7 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
                 )}
 
                 <div className="space-y-2">
-                  {nutricao.refeicoes.slice(0, 12).map((r) => (
+                  {nutricao.refeicoes.slice(0, 20).map((r) => (
                     <div key={r.id} className="flex items-start gap-2.5">
                       {r.tem_foto && (
                         <ImagemRefeicao
@@ -1001,6 +1077,12 @@ export default function AlunoDetalheClient({ studentId }: { studentId: string })
                           <p className="text-sm text-ink-soft">{r.alimentos.map(descreverAlimento).join(', ')}</p>
                         )}
                         {r.descricao && <p className="truncate text-sm text-ink-soft">{r.descricao}</p>}
+                        {r.totais.itens_contados > 0 && (
+                          <p className="text-xs text-ink-muted">
+                            ~{r.totais.kcal} kcal · P ~{r.totais.proteina_g} g
+                            {r.totais.itens_sem_quantidade > 0 && ' (parcial)'}
+                          </p>
+                        )}
                       </div>
                     </div>
                   ))}

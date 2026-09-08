@@ -1785,6 +1785,62 @@ export default function PortalAlunoClient({ token }: { token: string }) {
 
           {falhas.nutricao && !nutricao && <FalhaAoCarregar onTentarDeNovo={carregarNutricao} />}
 
+          {/* Recado do professor: orientação geral, fixada no topo. Não é
+              cardápio (isso é do nutricionista) — é o "puxa mais proteína no
+              café" que ele daria pessoalmente. */}
+          {nutricao?.recado_professor && (
+            <div className="mb-4 rounded-2xl border-l-4 border-brand bg-brand/5 p-4">
+              <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-brand">Recado do professor</p>
+              <p className="whitespace-pre-wrap text-sm text-ink-soft">{nutricao.recado_professor.texto}</p>
+              {nutricao.recado_professor.em && (
+                <p className="mt-1.5 text-xs text-ink-muted">
+                  atualizado em {new Date(nutricao.recado_professor.em).toLocaleDateString('pt-BR')}
+                </p>
+              )}
+            </div>
+          )}
+
+          {/* Sequência + total do dia. O total é APROXIMADO de propósito e a
+              tela diz isso: item sem quantidade e refeição só de foto não
+              entram. Não é meta nem dieta. */}
+          {nutricao && (nutricao.sequencia_dias > 0 || nutricao.totais.itens_contados > 0) && (
+            <div className="glass mb-4 rounded-2xl p-5">
+              {nutricao.sequencia_dias > 0 && (
+                <p className="mb-2 text-sm text-ink-soft">
+                  <span className="stat-number text-lg text-brand">{nutricao.sequencia_dias}</span>{' '}
+                  {nutricao.sequencia_dias === 1 ? 'dia seguido' : 'dias seguidos'} registrando
+                </p>
+              )}
+
+              {nutricao.totais.itens_contados > 0 && (
+                <>
+                  <div className="flex items-baseline justify-between">
+                    <h2 className="font-semibold text-ink">Total de hoje</h2>
+                    <span className="stat-number text-lg text-ink">~{nutricao.totais.kcal} kcal</span>
+                  </div>
+                  <p className="mt-1 text-sm text-ink-muted">
+                    Proteína ~{nutricao.totais.proteina_g} g · Carbo ~{nutricao.totais.carboidrato_g} g · Gordura ~
+                    {nutricao.totais.lipideos_g} g
+                  </p>
+                  {(nutricao.totais.itens_sem_quantidade > 0 || nutricao.totais.refeicoes_sem_itens > 0) && (
+                    <p className="mt-1.5 text-xs text-ink-muted">
+                      Aproximado — não entram{' '}
+                      {[
+                        nutricao.totais.itens_sem_quantidade > 0 &&
+                          `${nutricao.totais.itens_sem_quantidade} aliment${nutricao.totais.itens_sem_quantidade === 1 ? 'o' : 'os'} sem quantidade`,
+                        nutricao.totais.refeicoes_sem_itens > 0 &&
+                          `${nutricao.totais.refeicoes_sem_itens} refeiç${nutricao.totais.refeicoes_sem_itens === 1 ? 'ão' : 'ões'} só com foto ou texto`,
+                      ]
+                        .filter(Boolean)
+                        .join(' e ')}
+                      .
+                    </p>
+                  )}
+                </>
+              )}
+            </div>
+          )}
+
           {/* Água primeiro: é o registro de menor esforço do dia inteiro. */}
           <div className="glass mb-4 rounded-2xl p-5">
             <div className="mb-3 flex items-baseline justify-between">
@@ -2125,6 +2181,12 @@ export default function PortalAlunoClient({ token }: { token: string }) {
                     </p>
                   )}
                   {r.descricao && <p className="text-sm text-ink-soft">{r.descricao}</p>}
+                  {r.totais.itens_contados > 0 && (
+                    <p className="mt-1 text-xs text-ink-muted">
+                      ~{r.totais.kcal} kcal · P ~{r.totais.proteina_g} g
+                      {r.totais.itens_sem_quantidade > 0 && ' (parcial)'}
+                    </p>
+                  )}
                 </div>
                 <button
                   onClick={() => removerRefeicao(r.id)}

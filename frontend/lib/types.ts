@@ -711,19 +711,47 @@ export interface SemanaAgenda {
 
 export type MomentoRefeicao = 'cafe' | 'lanche' | 'almoco' | 'jantar' | 'pre_treino' | 'pos_treino'
 
+/** Soma APROXIMADA de uma ou mais refeições. Item sem quantidade e refeição só
+ *  de foto não entram — a tela precisa dizer que o número é parcial. Não é meta
+ *  nem prescrição (isso é do nutricionista). */
+export interface TotaisNutricao {
+  kcal: number
+  proteina_g: number
+  carboidrato_g: number
+  lipideos_g: number
+  itens_contados: number
+  itens_sem_quantidade: number
+  refeicoes_sem_itens: number
+}
+
 export interface RefeicaoRegistrada {
   id: string
   data?: string
   momento: MomentoRefeicao
   descricao: string | null
   tem_foto: boolean
+  totais: TotaisNutricao
   alimentos: AlimentoDaRefeicao[]
   created_at: string
+}
+
+/** Recado geral do professor sobre alimentação, fixado no topo da aba do aluno.
+ *  No portal vem `null` inteiro quando não há recado; na ficha do personal vem
+ *  o objeto com `texto: null` (o campo é editável e pode estar vazio). */
+export interface RecadoNutricao {
+  texto: string | null
+  em: string | null
 }
 
 export interface DiaNutricao {
   data: string
   refeicoes: RefeicaoRegistrada[]
+  /** Total aproximado do dia (ver TotaisNutricao). */
+  totais: TotaisNutricao
+  /** Dias seguidos registrando, terminando hoje ou ontem. */
+  sequencia_dias: number
+  /** null quando o professor não deixou recado. */
+  recado_professor: RecadoNutricao | null
   /** Em mililitros. "Copo" não é unidade (200 ml? 300?) — litro é o que o
    *  aluno compara com a referência que ele conhece ("2 litros por dia"). */
   agua_ml: number
@@ -748,10 +776,26 @@ export interface SugestaoNutricao {
   created_at: string
 }
 
+/** Total aproximado de um dia, na lista do resumo do personal. */
+export interface TotalDiaNutricao extends TotaisNutricao {
+  data: string
+}
+
+export interface ResumoNutricao {
+  dias_com_registro: number
+  /** null quando nenhum dia do período teve item somável. */
+  media_kcal_dia: number | null
+  media_proteina_dia: number | null
+  total_por_dia: TotalDiaNutricao[]
+}
+
 export interface NutricaoDoAluno {
+  dias: number
   refeicoes: RefeicaoRegistrada[]
+  resumo: ResumoNutricao
   agua: { data: string; ml: number }[]
   sugestoes: SugestaoNutricao[]
+  recado: RecadoNutricao
 }
 
 /** Medida caseira de um alimento ("Concha", 140 g). Fonte: IBGE/POF. */
