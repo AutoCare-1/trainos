@@ -98,11 +98,9 @@ class ExercicioBibliotecaComplementarSeeder extends Seeder
             ['Split step com salto', 'Esportivo', 'Peso corporal', 'Pequeno salto com aterrissagem em base larga, pronto para sair para qualquer lado.'],
             ['Passo cruzado para a rede', 'Esportivo', 'Peso corporal', 'Cruze a perna de trás à frente e avance em diagonal, como na subida à rede.'],
             ['Deslocamento em leque na quadra', 'Esportivo', 'Peso corporal', 'Saia do centro para cinco pontos diferentes e volte, sempre de frente para a rede.'],
-            ['Recuo em três passos para o fundo', 'Esportivo', 'Peso corporal', 'Recue em passos cruzados até a linha de fundo mantendo o tronco de frente.'],
             ['Puxada rotacional na polia alta (topspin)', 'Esportivo', 'Polia', 'Puxe o cabo de cima para baixo em diagonal, acompanhando com a rotação do tronco.'],
             ['Freio excêntrico de ombro na polia (pós-saque)', 'Esportivo', 'Polia', 'Deixe o cabo puxar o braço para cima e freie a descida em três segundos.'],
             ['Pronossupinação com bastão lastrado', 'Esportivo', 'Bastão', 'Cotovelo apoiado a 90 graus, gire o bastão para dentro e para fora sem mexer o ombro.'],
-            ['Smash aéreo simulado com elástico', 'Esportivo', 'Elástico', 'Elástico preso acima da cabeça, reproduza o movimento do smash com o braço estendido.'],
             ['Deslocamento em quadra pequena com giro', 'Esportivo', 'Peso corporal', 'Dois passos laterais, giro de 180 graus e volta, como no padel e no beach tennis.'],
 
             // Corrida
@@ -124,7 +122,6 @@ class ExercicioBibliotecaComplementarSeeder extends Seeder
             ['Deslocamento defensivo lateral com toque no cone', 'Esportivo', 'Peso corporal', 'Passos laterais em posição baixa tocando o cone de cada lado.'],
             ['Aceleração de 5 metros com mudança de direção', 'Esportivo', 'Peso corporal', 'Acelere cinco metros, freie e saia na direção oposta sem passo extra.'],
             ['Salto de cabeceio com aterrissagem', 'Esportivo', 'Peso corporal', 'Salto vertical com contramovimento e aterrissagem amortecida nos dois pés.'],
-            ['Freio de desaceleração em uma perna', 'Esportivo', 'Peso corporal', 'Corra três passos e pare apoiando só uma perna, segurando o joelho alinhado.'],
             ['Giro de 180 graus com arranque', 'Esportivo', 'Peso corporal', 'Gire o corpo meia volta e saia em aceleração no primeiro passo.'],
 
             // Natação
@@ -142,7 +139,6 @@ class ExercicioBibliotecaComplementarSeeder extends Seeder
             ['Joelhada com resistência de elástico', 'Esportivo', 'Elástico', 'Elástico na coxa, leve o joelho à frente e para cima como na joelhada em clinch.'],
             ['Sprawl', 'Esportivo', 'Peso corporal', 'Da guarda, jogue as pernas para trás caindo em prancha e volte de pé.'],
             ['Ponte de luta (ponte de pescoço assistida)', 'Esportivo', 'Peso corporal', 'Deitado, eleve o quadril apoiando parte do peso nas mãos, sem forçar a cervical.'],
-            ['Puxada de gola no elástico (kuzushi)', 'Esportivo', 'Elástico', 'Puxe o elástico em diagonal para baixo, como ao desequilibrar o adversário.'],
             ['Levantada técnica (technical stand-up)', 'Esportivo', 'Peso corporal', 'Sentado, apoie uma mão e o pé oposto e levante mantendo a guarda à frente.'],
             ['Rotação de tronco com anilha em guarda', 'Esportivo', 'Anilha', 'Em base de luta, gire a anilha de um lado ao outro na altura do peito.'],
 
@@ -151,7 +147,6 @@ class ExercicioBibliotecaComplementarSeeder extends Seeder
             ['Salto contínuo com joelhos ao peito', 'Esportivo', 'Peso corporal', 'Saltos seguidos puxando os joelhos ao peito, com contato curto no solo.'],
             ['Manchete simulada com elástico', 'Esportivo', 'Elástico', 'Braços estendidos e unidos, resista ao elástico subindo do quadril ao ombro.'],
             ['Arremesso acima da cabeça com medicine ball', 'Esportivo', 'Medicine ball', 'Arremesse a bola para cima e à frente estendendo tronco, ombros e quadril.'],
-            ['Deslocamento defensivo em posição baixa', 'Esportivo', 'Peso corporal', 'Passos laterais em semiagachamento sem cruzar os pés, tronco ereto.'],
             ['Bloqueio duplo com salto lateral', 'Esportivo', 'Peso corporal', 'Deslocamento lateral de dois passos seguido de salto com braços estendidos.'],
             ['Salto lateral sobre linha com aterrissagem em apoio único', 'Esportivo', 'Peso corporal', 'Salte para o lado e aterrisse em uma perna só, segurando dois segundos.'],
             ['Troca rápida de pés no step (foot fire)', 'Esportivo', 'Step', 'Alterne os pés no step o mais rápido possível mantendo o tronco estável.'],
@@ -220,10 +215,7 @@ class ExercicioBibliotecaComplementarSeeder extends Seeder
             ['Liberação miofascial de dorsal no rolo', 'Mobilidade', 'Rolo', 'Deitado de lado com o braço estendido, role a lateral das costas sob a axila.'],
             ['Liberação miofascial de panturrilha no rolo', 'Mobilidade', 'Rolo', 'Sentado com a panturrilha sobre o rolo, role do tornozelo ao joelho.'],
             ['Liberação miofascial de posterior de coxa no rolo', 'Mobilidade', 'Rolo', 'Sentado sobre o rolo, role a parte de trás da coxa do glúteo ao joelho.'],
-            ['Liberação miofascial de tibial anterior no rolo', 'Mobilidade', 'Rolo', 'Em quatro apoios com a canela sobre o rolo, role a frente da perna.'],
-            ['Liberação miofascial de glúteo na bola', 'Mobilidade', 'Bola', 'Sentado sobre a bola, cruze o tornozelo no joelho e busque o ponto de tensão.'],
             ['Liberação de fáscia plantar na bolinha', 'Mobilidade', 'Bola', 'Em pé, role a sola do pé sobre a bolinha do calcanhar aos dedos.'],
-            ['Liberação de peitoral na bola na parede', 'Mobilidade', 'Bola', 'Bola entre o peito e a parede, mova o braço lentamente buscando o ponto tenso.'],
 
             // ---- Alongamento ---------------------------------------------------
             // Posição sustentada. O equivalente dinâmico de vários destes está em
@@ -373,8 +365,6 @@ class ExercicioBibliotecaComplementarSeeder extends Seeder
             ['Supino inclinado unilateral com halter', 'Peito', 'Halter', 'Um halter por vez, com o outro braço relaxado, exigindo o core para não girar.'],
             ['Flexão de braço com deslocamento lateral', 'Peito', 'Peso corporal', 'Faça a flexão, desloque as mãos e os pés para o lado e repita.'],
             ['Flexão de braço nas argolas', 'Peito', 'Argolas', 'Argolas baixas, desça o peito entre elas girando as palmas para fora ao subir.'],
-            ['Paralelas nas argolas', 'Peito', 'Argolas', 'Mergulho nas argolas com tronco inclinado à frente, estabilizando a oscilação.'],
-            ['Crucifixo na polia deitado no banco', 'Peito', 'Polia', 'Banco entre as polias baixas, abra e feche os braços com leve flexão de cotovelo.'],
             ['Flexão de braço com abertura na toalha', 'Peito', 'Toalha', 'Mãos sobre toalhas em piso liso, deslize um braço para o lado ao descer e puxe de volta ao subir.'],
 
             // Costas
@@ -395,7 +385,6 @@ class ExercicioBibliotecaComplementarSeeder extends Seeder
 
             // Tríceps
             ['Extensão de tríceps nas argolas', 'Tríceps', 'Argolas', 'Corpo inclinado à frente, desça flexionando os cotovelos e estenda para voltar.'],
-            ['Mergulho nas argolas', 'Tríceps', 'Argolas', 'Tronco vertical nas argolas, desça até noventa graus e suba estendendo os cotovelos.'],
 
             // Pernas
             ['Agachamento com deslocamento lateral na toalha', 'Pernas', 'Toalha', 'Um pé sobre uma toalha em piso liso, deslize-o para o lado descendo em agachamento e puxe de volta.'],
@@ -412,9 +401,7 @@ class ExercicioBibliotecaComplementarSeeder extends Seeder
 
             // Funcional
             ['Muscle-up na barra', 'Funcional', 'Peso corporal', 'Puxada explosiva seguida da transição do peito sobre a barra e extensão dos braços.'],
-            ['Muscle-up nas argolas', 'Funcional', 'Argolas', 'Mesma transição da barra, com a instabilidade das argolas na virada.'],
             ['Front lever progressivo', 'Funcional', 'Peso corporal', 'Pendurado, sustente o corpo na horizontal com os joelhos recolhidos ao peito.'],
-            ['Back lever progressivo', 'Funcional', 'Peso corporal', 'De costas para a barra, sustente o corpo na horizontal com os joelhos recolhidos.'],
             ['Flexão em pseudo planche', 'Funcional', 'Peso corporal', 'Mãos na altura da cintura e ombros à frente das mãos, faça a flexão inclinado.'],
             ['Devil press com halteres', 'Funcional', 'Halteres', 'Burpee segurando os halteres e, ao subir, leve-os acima da cabeça em um arco.'],
             ['Man maker com halteres', 'Funcional', 'Halteres', 'Flexão, uma remada de cada lado, e desenvolvimento ao ficar de pé.'],

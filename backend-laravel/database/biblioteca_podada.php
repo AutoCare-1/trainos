@@ -257,4 +257,21 @@ return [
     'Tríceps na polia por trás da cabeça unilateral',
     'Tríceps no solo (skull crusher no chão)',
     'Tríceps pulley com barra reta pegada aberta',
+
+    // Leva complementar (31/08): 13 que ficaram sem vídeo e não vão ganhar
+    // um — os mais difíceis de gerar (argolas, back lever, liberação miofascial
+    // deitado). Saem da biblioteca em vez de exibir boneco de palito.
+    'Recuo em três passos para o fundo',
+    'Smash aéreo simulado com elástico',
+    'Freio de desaceleração em uma perna',
+    'Puxada de gola no elástico (kuzushi)',
+    'Deslocamento defensivo em posição baixa',
+    'Liberação miofascial de tibial anterior no rolo',
+    'Liberação miofascial de glúteo na bola',
+    'Liberação de peitoral na bola na parede',
+    'Paralelas nas argolas',
+    'Crucifixo na polia deitado no banco',
+    'Mergulho nas argolas',
+    'Muscle-up nas argolas',
+    'Back lever progressivo',
 ];

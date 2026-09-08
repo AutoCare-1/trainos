@@ -679,7 +679,6 @@ $isometricosComplementar = [
     'L-sit nas paralelas',
     'Parada de mão na parede',
     'Front lever progressivo',
-    'Back lever progressivo',
     'Streamline na parede',
     'Sustentação de tronco em posição aero',
     'Extensão de tronco em posição de guidão',
@@ -702,7 +701,6 @@ $propsComplementar = [
         'Liberação miofascial de dorsal no rolo',
         'Liberação miofascial de panturrilha no rolo',
         'Liberação miofascial de posterior de coxa no rolo',
-        'Liberação miofascial de tibial anterior no rolo',
     ],
     'Bosu' => [
         'Apoio unipodal em superfície instável',
@@ -720,13 +718,10 @@ $propsComplementar = [
     ],
     'Argolas' => [
         'Flexão de braço nas argolas',
-        'Paralelas nas argolas',
         'Remada nas argolas com pés elevados',
         'Barra fixa nas argolas',
         'Rosca nas argolas',
         'Extensão de tríceps nas argolas',
-        'Mergulho nas argolas',
-        'Muscle-up nas argolas',
     ],
     'Bastão' => [
         'Pronossupinação com bastão lastrado',
@@ -738,14 +733,12 @@ $propsComplementar = [
     'Elástico' => [
         'Golpe de forehand com elástico',
         'Golpe de backhand com elástico',
-        'Smash aéreo simulado com elástico',
         'Chute com resistência de elástico',
         'Chute interno resistido no elástico',
         'Puxada de nado no elástico (crawl)',
         'Remada de peito no elástico',
         'Cruzado com rotação de quadril no elástico',
         'Joelhada com resistência de elástico',
-        'Puxada de gola no elástico (kuzushi)',
         'Manchete simulada com elástico',
         'Swing de golfe resistido com elástico',
         'Aceleração de braço com elástico para arremesso',
@@ -778,7 +771,6 @@ $execucaoComplementar = [
     'Apoio unipodal com olhos fechados' => 'Em pé sobre uma perna só, joelho levemente flexionado, o outro pé no ar e os olhos fechados.',
     'Prancha de Copenhague com joelho apoiado' => 'Deitado de lado apoiado no antebraço, joelho da perna de cima apoiado num banco, quadril erguido em linha reta.',
     'Excêntrico de sóleo unilateral no degrau' => 'Sobre um degrau em apoio de uma perna só, joelho dobrado, descendo o calcanhar lentamente abaixo da borda.',
-    'Muscle-up nas argolas' => 'Pendurado nas argolas, puxa o corpo com força e gira os punhos passando o peito acima das argolas até estender os braços.',
     'Pedalada em cadência alta na bicicleta' => 'Sentado numa bicicleta ergométrica de academia, pedalando rápido com as pernas girando em alta rotação.',
     'Tiro sentado com carga alta na bicicleta' => 'Sentado numa bicicleta ergométrica, pedalando com força e lentamente contra carga pesada, tronco firme.',
     'Sustentação de tronco em posição aero' => 'Apoiado nos antebraços no chão, quadril alto e costas retas, como quem se debruça sobre o guidão.',
@@ -793,7 +785,6 @@ $execucaoComplementar = [
     'Parada de mão na parede' => 'De cabeça para baixo, mãos no chão e pés apoiados na parede, corpo estendido em linha reta.',
     'L-sit nas paralelas' => 'Sustentado nas barras paralelas com os braços travados e as pernas estendidas à frente, na horizontal.',
     'Front lever progressivo' => 'Pendurado numa barra fixa, corpo na horizontal com a barriga para cima e os joelhos recolhidos ao peito.',
-    'Back lever progressivo' => 'Pendurado numa barra fixa de costas, corpo na horizontal com a barriga para baixo e os joelhos recolhidos.',
 ];
 
 $complementar = [];
@@ -841,12 +832,9 @@ $panturrilhaNaParede = 'He stands facing a wall with both palms flat on it at ch
 
 $dicasCena = [
     // Argolas (8) — só 2 passaram pelo piloto, mas a montagem é a mesma família.
-    'Mergulho nas argolas' => $argolasApoiadoEmCima,
-    'Paralelas nas argolas' => $argolasApoiadoEmCima,
     'Flexão de braço nas argolas' => 'He is in a push-up position with his hands gripping two rings hanging just above the floor, body straight from head to heels and toes on the ground. He is never standing and never hanging in the air.',
     'Remada nas argolas com pés elevados' => $argolasPenduradoHorizontal,
     'Barra fixa nas argolas' => $argolasPenduradoVertical,
-    'Muscle-up nas argolas' => $argolasPenduradoVertical.' At the top he pulls his chest above the rings and turns his wrists to finish supported on top of them with his arms straight.',
     'Rosca nas argolas' => $argolasInclinadoParaTras.' Only his elbows bend: the upper arms stay still and his palms face up toward his own shoulders.',
     'Extensão de tríceps nas argolas' => 'He stands leaning FORWARD onto the rings with his body straight and angled toward the floor, elbows pointing forward beside his head. Only the elbows bend and straighten; the shoulders stay put. He is never lying down.',
 
@@ -962,8 +950,6 @@ $varreduraPreventiva = [
     'Respiração diafragmática deitada' => 'He lies FACE UP on the floor with knees bent and feet flat, one hand on his chest and one on his belly, breathing slowly so the belly hand rises while the chest hand stays still.',
     'Mobilidade de quadril em passada com apoio no cotovelo' => 'He is in a deep forward lunge, front foot flat and back knee near the floor. He lowers the ELBOW on the same side as the front leg down to the floor on the INSIDE of that front foot, then rotates and reaches the other arm up to the ceiling.',
     'Rotação em quatro apoios com mão na nuca' => 'He is on ALL FOURS with one hand behind his head, elbow pointing out. He rotates the upper back to bring that elbow up toward the ceiling, then down under his chest, while hips and knees stay square and still.',
-    'Liberação miofascial de glúteo na bola' => 'He SITS on top of a small firm massage ball on the floor with one buttock, crosses that ankle over the opposite knee and rolls slowly over the ball, hands on the floor behind him for support.',
-    'Liberação de peitoral na bola na parede' => 'He stands FACING a wall and traps a small firm massage ball between the front of his shoulder and the wall, leaning into it and moving that arm slowly. The ball stays pinned between his chest and the wall.',
     'Alongamento de dorsal na barra' => 'He stands facing a fixed horizontal bar at about chest height, grips it with both hands and steps back, pushing his hips backwards and letting the torso hang down between straight arms until his back is horizontal.',
     'Alongamento de dorsal ajoelhado no banco' => 'He KNEELS on the floor in front of a flat bench and rests both ELBOWS on top of the bench, then sits his hips back toward his heels and lets his chest sink toward the floor between his arms.',
     'Alongamento de bíceps na parede' => 'He stands SIDE-ON to a wall and places one straight arm behind him with the PALM flat on the wall at shoulder height, then rotates his torso away from that arm.',
@@ -988,7 +974,6 @@ $varreduraPreventiva = [
     'Controle de valgo dinâmico no step' => 'He steps up onto a low platform with one foot, seen from the FRONT so both knees are visible, and stands up on that leg with the knee tracking straight out over the foot and never collapsing inward.',
     'Isometria de cervical em decúbito dorsal' => 'He lies FACE UP flat on the floor with arms at his sides and lifts only his HEAD a few centimetres off the ground, chin tucked toward his throat, holding it there. His shoulders stay on the floor.',
     'Descompressão lombar com elevação de pernas na cadeira' => 'He lies FACE UP on the floor with both CALVES resting on the seat of a chair, hips and knees each bent to a right angle, arms relaxed at his sides.',
-    'Crucifixo na polia deitado no banco' => 'He lies FACE UP on a flat bench placed between two LOW cable pulleys, one handle in each hand, arms out wide at chest level with a slight bend. He sweeps both hands up and together above his chest in a wide arc, then opens them back out.',
     'Parada de mão na parede' => 'He is upside down in a handstand with both HANDS on the floor and the soles of both FEET resting against a wall, body straight and vertical, head between the arms.',
     'Desenvolvimento em parada de mão na parede' => 'He is upside down in a handstand with hands on the floor and feet against a wall. He bends both elbows to lower the top of his head toward the floor between his hands, then presses back up to straight arms.',
     'Leg press vertical' => 'He lies FACE UP on the padded base of a vertical leg press with back and hips flat, both feet pressed against a footplate directly ABOVE him. He pushes the plate straight up and lowers it back down.',
@@ -1137,7 +1122,6 @@ $varreduraPreventiva['Corrida de vai e vem (shuttle run)'] = 'He sprints forward
 // dry-run confirmou. As duas viram facilmente uma barra fixa comum sem
 // negar explicitamente que o corpo fica NA HORIZONTAL.
 $varreduraPreventiva['Front lever progressivo'] = 'He hangs from a fixed pull-up bar with both arms straight. His whole body is lifted up to HORIZONTAL, roughly parallel to the floor — this is not a normal vertical hang, his body never hangs straight down. He faces UP toward the ceiling, chest up, with his knees tucked in toward his own chest to shorten the hold. He holds this position still: it is an isometric hold, not a repeated movement.';
-$varreduraPreventiva['Back lever progressivo'] = 'He hangs from a fixed pull-up bar with both arms straight. His whole body is lifted up to HORIZONTAL, roughly parallel to the floor — this is not a normal vertical hang, his body never hangs straight down. He faces DOWN toward the floor, back up toward the ceiling, with his knees tucked in toward his own chest to shorten the hold. He holds this position still: it is an isometric hold, not a repeated movement.';
 
 // Lote 20, Esportivo: 46 dos 74 não tinham cena nenhuma (dry-run confirmou
 // — prompt saía só com o nome). Escritas todas antes de gerar. A maioria é
@@ -1154,14 +1138,12 @@ $varreduraPreventiva['Condução de bola em ziguezague'] = 'A single soccer ball
 $varreduraPreventiva['Corrida em curva fechada'] = 'He runs forward along a tight curving path, banking his body inward toward the centre of the curve and pushing off harder with his outside foot, tracing a visible arc across the floor rather than a straight line.';
 $varreduraPreventiva['Desaceleração lateral com passo de recuperação'] = 'He shuffles sideways two steps, then plants hard on his outside foot to brake to a complete stop, and immediately pushes off that same foot to shuffle back to his starting spot. The braking foot is clearly the outside one, and he returns to center every rep.';
 $varreduraPreventiva['Desaceleração rotacional com medicine ball para golfe'] = 'He holds a medicine ball with both hands at one hip and rotates his torso hard to swing it across his body toward the opposite shoulder, like a golf swing, then actively brakes and holds the ball still at the end of the rotation instead of letting it swing further. He never releases or throws the ball.';
-$varreduraPreventiva['Deslocamento defensivo em posição baixa'] = 'He stays in a half-squat the whole time, knees bent and torso upright, and shuffles sideways with quick small steps, his feet never crossing over each other and never coming fully together.';
 $varreduraPreventiva['Deslocamento defensivo lateral com toque no cone'] = 'A small cone sits on the floor on each side of him. Staying low in a half-squat, he shuffles sideways to one cone and touches it with his hand, then shuffles sideways back across to touch the cone on the other side, repeating side to side.';
 $varreduraPreventiva['Deslocamento em leque na quadra'] = 'He starts at a central spot on the floor, always facing the same direction forward. He shuffles out to one point away from the centre, then shuffles back to the centre spot, then shuffles out to a different point at a different angle and back again — a fan-shaped pattern of out-and-back movements, never turning his back to the front.';
 $varreduraPreventiva['Deslocamento em quadra pequena com giro'] = 'He takes two quick sideways shuffle steps, then spins his whole body a full 180 degrees to face the opposite direction, then shuffles two steps back and spins 180 degrees again to face forward once more.';
 $varreduraPreventiva['Educativo de corrida: dribling baixo'] = 'He runs in place taking very short, very quick steps low and fast on the balls of his feet, each foot barely lifting off the floor and covering only a few centimetres of ground per step, arms pumping quickly at his sides.';
 $varreduraPreventiva['Educativo de corrida: skipping A'] = 'He moves forward with a skipping motion, driving one knee up to hip height on the ball of his foot each step, then quickly switching to drive the other knee up, advancing forward a short distance with each skip.';
 $varreduraPreventiva['Educativo de corrida: skipping B'] = 'He moves forward with a skipping motion: each step he drives one knee up to hip height, then extends that same lower leg straight out in front of him, and pulls the foot back down and under his body to plant it, before switching to the other leg.';
-$varreduraPreventiva['Freio de desaceleração em uma perna'] = 'He jogs forward three steps, then plants a single foot and stops his whole body on that one leg alone, holding his balance there with the other foot lifted off the ground and his knee stacked over his toes. He never lands on two feet to stop.';
 $varreduraPreventiva['Freio excêntrico de cotovelo pós-arremesso na polia'] = 'He stands facing away from a cable pulley, arm extended forward as if just after a throw, holding the handle. He lets the cable slowly pull his hand and forearm backward, resisting the whole way and controlling the speed, then repeats.';
 $varreduraPreventiva['Freio excêntrico de ombro na polia (pós-saque)'] = 'He stands holding a low cable pulley handle with his arm down at his side. He lets the cable pull his straight arm up and out to the side, and he resists the pull, slowly controlling how fast the arm rises, then lets it lower back down under control.';
 $varreduraPreventiva['Giro de 180 graus com arranque'] = 'He starts facing one direction, then rotates his whole body a sharp 180 degrees to face the opposite way, and the instant he completes the turn he sprints forward hard in that new direction — one continuous turn-and-go motion, not a pause between the spin and the sprint.';
@@ -1174,7 +1156,6 @@ $varreduraPreventiva['Pedalada em cadência alta na bicicleta'] = 'He sits on th
 $varreduraPreventiva['Pedalada unilateral na bicicleta'] = 'He sits on a stationary exercise bike and pedals using only ONE leg the whole time, that foot clipped into the pedal driving the full circle, while the other leg rests still to the side, not pedalling.';
 $varreduraPreventiva['Puxada com pegada de pinça para escalada'] = 'He hangs from a wall-mounted climbing hold, gripping it with only his thumb pinched against his fingers rather than a full-hand grip, and pulls his whole body up a few centimetres, then lowers back down.';
 $varreduraPreventiva['Puxada rotacional na polia alta (topspin)'] = 'He stands holding a high cable pulley handle above one shoulder. He pulls the handle down and across his body in a diagonal line, finishing near the opposite hip, rotating his torso to follow the pull, then lets it travel back up.';
-$varreduraPreventiva['Recuo em três passos para o fundo'] = 'He takes three quick backward crossover steps, moving backward while his torso and chest stay facing forward the whole time — he never turns his back to the front, this is a backward retreat, not turning around and running.';
 $varreduraPreventiva['Rotação de tronco com anilha em guarda'] = 'He stands in a low fighting stance, knees bent, holding one weight plate with both hands at chest height. He rotates the plate from one side of his chest to the other, twisting his torso, without straightening his legs.';
 $varreduraPreventiva['Rotação de tronco explosiva na polia (saque)'] = 'He stands with his feet planted and unmoving, holding a low cable pulley handle at his hip. He pulls the cable explosively up and across his body in one diagonal line, finishing above the opposite shoulder, rotating his torso hard while his feet stay fixed in place.';
 $varreduraPreventiva['Rotação de tronco para swing de golfe na polia'] = 'He stands holding a cable pulley handle at hip height on one side. He pulls the handle across his body in a diagonal line up to the opposite shoulder, rotating his torso like a golf swing, then lets it travel back.';
