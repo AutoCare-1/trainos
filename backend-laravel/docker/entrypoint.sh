@@ -79,6 +79,12 @@ php artisan db:seed --class="Database\\Seeders\\NotificationTypesSeeder" --force
 # na tabela (nome torto, medida errada) chegar em produção só com git push.
 php artisan db:seed --class="Database\\Seeders\\AlimentoPofSeeder" --force
 
+# Conta de teste do Filipe (cortesia, até 8 alunos, sem pagamento). Idempotente
+# — reaplica senha e reativa a cortesia, não duplica. Pra tirar do ar depois:
+# remover esta linha e deployar (só apagar a linha do banco não basta, o deploy
+# recria). Ver database/seeders/ContaTesteSeeder.php.
+php artisan db:seed --class="Database\\Seeders\\ContaTesteSeeder" --force
+
 php artisan config:cache
 php artisan route:cache
 

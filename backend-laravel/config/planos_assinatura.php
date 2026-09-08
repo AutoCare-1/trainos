@@ -8,6 +8,12 @@ return [
     'dias_teste_gratis' => (int) env('ASSINATURA_DIAS_TESTE_GRATIS', 7),
     'dias_carencia' => (int) env('ASSINATURA_DIAS_CARENCIA', 3),
 
+    // Assinatura "cortesia": conta de teste liberada sem pagamento, com um teto
+    // baixo de alunos. Fica FORA de `planos` de propósito — não aparece na tela
+    // de preços, só vale pra quem tiver plano_chave = 'cortesia' gravado à mão
+    // (ver ContaTesteSeeder). App\Support\Assinatura trata esse caso à parte.
+    'cortesia_limite_alunos' => (int) env('ASSINATURA_CORTESIA_LIMITE_ALUNOS', 8),
+
     'planos' => [
         'custom' => ['nome' => 'Custom', 'limite_alunos' => 50, 'valor_mensal' => 79.90],
         'exclusive' => ['nome' => 'Exclusive', 'limite_alunos' => 100, 'valor_mensal' => 149.90],

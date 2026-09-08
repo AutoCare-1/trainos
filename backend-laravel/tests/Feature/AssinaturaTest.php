@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Professional;
 use App\Models\ProfessionalSubscription;
+use App\Support\Assinatura;
+use Database\Seeders\ContaTesteSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
@@ -75,6 +77,44 @@ class AssinaturaTest extends TestCase
         $this->postJson('/alunos', ['name' => 'Aluno Extra'], $headers)
             ->assertStatus(422)
             ->assertJsonFragment(['error' => 'Você atingiu o limite de alunos do seu plano atual. Faça upgrade em "Meu Plano" pra cadastrar mais.']);
+    }
+
+    public function test_assinatura_cortesia_libera_ate_o_teto_e_bloqueia_depois(): void
+    {
+        // Conta de teste (ver ContaTesteSeeder): plano_chave 'cortesia', ativa,
+        // sem passar por pagamento. O teto vem de config, não de `planos`.
+        config(['planos_assinatura.cortesia_limite_alunos' => 3]);
+        [$professional, $headers] = $this->criarPersonal(diasAtras: 30);
+        ProfessionalSubscription::create([
+            'professional_id' => $professional->id,
+            'plano_chave' => Assinatura::CHAVE_CORTESIA,
+            'status' => ProfessionalSubscription::STATUS_ATIVA,
+        ]);
+
+        $this->assertSame(3, Assinatura::status($professional)['limite_alunos']);
+
+        $this->cadastrarAlunos($headers, 3);
+        $this->postJson('/alunos', ['name' => 'Aluno Extra'], $headers)
+            ->assertStatus(422)
+            ->assertJsonFragment(['error' => 'Você atingiu o limite de alunos do seu plano atual. Faça upgrade em "Meu Plano" pra cadastrar mais.']);
+    }
+
+    public function test_conta_teste_seeder_cria_personal_de_cortesia_utilizavel(): void
+    {
+        $this->seed(ContaTesteSeeder::class);
+
+        $login = $this->postJson('/auth/login', [
+            'email' => 'personal.teste@clubemais.app',
+            'password' => 'ClubeMaisTeste2026',
+        ])->assertOk()->json('token');
+
+        $this->withHeaders(['Authorization' => "Bearer {$login}"])
+            ->postJson('/alunos', ['name' => 'Primeiro aluno de teste'])
+            ->assertCreated();
+
+        // Rodar o seeder de novo não duplica nem quebra.
+        $this->seed(ContaTesteSeeder::class);
+        $this->assertSame(1, Professional::where('email', 'personal.teste@clubemais.app')->count());
     }
 
     public function test_personal_atrasado_dentro_da_carencia_ainda_cadastra_aluno(): void

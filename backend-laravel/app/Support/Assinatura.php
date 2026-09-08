@@ -28,6 +28,9 @@ class Assinatura
 
     public const MOTIVO_PAGAMENTO_ATRASADO = 'pagamento_atrasado';
 
+    /** Assinatura de cortesia (conta de teste sem pagamento). Ver ContaTesteSeeder. */
+    public const CHAVE_CORTESIA = 'cortesia';
+
     /**
      * @return array{
      *   subscription: ?ProfessionalSubscription,
@@ -79,8 +82,12 @@ class Assinatura
             ];
         }
 
-        $plano = config("planos_assinatura.planos.{$subscription->plano_chave}");
-        $limiteAlunos = $plano['limite_alunos'] ?? 0;
+        if ($subscription->plano_chave === self::CHAVE_CORTESIA) {
+            $limiteAlunos = (int) config('planos_assinatura.cortesia_limite_alunos', 8);
+        } else {
+            $plano = config("planos_assinatura.planos.{$subscription->plano_chave}");
+            $limiteAlunos = $plano['limite_alunos'] ?? 0;
+        }
 
         $diasRestantesCarencia = null;
         if ($subscription->status === ProfessionalSubscription::STATUS_ATRASADA && $subscription->atraso_desde) {
