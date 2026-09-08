@@ -75,20 +75,15 @@ function obterObservador(): IntersectionObserver | null {
  * fallback. Um observer só (singleton, como o dos SVGs) toca quem está na tela
  * e pausa o resto; fora da viewport quem aparece é o poster.
  */
+const AO_ENTRAR_NA_TELA = new WeakMap<Element, (visivel: boolean) => void>()
+
 let observadorVideo: IntersectionObserver | null = null
 function obterObservadorVideo(): IntersectionObserver | null {
   if (typeof IntersectionObserver === 'undefined') return null
   observadorVideo ??= new IntersectionObserver(
     (entradas) => {
       for (const entrada of entradas) {
-        const video = entrada.target as HTMLVideoElement
-        if (entrada.isIntersecting) {
-          // play() rejeita se o browser negar autoplay (Economia de Energia no
-          // iOS) — o catch evita o unhandled rejection; o poster segura a tela.
-          void video.play().catch(() => {})
-        } else {
-          video.pause()
-        }
+        AO_ENTRAR_NA_TELA.get(entrada.target)?.(entrada.isIntersecting)
       }
     },
     { rootMargin: '200px' }
@@ -542,6 +537,11 @@ export default function ExerciseAnimation({
   // vídeo nenhum. Caindo aqui, o desenho animado do exercício assume — que é o
   // que este componente já sabia fazer antes de existir vídeo.
   const [videoFalhou, setVideoFalhou] = useState(false)
+  // O <video> só existe enquanto o card está na tela — ver o efeito abaixo.
+  // Sem IntersectionObserver (navegador antigo) já nasce visível: o
+  // comportamento de antes é melhor que card que nunca mostra nada.
+  const [naTela, setNaTela] = useState(() => typeof IntersectionObserver === 'undefined')
+  const cardRef = useRef<HTMLDivElement>(null)
 
   // Ao sair da tela cheia (botão nativo, gesto de voltar, ESC), devolve o
   // vídeo ao estado de miniatura — senão ele fica com controles e som
@@ -585,55 +585,75 @@ export default function ExerciseAnimation({
     return () => io.unobserve(svg)
   }, [])
 
-  // Liga o <video> ao observer só quando é ele que renderiza — nos outros
-  // ramos videoRef.current é null e o efeito é no-op. Sem isso, autoPlay em
-  // ~660 elementos ao mesmo tempo (a biblioteca inteira) trava o decode no
-  // iPhone e a maioria não pinta quadro nenhum.
+  // Observa o CARD (não o <video>) pra decidir se o vídeo deve sequer existir.
+  //
+  // Só pausar não bastava: mesmo pausado, cada <video> com preload="metadata"
+  // abre uma conexão e inicializa um pipeline de mídia. Com ~660 na biblioteca,
+  // o Safari do iPhone estoura o orçamento, descarta o decoder de quem já pintou
+  // e o elemento fica BRANCO — nem poster, nem desenho, porque não é erro de
+  // carga e o onError não dispara. Era o "aparece um segundo e some".
+  //
+  // Fora da tela o card vira um <img> do poster: um download de imagem, zero
+  // pipeline de vídeo. Na tela, o <video> monta e toca.
   useEffect(() => {
-    const video = videoRef.current
+    const card = cardRef.current
     const io = obterObservadorVideo()
-    if (!video || !io) return
-    io.observe(video)
-    return () => io.unobserve(video)
+    if (!card || !io) return
+    AO_ENTRAR_NA_TELA.set(card, setNaTela)
+    io.observe(card)
+    return () => {
+      io.unobserve(card)
+      AO_ENTRAR_NA_TELA.delete(card)
+    }
   }, [videoFalhou])
 
   if (videoUrl && !videoFalhou) {
     const src = resolveMediaUrl(videoUrl)
+    const poster = posterDoVideo(src)
     return (
       <div
+        ref={cardRef}
         className={className}
         style={{ width: px, height: px, position: 'relative', overflow: 'hidden', cursor: 'pointer' }}
         onClick={() => videoRef.current && abrirVideoEmTelaCheia(videoRef.current)}
         role="button"
         aria-label={`Ver demonstração em tela cheia: ${name}`}
       >
-        <video
-          ref={videoRef}
-          src={src}
-          poster={posterDoVideo(src)}
-          onError={() => setVideoFalhou(true)}
-          onLoadedMetadata={(e) => {
-            // iOS não pinta quadro nenhum até ter um decodificado; com autoplay
-            // negado e sem poster o elemento fica transparente. Um passo mínimo
-            // força o primeiro quadro a aparecer.
-            const v = e.currentTarget
-            if (v.currentTime === 0) {
-              try {
-                v.currentTime = 0.05
-              } catch {
-                /* range ainda indisponível — sem problema, o poster cobre */
-              }
-            }
-          }}
-          aria-hidden="true"
-          width={px}
-          height={px}
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          muted
-          loop
-          playsInline
-          preload="metadata"
-        />
+        {naTela ? (
+          <video
+            ref={videoRef}
+            src={src}
+            poster={poster}
+            onError={() => setVideoFalhou(true)}
+            aria-hidden="true"
+            width={px}
+            height={px}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+          />
+        ) : poster ? (
+          /* eslint-disable-next-line @next/next/no-img-element -- poster vem do CDN, não do next/image */
+          <img
+            src={poster}
+            alt=""
+            aria-hidden="true"
+            width={px}
+            height={px}
+            loading="lazy"
+            decoding="async"
+            onError={() => setVideoFalhou(true)}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        ) : (
+          /* Sem poster (vídeo publicado antes dos posters existirem) não dá pra
+             mostrar nada parado — melhor o desenho do movimento que um quadrado
+             vazio. */
+          <span style={{ display: 'block', width: '100%', height: '100%', background: 'rgba(0,0,0,0.04)' }} />
+        )}
         <span
           className="pointer-events-none absolute bottom-1 right-1 flex items-center justify-center rounded-full bg-black/50 p-1 text-white"
           aria-hidden="true"
