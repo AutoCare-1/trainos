@@ -6,6 +6,7 @@ import Navbar from '@/components/Navbar'
 import BackLink from '@/components/BackLink'
 import { api, ApiError } from '@/lib/api'
 import { Student, StudentBillingPlan, TipoCobranca } from '@/lib/types'
+import { formatarTelefone } from '@/lib/telefone'
 
 export default function EditarAlunoClient({ studentId }: { studentId: string }) {
   const router = useRouter()
@@ -35,7 +36,7 @@ export default function EditarAlunoClient({ studentId }: { studentId: string }) 
       .then((data) => {
         setName(data.student.name)
         setEmail(data.student.email ?? '')
-        setPhone(data.student.phone ?? '')
+        setPhone(formatarTelefone(data.student.phone ?? ''))
         setWeight(data.student.weight_kg?.toString() ?? '')
         setHeight(data.student.height_cm?.toString() ?? '')
         setObjective(data.student.objective ?? '')
@@ -137,8 +138,11 @@ export default function EditarAlunoClient({ studentId }: { studentId: string }) 
             <label className="mb-1.5 block text-sm font-medium text-ink-soft">Telefone (opcional)</label>
             <input
               type="text"
+              inputMode="tel"
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={(e) => setPhone(formatarTelefone(e.target.value))}
+              placeholder="(11) 98765-4321"
+              maxLength={16}
               className="input-dark w-full rounded-xl px-4 py-2.5 text-sm"
             />
           </div>
