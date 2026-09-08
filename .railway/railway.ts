@@ -41,6 +41,9 @@ export default defineRailway(() => {
       // Laravel não sobe e todo mundo perde a sessão.
       APP_KEY: preserve(),
       JWT_SECRET: preserve(),
+      // Idem: gravada no painel, o valor não mora no repositório. Sem o
+      // preserve() o próximo apply apagaria e as funções de IA cairiam.
+      ANTHROPIC_API_KEY: preserve(),
 
       // O Apache escuta nesta porta (ver docker/entrypoint.sh) e o domínio
       // público aponta pra ela. Fixa nos dois lados de propósito: quando o
