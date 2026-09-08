@@ -18,3 +18,6 @@ next-env.d.ts
 .DS_Store
 *.log
 .vercel
+
+# vídeos de demo/reels gerados localmente
+*.mp4
