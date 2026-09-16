@@ -1206,4 +1206,61 @@ $revisaoHugoMaquinas = [
     'Abdominal na máquina com carga' => ['cena' => 'He sits in an ABDOMINAL CRUNCH machine, hands gripping the handles beside his head and a padded bar resting on his chest and shoulders, feet hooked under the foot pads. '.sprintf($duasPosicoes, 'his torso is upright and tall, back against the pad, the chest bar at its highest point', 'his torso is curled FORWARD and down, spine rounded, chest driven toward his knees and the chest bar pushed far down in front of him').' The movement is his ribcage folding toward his pelvis. He never leans backward and never stays sitting upright and motionless. Behind him is a busy gym floor with other weight machines, racks and dumbbells clearly visible.'],
 ];
 
-return array_replace($base, $maquinas, $outras, $complementar, $revisaoNumerada, $revisaoHugo, $revisaoHugoMaquinas);
+// ---------------------------------------------------------------------------
+// Terceira passada (16/09/2026) — os 9 que não fecharam, cada um com uma
+// ESTRATÉGIA diferente, não mais texto da mesma estratégia. O que já foi
+// tentado e falhou está anotado em cada caso, pra ninguém repetir.
+$terceiraPassada = [
+
+    // ANTES: "legs already STRAIGHT and locked" + "the knees never bend" → saiu
+    // com os joelhos a 90 graus mesmo assim. O nome do exercício carrega
+    // "leg press", e isso puxa flexão de joelho com mais força do que a negação
+    // segura. NOVO: negar que exista movimento de perna, e declarar o tornozelo
+    // como a ÚNICA articulação do clipe.
+    'Panturrilha no leg press' => ['cena' => 'He sits in the seat of a 45 degree leg press machine. From hip to toe each leg is ONE RIGID COLUMN: thigh and shin form a single unbroken straight line, knees locked out completely, and they stay exactly like that in every frame. He is not pressing anything with his legs and his legs do not move at all — the knees never bend even slightly. Only the BALLS of his feet are on the very bottom edge of the footplate; both heels hang off the edge over empty air. The only joint that moves in the entire clip is the ANKLE. '.sprintf($duasPosicoes, 'both heels have dropped far DOWN below the bottom edge of the plate, toes pulled back toward the shins, calves stretched long', 'both heels are pushed far UP above the toes, so he is high on the balls of his feet and the calf muscles are bunched into a hard ball').' Behind him is a busy gym floor with other weight machines, racks and dumbbells clearly visible.'],
+
+    // ANTES: mesmo caso do #338, MAIS o problema de unilateral do #254 ("only ONE
+    // leg works" não bastou, saiu com as duas). NOVO: a perna de fora ganha uma
+    // TAREFA VISÍVEL — pé plantado no chão, fora da máquina, onde dá pra ver.
+    'Panturrilha unilateral no leg press' => ['cena' => 'He sits in the seat of a 45 degree leg press machine. His LEFT foot is not on the machine at all: it rests flat on the FLOOR beside the seat, clearly visible on the ground, and it stays there doing nothing the whole time. Only the RIGHT leg is on the plate, and from hip to toe it is ONE RIGID COLUMN: thigh and shin in a single unbroken straight line, knee locked out, never bending even slightly. Only the BALL of the right foot is on the very bottom edge of the footplate, with that heel hanging off the edge over empty air. The only joint that moves in the entire clip is that right ANKLE. '.sprintf($duasPosicoes, 'the right heel has dropped far DOWN below the bottom edge of the plate, toes pulled back toward the shin', 'the right heel is pushed far UP above the toes, high on the ball of the foot, calf bunched').' Behind him is a busy gym floor with other weight machines, racks and dumbbells clearly visible.'],
+
+    // ANTES: "Only ONE leg works" + "the other leg hangs relaxed and still" → as
+    // duas pernas subiram juntas. NOVO: tirar a perna parada da máquina e dar a
+    // ela um lugar concreto no chão, nomeando os lados.
+    'Cadeira extensora unilateral' => ['execucao' => 'Sentado na cadeira extensora, uma perna de cada vez: estenda o joelho até a perna ficar reta à frente e volte devagar.', 'cena' => 'He sits in a LEG EXTENSION machine with his back against the backrest, both hands holding the side grips. His LEFT foot is not on the machine: it rests flat on the FLOOR beside the machine, clearly visible on the ground, completely still for the whole clip, and it never touches the roller. Only his RIGHT shin is behind the padded roller. '.sprintf($duasPosicoes, 'the right knee is bent so that shin hangs straight DOWN toward the floor, vertical, the right foot near the left one', 'the right knee is completely straight so that shin is HORIZONTAL and parallel to the floor, the right foot lifted high out in front of him while the left foot is still flat on the ground').' The two legs are never in the same position at the same time: one is always down and still, the other is the one moving. Behind him is a busy gym floor with other weight machines, racks and dumbbells clearly visible.'],
+
+    // ANTES: END POSITION descrito por direção ("pulled far BACK and OUT") →
+    // amplitude curta. NOVO: medir o percurso por uma parte do corpo, e pôr o
+    // cotovelo ATRÁS da linha das costas, que é uma referência verificável.
+    'Remada máquina' => ['execucao' => 'Remada aberta na máquina: peito apoiado no pad, puxe os cotovelos abertos para trás até passarem da linha do tronco.', 'cena' => 'He sits at a seated ROW machine with his chest pressed against a vertical padded chest support, holding one horizontal handle on each side in a WIDE grip, hands wider than his shoulders. The handles travel a long way: the distance between the two positions is as long as his own forearm. '.sprintf($duasPosicoes, 'both arms are stretched out completely straight FORWARD, elbows locked, shoulders reaching forward and the hands far away from his chest', 'both elbows are bent past a right angle and pulled so far BACK that they stick out BEHIND his back, clearly behind the line of his spine, with the hands beside his ribs and the shoulder blades squeezed hard together').' His chest never leaves the pad. Behind him is a busy gym floor with other weight machines, racks and dumbbells clearly visible.'],
+
+    // ANTES: END POSITION "heels pulled UP toward his buttocks" → joelho quase
+    // não flexionou. NOVO: contato explícito (calcanhar ENCOSTA no glúteo) e a
+    // canela passando da vertical.
+    'Mesa flexora' => ['cena' => 'He lies FACE DOWN and flat along a lying leg curl bench, hips on the bench, both hands gripping the handles under the front edge. A padded roller rests across the BACK of both ankles, just above his heels. Nothing rests on his back, his shoulders or his waist: no pad and no roller ever touches his upper body. '.sprintf($duasPosicoes, 'both legs are stretched out completely straight behind him, knees locked, in one line with his body', 'both knees are folded shut as far as they go, until the heels actually TOUCH the back of his thighs and the shins have swung past vertical, pointing slightly back over his head').' The knees travel through a quarter circle: it is a huge, obvious fold, never a small twitch. His hips stay pressed on the bench. Behind him is a busy gym floor with other weight machines, racks and dumbbells clearly visible.'],
+
+    // ANTES (2x): "only as long as the gap between his two hands", "no metal
+    // sticking out past his knuckles", "never a long olympic barbell" → saiu
+    // barra longa. NOVO: parar de descrever comprimento e descrever a PONTA —
+    // o que existe (tampa de borracha) e o que não existe (luva, presilha,
+    // anilha), que é o detalhe que faz a barra olímpica parecer olímpica.
+    'Rosca direta na polia' => ['cena' => $deFrente.' He holds a small chromed cable handle bar. Look at its ENDS: each end finishes in a plain rounded rubber cap right where his little finger is, and there is nothing beyond that cap — no thick sleeve, no collar, no clip, no weight plate, no bare shaft sticking out past his hand. The whole piece of metal is shorter than one of his forearms. '.$poliaBaixa.' He grips it with an UNDERHAND grip, both palms turned up toward the ceiling. Both upper arms stay pinned against his ribs and completely still while he curls it UP to his chest, then lowers it until both arms are straight in front of his thighs. Only the forearms travel. '.$cabo.' '.$academia],
+
+    'Rosca invertida na polia' => ['cena' => $deFrente.' He holds a small chromed cable handle bar. Look at its ENDS: each end finishes in a plain rounded rubber cap right where his little finger is, and there is nothing beyond that cap — no thick sleeve, no collar, no clip, no weight plate, no bare shaft sticking out past his hand. The whole piece of metal is shorter than one of his forearms. '.$poliaBaixa.' He grips it with an OVERHAND grip: both palms face DOWN toward the floor and the knuckles point forward, and the palms stay turned down in every single frame. Both upper arms stay pinned against his ribs and completely still while he curls it UP to his chest with the knuckles leading, then lowers it until both arms are straight. '.$cabo.' '.$academia],
+
+    // ANTES (2x): "It is never a biceps curl machine" + "hands never travel UP
+    // toward his shoulders" → seguiu saindo máquina de rosca. NOVO: descrever o
+    // aparelho pelo que fica ATRÁS da cabeça dele e pela direção do peso, e pôr
+    // a mão terminando ABAIXO do cotovelo — numa rosca a mão termina acima.
+    // Este vai no seedance_2_5, modelo mais forte, não no mini.
+    'Extensão de tríceps na máquina' => ['cena' => 'He sits at a triceps machine with the weight stack BEHIND his back, not in front of him. The backs of his upper arms lie flat on a horizontal pad in front of his chest, elbows resting on top of that pad and never leaving it. His hands hold a handle. '.sprintf($duasPosicoes, 'both elbows are folded shut so the hands are UP at forehead height, ABOVE the elbows, forearms angled back toward his own face', 'both elbows are completely straight so the hands are pushed far DOWN and AWAY, ending BELOW the level of the elbows, arms in one straight line pointing down and forward').' The hands finish the movement LOWER than the elbows and further from his face than where they started. This is the opposite of a biceps curl: there is no scott bench, no preacher pad under the armpits, and the hands never end up near his shoulders. Behind him is a busy gym floor with other weight machines, racks and dumbbells clearly visible.'],
+
+    // ANTES (3x): polia do chão / ar vazio acima / altura de tornozelo, e o cabo
+    // insistiu em vir de cima com o braço pendendo à frente. Com o tronco na
+    // horizontal, "acima" e "abaixo" são ambíguos. NOVO: referência ao CHÃO em
+    // vez do corpo ("o cabo quase raspa o piso"), e o movimento descrito como
+    // ângulo entre o antebraço e o chão. Também vai no seedance_2_5.
+    'Tríceps coice na polia' => ['cena' => 'He is bent far forward at the hips beside a cable tower, chest almost parallel to the floor, one hand braced on his knee, holding a single D-handle in the other hand. The cable is a LOW cable: it leaves his hand and drops almost straight down, nearly grazing the rubber floor, to a pulley wheel bolted at the very base of the tower, level with his shoelaces. The cable occupies only the lowest strip of the picture, near the ground. The tall part of the tower above his back is bare metal with nothing hanging from it. His working upper arm is glued to his ribs and points BACKWARD, parallel to the floor, and never moves. '.sprintf($duasPosicoes, 'the forearm hangs straight down toward the floor at a right angle to the upper arm, so the hand is directly under the elbow and close to the ground', 'the forearm has swung up and back until it is also parallel to the floor, in line with the upper arm, so the whole arm is one straight horizontal line pointing away behind his heels and the hand is the furthest thing from the camera').' The hand ends far behind his hip, never near his front knee and never near his shoulder. Behind him is a busy gym floor with other weight machines, racks and dumbbells clearly visible.'],
+];
+
+return array_replace($base, $maquinas, $outras, $complementar, $revisaoNumerada, $revisaoHugo, $revisaoHugoMaquinas, $terceiraPassada);
