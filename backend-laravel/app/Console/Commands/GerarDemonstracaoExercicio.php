@@ -300,7 +300,18 @@ class GerarDemonstracaoExercicio extends Command
     private static function ajuste(string $nome): array
     {
         static $dicas = null;
-        $dicas ??= require database_path('dicas_demonstracao.php');
+        // O require roda no escopo DESTA função, e dicas_demonstracao.php tem um
+        // `foreach (... as $nome => ...)` no topo: isso sobrescrevia o parâmetro
+        // $nome com a última chave do arquivo, e a primeira chamada de cada
+        // processo devolvia a dica do exercício errado (a última chave do
+        // arquivo). Nenhum vídeo saiu errado por isso: handle() chama execucao()
+        // na coleção inteira antes de montar prompt, e essa passagem aquece o
+        // static — então quem paga o preço é só a checagem de "exercício sem
+        // descrição", que podia classificar um exercício errado. Mas é uma bomba
+        // armada: qualquer chamada a montarPrompt() como primeira do processo
+        // (um teste, um comando novo) pega a cena trocada e gasta crédito.
+        // Carregar dentro de uma closure isola o escopo do arquivo do daqui.
+        $dicas ??= (static fn (string $caminho) => require $caminho)(database_path('dicas_demonstracao.php'));
 
         $ajuste = $dicas[$nome] ?? [];
 

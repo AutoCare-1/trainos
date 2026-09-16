@@ -1066,4 +1066,96 @@ $revisaoNumerada = [
     'Deslocamento lateral (skater)' => ['cena' => 'He bounds SIDEWAYS across the frame: he pushes off explosively from one leg and jumps laterally, landing on the opposite foot far out to the side, letting the free leg swing behind him, like a speed skater. He moves left and right, side to side, and never travels forward toward the camera. It is never running, jogging or high knees.'],
 ];
 
-return array_replace($base, $maquinas, $outras, $complementar, $revisaoNumerada);
+// ---------------------------------------------------------------------------
+// Revisão do Hugo, 15/09/2026 — família POLIA (lote 1 de 12)
+//
+// As cenas antigas destas 10 já eram detalhadas e mesmo assim saíram erradas.
+// Antes de reescrever, extraí a tira de 5 frames de cada vídeo em produção e
+// olhei. Dois erros dominam esta família, e nenhum dos dois era o que eu teria
+// adivinhado lendo o texto:
+//
+//  (a) ORIGEM DO CABO. Em 'Rosca direta na polia' e 'Tríceps coice na polia' o
+//      cabo saiu do TOPO da torre quando o exercício pede a polia do chão. A
+//      cena da rosca já dizia "The pulley is never above his head" — a negação
+//      estava escrita e foi ignorada. Negar no abstrato não bastou. Agora a
+//      cena ANCORA o que aparece no quadro: descreve o cabo descendo até a
+//      polia do chão E declara que o espaço acima das mãos está vazio.
+//
+//  (b) ORIENTAÇÃO DO CORPO. Em 'Tríceps corda', 'barra V' e 'pulley barra reta'
+//      ele saiu de perfil, ao LADO da torre, empurrando na horizontal. Daí o
+//      bloco $deFrente, que descreve o enquadramento, não só a intenção.
+//
+// E o achado mais caro: "thick black nylon ROPE with a frayed end" — o texto
+// que descrevia a corda de tríceps — gerou uma CORDA NAVAL de verdade, no chão,
+// sem cabo nenhum ('Rosca com corda na polia baixa'). Era exatamente o que o
+// Hugo tinha escrito: "trocar a corda naval pela corda na polia". A corda agora
+// é descrita pelo tamanho e pelo mosquetão, e a naval é negada por nome.
+$cabo = 'A single steel cable runs in one straight unbroken line from the handle to one pulley wheel, and it stays clearly attached to the handle in every single frame. There is never a second cable, never a cable arriving from another direction or another tower, and the handle never floats loose in his hands. The attachment keeps exactly the same shape, length and thickness from the first frame to the last.';
+
+$deFrente = 'He stands squarely FACING the cable tower, both shoulders level and parallel to it, filmed from the front. He is never turned sideways, never seen in profile, and never stands beside the tower.';
+
+$poliaAlta = 'The steel cable rises from his hands straight UP to a single pulley wheel at the very top of the tower, well above his head.';
+
+// Não basta dizer "a polia nunca fica acima da cabeça" — já tentamos, e saiu de
+// cima. Descrever o quadro VAZIO acima das mãos dá ao gerador uma imagem pra
+// desenhar em vez de uma proibição pra ignorar.
+$poliaBaixa = 'The steel cable runs from his hands DOWNWARD to a single pulley wheel at FLOOR level between his feet. Everything above the height of his hands is empty air: no cable, no pulley and no attachment appears anywhere above his shoulders, and the top of the tower behind him is bare.';
+
+$academia = 'Behind him is a busy gym floor with other weight machines, racks and dumbbells clearly visible, never a bare white studio wall.';
+
+// Corda de tríceps, não corda naval. O tamanho e o mosquetão são o que separa
+// as duas — "nylon preto com ponta desfiada" descreve as duas igualmente bem.
+$cordaTriceps = 'The attachment is a SHORT triceps rope: a soft braided cord, about as long as his forearm, clipped to the steel cable by a metal carabiner. It is FLEXIBLE and hangs limp, sagging and bending under its own weight into a loose upside-down V, with one free end falling into each hand and a rubber stop at each tip. It is never a rigid straight metal bar, never a solid handle, and never a stiff straight object of any kind: the two halves visibly bend and swing apart as his hands separate. It is also never a long battle rope and no rope ever lies on the floor.';
+
+// Verbo de ação sozinho ("he pushes down", "he extends") vem saindo como pose
+// quase parada. Descrever as duas posições como QUADROS — onde está cada parte
+// no começo e onde está no fim — é o que dá amplitude. Usado em todo o lote.
+$duasPosicoes = 'The clip shows two full repetitions and the difference between the two positions is large and obvious. START POSITION: %s. END POSITION: %s. He travels all the way from one to the other and back, twice, and never holds a single fixed pose.';
+
+$revisaoHugo = [
+
+    // #186 — saiu de lado pra torre, braços estendidos pra frente na horizontal
+    // e quase sem amplitude. Negação: a mão nunca viaja pra frente.
+    'Tríceps corda' => ['cena' => $deFrente.' '.$cordaTriceps.' He grips one rope end in each hand with the palms facing each other. '.$poliaAlta.' Both upper arms are clamped against his ribs and stay completely still. Starting with the elbows bent and his hands at chest height, he pushes both rope ends straight DOWN along the front of his body until both arms are completely straight beside his thighs, spreading the two ends apart at the bottom, then lets his hands return to chest height. His hands never travel forward away from his body, the rope never moves horizontally, and his elbows never lift or point forward. '.$cabo.' '.$academia],
+
+    // #149 — saiu CORDA NAVAL: duas cordas grossas no chão, sem cabo.
+    'Rosca com corda na polia baixa' => ['cena' => $deFrente.' '.$cordaTriceps.' He grips one rope end in each hand with the palms facing each other. '.$poliaBaixa.' Keeping both upper arms pinned against his ribs, he curls both rope ends UP toward his shoulders, then lowers them until the arms are straight. Only the forearms travel. '.$cabo.' '.$academia],
+
+    // #185 — o cabo veio da polia ALTA e o braço balançou pra frente, virando
+    // um pushdown curvado. O coice exige polia baixa e cotovelo parado atrás.
+    'Tríceps coice na polia' => ['cena' => 'He stands facing a cable tower and bends his torso far FORWARD from the hips until his chest is almost parallel to the floor, one hand braced on his knee. The other hand holds a single D-handle. The steel cable leaves that handle and runs DOWN to a pulley wheel fixed at ANKLE height, at the very bottom of the tower, close to the floor. Along its whole length the cable stays LOWER than his chest and close to the ground. Nothing is attached anywhere near the top of the tower: the entire upper half of the tower, from his shoulders up, is bare metal with no cable, no pulley and no handle on it. His working upper arm is pinned tight against his ribs with the elbow pointing BACKWARD and slightly upward, higher than his shoulder, and that elbow never moves. '.sprintf($duasPosicoes, 'the forearm hangs straight DOWN toward the floor, at a right angle to his horizontal torso, with the hand directly below the elbow', 'the forearm has swung up until it is HORIZONTAL and parallel to the floor, pointing back toward his heels, so that shoulder, elbow and hand form one straight horizontal line pointing away behind him').' The forearm never swings forward under his chest, the hand never drifts toward his front knee, and the hand never rises toward his shoulder. The torso stays bent forward the entire time and he never stands upright. '.$cabo.' '.$academia],
+
+    // #189 — o vídeo antigo estava CERTO (sentado, barra atrás da cabeça). O
+    // Hugo mudou a prescrição: em pé e com outra barra. Interpretei "mudar a
+    // barra" como a corda, que é o que se usa em pé — conferir com ele.
+    // A instrução da biblioteca ainda dizia "Sentado de costas para a polia" e
+    // entrava no prompt junto com a cena em pé — prompt contraditório. O
+    // 'execucao' sobrescreve. A instrução da biblioteca também precisa mudar,
+    // porque é ela que o personal lê no app.
+    'Tríceps francês na polia' => ['execucao' => 'Em pé, de costas para a polia, corda atrás da cabeça: estenda os cotovelos acima da cabeça e volte devagar.', 'cena' => 'He stands UPRIGHT on both feet with his back to a cable tower, never sitting and with no bench anywhere in the shot. '.$cordaTriceps.' He holds one rope end in each hand with both hands behind his head, elbows pointing up at the ceiling and close to his ears. The steel cable runs from the rope DOWNWARD behind him to a single pulley wheel at FLOOR level behind his heels. Keeping the upper arms vertical and the elbows still, he extends both elbows to push his hands straight UP above his head until the arms are completely straight, then folds them back down behind his head. The elbows never flare out sideways and never drop in front of his face. '.$cabo.' '.$academia],
+
+    // #193 — não tinha cena. Saiu um puxador vertical simples, num fundo branco
+    // vazio. A barra V precisa ser desenhada como triângulo.
+    'Tríceps na polia com barra V' => ['cena' => $deFrente.' The attachment is a SMALL steel V-BAR: a compact rigid triangle of metal meeting at a point at the top, where one carabiner clips it to the cable. It is tiny — his two hands grip its two short angled sides only a hand\'s width apart, almost touching each other in front of the middle of his chest, and the whole attachment stays INSIDE the width of his chest, never reaching out as far as his shoulders. It is never a long bar, never a wide bar, never a curved EZ or W shaped bar, never a straight bar, never a rope, and nothing ever extends sideways past his shoulders. '.$poliaAlta.' Both upper arms stay clamped against his ribs and completely still while he pushes the V-bar straight DOWN from chest height until both arms are fully straight against his thighs, then lets it rise back to chest height. The bar never travels above his shoulders and his hands never move forward away from his body. '.$cabo.' '.$academia],
+
+    // #194 — "ajustar o vídeo". O cruzamento dos dois cabos é o exercício
+    // inteiro: se eles não aparecem cruzados, virou um pushdown comum.
+    'Tríceps na polia com pegada cruzada' => ['cena' => 'He stands upright exactly midway BETWEEN two separate cable towers, one on his left and one on his right, both visible in the frame at the same time. He holds one D-handle in each hand and the two steel cables CROSS in an X in front of his chest: his left hand holds the cable that comes from the tower on his RIGHT, and his right hand holds the cable that comes from the tower on his LEFT. Both cables come DOWN from a pulley wheel high on each tower, and both stay visible, crossed and attached in every single frame. Both upper arms stay pinned against his ribs while he pushes both hands straight DOWN and slightly outward until both arms are completely straight beside his thighs, then lets them return to chest height. The two cables never merge into one, never uncross, and never disappear. '.$academia],
+
+    // #195 — "movimento errado". Pegada supinada é a identidade do exercício.
+    'Tríceps na polia pegada supinada' => ['cena' => $deFrente.' He holds a SHORT straight steel bar that is only as long as the gap between his two hands: each end of the bar stops right at the outside of his fist, with no metal sticking out past his knuckles, and the whole bar stays INSIDE the width of his chest, never reaching out as far as his shoulders. It is never a long barbell, never a wide bar, never a bar whose ends extend past his hands, and it carries no weight plates. He grips that short bar with an UNDERHAND grip: both palms are turned UP toward the ceiling and his knuckles point down at the floor, and the palms stay turned up in every single frame. '.$poliaAlta.' Both upper arms are clamped against his ribs and stay completely still. From elbows bent with the bar at chest height, he pushes the bar straight DOWN until both arms are fully straight against his thighs, then lets it return to chest height. The bar never rises above his shoulders, his hands never travel forward, and his shoulders never move. '.$cabo.' '.$academia],
+
+    // #197 — de perfil pra torre e a barra subindo até o rosto.
+    'Tríceps pulley barra reta' => ['cena' => $deFrente.' He holds a SHORT straight steel bar that is only as long as the gap between his two hands: each end of the bar stops right at the outside of his fist, with no metal sticking out past his knuckles, and the whole bar stays INSIDE the width of his chest, never reaching out as far as his shoulders. It is never a long barbell, never a wide bar, never a bar whose ends extend past his hands, and it carries no weight plates. He grips that short bar with an OVERHAND grip: both palms face DOWN toward the floor and his knuckles point forward. It is never a long barbell and never reaches past the width of his shoulders. '.$poliaAlta.' Both upper arms are clamped against his ribs and stay completely still. From elbows bent with the bar at CHEST height, he pushes the bar straight DOWN until both arms are fully straight against his thighs, then lets it return to chest height. The bar never rises above his shoulders and never reaches the height of his face or chin. '.$cabo.' '.$academia],
+
+    // #158 — o cabo saiu do topo da torre e a barra saiu longa, de barra
+    // olímpica. A negação antiga ("the pulley is never above his head") estava
+    // escrita e foi ignorada; agora o vazio acima das mãos é descrito.
+    'Rosca direta na polia' => ['cena' => $deFrente.' He holds a SHORT straight steel bar that is only as long as the gap between his two hands: each end of the bar stops right at the outside of his fist, with no metal sticking out past his knuckles, and the whole bar stays INSIDE the width of his chest, never reaching out as far as his shoulders. It is never a long barbell, never a wide bar, never a bar whose ends extend past his hands, and it carries no weight plates. He grips that short bar with an UNDERHAND grip, both palms turned up toward the ceiling. It is never a long olympic barbell, never wider than his shoulders, and it carries no weight plates on its ends. '.$poliaBaixa.' Both upper arms stay pinned against his ribs and completely still while he curls the bar UP toward his chest, then lowers it until both arms are straight in front of his thighs. Only the forearms travel and his elbows never swing forward. '.$cabo.' '.$academia],
+
+    // #161 — "ajustar a barra, pegada e posição da pessoa": os três erros da
+    // família de uma vez.
+    'Rosca invertida na polia' => ['cena' => $deFrente.' He holds a SHORT straight steel bar that is only as long as the gap between his two hands: each end of the bar stops right at the outside of his fist, with no metal sticking out past his knuckles, and the whole bar stays INSIDE the width of his chest, never reaching out as far as his shoulders. It is never a long barbell, never a wide bar, never a bar whose ends extend past his hands, and it carries no weight plates. He grips that short bar with an OVERHAND grip: both palms face DOWN toward the floor and his knuckles point forward, and the palms stay turned down in every single frame. It is never a long olympic barbell and carries no weight plates. '.$poliaBaixa.' Both upper arms stay pinned against his ribs and completely still while he curls the bar UP toward his chest with the knuckles leading, then lowers it until both arms are straight in front of his thighs. '.$cabo.' '.$academia],
+];
+
+return array_replace($base, $maquinas, $outras, $complementar, $revisaoNumerada, $revisaoHugo);
