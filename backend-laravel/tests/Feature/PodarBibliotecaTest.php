@@ -82,9 +82,13 @@ class PodarBibliotecaTest extends TestCase
         $this->seed(\Database\Seeders\ExerciseSeeder::class);
         $this->seed(\Database\Seeders\ExercicioBibliotecaAmpliadaSeeder::class);
 
-        $this->assertSame(402, Exercise::count());
-        // As 75 fotos reais de acervo (wger, CC-BY-SA) têm que sobreviver.
-        $this->assertSame(75, Exercise::whereNotNull('image_url')->count());
+        $this->assertSame(271, Exercise::count());
+        // Eram 75 fotos reais de acervo (wger, CC-BY-SA). A revisão do Hugo
+        // (15/09) tirou 15 exercícios que tinham foto — Rosca direta, Puxada
+        // frontal, Leg press 45°, Desenvolvimento militar entre eles. Não é
+        // perda de acervo por descuido: ele pediu nomes específicos no lugar
+        // dos genéricos. Se algum voltar, a foto volta junto pelo git.
+        $this->assertSame(60, Exercise::whereNotNull('image_url')->count());
     }
 
     // ---- O comando -------------------------------------------------------

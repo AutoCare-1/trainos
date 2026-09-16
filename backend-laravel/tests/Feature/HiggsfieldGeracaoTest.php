@@ -353,10 +353,13 @@ class HiggsfieldGeracaoTest extends TestCase
         // Sem essa dica o modelo desenhou as 7 puxadas de costas pro aparelho.
         $semDica = $this->exercicioSemImagem();
         $puxada = $this->exercicioSemImagem([
-            'name' => 'Puxada frontal pegada aberta',
+            // Era 'pegada aberta' até a revisão do Hugo (15/09) tirar essa da
+            // biblioteca. Qualquer uma das 7 puxadas serve — o que o teste
+            // verifica é a cena, que é a mesma pra todas.
+            'name' => 'Puxada frontal pegada neutra',
             'muscle_group' => 'Costas',
             'equipment' => 'Polia',
-            'instructions' => 'Pegada bem aberta e pronada, puxe até a clavícula.',
+            'instructions' => 'Pegada neutra no triângulo, puxe até a clavícula.',
         ]);
 
         $this->assertStringContainsString(

@@ -362,41 +362,25 @@ class ExercicioBibliotecaComplementarSeeder extends Seeder
             // pegada e de ângulo NÃO entra — é o critério (a) da poda de 22/08.
 
             // Peito
-            ['Supino inclinado unilateral com halter', 'Peito', 'Halter', 'Um halter por vez, com o outro braço relaxado, exigindo o core para não girar.'],
-            ['Flexão de braço com deslocamento lateral', 'Peito', 'Peso corporal', 'Faça a flexão, desloque as mãos e os pés para o lado e repita.'],
-            ['Flexão de braço nas argolas', 'Peito', 'Argolas', 'Argolas baixas, desça o peito entre elas girando as palmas para fora ao subir.'],
-            ['Flexão de braço com abertura na toalha', 'Peito', 'Toalha', 'Mãos sobre toalhas em piso liso, deslize um braço para o lado ao descer e puxe de volta ao subir.'],
 
             // Costas
             ['Puxada frontal ajoelhado na polia', 'Costas', 'Polia', 'Ajoelhado de frente para a polia alta, puxe a barra até o peito sem recuar o tronco.'],
-            ['Remada nas argolas com pés elevados', 'Costas', 'Argolas', 'Corpo na horizontal com os pés no banco, puxe as argolas até as costelas.'],
-            ['Barra fixa nas argolas', 'Costas', 'Argolas', 'Puxe até o queixo passar as argolas, deixando as palmas girarem naturalmente.'],
             ['Prancha com abertura de pernas na toalha', 'Core', 'Toalha', 'Em prancha com os pés sobre toalhas em piso liso, afaste e junte as pernas sem deixar o quadril cair.'],
-            ['Remada curvada no smith', 'Costas', 'Smith', 'Tronco a quarenta e cinco graus sob a barra guiada, puxe até o abdome.'],
 
             // Ombros
-            ['Flexão de braço em pique (pike push-up)', 'Ombros', 'Peso corporal', 'Quadril alto em V invertido, desça a cabeça em direção ao chão entre as mãos.'],
-            ['Parada de mão na parede', 'Ombros', 'Peso corporal', 'De cabeça para baixo com os pés na parede, sustente com o corpo alinhado.'],
-            ['Desenvolvimento em parada de mão na parede', 'Ombros', 'Peso corporal', 'Na parada de mão, flexione os cotovelos até a cabeça quase tocar o chão e empurre.'],
 
             // Bíceps
-            ['Rosca nas argolas', 'Bíceps', 'Argolas', 'Corpo inclinado para trás com as palmas para cima, puxe flexionando só os cotovelos.'],
-            ['Rosca bayesiana com o braço atrás do corpo', 'Bíceps', 'Polia', 'De costas para a polia baixa e o cotovelo atrás da linha do tronco, flexione sem trazê-lo à frente.'],
 
             // Tríceps
-            ['Extensão de tríceps nas argolas', 'Tríceps', 'Argolas', 'Corpo inclinado à frente, desça flexionando os cotovelos e estenda para voltar.'],
 
             // Pernas
             ['Agachamento com deslocamento lateral na toalha', 'Pernas', 'Toalha', 'Um pé sobre uma toalha em piso liso, deslize-o para o lado descendo em agachamento e puxe de volta.'],
-            ['Belt squat na máquina', 'Pernas', 'Máquina', 'Carga presa no cinto pelo quadril, agache sem nenhuma compressão na coluna.'],
-            ['Leg press vertical', 'Pernas', 'Máquina', 'Deitado sob a plataforma, empurre para cima sem tirar a lombar do apoio.'],
 
             // Core
             ['L-sit no solo', 'Core', 'Peso corporal', 'Sentado com as mãos no chão, eleve o quadril e as pernas estendidas à frente.'],
             ['L-sit nas paralelas', 'Core', 'Peso corporal', 'Nas paralelas com os braços travados, sustente as pernas estendidas na horizontal.'],
             ['Dragon flag', 'Core', 'Peso corporal', 'Deitado segurando o banco atrás da cabeça, eleve o corpo reto e desça sem dobrar o quadril.'],
             ['Limpador de para-brisa suspenso na barra', 'Core', 'Peso corporal', 'Pendurado com as pernas elevadas, leve os pés de um lado ao outro.'],
-            ['Serra abdominal na toalha', 'Core', 'Toalha', 'Em prancha com os pés sobre uma toalha em piso liso, empurre o corpo para trás e puxe de volta.'],
             ['Prancha com deslizamento de braços na toalha', 'Core', 'Toalha', 'Em prancha com as mãos sobre toalhas em piso liso, deslize um braço à frente por vez sem girar o quadril.'],
 
             // Funcional
