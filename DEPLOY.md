@@ -146,6 +146,26 @@ em `0c95b75` + `22f2d3d` (o teu). Os 663 posters `.jpg` já estão no R2
    `biblioteca_podada.php`, mas a poda nunca roda no entrypoint — sem esse
    comando os 13 (e os 244 cortes antigos) seguem no banco de produção.
 
+## Pendência pra próxima subida (Carol — 15/09)
+
+Conferi produção: deploy e chave da Anthropic estão OK (biblioteca com 663 e 0
+sem vídeo, consultor IA respondendo). Falta uma coisa só, e é um círculo:
+
+**Ninguém é admin em produção**, então `/admin` (o CRM: faturamento, custo de
+IA, lucro, sócios) está inalcançável. A única rota que promove alguém,
+`POST /admin/admins`, exige já ser admin, e nenhum seeder setava `is_admin`.
+
+Agora existe `php artisan usuarios:promover-admin <email>` (idempotente, com
+`--revogar` pra desfazer). Como rodar uma vez, já que `railway ssh` não passa da
+verificação de host key e `railway run` não enxerga o banco interno — mesmo
+caminho da poda de 08/09: `preDeployCommand` temporário no
+`.railway/railway.ts`, aplicar, deployar uma vez e remover em seguida.
+
+    preDeployCommand: ["php artisan usuarios:promover-admin mateussaraivalima@gmail.com"]
+
+Não pus no entrypoint de propósito: promoção de admin não deve acontecer
+sozinha a cada deploy.
+
 ## Depois que estiver no ar
 
 - Conferir o app de ponta a ponta no navegador de verdade: criar conta, criar
