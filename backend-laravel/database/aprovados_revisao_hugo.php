@@ -67,4 +67,6 @@ return [
     397 => ['nome' => 'Bear crawl', 'grupo' => 'Funcional', 'arquivo' => '397.mp4'],
     348 => ['nome' => 'Abdominal declinado', 'grupo' => 'Core', 'arquivo' => '348.mp4'],
     365 => ['nome' => 'Hollow hold', 'grupo' => 'Core', 'arquivo' => '365.mp4'],
+    369 => ['nome' => 'Limpador de para-brisa suspenso na barra', 'grupo' => 'Core', 'arquivo' => '369.mp4'],
+    366 => ['nome' => 'Hollow rock', 'grupo' => 'Core', 'arquivo' => '366.mp4'],
 ];
