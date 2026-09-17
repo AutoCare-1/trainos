@@ -19,7 +19,7 @@ class ExerciseSeeder extends Seeder
     {
         return [
             [
-                'name' => 'Rosca 21',
+                'name' => 'Rosca direta com barra reta',
                 'muscle_group' => 'Bíceps',
                 'equipment' => 'Barra',
                 'instructions' => '7 reps na metade inferior, 7 na superior e 7 no movimento completo.',
@@ -51,7 +51,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'Franpol · CC-BY-SA 4 (wger.de)',
             ],
             [
-                'name' => 'Rosca martelo',
+                'name' => 'Rosca martelo com halteres',
                 'muscle_group' => 'Bíceps',
                 'equipment' => 'Halteres',
                 'instructions' => 'Pegada neutra (palmas viradas para dentro), flexione mantendo os cotovelos fixos.',
@@ -59,7 +59,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'Everkinetic · CC-BY-SA 3 (wger.de)',
             ],
             [
-                'name' => 'Rosca Scott',
+                'name' => 'Rosca Scott com barra reta',
                 'muscle_group' => 'Bíceps',
                 'equipment' => 'Barra W',
                 'instructions' => 'Braços apoiados no banco Scott, flexione sem tirar o cotovelo do apoio.',
@@ -75,7 +75,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'Everkinetic · CC-BY-SA 3 (wger.de)',
             ],
             [
-                'name' => 'Abdominal oblíquo',
+                'name' => 'Abdominal oblíquo unilateral',
                 'muscle_group' => 'Core',
                 'equipment' => 'Peso corporal',
                 'instructions' => 'Eleve o tronco girando em direção ao joelho oposto.',
@@ -123,7 +123,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => '54str · CC-BY-SA 4 (wger.de)',
             ],
             [
-                'name' => 'Puxador triângulo',
+                'name' => 'Puxada triângulo',
                 'muscle_group' => 'Costas',
                 'equipment' => 'Polia',
                 'instructions' => 'Pegada neutra no triângulo, puxe até o peito contraindo as costas.',
@@ -139,7 +139,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'Franpol · CC-BY-SA 4 (wger.de)',
             ],
             [
-                'name' => 'Remada curvada',
+                'name' => 'Remada curvada barra',
                 'muscle_group' => 'Costas',
                 'equipment' => 'Barra',
                 'instructions' => 'Tronco inclinado à frente, puxe a barra em direção ao abdômen.',
@@ -147,7 +147,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'Everkinetic · CC-BY-SA 3 (wger.de)',
             ],
             [
-                'name' => 'Remada máquina',
+                'name' => 'Remada aberta máquina',
                 'muscle_group' => 'Costas',
                 'equipment' => 'Máquina',
                 'instructions' => 'Puxe as alavancas em direção ao tronco, mantendo o peito apoiado.',
@@ -171,7 +171,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'Tierrasverdes · CC-BY-SA 4 (wger.de)',
             ],
             [
-                'name' => 'Abdução de quadril na máquina',
+                'name' => 'Abdução de quadril na máquina abdutora',
                 'muscle_group' => 'Glúteos',
                 'equipment' => 'Máquina',
                 'instructions' => 'Sentado, afaste as pernas contra a resistência da máquina.',
@@ -187,7 +187,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'flori · CC-BY-SA 3 (wger.de)',
             ],
             [
-                'name' => 'Elevação de quadril (hip thrust)',
+                'name' => 'Elevação pélvica com barra',
                 'muscle_group' => 'Glúteos',
                 'equipment' => 'Barra',
                 'instructions' => 'Costas apoiadas no banco, eleve o quadril contraindo os glúteos no topo.',
@@ -283,7 +283,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'Franpol · CC-BY-SA 4 (wger.de)',
             ],
             [
-                'name' => 'Supino com halteres',
+                'name' => 'Supino reto com halter',
                 'muscle_group' => 'Peito',
                 'equipment' => 'Halteres',
                 'instructions' => 'Halteres alinhados ao peito, empurre para cima até quase travar o cotovelo.',
@@ -323,7 +323,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'Everkinetic · CC-BY-SA 3 (wger.de)',
             ],
             [
-                'name' => 'Afundo',
+                'name' => 'Avanço alternado',
                 'muscle_group' => 'Pernas',
                 'equipment' => 'Halteres',
                 'instructions' => 'Passo à frente, desça o joelho de trás quase até o chão, mantenha o tronco ereto.',
@@ -403,7 +403,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'Everkinetic · CC-BY-SA 4 (wger.de)',
             ],
             [
-                'name' => 'Levantamento terra',
+                'name' => 'Levantamento terra com barra',
                 'muscle_group' => 'Posterior',
                 'equipment' => 'Barra',
                 'instructions' => 'Mantenha a coluna neutra, empurre o chão com os pés, estenda quadril e joelho ao mesmo tempo.',
@@ -451,7 +451,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'Everkinetic · CC-BY-SA 3 (wger.de)',
             ],
             [
-                'name' => 'Extensão de tríceps unilateral',
+                'name' => 'Tríceps unilateral na polia alta',
                 'muscle_group' => 'Tríceps',
                 'equipment' => 'Polia',
                 'instructions' => 'Um braço por vez, estenda o cotovelo mantendo-o próximo ao corpo.',
@@ -459,7 +459,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'Franpol · CC-BY-SA 3 (wger.de)',
             ],
             [
-                'name' => 'Mergulho no banco',
+                'name' => 'Tríceps banco livre',
                 'muscle_group' => 'Tríceps',
                 'equipment' => 'Peso corporal',
                 'instructions' => 'Mãos no banco atrás do corpo, desça flexionando os cotovelos e empurre de volta.',
@@ -475,7 +475,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'nishant0712 · CC-BY-SA 4 (wger.de)',
             ],
             [
-                'name' => 'Tríceps francês',
+                'name' => 'Tríceps francês com anilha',
                 'muscle_group' => 'Tríceps',
                 'equipment' => 'Halter',
                 'instructions' => 'Halter atrás da cabeça, estenda o cotovelo mantendo o braço fixo.',

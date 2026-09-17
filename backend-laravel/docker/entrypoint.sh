@@ -55,6 +55,15 @@ done
 
 php artisan migrate --force
 
+# Renomeações da biblioteca (database/renames_revisao_hugo.php), pedidas pelo
+# personal que testa o app. Roda ANTES dos seeders de propósito: o nome é a
+# chave do updateOrCreate, então com a ordem invertida o seeder criaria um
+# exercício novo com o nome novo e deixaria o antigo para trás, com o vídeo e o
+# histórico grudados nele. É idempotente — no deploy seguinte não há nada a
+# fazer e ele só relata. O `|| true` é porque ele sai com falha quando algum
+# rename está bloqueado por colisão de nome, e isso não deve derrubar o deploy.
+php artisan exercicios:renomear --force || true
+
 # Os 3 seeders da biblioteca de exercícios e o mapeamento de vídeo são
 # seguros de rodar em TODO deploy: nenhum dos três sobrescreve o que já
 # existe (ExerciseSeeder faz updateOrCreate pelo nome — mesmo dado sempre;

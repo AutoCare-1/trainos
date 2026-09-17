@@ -10,6 +10,14 @@ status). Este .md é o resumo. Companheiros: `revisao_hugo_2026-09-15.md` (a
 leitura original), `fila_revisao_hugo.tsv` (só o que falta gerar) e
 `aprovados_revisao_hugo.php` (o que está pronto e não instalado).
 
+## ⚠️ Depois dos renames de 17/09, o #N do Hugo NÃO vale mais
+
+A lista numerada é alfabética dentro do grupo, então renomear reordena.
+Os 48 renames aplicados deslocaram **216 das 663 posições**. O número nesta
+tabela é o que ele usou (biblioteca de 663, em 15/09) e serve de histórico;
+**a chave confiável é o NOME**. Quando o Hugo for revisar do #401 em diante,
+mandar pra ele uma lista numerada nova (`exercicios:numerar-biblioteca`).
+
 ## A distinção que faltava
 
 Boa parte dos "mudar o nome" do Hugo é **só rótulo, sem vídeo novo**. Separando
@@ -35,7 +43,8 @@ por classe, a conta fecha exatamente com a dele (124 ✅ / 147 retirar / 129 cor
 | Faltam gerar | **44** |
 | Encerrados (causa raiz é o nome) | 2 (#338, #344) |
 | Parcial, esperando o Hugo | 1 (#359 dead bug) |
-| **Renames pendentes (nunca aplicados)** | **66** |
+| Renames aplicados em 17/09 | **48** |
+| **Renames ainda pendentes** | **18** |
 | Podados no código, não deployados | 147 |
 
 ### Seis vídeos gerados sem o Hugo pedir
@@ -51,7 +60,18 @@ lista dele:
 **Regra que sai disso:** antes de gerar, ler a classe no livro-razão. `NOME` e
 `OK+NOME` não vão pro Higgsfield.
 
-## Renames: 4 colisões reais e 1 nome duplicado
+## Renames aplicados (48, em 17/09)
+
+Rodados por `exercicios:renomear --force`, mapa em `renames_revisao_hugo.php`,
+e o comando entrou no `docker/entrypoint.sh` **antes dos seeders** (o nome é a
+chave do `updateOrCreate`: na ordem inversa o seeder criaria um exercício novo e
+deixaria o antigo para trás com o vídeo grudado nele). Conferido depois de
+aplicar: 676 exercícios, 663 com vídeo, nenhuma duplicata após reseed.
+
+Uma grafia foi corrigida de propósito: ele escreveu "kettblell", e o nome
+aparece na tela do personal — ficou "Remada unilateral com kettlebell".
+
+## Renames ainda pendentes (18): 4 colisões, 1 duplicado, 7 de grupo, 3 ambíguos, 2 esperando a poda
 
 Duas das seis colisões da leitura de 15/09 **se resolvem sozinhas**, porque o
 exercício com quem elas colidiam sai na poda:
