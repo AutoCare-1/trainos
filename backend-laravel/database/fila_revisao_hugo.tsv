@@ -7,43 +7,32 @@ numero	grupo	equipamento	nome	queixa_do_hugo
 39	Peito	Barra	Supino inclinado	supino inclinado banco
 57	Costas	Barra	Bom dia com barra	retirar o peso da barra
 60	Costas	Polia	Face pull	melhorar movimento
-65	Costas	Barra	Levantamento terra com trap bar	levantamento terra c/barra hexagonal
 75	Costas	Polia	Puxada frontal pegada neutra	banco e pegada errada
 76	Costas	Polia	Puxada frontal pegada supinada	pegada errada
 80	Costas	Polia	Puxador triângulo	puxada triângulo/ pegada errada
 82	Costas	Polia	Remada baixa	movimento errado
 83	Costas	Polia	Remada baixa com corda	remada com argola/ melhor movimento
 92	Costas	Barra	Remada curvada pegada supinada	pegada está errada
-137	Ombros	Barra	Press militar estrito	desenvolvimento lateral com barra em pé
-139	Ombros	Barra	Remada alta	remada alta com barra
 140	Ombros	Polia	Remada alta na polia baixa	tirar o cabo da polia de cima e melhorar o movimento
 141	Ombros	Elástico	Rotação externa com elástico	movimento errado
 142	Ombros	Polia	Rotação externa na polia	movimento errado
 143	Ombros	Polia	Rotação interna na polia	movimento errado
-144	Bíceps	Barra	Rosca 21	rosca direta com barra reta
 155	Bíceps	Barra W	Rosca direta com barra W	ajustar a barra
 160	Bíceps	Barra	Rosca inversa	mudar a pegada
 166	Bíceps	Barra W	Rosca Scott	nome: rosca scott com barra reta (ajustar a barra)
 167	Bíceps	Barra W	Rosca Scott com barra W	ajustar a barra
-175	Tríceps	Polia	Extensão de tríceps unilateral	tríceps unilateral na polia alta
 198	Tríceps	Barra W	Tríceps testa	movimento errado
 199	Tríceps	Barra W	Tríceps testa com barra W	movimento errado
 201	Tríceps	Halteres	Tríceps testa com halteres	melhorar o movimento
 211	Trapézio	Halteres	Encolhimento com halteres	melhorar movimento
 216	Trapézio	Smith	Encolhimento no smith	ajustar o movimento
-221	Pernas	Barra	Afundo com barra	mudar o nome: avanço alternado com barra
-225	Pernas	Barra	Afundo reverso com barra	mudar o nome: recuo com barra
-229	Pernas	Barra	Agachamento com barra alta	mudar o nome: agachamento com barra
 238	Pernas	Barra	Agachamento frontal	passar a barra para frente
-247	Pernas	Halter	Agachamento sumô com halter	nome: agachamento sumô com barra
 255	Pernas	Caneleira	Extensão de joelho com caneleira	ajustar o banco
-267	Pernas	Barra	Passada com barra	avanço com barra
 271	Pernas	Halteres	Terra sumô com halteres	agachamento sumô com halteres - melhorar a pegada
 277	Posterior	Polia	Extensão de quadril na polia	glúteo coice na polia - ajustar o movimento
 301	Glúteos	Polia	Abdução de quadril na polia	movimento errado
 302	Glúteos	Elástico	Abdução em pé com elástico	melhorar o movimento
 303	Glúteos	Polia	Adução de quadril na polia	melhorar o movimento
-306	Glúteos	Halter	Agachamento sumô profundo	agachamento sumô com barra
 309	Glúteos	Elástico	Caminhada lateral com elástico	deslocamento lateral com miniband - melhorar movimento
 311	Glúteos	Caneleira	Coice de glúteo com caneleira	glúteo coice com caneleira - colocar caneleira, colchonete e deixar os cotovelos flexionados
 319	Glúteos	Smith	Elevação de quadril no smith	ajustar o banco

@@ -1,0 +1,401 @@
+numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
+1	Chest press sentado	Peito	Máquina	mudar nome para crucifixo	NOME	crucifixo	rename PENDENTE
+2	Chest press unilateral	Peito	Máquina	mudar nome para crucifixo unilateral/ movimento está errado.	NOME+VIDEO	crucifixo unilateral	vídeo na fila + rename PENDENTE
+3	Crossover	Peito	Polia	exercício está errado	VIDEO		vídeo na fila
+4	Crossover de baixo para cima	Peito	Polia	retirar	RETIRAR		podado no código (não deployado)
+5	Crossover na polia média	Peito	Polia	retirar	RETIRAR		podado no código (não deployado)
+6	Crossover unilateral	Peito	Polia	retirar	RETIRAR		podado no código (não deployado)
+7	Crucifixo declinado com halteres	Peito	Halteres	movimento errado	VIDEO		vídeo aprovado (não instalado)
+8	Crucifixo inclinado com halteres	Peito	Halteres	melhorar movimento	VIDEO		vídeo aprovado (não instalado)
+9	Crucifixo na polia alta	Peito	Polia	retirar	RETIRAR		podado no código (não deployado)
+10	Crucifixo na polia baixa	Peito	Polia	retirar	RETIRAR		podado no código (não deployado)
+11	Crucifixo reto	Peito	Halteres	melhorar: banco na horizontal e melhorar movimento	VIDEO		vídeo aprovado (não instalado)
+12	Crucifixo unilateral na polia	Peito	Polia	retirar	RETIRAR		podado no código (não deployado)
+13	Flexão com rotação	Peito	Peso corporal	✅ ok	OK		nada a fazer
+14	Flexão de braço	Peito	Peso corporal	melhorar movimento	VIDEO		vídeo aprovado (não instalado)
+15	Flexão de braço com abertura na toalha	Peito	Toalha	retirar	RETIRAR		podado no código (não deployado)
+16	Flexão de braço com deslocamento lateral	Peito	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
+17	Flexão de braço com joelhos apoiados	Peito	Peso corporal	ok ✅	OK		nada a fazer
+18	Flexão de braço com pegada aberta	Peito	Peso corporal	ok ✅	OK		nada a fazer
+19	Flexão de braço declinada	Peito	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
+20	Flexão de braço diamante	Peito	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
+21	Flexão de braço inclinada	Peito	Peso corporal	✅	OK		nada a fazer
+22	Flexão de braço nas argolas	Peito	Argolas	retirar	RETIRAR		podado no código (não deployado)
+23	Flexão de braço no TRX	Peito	TRX	movimento errado	VIDEO		vídeo na fila
+24	Floor press com halteres	Peito	Halteres	retirar	RETIRAR		podado no código (não deployado)
+25	Paralelas (mergulho)	Peito	Peso corporal	✅	OK		nada a fazer
+26	Paralelas com peso	Peito	Peso corporal	✅	OK		nada a fazer
+27	Peck deck (voador)	Peito	Máquina	retirar	RETIRAR		podado no código (não deployado)
+28	Peck deck inclinado	Peito	Máquina	retirar	RETIRAR		podado no código (não deployado)
+29	Pullover	Peito	Halteres	✅	OK		nada a fazer
+30	Pullover com halter	Peito	Halter	retirar	RETIRAR		podado no código (não deployado)
+31	Pullover na polia alta	Peito	Polia	melhor movimento	VIDEO		vídeo na fila
+32	Supino com halteres	Peito	Halteres	mudar nome: supino reto com halter	NOME	supino reto com halter	rename PENDENTE
+33	Supino com pegada fechada	Peito	Barra	retirar	RETIRAR		podado no código (não deployado)
+34	Supino com pegada neutra	Peito	Halteres	retirar	RETIRAR		podado no código (não deployado)
+35	Supino declinado	Peito	Barra	movimento errado	VIDEO		vídeo na fila
+36	Supino declinado com halteres	Peito	Halteres	posição do banco errado	VIDEO		vídeo aprovado (não instalado)
+37	Supino declinado na máquina	Peito	Máquina	retirar	RETIRAR		podado no código (não deployado)
+38	Supino declinado no smith	Peito	Smith	retirar	RETIRAR		podado no código (não deployado)
+39	Supino inclinado	Peito	Barra	supino inclinado banco	VIDEO		vídeo na fila
+40	Supino inclinado com halteres	Peito	Halteres	✅	OK		nada a fazer
+41	Supino inclinado com pegada neutra	Peito	Halteres	retirar	RETIRAR		podado no código (não deployado)
+42	Supino inclinado na máquina	Peito	Máquina	✅	OK		nada a fazer
+43	Supino inclinado no smith	Peito	Smith	✅	OK		nada a fazer
+44	Supino inclinado unilateral com halter	Peito	Halter	retirar	RETIRAR		podado no código (não deployado)
+45	Supino máquina	Peito	Máquina	movimento errado	VIDEO		vídeo aprovado (não instalado)
+46	Supino máquina convergente	Peito	Máquina	retirar	RETIRAR		podado no código (não deployado)
+47	Supino no chão (floor press)	Peito	Barra	retirar	RETIRAR		podado no código (não deployado)
+48	Supino reto	Peito	Barra	✅	OK		nada a fazer
+49	Supino reto no smith	Peito	Smith	✅	OK		nada a fazer
+50	Voador na máquina unilateral	Peito	Máquina	retirar	RETIRAR		podado no código (não deployado)
+51	Barra fixa (pull-up)	Costas	Peso corporal	✅	OK		nada a fazer
+52	Barra fixa com elástico (assistida)	Costas	Elástico	✅	OK		nada a fazer
+53	Barra fixa com peso	Costas	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
+54	Barra fixa nas argolas	Costas	Argolas	retirar	RETIRAR		podado no código (não deployado)
+55	Barra fixa pegada neutra	Costas	Peso corporal	✅	OK		nada a fazer
+56	Barra fixa pegada supinada (chin-up)	Costas	Peso corporal	pegada está errada	VIDEO		vídeo aprovado (não instalado)
+57	Bom dia com barra	Costas	Barra	retirar o peso da barra	VIDEO		vídeo na fila
+58	Encolhimento na polia	Costas	Polia	Retirar	RETIRAR		podado no código (não deployado)
+59	Extensão lombar na máquina	Costas	Máquina	movimento e máquina errada	VIDEO		vídeo aprovado (não instalado)
+60	Face pull	Costas	Polia	melhorar movimento	VIDEO		vídeo na fila
+61	Face pull com elástico	Costas	Elástico	retirar	RETIRAR		podado no código (não deployado)
+62	Face pull na polia alta	Costas	Polia	retirar	RETIRAR		podado no código (não deployado)
+63	Hiperextensão lombar	Costas	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
+64	Levantamento terra com halteres	Costas	Halteres	melhor movimento	VIDEO		vídeo aprovado (não instalado)
+65	Levantamento terra com trap bar	Costas	Barra	levantamento terra c/barra hexagonal	NOME	levantamento terra c	rename PENDENTE
+66	Levantamento terra romeno com halteres	Costas	Halteres	retirar	RETIRAR		podado no código (não deployado)
+67	Levantamento terra sumô	Costas	Barra	retirar	RETIRAR		podado no código (não deployado)
+68	Pull-up negativa	Costas	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
+69	Pulldown com braços estendidos	Costas	Polia	retirar	RETIRAR		podado no código (não deployado)
+70	Puxada articulada na máquina	Costas	Máquina	puxada frente	NOME	puxada frente	rename PENDENTE
+71	Puxada frontal	Costas	Polia	retirar	RETIRAR		podado no código (não deployado)
+72	Puxada frontal ajoelhado na polia	Costas	Polia	✅	OK		nada a fazer
+73	Puxada frontal com pegada em V	Costas	Polia	retirar	RETIRAR		podado no código (não deployado)
+74	Puxada frontal pegada aberta	Costas	Polia	retirar	RETIRAR		podado no código (não deployado)
+75	Puxada frontal pegada neutra	Costas	Polia	banco e pegada errada	VIDEO		vídeo na fila
+76	Puxada frontal pegada supinada	Costas	Polia	pegada errada	VIDEO		vídeo na fila
+77	Puxada frontal unilateral	Costas	Polia	retirar	RETIRAR		podado no código (não deployado)
+78	Puxada na máquina sentado	Costas	Máquina	retirar	RETIRAR		podado no código (não deployado)
+79	Puxada por trás	Costas	Polia	retirar	RETIRAR		podado no código (não deployado)
+80	Puxador triângulo	Costas	Polia	puxada triângulo/ pegada errada	NOME+VIDEO	puxada triângulo	vídeo na fila + rename PENDENTE
+81	Remada alta na polia	Costas	Polia	✅	OK		nada a fazer
+82	Remada baixa	Costas	Polia	movimento errado	VIDEO		vídeo na fila
+83	Remada baixa com corda	Costas	Polia	remada com argola/ melhor movimento	NOME+VIDEO	remada com argola	vídeo na fila + rename PENDENTE
+84	Remada baixa pegada aberta	Costas	Polia	retirar	RETIRAR		podado no código (não deployado)
+85	Remada baixa unilateral	Costas	Polia	✅	OK		nada a fazer
+86	Remada cavalinho	Costas	Barra T	retirar	RETIRAR		podado no código (não deployado)
+87	Remada cavalinho com pegada neutra	Costas	Barra T	retirar	RETIRAR		podado no código (não deployado)
+88	Remada com kettlebell	Costas	Kettlebell	remada unilateral com kettblell	NOME	remada unilateral com kettblell	rename PENDENTE
+89	Remada curvada	Costas	Barra	✅ remada curvada barra	OK+NOME	remada curvada barra	rename PENDENTE
+90	Remada curvada com halteres	Costas	Halteres	melhorar movimento	VIDEO		vídeo aprovado (não instalado)
+91	Remada curvada no smith	Costas	Smith	retirar	RETIRAR		podado no código (não deployado)
+92	Remada curvada pegada supinada	Costas	Barra	pegada está errada	VIDEO		vídeo na fila
+93	Remada invertida no TRX	Costas	TRX	✅	OK		nada a fazer
+94	Remada máquina	Costas	Máquina	remada aberta máquina	NOME	remada aberta máquina	rename PENDENTE + vídeo regerado sem o Hugo pedir (aprovado, não instalado)
+95	Remada máquina pegada neutra	Costas	Máquina	retirar	RETIRAR		podado no código (não deployado)
+96	Remada máquina unilateral	Costas	Máquina	retirar	RETIRAR		podado no código (não deployado)
+97	Remada nas argolas com pés elevados	Costas	Argolas	retirar	RETIRAR		podado no código (não deployado)
+98	Remada no banco inclinado	Costas	Halteres	✅	OK		nada a fazer
+99	Remada Pendlay	Costas	Barra	retirar	RETIRAR		podado no código (não deployado)
+100	Remada serrote	Costas	Halter	✅	OK		nada a fazer
+101	Remada unilateral com halter	Costas	Halteres	✅	OK		nada a fazer
+102	Superman no solo	Costas	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
+103	Crucifixo invertido	Ombros	Máquina	retirar	RETIRAR		podado no código (não deployado)
+104	Crucifixo invertido na máquina	Ombros	Máquina	retirar	RETIRAR		podado no código (não deployado)
+105	Crucifixo invertido na polia	Ombros	Polia	retirar	RETIRAR		podado no código (não deployado)
+106	Crucifixo invertido no banco inclinado	Ombros	Halteres	✅	OK		nada a fazer
+107	Crucifixo invertido sentado curvado	Ombros	Halteres	✅	OK		nada a fazer
+108	Desenvolvimento alternado com halteres	Ombros	Halteres	✅	OK		nada a fazer
+109	Desenvolvimento Arnold	Ombros	Halteres	✅	OK		nada a fazer
+110	Desenvolvimento com halteres	Ombros	Halteres	ok ✅	OK		nada a fazer
+111	Desenvolvimento com pegada neutra	Ombros	Halteres	retirar	RETIRAR		podado no código (não deployado)
+112	Desenvolvimento em parada de mão na parede	Ombros	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
+113	Desenvolvimento em pé com halteres	Ombros	Halteres	ok ✅	OK		nada a fazer
+114	Desenvolvimento militar	Ombros	Barra	retirar	RETIRAR		podado no código (não deployado)
+115	Desenvolvimento na máquina	Ombros	Máquina	máquina errada	VIDEO		vídeo aprovado (não instalado)
+116	Desenvolvimento no smith	Ombros	Smith	✅	OK		nada a fazer
+117	Desenvolvimento por trás da nuca	Ombros	Barra	retirar	RETIRAR		podado no código (não deployado)
+118	Desenvolvimento sentado com barra	Ombros	Barra	retirar	RETIRAR		podado no código (não deployado)
+119	Desenvolvimento sentado com halteres	Ombros	Halteres	retirar	RETIRAR		podado no código (não deployado)
+120	Desenvolvimento unilateral com halter	Ombros	Halter	retirar	RETIRAR		podado no código (não deployado)
+121	Elevação em Y no banco inclinado	Ombros	Halteres	retirar	RETIRAR		podado no código (não deployado)
+122	Elevação frontal	Ombros	Halteres	✅	OK		nada a fazer
+123	Elevação frontal alternada	Ombros	Halteres	✅	OK		nada a fazer
+124	Elevação frontal com anilha	Ombros	Anilha	✅	OK		nada a fazer
+125	Elevação frontal com barra	Ombros	Barra	retirar	RETIRAR		podado no código (não deployado)
+126	Elevação frontal na polia	Ombros	Polia	retirar	RETIRAR		podado no código (não deployado)
+127	Elevação lateral	Ombros	Halteres	✅	OK		nada a fazer
+128	Elevação lateral com elástico	Ombros	Elástico	✅	OK		nada a fazer
+129	Elevação lateral com halteres em pé	Ombros	Halteres	retirar	RETIRAR		podado no código (não deployado)
+130	Elevação lateral na máquina	Ombros	Máquina	retirar	RETIRAR		podado no código (não deployado)
+131	Elevação lateral na polia	Ombros	Polia	retirar	RETIRAR		podado no código (não deployado)
+132	Elevação lateral sentado	Ombros	Halteres	✅	OK		nada a fazer
+133	Elevação lateral unilateral na polia	Ombros	Polia	✅	OK		nada a fazer
+134	Face pull ajoelhado	Ombros	Polia	✅	OK		nada a fazer
+135	Flexão de braço em pique (pike push-up)	Ombros	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
+136	Parada de mão na parede	Ombros	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
+137	Press militar estrito	Ombros	Barra	desenvolvimento lateral com barra em pé	NOME	desenvolvimento lateral com barra em pé	rename PENDENTE
+138	Push press	Ombros	Barra	✅ movimento do Crossfit	OK		nada a fazer
+139	Remada alta	Ombros	Barra	remada alta com barra	NOME	remada alta com barra	rename PENDENTE
+140	Remada alta na polia baixa	Ombros	Polia	tirar o cabo da polia de cima e melhorar o movimento	VIDEO		vídeo na fila
+141	Rotação externa com elástico	Ombros	Elástico	movimento errado	VIDEO		vídeo na fila
+142	Rotação externa na polia	Ombros	Polia	movimento errado	VIDEO		vídeo na fila
+143	Rotação interna na polia	Ombros	Polia	movimento errado	VIDEO		vídeo na fila
+144	Rosca 21	Bíceps	Barra	rosca direta com barra reta	NOME	rosca direta com barra reta	rename PENDENTE
+145	Rosca 21 com halteres	Bíceps	Halteres	rosca direta com halteres	NOME	rosca direta com halteres	rename PENDENTE
+146	Rosca alternada	Bíceps	Halteres	✅	OK		nada a fazer
+147	Rosca alternada com rotação	Bíceps	Halteres	retirar	RETIRAR		podado no código (não deployado)
+148	Rosca bayesiana com o braço atrás do corpo	Bíceps	Polia	retirar	RETIRAR		podado no código (não deployado)
+149	Rosca com corda na polia baixa	Bíceps	Polia	trocar a corda naval pela corda na polia	VIDEO		vídeo aprovado (não instalado)
+150	Rosca concentrada	Bíceps	Halter	✅	OK		nada a fazer
+151	Rosca concentrada na polia	Bíceps	Polia	retirar	RETIRAR		podado no código (não deployado)
+152	Rosca de bíceps na máquina	Bíceps	Máquina	retirar	RETIRAR		podado no código (não deployado)
+153	Rosca de bíceps sentado com halteres	Bíceps	Halteres	colocar sentado com o encosto do banco na vertical	VIDEO		vídeo aprovado (não instalado)
+154	Rosca direta	Bíceps	Barra	retirar	RETIRAR		podado no código (não deployado)
+155	Rosca direta com barra W	Bíceps	Barra W	ajustar a barra	VIDEO		vídeo na fila
+156	Rosca direta com elástico	Bíceps	Elástico	✅	OK		nada a fazer
+157	Rosca direta com halteres	Bíceps	Halteres	retirar	RETIRAR		podado no código (não deployado)
+158	Rosca direta na polia	Bíceps	Polia	vídeo errado (ajustar a barra, polia…)	VIDEO		vídeo aprovado (não instalado)
+159	Rosca inclinada no banco	Bíceps	Halteres	✅	OK		nada a fazer
+160	Rosca inversa	Bíceps	Barra	mudar a pegada	VIDEO		vídeo na fila
+161	Rosca invertida na polia	Bíceps	Polia	vídeo errado (ajustar a barra, pegada e posição da pessoa)	VIDEO		vídeo aprovado (não instalado)
+162	Rosca martelo	Bíceps	Halteres	rosca martelo com halteres - mudar a pegada para neutra	NOME+VIDEO	rosca martelo com halteres	vídeo aprovado (não instalado) + rename PENDENTE
+163	Rosca martelo alternada	Bíceps	Halteres	mudar a pegada para neutra	VIDEO		vídeo aprovado (não instalado)
+164	Rosca martelo na corda	Bíceps	Polia	retirar	RETIRAR		podado no código (não deployado)
+165	Rosca nas argolas	Bíceps	Argolas	retirar	RETIRAR		podado no código (não deployado)
+166	Rosca Scott	Bíceps	Barra W	nome: rosca scott com barra reta (ajustar a barra)	NOME+VIDEO	rosca scott com barra reta	vídeo na fila + rename PENDENTE
+167	Rosca Scott com barra W	Bíceps	Barra W	ajustar a barra	VIDEO		vídeo na fila
+168	Rosca Scott com halter unilateral	Bíceps	Halter	ajustar o banco	VIDEO		vídeo aprovado (não instalado)
+169	Rosca Scott na máquina	Bíceps	Máquina	✅	OK		nada a fazer
+170	Rosca spider	Bíceps	Barra W	✅	OK		nada a fazer
+171	Extensão de tríceps com elástico	Tríceps	Elástico	retirar	RETIRAR		podado no código (não deployado)
+172	Extensão de tríceps deitado com halteres neutro	Tríceps	Halteres	retirar	RETIRAR		podado no código (não deployado)
+173	Extensão de tríceps na máquina	Tríceps	Máquina	máquina errada e trocar o nome por tríceps testa na máquina	NOME+VIDEO	máquina errada e trocar o nome por tríceps testa na máquina	vídeo aprovado (não instalado) + rename PENDENTE
+174	Extensão de tríceps nas argolas	Tríceps	Argolas	retirar	RETIRAR		podado no código (não deployado)
+175	Extensão de tríceps unilateral	Tríceps	Polia	tríceps unilateral na polia alta	NOME	tríceps unilateral na polia alta	rename PENDENTE
+176	Flexão diamante para tríceps	Tríceps	Peso corporal	melhorar o movimento	VIDEO		vídeo aprovado (não instalado)
+177	Mergulho entre bancos	Tríceps	Peso corporal	tríceps banco livre com pés suspensos	NOME+VIDEO	tríceps banco livre com pés suspensos	vídeo aprovado (não instalado) + rename PENDENTE
+178	Mergulho na máquina assistida	Tríceps	Máquina	paralela no gráviton	NOME	paralela no gráviton	rename PENDENTE
+179	Mergulho nas paralelas	Tríceps	Peso corporal	paralela livre	NOME	paralela livre	rename PENDENTE
+180	Mergulho no banco	Tríceps	Peso corporal	tríceps banco livre (melhorar o movimento, manter os pés no chão)	NOME+VIDEO	tríceps banco livre	vídeo aprovado (não instalado) + rename PENDENTE
+181	Supino fechado com halteres	Tríceps	Halteres	supino inclinado com halteres	NOME	supino inclinado com halteres	rename PENDENTE
+182	Supino fechado no smith	Tríceps	Smith	supino inclinado no smith	NOME	supino inclinado no smith	rename PENDENTE
+183	Tríceps coice bilateral	Tríceps	Halteres	crucifixo inverso com halter	NOME	crucifixo inverso com halter	rename PENDENTE
+184	Tríceps coice com halter	Tríceps	Halter	melhorar o movimento	VIDEO		vídeo aprovado (não instalado)
+185	Tríceps coice na polia	Tríceps	Polia	exercício errado	VIDEO		vídeo aprovado (não instalado)
+186	Tríceps corda	Tríceps	Polia	melhorar o movimento	VIDEO		vídeo aprovado (não instalado)
+187	Tríceps corda acima da cabeça	Tríceps	Polia	retirar	RETIRAR		podado no código (não deployado)
+188	Tríceps francês	Tríceps	Halter	✅ nome: tríceps francês com anilha	OK+NOME	tríceps francês com anilha	rename PENDENTE
+189	Tríceps francês na polia	Tríceps	Polia	mudar a barra e deixar ele em pé	VIDEO		vídeo aprovado (não instalado)
+190	Tríceps francês sentado com halter	Tríceps	Halter	ajustar o halter	VIDEO		vídeo aprovado (não instalado)
+191	Tríceps francês unilateral	Tríceps	Halter	✅	OK		nada a fazer
+192	Tríceps na máquina unilateral	Tríceps	Máquina	retirar	RETIRAR		podado no código (não deployado)
+193	Tríceps na polia com barra V	Tríceps	Polia	ajustar a barra	VIDEO		vídeo aprovado (não instalado)
+194	Tríceps na polia com pegada cruzada	Tríceps	Polia	ajustar o vídeo	VIDEO		vídeo aprovado (não instalado)
+195	Tríceps na polia pegada supinada	Tríceps	Polia	movimento errado	VIDEO		vídeo aprovado (não instalado)
+196	Tríceps na polia unilateral	Tríceps	Polia	retirar	RETIRAR		podado no código (não deployado)
+197	Tríceps pulley barra reta	Tríceps	Polia	ajustar a pegada e posição do aluno	VIDEO		vídeo aprovado (não instalado)
+198	Tríceps testa	Tríceps	Barra W	movimento errado	VIDEO		vídeo na fila
+199	Tríceps testa com barra W	Tríceps	Barra W	movimento errado	VIDEO		vídeo na fila
+200	Tríceps testa com elástico	Tríceps	Elástico	retirar	RETIRAR		podado no código (não deployado)
+201	Tríceps testa com halteres	Tríceps	Halteres	melhorar o movimento	VIDEO		vídeo na fila
+202	Tríceps testa na polia baixa	Tríceps	Polia	retirar	RETIRAR		podado no código (não deployado)
+203	Farmer walk	Antebraço	Halteres	✅	OK		nada a fazer
+204	Rosca de punho	Antebraço	Barra	retirar	RETIRAR		podado no código (não deployado)
+205	Rosca de punho com halteres	Antebraço	Halteres	retirar	RETIRAR		podado no código (não deployado)
+206	Rosca de punho invertida	Antebraço	Barra	retirar	RETIRAR		podado no código (não deployado)
+207	Rosca de punho invertida com halteres	Antebraço	Halteres	retirar	RETIRAR		podado no código (não deployado)
+208	Rosca inversa em pé	Antebraço	Barra	retirar	RETIRAR		podado no código (não deployado)
+209	Suspensão na barra (dead hang)	Antebraço	Peso corporal	✅	OK		nada a fazer
+210	Elevação em Y na polia	Trapézio	Polia	retirar	RETIRAR		podado no código (não deployado)
+211	Encolhimento com halteres	Trapézio	Halteres	melhorar movimento	VIDEO		vídeo na fila
+212	Encolhimento com kettlebell	Trapézio	Kettlebell	✅	OK		nada a fazer
+213	Encolhimento de ombros com barra	Trapézio	Barra	✅	OK		nada a fazer
+214	Encolhimento inclinado no banco	Trapézio	Halteres	retirar	RETIRAR		podado no código (não deployado)
+215	Encolhimento na máquina	Trapézio	Máquina	retirar	RETIRAR		podado no código (não deployado)
+216	Encolhimento no smith	Trapézio	Smith	ajustar o movimento	VIDEO		vídeo na fila
+217	Encolhimento unilateral com halter	Trapézio	Halter	retirar	RETIRAR		podado no código (não deployado)
+218	Puxada alta no cavalete	Trapézio	Barra	retirar	RETIRAR		podado no código (não deployado)
+219	Remada alta explosiva	Trapézio	Barra	retirar	RETIRAR		podado no código (não deployado)
+220	Afundo	Pernas	Halteres	mudar o nome: avanço alternado	NOME	avanço alternado	rename PENDENTE
+221	Afundo com barra	Pernas	Barra	mudar o nome: avanço alternado com barra	NOME	avanço alternado com barra	rename PENDENTE
+222	Afundo com halteres	Pernas	Halteres	mudar o nome: recuo com halteres	NOME	recuo com halteres	rename PENDENTE
+223	Afundo lateral	Pernas	Halteres	retirar	RETIRAR		podado no código (não deployado)
+224	Afundo reverso	Pernas	Halteres	retirar	RETIRAR		podado no código (não deployado)
+225	Afundo reverso com barra	Pernas	Barra	mudar o nome: recuo com barra	NOME	recuo com barra	rename PENDENTE
+226	Agachamento box squat	Pernas	Barra	retirar	RETIRAR		podado no código (não deployado)
+227	Agachamento búlgaro	Pernas	Halteres	✅	OK		nada a fazer
+228	Agachamento búlgaro com halteres	Pernas	Halteres	✅	OK		nada a fazer
+229	Agachamento com barra alta	Pernas	Barra	mudar o nome: agachamento com barra	NOME	agachamento com barra	rename PENDENTE
+230	Agachamento com barra baixa	Pernas	Barra	retirar	RETIRAR		podado no código (não deployado)
+231	Agachamento com deslocamento lateral na toalha	Pernas	Toalha	✅	OK		nada a fazer
+232	Agachamento com elástico	Pernas	Elástico	✅	OK		nada a fazer
+233	Agachamento com halteres	Pernas	Halteres	✅	OK		nada a fazer
+234	Agachamento com kettlebell (goblet)	Pernas	Kettlebell	✅	OK		nada a fazer
+235	Agachamento com peso corporal	Pernas	Peso corporal	melhorar o movimento	VIDEO		vídeo aprovado (não instalado)
+236	Agachamento com salto	Pernas	Peso corporal	✅	OK		nada a fazer
+237	Agachamento cossaco	Pernas	Peso corporal	✅	OK		nada a fazer
+238	Agachamento frontal	Pernas	Barra	passar a barra para frente	VIDEO		vídeo na fila
+239	Agachamento frontal no smith	Pernas	Smith	✅	OK		nada a fazer
+240	Agachamento isométrico na parede	Pernas	Peso corporal	✅	OK		nada a fazer
+241	Agachamento livre	Pernas	Barra	✅	OK		nada a fazer
+242	Agachamento livre com halteres (goblet squat)	Pernas	Halter	✅	OK		nada a fazer
+243	Agachamento no smith	Pernas	Máquina	✅	OK		nada a fazer
+244	Agachamento no TRX	Pernas	TRX	✅	OK		nada a fazer
+245	Agachamento pausado	Pernas	Barra	retirar	RETIRAR		podado no código (não deployado)
+246	Agachamento sissy	Pernas	Peso corporal	colocar a máquina	VIDEO		vídeo aprovado (não instalado)
+247	Agachamento sumô com halter	Pernas	Halter	nome: agachamento sumô com barra	NOME	agachamento sumô com barra	rename PENDENTE
+248	Agachamento sumô com kettlebell	Pernas	Kettlebell	✅	OK		nada a fazer
+249	Agachamento unilateral (pistol)	Pernas	Peso corporal	✅ movimento do Crossfit	OK		nada a fazer
+250	Avanço em diagonal	Pernas	Halteres	retirar	RETIRAR		podado no código (não deployado)
+251	Avanço estático	Pernas	Halteres	Nome: afundo com halter	NOME	afundo com halter	rename PENDENTE
+252	Belt squat na máquina	Pernas	Máquina	Retirar	RETIRAR		podado no código (não deployado)
+253	Cadeira extensora	Pernas	Máquina	✅	OK		nada a fazer
+254	Cadeira extensora unilateral	Pernas	Máquina	Ajustar a máquina	VIDEO		vídeo aprovado (não instalado)
+255	Extensão de joelho com caneleira	Pernas	Caneleira	Ajustar o banco	VIDEO		vídeo na fila
+256	Hack machine	Pernas	Máquina	✅	OK		nada a fazer
+257	Leg press 45°	Pernas	Máquina	retirar	RETIRAR		podado no código (não deployado)
+258	Leg press 45° unilateral	Pernas	Máquina	leg press horizontal	NOME	leg press horizontal	rename PENDENTE
+259	Leg press horizontal	Pernas	Máquina	retirar	RETIRAR		podado no código (não deployado)
+260	Leg press pés afastados	Pernas	Máquina	retirar	RETIRAR		podado no código (não deployado)
+261	Leg press pés altos	Pernas	Máquina	retirar	RETIRAR		podado no código (não deployado)
+262	Leg press pés baixos	Pernas	Máquina	retirar	RETIRAR		podado no código (não deployado)
+263	Leg press pés juntos	Pernas	Máquina	retirar	RETIRAR		podado no código (não deployado)
+264	Leg press unilateral	Pernas	Máquina	retirar	RETIRAR		podado no código (não deployado)
+265	Leg press vertical	Pernas	Máquina	retirar	RETIRAR		podado no código (não deployado)
+266	Passada (walking lunge)	Pernas	Halteres	✅	OK		nada a fazer
+267	Passada com barra	Pernas	Barra	avanço com barra	NOME	avanço com barra	rename PENDENTE
+268	Passada com halteres	Pernas	Halteres	retirar	RETIRAR		podado no código (não deployado)
+269	Subida no step (step-up)	Pernas	Halteres	✅	OK		nada a fazer
+270	Subida no step lateral	Pernas	Halteres	✅ (subida no banco lateral)	OK+NOME	subida no banco lateral	rename PENDENTE
+271	Terra sumô com halteres	Pernas	Halteres	agachamento sumô com halteres - melhorar a pegada	NOME+VIDEO	agachamento sumô com halteres	vídeo na fila + rename PENDENTE
+272	Balanço com kettlebell (swing)	Posterior	Kettlebell	✅	OK		nada a fazer
+273	Bom dia sentado	Posterior	Barra	retirar	RETIRAR		podado no código (não deployado)
+274	Cadeira flexora	Posterior	Máquina	cadeira Extensora (não é posterior)	NOME	cadeira Extensora	rename PENDENTE
+275	Cadeira flexora unilateral	Posterior	Máquina	retirar	RETIRAR		podado no código (não deployado)
+276	Elevação pélvica com perna estendida	Posterior	Peso corporal	elevação pélvica solo unilateral	NOME	elevação pélvica solo unilateral	rename PENDENTE + vídeo regerado sem o Hugo pedir (aprovado, não instalado)
+277	Extensão de quadril na polia	Posterior	Polia	glúteo coice na polia - ajustar o movimento	NOME+VIDEO	glúteo coice na polia	vídeo na fila + rename PENDENTE
+278	Flexão de joelho com caneleira	Posterior	Caneleira	retirar	RETIRAR		podado no código (não deployado)
+279	Flexão nórdica	Posterior	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
+280	Flexora em pé na máquina	Posterior	Máquina	ajeitar a máquina	VIDEO		vídeo aprovado (não instalado)
+281	Glute ham raise	Posterior	Máquina	retirar	RETIRAR		podado no código (não deployado)
+282	Good morning	Posterior	Barra	✅	OK		nada a fazer
+283	Good morning no smith	Posterior	Smith	✅	OK		nada a fazer
+284	Hiperextensão com foco em posterior	Posterior	Peso corporal	✅	OK		nada a fazer
+285	Levantamento terra	Posterior	Barra	✅ (levantamento terra com barra)	OK+NOME	levantamento terra com barra	rename PENDENTE
+286	Levantamento terra romeno	Posterior	Barra	✅	OK		nada a fazer
+287	Levantamento terra romeno unilateral	Posterior	Halter	✅ Stiff unilateral ou T ou avião	OK+NOME	Stiff unilateral ou T ou avião	rename PENDENTE
+288	Mesa flexora	Posterior	Máquina	ajusta a maquina	VIDEO		vídeo aprovado (não instalado)
+289	Mesa flexora com pausa	Posterior	Máquina	retirar	RETIRAR		podado no código (não deployado)
+290	Mesa flexora unilateral	Posterior	Máquina	retirar	RETIRAR		podado no código (não deployado)
+291	Ponte de glúteo com uma perna	Posterior	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
+292	Stiff	Posterior	Barra	✅	OK		nada a fazer
+293	Stiff com halteres	Posterior	Halteres	✅	OK		nada a fazer
+294	Stiff no smith	Posterior	Smith	✅	OK		nada a fazer
+295	Stiff unilateral	Posterior	Halter	retirar	RETIRAR		podado no código (não deployado)
+296	Terra romeno com elástico	Posterior	Elástico	✅	OK		nada a fazer
+297	Terra romeno com kettlebell	Posterior	Kettlebell	✅	OK		nada a fazer
+298	Abdução com elástico deitado (clamshell)	Glúteos	Elástico	✅	OK		nada a fazer
+299	Abdução de quadril deitado de lado	Glúteos	Peso corporal	✅	OK		nada a fazer
+300	Abdução de quadril na máquina	Glúteos	Máquina	✅ (abdução de quadril na máquina abdutora)	OK+NOME	abdução de quadril na máquina abdutora	rename PENDENTE
+301	Abdução de quadril na polia	Glúteos	Polia	movimento errado	VIDEO		vídeo na fila
+302	Abdução em pé com elástico	Glúteos	Elástico	melhorar o movimento	VIDEO		vídeo na fila
+303	Adução de quadril na polia	Glúteos	Polia	melhorar o movimento	VIDEO		vídeo na fila
+304	Agachamento búlgaro com foco em glúteo	Glúteos	Halteres	agachamento búlgaro	NOME	agachamento búlgaro	rename PENDENTE
+305	Agachamento com elástico nos joelhos	Glúteos	Elástico	✅	OK		nada a fazer
+306	Agachamento sumô profundo	Glúteos	Halter	agachamento sumô com barra	NOME	agachamento sumô com barra	rename PENDENTE
+307	Cadeira abdutora	Glúteos	Máquina	tirar	RETIRAR		podado no código (não deployado)
+308	Cadeira adutora	Glúteos	Máquina	✅	OK		nada a fazer
+309	Caminhada lateral com elástico	Glúteos	Elástico	deslocamento lateral com miniband - melhorar movimento	NOME+VIDEO	deslocamento lateral com miniband	vídeo na fila + rename PENDENTE
+310	Chute de glúteo na polia (kickback)	Glúteos	Polia	tirar	RETIRAR		podado no código (não deployado)
+311	Coice de glúteo com caneleira	Glúteos	Caneleira	glúteo coice com caneleira - colocar caneleira, colchonete e deixar os cotovelos flexionados	NOME+VIDEO	glúteo coice com caneleira	vídeo na fila + rename PENDENTE
+312	Coice de glúteo com elástico	Glúteos	Elástico	tirar	RETIRAR		podado no código (não deployado)
+313	Coice de glúteo na máquina	Glúteos	Máquina	tirar	RETIRAR		podado no código (não deployado)
+314	Elevação de quadril (hip thrust)	Glúteos	Barra	✅ elevação pélvica com barra	OK+NOME	elevação pélvica com barra	rename PENDENTE
+315	Elevação de quadril com elástico	Glúteos	Elástico	✅ elevação pélvica com elástico	OK+NOME	elevação pélvica com elástico	rename PENDENTE
+316	Elevação de quadril com halter	Glúteos	Halter	retirar	RETIRAR		podado no código (não deployado)
+317	Elevação de quadril com pés no banco	Glúteos	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
+318	Elevação de quadril na máquina	Glúteos	Máquina	colocar a máquina certa	VIDEO		vídeo aprovado (não instalado)
+319	Elevação de quadril no smith	Glúteos	Smith	ajustar o banco	VIDEO		vídeo na fila
+320	Elevação de quadril unilateral	Glúteos	Peso corporal	deixar as escapulas no banco	VIDEO		vídeo aprovado (não instalado)
+321	Extensão de quadril em quatro apoios	Glúteos	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
+322	Fire hydrant	Glúteos	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
+323	Frog pump	Glúteos	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
+324	Glúteo no cabo (coice)	Glúteos	Polia	melhorar o movimento - inclinar o corpo e aumentar a flexão e extensão do quadril	VIDEO		vídeo na fila
+325	Glúteo quatro apoios	Glúteos	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
+326	Passada profunda para glúteo	Glúteos	Halteres	avanço com halteres	NOME	avanço com halteres	rename PENDENTE
+327	Ponte de glúteo com barra	Glúteos	Barra	retirar	RETIRAR		podado no código (não deployado)
+328	Ponte de glúteo com elevação alternada	Glúteos	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
+329	Ponte de glúteo no solo	Glúteos	Peso corporal	elevação pélvica solo	NOME	elevação pélvica solo	rename PENDENTE + vídeo regerado sem o Hugo pedir (aprovado, não instalado)
+330	Subida no step alta para glúteo	Glúteos	Halteres	subida no step com halter (colocar o pé completo no step)	NOME+VIDEO	subida no step com halter	vídeo na fila + rename PENDENTE
+331	Panturrilha burro (donkey calf)	Panturrilha	Máquina	retirar	RETIRAR		podado no código (não deployado)
+332	Panturrilha com pés para dentro	Panturrilha	Máquina	retirar	RETIRAR		podado no código (não deployado)
+333	Panturrilha com pés para fora	Panturrilha	Máquina	retirar	RETIRAR		podado no código (não deployado)
+334	Panturrilha em pé	Panturrilha	Máquina	retirar	RETIRAR		podado no código (não deployado)
+335	Panturrilha em pé com halteres	Panturrilha	Halteres	✅	OK		nada a fazer
+336	Panturrilha em pé na máquina	Panturrilha	Máquina	retirar	RETIRAR		podado no código (não deployado)
+337	Panturrilha em pé no step	Panturrilha	Peso corporal	apoiar no espaldar	VIDEO		vídeo aprovado (não instalado)
+338	Panturrilha no leg press	Panturrilha	Máquina	corrigir o movimento	VIDEO		vídeo ENCERRADO (causa raiz: o nome)
+339	Panturrilha no smith	Panturrilha	Smith	✅	OK		nada a fazer
+340	Panturrilha sentado	Panturrilha	Máquina	retirar - máquina errada	RETIRAR		podado no código (não deployado)
+341	Panturrilha sentado com anilha	Panturrilha	Anilha	retirar	RETIRAR		podado no código (não deployado)
+342	Panturrilha sentado unilateral	Panturrilha	Máquina	retirar	RETIRAR		podado no código (não deployado)
+343	Panturrilha unilateral com halter	Panturrilha	Halter	retirar	RETIRAR		podado no código (não deployado)
+344	Panturrilha unilateral no leg press	Panturrilha	Máquina	corrigir o movimento	VIDEO		vídeo ENCERRADO (causa raiz: o nome)
+345	Tibial anterior com elástico	Panturrilha	Elástico	retirar	RETIRAR		podado no código (não deployado)
+346	Abdominal bicicleta	Core	Peso corporal	melhorar o movimento - esticar as pernas	VIDEO		vídeo aprovado (não instalado)
+347	Abdominal canivete	Core	Peso corporal	✅	OK		nada a fazer
+348	Abdominal declinado	Core	Peso corporal	colocar o banco declinado de abdômen	VIDEO		vídeo aprovado (não instalado)
+349	Abdominal infra (elevação de pernas)	Core	Peso corporal	✅	OK		nada a fazer
+350	Abdominal na máquina com carga	Core	Máquina	ajustar o erro da máquina - abdominal supra máquina	NOME+VIDEO	ajustar o erro da máquina	vídeo aprovado (não instalado) + rename PENDENTE
+351	Abdominal na polia alta (ajoelhado)	Core	Polia	tirar	RETIRAR		podado no código (não deployado)
+352	Abdominal oblíquo	Core	Peso corporal	✅ abdominal oblíquo unilateral	OK+NOME	abdominal oblíquo unilateral	rename PENDENTE
+353	Abdominal oblíquo na polia	Core	Polia	✅	OK		nada a fazer
+354	Abdominal remador	Core	Peso corporal	melhorar o movimento - descer mais	VIDEO		vídeo aprovado (não instalado)
+355	Abdominal supra (crunch)	Core	Peso corporal	✅	OK		nada a fazer
+356	Abdominal supra com pés apoiados	Core	Peso corporal	tirar	RETIRAR		podado no código (não deployado)
+357	Abdominal V-up	Core	Peso corporal	✅	OK		nada a fazer
+358	Bird dog	Core	Peso corporal	✅	OK		nada a fazer
+359	Dead bug	Core	Peso corporal	melhorar o movimento	VIDEO		vídeo PARCIAL (candidato guardado)
+360	Dragon flag	Core	Peso corporal	colocar encosto no banco para segurar	VIDEO		vídeo aprovado (não instalado)
+361	Elevação de joelhos suspenso	Core	Peso corporal	✅ abdominal infra suspenso flexionando as pernas (ajustar a mão na pegada barra)	OK+NOME	abdominal infra suspenso flexionando as pernas	rename PENDENTE + vídeo regerado embora já ✅ (aprovado, não instalado)
+362	Elevação de pernas no banco	Core	Peso corporal	✅ abdominal infra no banco	OK+NOME	abdominal infra no banco	rename PENDENTE
+363	Elevação de pernas suspenso na barra	Core	Peso corporal	✅ abdominal infra suspenso com pernas estendidas (ajustar a mão na pegada barra)	OK+NOME	abdominal infra suspenso com pernas estendidas	rename PENDENTE + vídeo regerado embora já ✅ (aprovado, não instalado)
+364	Flexão lateral com halter	Core	Halter	✅	OK		nada a fazer
+365	Hollow hold	Core	Peso corporal	melhorar postura - pernas mais baixas e braços atrás da cabeça	VIDEO		vídeo aprovado (não instalado)
+366	Hollow rock	Core	Peso corporal	corrigir o movimento - pernas e braços mais próximos do chão	VIDEO		vídeo aprovado (não instalado)
+367	L-sit nas paralelas	Core	Peso corporal	✅	OK		nada a fazer
+368	L-sit no solo	Core	Peso corporal	ajustar a postura - mais no chão mantendo o corpo acima do solo em isometria	VIDEO		vídeo aprovado (não instalado)
+369	Limpador de para-brisa suspenso na barra	Core	Peso corporal	abdominal pára-brisa suspenso na barra - melhorar movimento - eleva as pernas durante o movimento	NOME+VIDEO	abdominal pára-brisa suspenso na barra	vídeo aprovado (não instalado) + rename PENDENTE
+370	Mountain climber lento	Core	Peso corporal	corrigir execução (pernas trocam de lugar)	VIDEO		vídeo aprovado (não instalado)
+371	Pallof press	Core	Polia	exercício errado, segura em isometria mantendo o cabo na lateral	VIDEO		vídeo na fila
+372	Prancha abdominal	Core	Peso corporal	✅	OK		nada a fazer
+373	Prancha alta	Core	Peso corporal	✅	OK		nada a fazer
+374	Prancha com abertura de pernas na toalha	Core	Toalha	✅	OK		nada a fazer
+375	Prancha com apoio dos antebraços	Core	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
+376	Prancha com deslizamento de braços na toalha	Core	Toalha	✅	OK		nada a fazer
+377	Prancha com elevação de braço	Core	Peso corporal	✅	OK		nada a fazer
+378	Prancha com elevação de perna	Core	Peso corporal	✅ mountain climber	OK+NOME	mountain climber	rename PENDENTE
+379	Prancha com remada (renegade)	Core	Halteres	✅ renegade row	OK+NOME	renegade row	rename PENDENTE
+380	Prancha com toque no ombro	Core	Peso corporal	✅	OK		nada a fazer
+381	Prancha dinâmica (up-down)	Core	Peso corporal	corrigir o movimento	VIDEO		vídeo aprovado (não instalado)
+382	Prancha lateral com elevação de quadril	Core	Peso corporal	✅	OK		nada a fazer
+383	Prancha lateral com rotação	Core	Peso corporal	✅	OK		nada a fazer
+384	Roda abdominal (ab wheel)	Core	Equipamento	retirar	RETIRAR		podado no código (não deployado)
+385	Roda abdominal ajoelhado	Core	Equipamento	corrigir o movimento	VIDEO		vídeo na fila
+386	Rollout na barra	Core	Barra	corrigir o movimento	VIDEO		vídeo na fila
+387	Rotação de tronco na polia (woodchop)	Core	Polia	retirar	RETIRAR		podado no código (não deployado)
+388	Rotação russa (russian twist)	Core	Peso corporal	✅	OK		nada a fazer
+389	Rotação russa com medicine ball	Core	Medicine ball	✅	OK		nada a fazer
+390	Serra abdominal na toalha	Core	Toalha	retirar	RETIRAR		podado no código (não deployado)
+391	Sit-up completo	Core	Peso corporal	✅ abdominal supra solo completo	OK+NOME	abdominal supra solo completo	rename PENDENTE
+392	Toes to bar	Core	Peso corporal	✅ movimento do Crossfit - ajustar a pegada na barra	OK+NOME	movimento do Crossfit	rename PENDENTE + vídeo regerado embora já ✅ (aprovado, não instalado)
+393	Agachamento com salto sobre a caixa	Funcional	Step	✅ box jump	OK+NOME	box jump	rename PENDENTE
+394	Arremesso de medicine ball no solo	Funcional	Medicine ball	✅	OK		nada a fazer
+395	Assault bike	Funcional	Bicicleta	✅ airbike	OK+NOME	airbike	rename PENDENTE
+396	Battle rope com agachamento	Funcional	Corda	corda naval	NOME	corda naval	rename PENDENTE
+397	Bear crawl	Funcional	Peso corporal	melhorar o movimento	VIDEO		vídeo aprovado (não instalado)
+398	Bicicleta ergométrica	Funcional	Bicicleta	trocar a bicicleta	VIDEO		vídeo na fila
+399	Burpee com flexão	Funcional	Peso corporal	✅	OK		nada a fazer
+400	Burpee com salto na caixa	Funcional	Step	✅ burpee box jump - movimento do Cross	OK+NOME	burpee box jump	rename PENDENTE
