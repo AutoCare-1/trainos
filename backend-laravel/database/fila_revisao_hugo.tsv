@@ -1,5 +1,5 @@
 numero	grupo	equipamento	nome	queixa_do_hugo
-2	Peito	Máquina	Crucifixo unilateral	mudar nome para crucifixo unilateral/ movimento está errado.
+2	Peito	Máquina	Chest press unilateral	mudar nome para crucifixo unilateral/ movimento está errado.
 3	Peito	Polia	Crossover	exercício está errado
 23	Peito	TRX	Flexão de braço no TRX	movimento errado
 31	Peito	Polia	Pullover na polia alta	melhor movimento
@@ -9,9 +9,9 @@ numero	grupo	equipamento	nome	queixa_do_hugo
 60	Costas	Polia	Face pull	melhorar movimento
 75	Costas	Polia	Puxada frontal pegada neutra	banco e pegada errada
 76	Costas	Polia	Puxada frontal pegada supinada	pegada errada
-80	Costas	Polia	Puxada triângulo	puxada triângulo/ pegada errada
+80	Costas	Polia	Puxador triângulo	puxada triângulo/ pegada errada
 82	Costas	Polia	Remada baixa	movimento errado
-83	Costas	Polia	Remada com argola	remada com argola/ melhor movimento
+83	Costas	Polia	Remada baixa com corda	remada com argola/ melhor movimento
 92	Costas	Barra	Remada curvada pegada supinada	pegada está errada
 140	Ombros	Polia	Remada alta na polia baixa	tirar o cabo da polia de cima e melhorar o movimento
 141	Ombros	Elástico	Rotação externa com elástico	movimento errado
@@ -19,7 +19,7 @@ numero	grupo	equipamento	nome	queixa_do_hugo
 143	Ombros	Polia	Rotação interna na polia	movimento errado
 155	Bíceps	Barra W	Rosca direta com barra W	ajustar a barra
 160	Bíceps	Barra	Rosca inversa	mudar a pegada
-166	Bíceps	Barra W	Rosca Scott com barra reta	nome: rosca scott com barra reta (ajustar a barra)
+166	Bíceps	Barra W	Rosca Scott	nome: rosca scott com barra reta (ajustar a barra)
 167	Bíceps	Barra W	Rosca Scott com barra W	ajustar a barra
 198	Tríceps	Barra W	Tríceps testa	movimento errado
 199	Tríceps	Barra W	Tríceps testa com barra W	movimento errado
@@ -28,13 +28,13 @@ numero	grupo	equipamento	nome	queixa_do_hugo
 216	Trapézio	Smith	Encolhimento no smith	ajustar o movimento
 238	Pernas	Barra	Agachamento frontal	passar a barra para frente
 255	Pernas	Caneleira	Extensão de joelho com caneleira	ajustar o banco
-271	Pernas	Halteres	Agachamento sumô com halteres	agachamento sumô com halteres - melhorar a pegada
+271	Pernas	Halteres	Terra sumô com halteres	agachamento sumô com halteres - melhorar a pegada
 277	Posterior	Polia	Extensão de quadril na polia	glúteo coice na polia - ajustar o movimento
 301	Glúteos	Polia	Abdução de quadril na polia	movimento errado
 302	Glúteos	Elástico	Abdução em pé com elástico	melhorar o movimento
 303	Glúteos	Polia	Adução de quadril na polia	melhorar o movimento
-309	Glúteos	Elástico	Deslocamento lateral com miniband	deslocamento lateral com miniband - melhorar movimento
-311	Glúteos	Caneleira	Glúteo coice com caneleira	glúteo coice com caneleira - colocar caneleira, colchonete e deixar os cotovelos flexionados
+309	Glúteos	Elástico	Caminhada lateral com elástico	deslocamento lateral com miniband - melhorar movimento
+311	Glúteos	Caneleira	Coice de glúteo com caneleira	glúteo coice com caneleira - colocar caneleira, colchonete e deixar os cotovelos flexionados
 319	Glúteos	Smith	Elevação de quadril no smith	ajustar o banco
 324	Glúteos	Polia	Glúteo no cabo (coice)	melhorar o movimento - inclinar o corpo e aumentar a flexão e extensão do quadril
 330	Glúteos	Halteres	Subida no step alta para glúteo	subida no step com halter (colocar o pé completo no step)

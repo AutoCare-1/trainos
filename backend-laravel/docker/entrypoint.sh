@@ -55,14 +55,21 @@ done
 
 php artisan migrate --force
 
-# Renomeações da biblioteca (database/renames_revisao_hugo.php), pedidas pelo
-# personal que testa o app. Roda ANTES dos seeders de propósito: o nome é a
-# chave do updateOrCreate, então com a ordem invertida o seeder criaria um
-# exercício novo com o nome novo e deixaria o antigo para trás, com o vídeo e o
-# histórico grudados nele. É idempotente — no deploy seguinte não há nada a
-# fazer e ele só relata. O `|| true` é porque ele sai com falha quando algum
-# rename está bloqueado por colisão de nome, e isso não deve derrubar o deploy.
-php artisan exercicios:renomear --force || true
+# RENOMEAÇÃO DA BIBLIOTECA: pronta, mas DESLIGADA de propósito.
+#
+# O mapa dos 48 renames limpos está em database/renames_revisao_hugo.php e o
+# comando `exercicios:renomear` está testado. O que segura é a NUMERAÇÃO: a
+# lista que o personal usa pra reportar (`exercicios:numerar-biblioteca`) é
+# alfabética dentro do grupo, então renomear reordena — os 48 deslocam 216 das
+# 663 posições. O Hugo vai reconferir pelos MESMOS números que ele reportou,
+# pra ver se a correção ficou boa; se a numeração andar antes disso, ele
+# confere o exercício errado.
+#
+# Pra ligar, depois que ele validar (e aí junto com a poda dos 147 e uma lista
+# numerada nova pra ele): descomentar a linha abaixo e atualizar os nomes nos
+# 3 seeders, no mapa do R2 (demonstracoes_geradas.php), nas dicas, nos
+# aprovados e na fila — o commit 28d5ded fez exatamente isso e serve de receita.
+# php artisan exercicios:renomear --force || true
 
 # Os 3 seeders da biblioteca de exercícios e o mapeamento de vídeo são
 # seguros de rodar em TODO deploy: nenhum dos três sobrescreve o que já
