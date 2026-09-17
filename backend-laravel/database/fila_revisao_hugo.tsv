@@ -1,9 +1,7 @@
 numero	grupo	equipamento	nome	queixa_do_hugo
 2	Peito	Máquina	Chest press unilateral	mudar nome para crucifixo unilateral/ movimento está errado.
 23	Peito	TRX	Flexão de braço no TRX	movimento errado
-57	Costas	Barra	Bom dia com barra	retirar o peso da barra
 83	Costas	Polia	Remada baixa com corda	remada com argola/ melhor movimento
-92	Costas	Barra	Remada curvada pegada supinada	pegada está errada
 141	Ombros	Elástico	Rotação externa com elástico	movimento errado
 216	Trapézio	Smith	Encolhimento no smith	ajustar o movimento
 238	Pernas	Barra	Agachamento frontal	passar a barra para frente
@@ -14,7 +12,6 @@ numero	grupo	equipamento	nome	queixa_do_hugo
 311	Glúteos	Caneleira	Coice de glúteo com caneleira	glúteo coice com caneleira - colocar caneleira, colchonete e deixar os cotovelos flexionados
 319	Glúteos	Smith	Elevação de quadril no smith	ajustar o banco
 330	Glúteos	Halteres	Subida no step alta para glúteo	subida no step com halter (colocar o pé completo no step)
-359	Core	Peso corporal	Dead bug	melhorar o movimento
 385	Core	Equipamento	Roda abdominal ajoelhado	corrigir o movimento
 386	Core	Barra	Rollout na barra	corrigir o movimento
 398	Funcional	Bicicleta	Bicicleta ergométrica	trocar a bicicleta

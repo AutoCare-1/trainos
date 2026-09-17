@@ -33,11 +33,11 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 32	Supino com halteres	Peito	Halteres	mudar nome: supino reto com halter	NOME	supino reto com halter	rename PENDENTE
 33	Supino com pegada fechada	Peito	Barra	retirar	RETIRAR		podado no código (não deployado)
 34	Supino com pegada neutra	Peito	Halteres	retirar	RETIRAR		podado no código (não deployado)
-35	Supino declinado	Peito	Barra	movimento errado	VIDEO		vídeo na fila
+35	Supino declinado	Peito	Barra	movimento errado	VIDEO		vídeo INSTALADO (17/09, lote 7)
 36	Supino declinado com halteres	Peito	Halteres	posição do banco errado	VIDEO		vídeo INSTALADO (17/09)
 37	Supino declinado na máquina	Peito	Máquina	retirar	RETIRAR		podado no código (não deployado)
 38	Supino declinado no smith	Peito	Smith	retirar	RETIRAR		podado no código (não deployado)
-39	Supino inclinado	Peito	Barra	supino inclinado banco	VIDEO		vídeo na fila
+39	Supino inclinado	Peito	Barra	supino inclinado banco	VIDEO		vídeo INSTALADO (17/09, lote 7)
 40	Supino inclinado com halteres	Peito	Halteres	✅	OK		nada a fazer
 41	Supino inclinado com pegada neutra	Peito	Halteres	retirar	RETIRAR		podado no código (não deployado)
 42	Supino inclinado na máquina	Peito	Máquina	✅	OK		nada a fazer
@@ -55,7 +55,7 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 54	Barra fixa nas argolas	Costas	Argolas	retirar	RETIRAR		podado no código (não deployado)
 55	Barra fixa pegada neutra	Costas	Peso corporal	✅	OK		nada a fazer
 56	Barra fixa pegada supinada (chin-up)	Costas	Peso corporal	pegada está errada	VIDEO		vídeo INSTALADO (17/09)
-57	Bom dia com barra	Costas	Barra	retirar o peso da barra	VIDEO		vídeo na fila
+57	Bom dia com barra	Costas	Barra	retirar o peso da barra	VIDEO		vídeo INSTALADO (17/09, lote 7)
 58	Encolhimento na polia	Costas	Polia	Retirar	RETIRAR		podado no código (não deployado)
 59	Extensão lombar na máquina	Costas	Máquina	movimento e máquina errada	VIDEO		vídeo INSTALADO (17/09)
 60	Face pull	Costas	Polia	melhorar movimento	VIDEO		vídeo INSTALADO (17/09, lote 6)
@@ -90,7 +90,7 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 89	Remada curvada	Costas	Barra	✅ remada curvada barra	OK+NOME	remada curvada barra	rename PENDENTE
 90	Remada curvada com halteres	Costas	Halteres	melhorar movimento	VIDEO		vídeo INSTALADO (17/09)
 91	Remada curvada no smith	Costas	Smith	retirar	RETIRAR		podado no código (não deployado)
-92	Remada curvada pegada supinada	Costas	Barra	pegada está errada	VIDEO		vídeo na fila
+92	Remada curvada pegada supinada	Costas	Barra	pegada está errada	VIDEO		vídeo INSTALADO (17/09, lote 7)
 93	Remada invertida no TRX	Costas	TRX	✅	OK		nada a fazer
 94	Remada máquina	Costas	Máquina	remada aberta máquina	NOME	remada aberta máquina	rename PENDENTE + vídeo regerado sem o Hugo pedir (aprovado e instalado em 17/09)
 95	Remada máquina pegada neutra	Costas	Máquina	retirar	RETIRAR		podado no código (não deployado)
@@ -153,19 +153,19 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 152	Rosca de bíceps na máquina	Bíceps	Máquina	retirar	RETIRAR		podado no código (não deployado)
 153	Rosca de bíceps sentado com halteres	Bíceps	Halteres	colocar sentado com o encosto do banco na vertical	VIDEO		vídeo INSTALADO (17/09)
 154	Rosca direta	Bíceps	Barra	retirar	RETIRAR		podado no código (não deployado)
-155	Rosca direta com barra W	Bíceps	Barra W	ajustar a barra	VIDEO		vídeo na fila
+155	Rosca direta com barra W	Bíceps	Barra W	ajustar a barra	VIDEO		vídeo INSTALADO (17/09, lote 7)
 156	Rosca direta com elástico	Bíceps	Elástico	✅	OK		nada a fazer
 157	Rosca direta com halteres	Bíceps	Halteres	retirar	RETIRAR		podado no código (não deployado)
 158	Rosca direta na polia	Bíceps	Polia	vídeo errado (ajustar a barra, polia…)	VIDEO		vídeo INSTALADO (17/09)
 159	Rosca inclinada no banco	Bíceps	Halteres	✅	OK		nada a fazer
-160	Rosca inversa	Bíceps	Barra	mudar a pegada	VIDEO		vídeo na fila
+160	Rosca inversa	Bíceps	Barra	mudar a pegada	VIDEO		vídeo INSTALADO (17/09, lote 7)
 161	Rosca invertida na polia	Bíceps	Polia	vídeo errado (ajustar a barra, pegada e posição da pessoa)	VIDEO		vídeo INSTALADO (17/09)
 162	Rosca martelo	Bíceps	Halteres	rosca martelo com halteres - mudar a pegada para neutra	NOME+VIDEO	rosca martelo com halteres	vídeo INSTALADO (17/09) + rename PENDENTE
 163	Rosca martelo alternada	Bíceps	Halteres	mudar a pegada para neutra	VIDEO		vídeo INSTALADO (17/09)
 164	Rosca martelo na corda	Bíceps	Polia	retirar	RETIRAR		podado no código (não deployado)
 165	Rosca nas argolas	Bíceps	Argolas	retirar	RETIRAR		podado no código (não deployado)
-166	Rosca Scott	Bíceps	Barra W	nome: rosca scott com barra reta (ajustar a barra)	NOME+VIDEO	rosca scott com barra reta	vídeo na fila + rename PENDENTE
-167	Rosca Scott com barra W	Bíceps	Barra W	ajustar a barra	VIDEO		vídeo na fila
+166	Rosca Scott	Bíceps	Barra W	nome: rosca scott com barra reta (ajustar a barra)	NOME+VIDEO	rosca scott com barra reta	vídeo INSTALADO (17/09, lote 7) + rename PENDENTE
+167	Rosca Scott com barra W	Bíceps	Barra W	ajustar a barra	VIDEO		vídeo INSTALADO (17/09, lote 7)
 168	Rosca Scott com halter unilateral	Bíceps	Halter	ajustar o banco	VIDEO		vídeo INSTALADO (17/09)
 169	Rosca Scott na máquina	Bíceps	Máquina	✅	OK		nada a fazer
 170	Rosca spider	Bíceps	Barra W	✅	OK		nada a fazer
@@ -196,10 +196,10 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 195	Tríceps na polia pegada supinada	Tríceps	Polia	movimento errado	VIDEO		vídeo INSTALADO (17/09)
 196	Tríceps na polia unilateral	Tríceps	Polia	retirar	RETIRAR		podado no código (não deployado)
 197	Tríceps pulley barra reta	Tríceps	Polia	ajustar a pegada e posição do aluno	VIDEO		vídeo INSTALADO (17/09)
-198	Tríceps testa	Tríceps	Barra W	movimento errado	VIDEO		vídeo na fila
-199	Tríceps testa com barra W	Tríceps	Barra W	movimento errado	VIDEO		vídeo na fila
+198	Tríceps testa	Tríceps	Barra W	movimento errado	VIDEO		vídeo INSTALADO (17/09, lote 7)
+199	Tríceps testa com barra W	Tríceps	Barra W	movimento errado	VIDEO		vídeo INSTALADO (17/09, lote 7)
 200	Tríceps testa com elástico	Tríceps	Elástico	retirar	RETIRAR		podado no código (não deployado)
-201	Tríceps testa com halteres	Tríceps	Halteres	melhorar o movimento	VIDEO		vídeo na fila
+201	Tríceps testa com halteres	Tríceps	Halteres	melhorar o movimento	VIDEO		vídeo INSTALADO (17/09, lote 7)
 202	Tríceps testa na polia baixa	Tríceps	Polia	retirar	RETIRAR		podado no código (não deployado)
 203	Farmer walk	Antebraço	Halteres	✅	OK		nada a fazer
 204	Rosca de punho	Antebraço	Barra	retirar	RETIRAR		podado no código (não deployado)
@@ -209,7 +209,7 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 208	Rosca inversa em pé	Antebraço	Barra	retirar	RETIRAR		podado no código (não deployado)
 209	Suspensão na barra (dead hang)	Antebraço	Peso corporal	✅	OK		nada a fazer
 210	Elevação em Y na polia	Trapézio	Polia	retirar	RETIRAR		podado no código (não deployado)
-211	Encolhimento com halteres	Trapézio	Halteres	melhorar movimento	VIDEO		vídeo na fila
+211	Encolhimento com halteres	Trapézio	Halteres	melhorar movimento	VIDEO		vídeo INSTALADO (17/09, lote 7)
 212	Encolhimento com kettlebell	Trapézio	Kettlebell	✅	OK		nada a fazer
 213	Encolhimento de ombros com barra	Trapézio	Barra	✅	OK		nada a fazer
 214	Encolhimento inclinado no banco	Trapézio	Halteres	retirar	RETIRAR		podado no código (não deployado)
@@ -357,7 +357,7 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 356	Abdominal supra com pés apoiados	Core	Peso corporal	tirar	RETIRAR		podado no código (não deployado)
 357	Abdominal V-up	Core	Peso corporal	✅	OK		nada a fazer
 358	Bird dog	Core	Peso corporal	✅	OK		nada a fazer
-359	Dead bug	Core	Peso corporal	melhorar o movimento	VIDEO		vídeo PARCIAL (candidato guardado)
+359	Dead bug	Core	Peso corporal	melhorar o movimento	VIDEO		vídeo INSTALADO (17/09, lote 7)
 360	Dragon flag	Core	Peso corporal	colocar encosto no banco para segurar	VIDEO		vídeo INSTALADO (17/09)
 361	Elevação de joelhos suspenso	Core	Peso corporal	✅ abdominal infra suspenso flexionando as pernas (ajustar a mão na pegada barra)	OK+NOME	abdominal infra suspenso flexionando as pernas	rename PENDENTE + vídeo regerado embora já ✅ (aprovado e instalado em 17/09)
 362	Elevação de pernas no banco	Core	Peso corporal	✅ abdominal infra no banco	OK+NOME	abdominal infra no banco	rename PENDENTE

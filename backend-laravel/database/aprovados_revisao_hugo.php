@@ -100,4 +100,7 @@ return [
     199 => ['nome' => 'Tríceps testa com barra W', 'grupo' => 'Tríceps', 'arquivo' => '199.mp4'],
     201 => ['nome' => 'Tríceps testa com halteres', 'grupo' => 'Tríceps', 'arquivo' => '201.mp4'],
     211 => ['nome' => 'Encolhimento com halteres', 'grupo' => 'Trapézio', 'arquivo' => '211.mp4'],
+    57 => ['nome' => 'Bom dia com barra', 'grupo' => 'Costas', 'arquivo' => '57.mp4'],
+    92 => ['nome' => 'Remada curvada pegada supinada', 'grupo' => 'Costas', 'arquivo' => '92.mp4'],
+    359 => ['nome' => 'Dead bug', 'grupo' => 'Core', 'arquivo' => '359.mp4'],
 ];
