@@ -1,22 +1,12 @@
 numero	grupo	equipamento	nome	queixa_do_hugo
 2	Peito	Máquina	Chest press unilateral	mudar nome para crucifixo unilateral/ movimento está errado.
-3	Peito	Polia	Crossover	exercício está errado
 23	Peito	TRX	Flexão de braço no TRX	movimento errado
-31	Peito	Polia	Pullover na polia alta	melhor movimento
 35	Peito	Barra	Supino declinado	movimento errado
 39	Peito	Barra	Supino inclinado	supino inclinado banco
 57	Costas	Barra	Bom dia com barra	retirar o peso da barra
-60	Costas	Polia	Face pull	melhorar movimento
-75	Costas	Polia	Puxada frontal pegada neutra	banco e pegada errada
-76	Costas	Polia	Puxada frontal pegada supinada	pegada errada
-80	Costas	Polia	Puxador triângulo	puxada triângulo/ pegada errada
-82	Costas	Polia	Remada baixa	movimento errado
 83	Costas	Polia	Remada baixa com corda	remada com argola/ melhor movimento
 92	Costas	Barra	Remada curvada pegada supinada	pegada está errada
-140	Ombros	Polia	Remada alta na polia baixa	tirar o cabo da polia de cima e melhorar o movimento
 141	Ombros	Elástico	Rotação externa com elástico	movimento errado
-142	Ombros	Polia	Rotação externa na polia	movimento errado
-143	Ombros	Polia	Rotação interna na polia	movimento errado
 155	Bíceps	Barra W	Rosca direta com barra W	ajustar a barra
 160	Bíceps	Barra	Rosca inversa	mudar a pegada
 166	Bíceps	Barra W	Rosca Scott	nome: rosca scott com barra reta (ajustar a barra)
@@ -29,17 +19,14 @@ numero	grupo	equipamento	nome	queixa_do_hugo
 238	Pernas	Barra	Agachamento frontal	passar a barra para frente
 255	Pernas	Caneleira	Extensão de joelho com caneleira	ajustar o banco
 271	Pernas	Halteres	Terra sumô com halteres	agachamento sumô com halteres - melhorar a pegada
-277	Posterior	Polia	Extensão de quadril na polia	glúteo coice na polia - ajustar o movimento
 301	Glúteos	Polia	Abdução de quadril na polia	movimento errado
 302	Glúteos	Elástico	Abdução em pé com elástico	melhorar o movimento
 303	Glúteos	Polia	Adução de quadril na polia	melhorar o movimento
 309	Glúteos	Elástico	Caminhada lateral com elástico	deslocamento lateral com miniband - melhorar movimento
 311	Glúteos	Caneleira	Coice de glúteo com caneleira	glúteo coice com caneleira - colocar caneleira, colchonete e deixar os cotovelos flexionados
 319	Glúteos	Smith	Elevação de quadril no smith	ajustar o banco
-324	Glúteos	Polia	Glúteo no cabo (coice)	melhorar o movimento - inclinar o corpo e aumentar a flexão e extensão do quadril
 330	Glúteos	Halteres	Subida no step alta para glúteo	subida no step com halter (colocar o pé completo no step)
 359	Core	Peso corporal	Dead bug	melhorar o movimento
-371	Core	Polia	Pallof press	exercício errado, segura em isometria mantendo o cabo na lateral
 385	Core	Equipamento	Roda abdominal ajoelhado	corrigir o movimento
 386	Core	Barra	Rollout na barra	corrigir o movimento
 398	Funcional	Bicicleta	Bicicleta ergométrica	trocar a bicicleta

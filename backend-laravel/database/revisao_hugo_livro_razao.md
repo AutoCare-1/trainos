@@ -46,6 +46,7 @@ por classe, a conta fecha exatamente com a dele (124 ✅ / 147 retirar / 129 cor
 | | |
 |---|--:|
 | Vídeos aprovados e **INSTALADOS em 17/09** | 57 |
+| Aprovados no lote 6 (polia), ainda **não instalados** | 13 |
 | Faltam gerar | **44** |
 | Encerrados (causa raiz é o nome) | 2 (#338, #344) |
 | Parcial, esperando o Hugo | 1 (#359 dead bug) |
