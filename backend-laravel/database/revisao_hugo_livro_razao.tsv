@@ -1,7 +1,7 @@
 numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 1	Chest press sentado	Peito	Máquina	mudar nome para crucifixo	NOME	crucifixo	rename PENDENTE
 2	Chest press unilateral	Peito	Máquina	mudar nome para crucifixo unilateral/ movimento está errado.	NOME+VIDEO	crucifixo unilateral	vídeo na fila + rename PENDENTE
-3	Crossover	Peito	Polia	exercício está errado	VIDEO		vídeo aprovado no lote 6 (não instalado)
+3	Crossover	Peito	Polia	exercício está errado	VIDEO		vídeo INSTALADO (17/09, lote 6)
 4	Crossover de baixo para cima	Peito	Polia	retirar	RETIRAR		podado no código (não deployado)
 5	Crossover na polia média	Peito	Polia	retirar	RETIRAR		podado no código (não deployado)
 6	Crossover unilateral	Peito	Polia	retirar	RETIRAR		podado no código (não deployado)
@@ -29,7 +29,7 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 28	Peck deck inclinado	Peito	Máquina	retirar	RETIRAR		podado no código (não deployado)
 29	Pullover	Peito	Halteres	✅	OK		nada a fazer
 30	Pullover com halter	Peito	Halter	retirar	RETIRAR		podado no código (não deployado)
-31	Pullover na polia alta	Peito	Polia	melhor movimento	VIDEO		vídeo aprovado no lote 6 (não instalado)
+31	Pullover na polia alta	Peito	Polia	melhor movimento	VIDEO		vídeo INSTALADO (17/09, lote 6)
 32	Supino com halteres	Peito	Halteres	mudar nome: supino reto com halter	NOME	supino reto com halter	rename PENDENTE
 33	Supino com pegada fechada	Peito	Barra	retirar	RETIRAR		podado no código (não deployado)
 34	Supino com pegada neutra	Peito	Halteres	retirar	RETIRAR		podado no código (não deployado)
@@ -58,7 +58,7 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 57	Bom dia com barra	Costas	Barra	retirar o peso da barra	VIDEO		vídeo na fila
 58	Encolhimento na polia	Costas	Polia	Retirar	RETIRAR		podado no código (não deployado)
 59	Extensão lombar na máquina	Costas	Máquina	movimento e máquina errada	VIDEO		vídeo INSTALADO (17/09)
-60	Face pull	Costas	Polia	melhorar movimento	VIDEO		vídeo aprovado no lote 6 (não instalado)
+60	Face pull	Costas	Polia	melhorar movimento	VIDEO		vídeo INSTALADO (17/09, lote 6)
 61	Face pull com elástico	Costas	Elástico	retirar	RETIRAR		podado no código (não deployado)
 62	Face pull na polia alta	Costas	Polia	retirar	RETIRAR		podado no código (não deployado)
 63	Hiperextensão lombar	Costas	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
@@ -73,14 +73,14 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 72	Puxada frontal ajoelhado na polia	Costas	Polia	✅	OK		nada a fazer
 73	Puxada frontal com pegada em V	Costas	Polia	retirar	RETIRAR		podado no código (não deployado)
 74	Puxada frontal pegada aberta	Costas	Polia	retirar	RETIRAR		podado no código (não deployado)
-75	Puxada frontal pegada neutra	Costas	Polia	banco e pegada errada	VIDEO		vídeo aprovado no lote 6 (não instalado)
-76	Puxada frontal pegada supinada	Costas	Polia	pegada errada	VIDEO		vídeo aprovado no lote 6 (não instalado)
+75	Puxada frontal pegada neutra	Costas	Polia	banco e pegada errada	VIDEO		vídeo INSTALADO (17/09, lote 6)
+76	Puxada frontal pegada supinada	Costas	Polia	pegada errada	VIDEO		vídeo INSTALADO (17/09, lote 6)
 77	Puxada frontal unilateral	Costas	Polia	retirar	RETIRAR		podado no código (não deployado)
 78	Puxada na máquina sentado	Costas	Máquina	retirar	RETIRAR		podado no código (não deployado)
 79	Puxada por trás	Costas	Polia	retirar	RETIRAR		podado no código (não deployado)
-80	Puxador triângulo	Costas	Polia	puxada triângulo/ pegada errada	NOME+VIDEO	puxada triângulo	vídeo aprovado no lote 6 (não instalado) + rename PENDENTE
+80	Puxador triângulo	Costas	Polia	puxada triângulo/ pegada errada	NOME+VIDEO	puxada triângulo	vídeo INSTALADO (17/09, lote 6) + rename PENDENTE
 81	Remada alta na polia	Costas	Polia	✅	OK		nada a fazer
-82	Remada baixa	Costas	Polia	movimento errado	VIDEO		vídeo aprovado no lote 6 (não instalado)
+82	Remada baixa	Costas	Polia	movimento errado	VIDEO		vídeo INSTALADO (17/09, lote 6)
 83	Remada baixa com corda	Costas	Polia	remada com argola/ melhor movimento	NOME+VIDEO	remada com argola	vídeo na fila + rename PENDENTE
 84	Remada baixa pegada aberta	Costas	Polia	retirar	RETIRAR		podado no código (não deployado)
 85	Remada baixa unilateral	Costas	Polia	✅	OK		nada a fazer
@@ -138,10 +138,10 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 137	Press militar estrito	Ombros	Barra	desenvolvimento lateral com barra em pé	NOME	desenvolvimento lateral com barra em pé	rename PENDENTE
 138	Push press	Ombros	Barra	✅ movimento do Crossfit	OK		nada a fazer
 139	Remada alta	Ombros	Barra	remada alta com barra	NOME	remada alta com barra	rename PENDENTE
-140	Remada alta na polia baixa	Ombros	Polia	tirar o cabo da polia de cima e melhorar o movimento	VIDEO		vídeo aprovado no lote 6 (não instalado)
+140	Remada alta na polia baixa	Ombros	Polia	tirar o cabo da polia de cima e melhorar o movimento	VIDEO		vídeo INSTALADO (17/09, lote 6)
 141	Rotação externa com elástico	Ombros	Elástico	movimento errado	VIDEO		vídeo na fila
-142	Rotação externa na polia	Ombros	Polia	movimento errado	VIDEO		vídeo aprovado no lote 6 (não instalado)
-143	Rotação interna na polia	Ombros	Polia	movimento errado	VIDEO		vídeo aprovado no lote 6 (não instalado)
+142	Rotação externa na polia	Ombros	Polia	movimento errado	VIDEO		vídeo INSTALADO (17/09, lote 6)
+143	Rotação interna na polia	Ombros	Polia	movimento errado	VIDEO		vídeo INSTALADO (17/09, lote 6)
 144	Rosca 21	Bíceps	Barra	rosca direta com barra reta	NOME	rosca direta com barra reta	rename PENDENTE
 145	Rosca 21 com halteres	Bíceps	Halteres	rosca direta com halteres	NOME	rosca direta com halteres	rename PENDENTE
 146	Rosca alternada	Bíceps	Halteres	✅	OK		nada a fazer
@@ -275,7 +275,7 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 274	Cadeira flexora	Posterior	Máquina	cadeira Extensora (não é posterior)	NOME	cadeira Extensora	rename PENDENTE
 275	Cadeira flexora unilateral	Posterior	Máquina	retirar	RETIRAR		podado no código (não deployado)
 276	Elevação pélvica com perna estendida	Posterior	Peso corporal	elevação pélvica solo unilateral	NOME	elevação pélvica solo unilateral	rename PENDENTE + vídeo regerado sem o Hugo pedir (aprovado e instalado em 17/09)
-277	Extensão de quadril na polia	Posterior	Polia	glúteo coice na polia - ajustar o movimento	NOME+VIDEO	glúteo coice na polia	vídeo aprovado no lote 6 (não instalado) + rename PENDENTE
+277	Extensão de quadril na polia	Posterior	Polia	glúteo coice na polia - ajustar o movimento	NOME+VIDEO	glúteo coice na polia	vídeo INSTALADO (17/09, lote 6) + rename PENDENTE
 278	Flexão de joelho com caneleira	Posterior	Caneleira	retirar	RETIRAR		podado no código (não deployado)
 279	Flexão nórdica	Posterior	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
 280	Flexora em pé na máquina	Posterior	Máquina	ajeitar a máquina	VIDEO		vídeo INSTALADO (17/09)
@@ -299,9 +299,9 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 298	Abdução com elástico deitado (clamshell)	Glúteos	Elástico	✅	OK		nada a fazer
 299	Abdução de quadril deitado de lado	Glúteos	Peso corporal	✅	OK		nada a fazer
 300	Abdução de quadril na máquina	Glúteos	Máquina	✅ (abdução de quadril na máquina abdutora)	OK+NOME	abdução de quadril na máquina abdutora	rename PENDENTE
-301	Abdução de quadril na polia	Glúteos	Polia	movimento errado	VIDEO		vídeo PARCIAL após 3 rolagens (candidato guardado)
+301	Abdução de quadril na polia	Glúteos	Polia	movimento errado	VIDEO		vídeo INSTALADO (17/09, lote 6, 5ª rolagem no 2.5 720p)
 302	Abdução em pé com elástico	Glúteos	Elástico	melhorar o movimento	VIDEO		vídeo na fila
-303	Adução de quadril na polia	Glúteos	Polia	melhorar o movimento	VIDEO		vídeo PARCIAL após 3 rolagens (candidato guardado)
+303	Adução de quadril na polia	Glúteos	Polia	melhorar o movimento	VIDEO		vídeo INSTALADO (17/09, lote 6, 5ª rolagem no 2.5 720p)
 304	Agachamento búlgaro com foco em glúteo	Glúteos	Halteres	agachamento búlgaro	NOME	agachamento búlgaro	rename PENDENTE
 305	Agachamento com elástico nos joelhos	Glúteos	Elástico	✅	OK		nada a fazer
 306	Agachamento sumô profundo	Glúteos	Halter	agachamento sumô com barra	NOME	agachamento sumô com barra	rename PENDENTE
@@ -322,7 +322,7 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 321	Extensão de quadril em quatro apoios	Glúteos	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
 322	Fire hydrant	Glúteos	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
 323	Frog pump	Glúteos	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
-324	Glúteo no cabo (coice)	Glúteos	Polia	melhorar o movimento - inclinar o corpo e aumentar a flexão e extensão do quadril	VIDEO		vídeo aprovado no lote 6 (não instalado)
+324	Glúteo no cabo (coice)	Glúteos	Polia	melhorar o movimento - inclinar o corpo e aumentar a flexão e extensão do quadril	VIDEO		vídeo INSTALADO (17/09, lote 6)
 325	Glúteo quatro apoios	Glúteos	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
 326	Passada profunda para glúteo	Glúteos	Halteres	avanço com halteres	NOME	avanço com halteres	rename PENDENTE
 327	Ponte de glúteo com barra	Glúteos	Barra	retirar	RETIRAR		podado no código (não deployado)
@@ -369,7 +369,7 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 368	L-sit no solo	Core	Peso corporal	ajustar a postura - mais no chão mantendo o corpo acima do solo em isometria	VIDEO		vídeo INSTALADO (17/09)
 369	Limpador de para-brisa suspenso na barra	Core	Peso corporal	abdominal pára-brisa suspenso na barra - melhorar movimento - eleva as pernas durante o movimento	NOME+VIDEO	abdominal pára-brisa suspenso na barra	vídeo INSTALADO (17/09) + rename PENDENTE
 370	Mountain climber lento	Core	Peso corporal	corrigir execução (pernas trocam de lugar)	VIDEO		vídeo INSTALADO (17/09)
-371	Pallof press	Core	Polia	exercício errado, segura em isometria mantendo o cabo na lateral	VIDEO		vídeo aprovado no lote 6 (não instalado)
+371	Pallof press	Core	Polia	exercício errado, segura em isometria mantendo o cabo na lateral	VIDEO		vídeo INSTALADO (17/09, lote 6)
 372	Prancha abdominal	Core	Peso corporal	✅	OK		nada a fazer
 373	Prancha alta	Core	Peso corporal	✅	OK		nada a fazer
 374	Prancha com abertura de pernas na toalha	Core	Toalha	✅	OK		nada a fazer

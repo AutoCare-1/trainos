@@ -88,4 +88,6 @@ return [
     140 => ['nome' => 'Remada alta na polia baixa', 'grupo' => 'Ombros', 'arquivo' => '140.mp4'],
     142 => ['nome' => 'Rotação externa na polia', 'grupo' => 'Ombros', 'arquivo' => '142.mp4'],
     143 => ['nome' => 'Rotação interna na polia', 'grupo' => 'Ombros', 'arquivo' => '143.mp4'],
+    301 => ['nome' => 'Abdução de quadril na polia', 'grupo' => 'Glúteos', 'arquivo' => '301.mp4'],
+    303 => ['nome' => 'Adução de quadril na polia', 'grupo' => 'Glúteos', 'arquivo' => '303.mp4'],
 ];
