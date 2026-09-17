@@ -1,12 +1,18 @@
 <?php
 
-// Vídeos da revisão do Hugo APROVADOS e conferidos por tira de frames, mas
-// ainda NÃO instalados na biblioteca. Os .mp4 estão em
-// storage/app/private/higgsfield/aprovados-revisao-hugo/<numero>.mp4
+// Vídeos da revisão do Hugo, aprovados por tira de frames e **INSTALADOS em
+// 17/09/2026**: subiram pro R2 por cima dos antigos (mesmo slug, mesma URL), e
+// por isso entraram em produção na hora, sem deploy. Os .mp4 seguem em
+// storage/app/private/higgsfield/aprovados-revisao-hugo/<numero>.mp4 como
+// registro de qual lote gerou cada um.
 //
-// Para instalar: exercicios:importar-demonstracao (um a um), depois
-// publicar-demonstracoes pro R2 e aplicar-demonstracoes. Conferir a tira de
-// frames de novo antes de sobrescrever — os originais seguem no R2.
+// Conferido depois de subir: os 57 objetos no R2 batem byte a byte com o
+// arquivo local, e o poster .jpg de cada um foi regerado.
+//
+// PRA DESFAZER: os vídeos que estavam no ar foram baixados antes em
+// public/uploads/_backup-antes-revisao-hugo/<slug>.mp4 (57 arquivos, 67 MB,
+// fora do git). Basta copiar de volta pra public/uploads/exercise-demos/,
+// apontar o video_url pro caminho local e rodar publicar-demonstracoes.
 //
 // O NÚMERO é o #N da tela de vídeos na biblioteca de 663 (pós-poda de 08/09).
 // Ele NÃO é estável: se a poda dos 147 rodar, tudo se desloca. O nome é a

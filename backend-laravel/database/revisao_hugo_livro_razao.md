@@ -8,15 +8,21 @@ quadril na máquina, #379 renegade, #395 airbike, #400 burpee box jump).
 número, nome atual, grupo, equipamento, queixa verbatim, classe, nome novo e
 status). Este .md é o resumo. Companheiros: `revisao_hugo_2026-09-15.md` (a
 leitura original), `fila_revisao_hugo.tsv` (só o que falta gerar) e
-`aprovados_revisao_hugo.php` (o que está pronto e não instalado).
+`aprovados_revisao_hugo.php` (o que já foi instalado, com a receita de desfazer).
 
-## ⚠️ Depois dos renames de 17/09, o #N do Hugo NÃO vale mais
+## ⚠️ A numeração está CONGELADA de propósito
 
-A lista numerada é alfabética dentro do grupo, então renomear reordena.
-Os 48 renames aplicados deslocaram **216 das 663 posições**. O número nesta
-tabela é o que ele usou (biblioteca de 663, em 15/09) e serve de histórico;
-**a chave confiável é o NOME**. Quando o Hugo for revisar do #401 em diante,
-mandar pra ele uma lista numerada nova (`exercicios:numerar-biblioteca`).
+O `#N` desta tabela é o que o Hugo usou (biblioteca de 663, 15/09) e continua
+valendo — é por ele que ele vai reconferir se as correções ficaram boas. Duas
+coisas reordenariam a lista e por isso estão seguradas até ele validar:
+
+1. **Os renames** (a lista é alfabética dentro do grupo: os 48 deslocam 216 das
+   663 posições);
+2. **A poda dos 147** (tudo depois do primeiro removido anda).
+
+Quando ele liberar, as duas entram juntas e aí ele recebe uma lista numerada
+nova (`php artisan exercicios:numerar-biblioteca`). Daí em diante, a chave
+confiável passa a ser o NOME.
 
 ## A distinção que faltava
 
@@ -39,12 +45,12 @@ por classe, a conta fecha exatamente com a dele (124 ✅ / 147 retirar / 129 cor
 
 | | |
 |---|--:|
-| Vídeos aprovados (NÃO instalados) | 57 |
+| Vídeos aprovados e **INSTALADOS em 17/09** | 57 |
 | Faltam gerar | **44** |
 | Encerrados (causa raiz é o nome) | 2 (#338, #344) |
 | Parcial, esperando o Hugo | 1 (#359 dead bug) |
-| Renames aplicados em 17/09 | **48** |
-| **Renames ainda pendentes** | **18** |
+| **Renames prontos, NÃO aplicados** (esperando o Hugo) | **48** |
+| Renames que dependem de decisão dele | 18 |
 | Podados no código, não deployados | 147 |
 
 ### Seis vídeos gerados sem o Hugo pedir
@@ -60,13 +66,17 @@ lista dele:
 **Regra que sai disso:** antes de gerar, ler a classe no livro-razão. `NOME` e
 `OK+NOME` não vão pro Higgsfield.
 
-## Renames aplicados (48, em 17/09)
+## Renames: prontos e DESARMADOS de propósito
 
-Rodados por `exercicios:renomear --force`, mapa em `renames_revisao_hugo.php`,
-e o comando entrou no `docker/entrypoint.sh` **antes dos seeders** (o nome é a
-chave do `updateOrCreate`: na ordem inversa o seeder criaria um exercício novo e
-deixaria o antigo para trás com o vídeo grudado nele). Conferido depois de
-aplicar: 676 exercícios, 663 com vídeo, nenhuma duplicata após reseed.
+Os 48 limpos foram aplicados e **desfeitos** em 17/09, por decisão do Filipe: o
+Hugo vai reconferir pelos MESMOS números que reportou, e rename reordena a
+lista (216 das 663 posições andariam). Ficam prontos: mapa em
+`renames_revisao_hugo.php`, comando `exercicios:renomear` com 6 testes, e a
+linha no `docker/entrypoint.sh` comentada com a receita. O commit `28d5ded`
+mostra tudo que precisa mudar junto; o `284ca3f` é o recuo.
+
+**Ordem combinada:** instalar os vídeos (feito) → Hugo reconfere pelos números
+antigos → aí sim renames + poda dos 147 + lista numerada nova pra ele.
 
 Uma grafia foi corrigida de propósito: ele escreveu "kettblell", e o nome
 aparece na tela do personal — ficou "Remada unilateral com kettlebell".
