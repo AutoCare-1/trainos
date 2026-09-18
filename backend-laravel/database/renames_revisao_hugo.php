@@ -83,6 +83,23 @@ return [
     'Assault bike' => 'Airbike',
     'Battle rope com agachamento' => 'Corda naval',
     'Burpee com salto na caixa' => 'Burpee box jump',
+
+    // --- 18/09: os que tinham ficado pro Hugo e o Filipe mandou aplicar ------
+    'Levantamento terra com trap bar' => 'Levantamento terra com barra hexagonal',
+    'Remada alta' => 'Remada alta com barra',
+    'Tríceps coice bilateral' => 'Crucifixo inverso com halteres',
+    'Agachamento sumô com halter' => 'Agachamento sumô com barra',
+    'Elevação pélvica com perna estendida' => 'Elevação pélvica solo unilateral',
+    'Extensão de quadril na polia' => 'Glúteo coice na polia',
+    'Passada profunda para glúteo' => 'Avanço com halteres',
+    'Subida no step alta para glúteo' => 'Subida no step com halter',
+    'Prancha com elevação de perna' => 'Mountain climber',
+    // Substituições: o nome novo é de um exercício que o Hugo mandou retirar.
+    // O renomear apaga esse antigo (biblioteca_substituida_hugo.php) e passa o
+    // nome pra este, que é o que tem o vídeo certo.
+    'Rosca 21 com halteres' => 'Rosca direta com halteres',
+    'Leg press 45° unilateral' => 'Leg press horizontal',
+    'Levantamento terra romeno unilateral' => 'Stiff unilateral',
 ];
 
 // ---------------------------------------------------------------------------

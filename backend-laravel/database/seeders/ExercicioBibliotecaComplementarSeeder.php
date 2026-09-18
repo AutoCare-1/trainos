@@ -380,7 +380,7 @@ class ExercicioBibliotecaComplementarSeeder extends Seeder
             ['L-sit no solo', 'Core', 'Peso corporal', 'Sentado com as mãos no chão, eleve o quadril e as pernas estendidas à frente.'],
             ['L-sit nas paralelas', 'Core', 'Peso corporal', 'Nas paralelas com os braços travados, sustente as pernas estendidas na horizontal.'],
             ['Dragon flag', 'Core', 'Peso corporal', 'Deitado segurando o banco atrás da cabeça, eleve o corpo reto e desça sem dobrar o quadril.'],
-            ['Limpador de para-brisa suspenso na barra', 'Core', 'Peso corporal', 'Pendurado com as pernas elevadas, leve os pés de um lado ao outro.'],
+            ['Abdominal pára-brisa suspenso na barra', 'Core', 'Peso corporal', 'Pendurado com as pernas elevadas, leve os pés de um lado ao outro.'],
             ['Prancha com deslizamento de braços na toalha', 'Core', 'Toalha', 'Em prancha com as mãos sobre toalhas em piso liso, deslize um braço à frente por vez sem girar o quadril.'],
 
             // Funcional

@@ -1,6 +1,6 @@
 numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
-1	Chest press sentado	Peito	Máquina	mudar nome para crucifixo	NOME	crucifixo	rename PRONTO no mapa (desarmado até o Hugo validar)
-2	Chest press unilateral	Peito	Máquina	mudar nome para crucifixo unilateral/ movimento está errado.	NOME+VIDEO	crucifixo unilateral	vídeo na fila + rename PRONTO no mapa (desarmado até o Hugo validar)
+1	Crucifixo	Peito	Máquina	mudar nome para crucifixo	NOME	crucifixo	rename APLICADO (18/09)
+2	Crucifixo unilateral	Peito	Máquina	mudar nome para crucifixo unilateral/ movimento está errado.	NOME+VIDEO	crucifixo unilateral	vídeo na fila + rename APLICADO (18/09)
 3	Crossover	Peito	Polia	exercício está errado	VIDEO		vídeo INSTALADO (17/09, lote 6)
 4	Crossover de baixo para cima	Peito	Polia	retirar	RETIRAR		podado no código (não deployado)
 5	Crossover na polia média	Peito	Polia	retirar	RETIRAR		podado no código (não deployado)
@@ -30,7 +30,7 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 29	Pullover	Peito	Halteres	✅	OK		nada a fazer
 30	Pullover com halter	Peito	Halter	retirar	RETIRAR		podado no código (não deployado)
 31	Pullover na polia alta	Peito	Polia	melhor movimento	VIDEO		vídeo INSTALADO (17/09, lote 6)
-32	Supino com halteres	Peito	Halteres	mudar nome: supino reto com halter	NOME	supino reto com halter	rename PRONTO no mapa (desarmado até o Hugo validar)
+32	Supino reto com halter	Peito	Halteres	mudar nome: supino reto com halter	NOME	supino reto com halter	rename APLICADO (18/09)
 33	Supino com pegada fechada	Peito	Barra	retirar	RETIRAR		podado no código (não deployado)
 34	Supino com pegada neutra	Peito	Halteres	retirar	RETIRAR		podado no código (não deployado)
 35	Supino declinado	Peito	Barra	movimento errado	VIDEO		vídeo INSTALADO (17/09, lote 7)
@@ -63,12 +63,12 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 62	Face pull na polia alta	Costas	Polia	retirar	RETIRAR		podado no código (não deployado)
 63	Hiperextensão lombar	Costas	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
 64	Levantamento terra com halteres	Costas	Halteres	melhor movimento	VIDEO		vídeo INSTALADO (17/09)
-65	Levantamento terra com trap bar	Costas	Barra	levantamento terra c/barra hexagonal	NOME	levantamento terra c	rename PENDENTE
+65	Levantamento terra com barra hexagonal	Costas	Barra	levantamento terra c/barra hexagonal	NOME	levantamento terra c	rename APLICADO (18/09)
 66	Levantamento terra romeno com halteres	Costas	Halteres	retirar	RETIRAR		podado no código (não deployado)
 67	Levantamento terra sumô	Costas	Barra	retirar	RETIRAR		podado no código (não deployado)
 68	Pull-up negativa	Costas	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
 69	Pulldown com braços estendidos	Costas	Polia	retirar	RETIRAR		podado no código (não deployado)
-70	Puxada articulada na máquina	Costas	Máquina	puxada frente	NOME	puxada frente	rename PRONTO no mapa (desarmado até o Hugo validar)
+70	Puxada frente	Costas	Máquina	puxada frente	NOME	puxada frente	rename APLICADO (18/09)
 71	Puxada frontal	Costas	Polia	retirar	RETIRAR		podado no código (não deployado)
 72	Puxada frontal ajoelhado na polia	Costas	Polia	✅	OK		nada a fazer
 73	Puxada frontal com pegada em V	Costas	Polia	retirar	RETIRAR		podado no código (não deployado)
@@ -78,21 +78,21 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 77	Puxada frontal unilateral	Costas	Polia	retirar	RETIRAR		podado no código (não deployado)
 78	Puxada na máquina sentado	Costas	Máquina	retirar	RETIRAR		podado no código (não deployado)
 79	Puxada por trás	Costas	Polia	retirar	RETIRAR		podado no código (não deployado)
-80	Puxador triângulo	Costas	Polia	puxada triângulo/ pegada errada	NOME+VIDEO	puxada triângulo	vídeo INSTALADO (17/09, lote 6) + rename PRONTO no mapa (desarmado até o Hugo validar)
+80	Puxada triângulo	Costas	Polia	puxada triângulo/ pegada errada	NOME+VIDEO	puxada triângulo	vídeo INSTALADO (17/09, lote 6) + rename APLICADO (18/09)
 81	Remada alta na polia	Costas	Polia	✅	OK		nada a fazer
 82	Remada baixa	Costas	Polia	movimento errado	VIDEO		vídeo INSTALADO (17/09, lote 6)
-83	Remada baixa com corda	Costas	Polia	remada com argola/ melhor movimento	NOME+VIDEO	remada com argola	vídeo na fila + rename PRONTO no mapa (desarmado até o Hugo validar)
+83	Remada com argola	Costas	Polia	remada com argola/ melhor movimento	NOME+VIDEO	remada com argola	vídeo na fila + rename APLICADO (18/09)
 84	Remada baixa pegada aberta	Costas	Polia	retirar	RETIRAR		podado no código (não deployado)
 85	Remada baixa unilateral	Costas	Polia	✅	OK		nada a fazer
 86	Remada cavalinho	Costas	Barra T	retirar	RETIRAR		podado no código (não deployado)
 87	Remada cavalinho com pegada neutra	Costas	Barra T	retirar	RETIRAR		podado no código (não deployado)
-88	Remada com kettlebell	Costas	Kettlebell	remada unilateral com kettblell	NOME	remada unilateral com kettblell	rename PRONTO no mapa (desarmado até o Hugo validar)
-89	Remada curvada	Costas	Barra	✅ remada curvada barra	OK+NOME	remada curvada barra	rename PRONTO no mapa (desarmado até o Hugo validar)
+88	Remada unilateral com kettlebell	Costas	Kettlebell	remada unilateral com kettblell	NOME	remada unilateral com kettblell	rename APLICADO (18/09)
+89	Remada curvada barra	Costas	Barra	✅ remada curvada barra	OK+NOME	remada curvada barra	rename APLICADO (18/09)
 90	Remada curvada com halteres	Costas	Halteres	melhorar movimento	VIDEO		vídeo INSTALADO (refeito na auditoria de 18/09)
 91	Remada curvada no smith	Costas	Smith	retirar	RETIRAR		podado no código (não deployado)
 92	Remada curvada pegada supinada	Costas	Barra	pegada está errada	VIDEO		vídeo INSTALADO (17/09, lote 7)
 93	Remada invertida no TRX	Costas	TRX	✅	OK		nada a fazer
-94	Remada máquina	Costas	Máquina	remada aberta máquina	NOME	remada aberta máquina	rename PRONTO no mapa (desarmado até o Hugo validar) + vídeo regerado sem o Hugo pedir (aprovado e instalado em 17/09)
+94	Remada aberta máquina	Costas	Máquina	remada aberta máquina	NOME	remada aberta máquina	rename APLICADO (18/09) + vídeo regerado sem o Hugo pedir (aprovado e instalado em 17/09)
 95	Remada máquina pegada neutra	Costas	Máquina	retirar	RETIRAR		podado no código (não deployado)
 96	Remada máquina unilateral	Costas	Máquina	retirar	RETIRAR		podado no código (não deployado)
 97	Remada nas argolas com pés elevados	Costas	Argolas	retirar	RETIRAR		podado no código (não deployado)
@@ -135,15 +135,15 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 134	Face pull ajoelhado	Ombros	Polia	✅	OK		nada a fazer
 135	Flexão de braço em pique (pike push-up)	Ombros	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
 136	Parada de mão na parede	Ombros	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
-137	Press militar estrito	Ombros	Barra	desenvolvimento lateral com barra em pé	NOME	desenvolvimento lateral com barra em pé	rename PRONTO no mapa (desarmado até o Hugo validar)
+137	Desenvolvimento lateral com barra em pé	Ombros	Barra	desenvolvimento lateral com barra em pé	NOME	desenvolvimento lateral com barra em pé	rename APLICADO (18/09)
 138	Push press	Ombros	Barra	✅ movimento do Crossfit	OK		nada a fazer
-139	Remada alta	Ombros	Barra	remada alta com barra	NOME	remada alta com barra	rename PENDENTE
+139	Remada alta com barra	Ombros	Barra	remada alta com barra	NOME	remada alta com barra	rename APLICADO (18/09)
 140	Remada alta na polia baixa	Ombros	Polia	tirar o cabo da polia de cima e melhorar o movimento	VIDEO		vídeo INSTALADO (17/09, lote 6)
 141	Rotação externa com elástico	Ombros	Elástico	movimento errado	VIDEO		vídeo INSTALADO (18/09, lote 8)
 142	Rotação externa na polia	Ombros	Polia	movimento errado	VIDEO		vídeo INSTALADO (17/09, lote 6)
 143	Rotação interna na polia	Ombros	Polia	movimento errado	VIDEO		vídeo INSTALADO (17/09, lote 6)
-144	Rosca 21	Bíceps	Barra	rosca direta com barra reta	NOME	rosca direta com barra reta	rename PRONTO no mapa (desarmado até o Hugo validar)
-145	Rosca 21 com halteres	Bíceps	Halteres	rosca direta com halteres	NOME	rosca direta com halteres	rename PENDENTE
+144	Rosca direta com barra reta	Bíceps	Barra	rosca direta com barra reta	NOME	rosca direta com barra reta	rename APLICADO (18/09)
+145	Rosca direta com halteres	Bíceps	Halteres	rosca direta com halteres	NOME	rosca direta com halteres	rename APLICADO (18/09)
 146	Rosca alternada	Bíceps	Halteres	✅	OK		nada a fazer
 147	Rosca alternada com rotação	Bíceps	Halteres	retirar	RETIRAR		podado no código (não deployado)
 148	Rosca bayesiana com o braço atrás do corpo	Bíceps	Polia	retirar	RETIRAR		podado no código (não deployado)
@@ -160,33 +160,33 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 159	Rosca inclinada no banco	Bíceps	Halteres	✅	OK		nada a fazer
 160	Rosca inversa	Bíceps	Barra	mudar a pegada	VIDEO		vídeo INSTALADO (17/09, lote 7)
 161	Rosca invertida na polia	Bíceps	Polia	vídeo errado (ajustar a barra, pegada e posição da pessoa)	VIDEO		vídeo INSTALADO (17/09)
-162	Rosca martelo	Bíceps	Halteres	rosca martelo com halteres - mudar a pegada para neutra	NOME+VIDEO	rosca martelo com halteres	vídeo INSTALADO (17/09) + rename PRONTO no mapa (desarmado até o Hugo validar)
+162	Rosca martelo com halteres	Bíceps	Halteres	rosca martelo com halteres - mudar a pegada para neutra	NOME+VIDEO	rosca martelo com halteres	vídeo INSTALADO (17/09) + rename APLICADO (18/09)
 163	Rosca martelo alternada	Bíceps	Halteres	mudar a pegada para neutra	VIDEO		vídeo INSTALADO (17/09)
 164	Rosca martelo na corda	Bíceps	Polia	retirar	RETIRAR		podado no código (não deployado)
 165	Rosca nas argolas	Bíceps	Argolas	retirar	RETIRAR		podado no código (não deployado)
-166	Rosca Scott	Bíceps	Barra W	nome: rosca scott com barra reta (ajustar a barra)	NOME+VIDEO	rosca scott com barra reta	vídeo INSTALADO (17/09, lote 7) + rename PRONTO no mapa (desarmado até o Hugo validar)
+166	Rosca Scott com barra reta	Bíceps	Barra W	nome: rosca scott com barra reta (ajustar a barra)	NOME+VIDEO	rosca scott com barra reta	vídeo INSTALADO (17/09, lote 7) + rename APLICADO (18/09)
 167	Rosca Scott com barra W	Bíceps	Barra W	ajustar a barra	VIDEO		vídeo INSTALADO (17/09, lote 7)
 168	Rosca Scott com halter unilateral	Bíceps	Halter	ajustar o banco	VIDEO		vídeo INSTALADO (17/09)
 169	Rosca Scott na máquina	Bíceps	Máquina	✅	OK		nada a fazer
 170	Rosca spider	Bíceps	Barra W	✅	OK		nada a fazer
 171	Extensão de tríceps com elástico	Tríceps	Elástico	retirar	RETIRAR		podado no código (não deployado)
 172	Extensão de tríceps deitado com halteres neutro	Tríceps	Halteres	retirar	RETIRAR		podado no código (não deployado)
-173	Extensão de tríceps na máquina	Tríceps	Máquina	máquina errada e trocar o nome por tríceps testa na máquina	NOME+VIDEO	máquina errada e trocar o nome por tríceps testa na máquina	vídeo INSTALADO (17/09) + rename PRONTO no mapa (desarmado até o Hugo validar)
+173	Tríceps testa na máquina	Tríceps	Máquina	máquina errada e trocar o nome por tríceps testa na máquina	NOME+VIDEO	máquina errada e trocar o nome por tríceps testa na máquina	vídeo INSTALADO (17/09) + rename APLICADO (18/09)
 174	Extensão de tríceps nas argolas	Tríceps	Argolas	retirar	RETIRAR		podado no código (não deployado)
-175	Extensão de tríceps unilateral	Tríceps	Polia	tríceps unilateral na polia alta	NOME	tríceps unilateral na polia alta	rename PRONTO no mapa (desarmado até o Hugo validar)
+175	Tríceps unilateral na polia alta	Tríceps	Polia	tríceps unilateral na polia alta	NOME	tríceps unilateral na polia alta	rename APLICADO (18/09)
 176	Flexão diamante para tríceps	Tríceps	Peso corporal	melhorar o movimento	VIDEO		vídeo INSTALADO (17/09)
-177	Mergulho entre bancos	Tríceps	Peso corporal	tríceps banco livre com pés suspensos	NOME+VIDEO	tríceps banco livre com pés suspensos	vídeo INSTALADO (17/09) + rename PRONTO no mapa (desarmado até o Hugo validar)
-178	Mergulho na máquina assistida	Tríceps	Máquina	paralela no gráviton	NOME	paralela no gráviton	rename PRONTO no mapa (desarmado até o Hugo validar)
-179	Mergulho nas paralelas	Tríceps	Peso corporal	paralela livre	NOME	paralela livre	rename PRONTO no mapa (desarmado até o Hugo validar)
-180	Mergulho no banco	Tríceps	Peso corporal	tríceps banco livre (melhorar o movimento, manter os pés no chão)	NOME+VIDEO	tríceps banco livre	vídeo INSTALADO (17/09) + rename PRONTO no mapa (desarmado até o Hugo validar)
+177	Tríceps banco livre com pés suspensos	Tríceps	Peso corporal	tríceps banco livre com pés suspensos	NOME+VIDEO	tríceps banco livre com pés suspensos	vídeo INSTALADO (17/09) + rename APLICADO (18/09)
+178	Paralela no gráviton	Tríceps	Máquina	paralela no gráviton	NOME	paralela no gráviton	rename APLICADO (18/09)
+179	Paralela livre	Tríceps	Peso corporal	paralela livre	NOME	paralela livre	rename APLICADO (18/09)
+180	Tríceps banco livre	Tríceps	Peso corporal	tríceps banco livre (melhorar o movimento, manter os pés no chão)	NOME+VIDEO	tríceps banco livre	vídeo INSTALADO (17/09) + rename APLICADO (18/09)
 181	Supino fechado com halteres	Tríceps	Halteres	supino inclinado com halteres	NOME	supino inclinado com halteres	rename PENDENTE
 182	Supino fechado no smith	Tríceps	Smith	supino inclinado no smith	NOME	supino inclinado no smith	rename PENDENTE
-183	Tríceps coice bilateral	Tríceps	Halteres	crucifixo inverso com halter	NOME	crucifixo inverso com halter	rename PENDENTE
+183	Crucifixo inverso com halteres	Tríceps	Halteres	crucifixo inverso com halter	NOME	crucifixo inverso com halter	rename APLICADO (18/09)
 184	Tríceps coice com halter	Tríceps	Halter	melhorar o movimento	VIDEO		vídeo INSTALADO (17/09)
 185	Tríceps coice na polia	Tríceps	Polia	exercício errado	VIDEO		vídeo INSTALADO (17/09)
 186	Tríceps corda	Tríceps	Polia	melhorar o movimento	VIDEO		vídeo INSTALADO (17/09)
 187	Tríceps corda acima da cabeça	Tríceps	Polia	retirar	RETIRAR		podado no código (não deployado)
-188	Tríceps francês	Tríceps	Halter	✅ nome: tríceps francês com anilha	OK+NOME	tríceps francês com anilha	rename PRONTO no mapa (desarmado até o Hugo validar)
+188	Tríceps francês com anilha	Tríceps	Halter	✅ nome: tríceps francês com anilha	OK+NOME	tríceps francês com anilha	rename APLICADO (18/09)
 189	Tríceps francês na polia	Tríceps	Polia	mudar a barra e deixar ele em pé	VIDEO		vídeo INSTALADO (17/09)
 190	Tríceps francês sentado com halter	Tríceps	Halter	ajustar o halter	VIDEO		vídeo INSTALADO (17/09)
 191	Tríceps francês unilateral	Tríceps	Halter	✅	OK		nada a fazer
@@ -218,16 +218,16 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 217	Encolhimento unilateral com halter	Trapézio	Halter	retirar	RETIRAR		podado no código (não deployado)
 218	Puxada alta no cavalete	Trapézio	Barra	retirar	RETIRAR		podado no código (não deployado)
 219	Remada alta explosiva	Trapézio	Barra	retirar	RETIRAR		podado no código (não deployado)
-220	Afundo	Pernas	Halteres	mudar o nome: avanço alternado	NOME	avanço alternado	rename PRONTO no mapa (desarmado até o Hugo validar)
-221	Afundo com barra	Pernas	Barra	mudar o nome: avanço alternado com barra	NOME	avanço alternado com barra	rename PRONTO no mapa (desarmado até o Hugo validar)
-222	Afundo com halteres	Pernas	Halteres	mudar o nome: recuo com halteres	NOME	recuo com halteres	rename PRONTO no mapa (desarmado até o Hugo validar)
+220	Avanço alternado	Pernas	Halteres	mudar o nome: avanço alternado	NOME	avanço alternado	rename APLICADO (18/09)
+221	Avanço alternado com barra	Pernas	Barra	mudar o nome: avanço alternado com barra	NOME	avanço alternado com barra	rename APLICADO (18/09)
+222	Recuo com halteres	Pernas	Halteres	mudar o nome: recuo com halteres	NOME	recuo com halteres	rename APLICADO (18/09)
 223	Afundo lateral	Pernas	Halteres	retirar	RETIRAR		podado no código (não deployado)
 224	Afundo reverso	Pernas	Halteres	retirar	RETIRAR		podado no código (não deployado)
-225	Afundo reverso com barra	Pernas	Barra	mudar o nome: recuo com barra	NOME	recuo com barra	rename PRONTO no mapa (desarmado até o Hugo validar)
+225	Recuo com barra	Pernas	Barra	mudar o nome: recuo com barra	NOME	recuo com barra	rename APLICADO (18/09)
 226	Agachamento box squat	Pernas	Barra	retirar	RETIRAR		podado no código (não deployado)
 227	Agachamento búlgaro	Pernas	Halteres	✅	OK		nada a fazer
 228	Agachamento búlgaro com halteres	Pernas	Halteres	✅	OK		nada a fazer
-229	Agachamento com barra alta	Pernas	Barra	mudar o nome: agachamento com barra	NOME	agachamento com barra	rename PRONTO no mapa (desarmado até o Hugo validar)
+229	Agachamento com barra	Pernas	Barra	mudar o nome: agachamento com barra	NOME	agachamento com barra	rename APLICADO (18/09)
 230	Agachamento com barra baixa	Pernas	Barra	retirar	RETIRAR		podado no código (não deployado)
 231	Agachamento com deslocamento lateral na toalha	Pernas	Toalha	✅	OK		nada a fazer
 232	Agachamento com elástico	Pernas	Elástico	✅	OK		nada a fazer
@@ -245,18 +245,18 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 244	Agachamento no TRX	Pernas	TRX	✅	OK		nada a fazer
 245	Agachamento pausado	Pernas	Barra	retirar	RETIRAR		podado no código (não deployado)
 246	Agachamento sissy	Pernas	Peso corporal	colocar a máquina	VIDEO		vídeo INSTALADO (17/09)
-247	Agachamento sumô com halter	Pernas	Halter	nome: agachamento sumô com barra	NOME	agachamento sumô com barra	rename PENDENTE
+247	Agachamento sumô com barra	Pernas	Halter	nome: agachamento sumô com barra	NOME	agachamento sumô com barra	rename APLICADO (18/09)
 248	Agachamento sumô com kettlebell	Pernas	Kettlebell	✅	OK		nada a fazer
 249	Agachamento unilateral (pistol)	Pernas	Peso corporal	✅ movimento do Crossfit	OK		nada a fazer
 250	Avanço em diagonal	Pernas	Halteres	retirar	RETIRAR		podado no código (não deployado)
-251	Avanço estático	Pernas	Halteres	Nome: afundo com halter	NOME	afundo com halter	rename PRONTO no mapa (desarmado até o Hugo validar)
+251	Afundo com halter	Pernas	Halteres	Nome: afundo com halter	NOME	afundo com halter	rename APLICADO (18/09)
 252	Belt squat na máquina	Pernas	Máquina	Retirar	RETIRAR		podado no código (não deployado)
 253	Cadeira extensora	Pernas	Máquina	✅	OK		nada a fazer
 254	Cadeira extensora unilateral	Pernas	Máquina	Ajustar a máquina	VIDEO		vídeo INSTALADO (17/09)
 255	Extensão de joelho com caneleira	Pernas	Caneleira	Ajustar o banco	VIDEO		vídeo INSTALADO (18/09, lote 8)
 256	Hack machine	Pernas	Máquina	✅	OK		nada a fazer
 257	Leg press 45°	Pernas	Máquina	retirar	RETIRAR		podado no código (não deployado)
-258	Leg press 45° unilateral	Pernas	Máquina	leg press horizontal	NOME	leg press horizontal	rename PENDENTE
+258	Leg press horizontal	Pernas	Máquina	leg press horizontal	NOME	leg press horizontal	rename APLICADO (18/09)
 259	Leg press horizontal	Pernas	Máquina	retirar	RETIRAR		podado no código (não deployado)
 260	Leg press pés afastados	Pernas	Máquina	retirar	RETIRAR		podado no código (não deployado)
 261	Leg press pés altos	Pernas	Máquina	retirar	RETIRAR		podado no código (não deployado)
@@ -265,17 +265,17 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 264	Leg press unilateral	Pernas	Máquina	retirar	RETIRAR		podado no código (não deployado)
 265	Leg press vertical	Pernas	Máquina	retirar	RETIRAR		podado no código (não deployado)
 266	Passada (walking lunge)	Pernas	Halteres	✅	OK		nada a fazer
-267	Passada com barra	Pernas	Barra	avanço com barra	NOME	avanço com barra	rename PRONTO no mapa (desarmado até o Hugo validar)
+267	Avanço com barra	Pernas	Barra	avanço com barra	NOME	avanço com barra	rename APLICADO (18/09)
 268	Passada com halteres	Pernas	Halteres	retirar	RETIRAR		podado no código (não deployado)
 269	Subida no step (step-up)	Pernas	Halteres	✅	OK		nada a fazer
-270	Subida no step lateral	Pernas	Halteres	✅ (subida no banco lateral)	OK+NOME	subida no banco lateral	rename PRONTO no mapa (desarmado até o Hugo validar)
-271	Terra sumô com halteres	Pernas	Halteres	agachamento sumô com halteres - melhorar a pegada	NOME+VIDEO	agachamento sumô com halteres	vídeo na fila + rename PRONTO no mapa (desarmado até o Hugo validar)
+270	Subida no banco lateral	Pernas	Halteres	✅ (subida no banco lateral)	OK+NOME	subida no banco lateral	rename APLICADO (18/09)
+271	Agachamento sumô com halteres	Pernas	Halteres	agachamento sumô com halteres - melhorar a pegada	NOME+VIDEO	agachamento sumô com halteres	vídeo na fila + rename APLICADO (18/09)
 272	Balanço com kettlebell (swing)	Posterior	Kettlebell	✅	OK		nada a fazer
 273	Bom dia sentado	Posterior	Barra	retirar	RETIRAR		podado no código (não deployado)
 274	Cadeira flexora	Posterior	Máquina	cadeira Extensora (não é posterior)	NOME	cadeira Extensora	rename PENDENTE
 275	Cadeira flexora unilateral	Posterior	Máquina	retirar	RETIRAR		podado no código (não deployado)
-276	Elevação pélvica com perna estendida	Posterior	Peso corporal	elevação pélvica solo unilateral	NOME	elevação pélvica solo unilateral	rename PENDENTE + vídeo regerado sem o Hugo pedir (aprovado e instalado em 17/09)
-277	Extensão de quadril na polia	Posterior	Polia	glúteo coice na polia - ajustar o movimento	NOME+VIDEO	glúteo coice na polia	vídeo INSTALADO (17/09, lote 6) + rename PENDENTE
+276	Elevação pélvica solo unilateral	Posterior	Peso corporal	elevação pélvica solo unilateral	NOME	elevação pélvica solo unilateral	rename APLICADO (18/09)
+277	Glúteo coice na polia	Posterior	Polia	glúteo coice na polia - ajustar o movimento	NOME+VIDEO	glúteo coice na polia	rename APLICADO (18/09)
 278	Flexão de joelho com caneleira	Posterior	Caneleira	retirar	RETIRAR		podado no código (não deployado)
 279	Flexão nórdica	Posterior	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
 280	Flexora em pé na máquina	Posterior	Máquina	ajeitar a máquina	VIDEO		vídeo INSTALADO (17/09)
@@ -283,9 +283,9 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 282	Good morning	Posterior	Barra	✅	OK		nada a fazer
 283	Good morning no smith	Posterior	Smith	✅	OK		nada a fazer
 284	Hiperextensão com foco em posterior	Posterior	Peso corporal	✅	OK		nada a fazer
-285	Levantamento terra	Posterior	Barra	✅ (levantamento terra com barra)	OK+NOME	levantamento terra com barra	rename PRONTO no mapa (desarmado até o Hugo validar)
+285	Levantamento terra com barra	Posterior	Barra	✅ (levantamento terra com barra)	OK+NOME	levantamento terra com barra	rename APLICADO (18/09)
 286	Levantamento terra romeno	Posterior	Barra	✅	OK		nada a fazer
-287	Levantamento terra romeno unilateral	Posterior	Halter	✅ Stiff unilateral ou T ou avião	OK+NOME	Stiff unilateral ou T ou avião	rename PENDENTE
+287	Stiff unilateral	Posterior	Halter	✅ Stiff unilateral ou T ou avião	OK+NOME	Stiff unilateral ou T ou avião	rename APLICADO (18/09)
 288	Mesa flexora	Posterior	Máquina	ajusta a maquina	VIDEO		vídeo INSTALADO (17/09)
 289	Mesa flexora com pausa	Posterior	Máquina	retirar	RETIRAR		podado no código (não deployado)
 290	Mesa flexora unilateral	Posterior	Máquina	retirar	RETIRAR		podado no código (não deployado)
@@ -298,7 +298,7 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 297	Terra romeno com kettlebell	Posterior	Kettlebell	✅	OK		nada a fazer
 298	Abdução com elástico deitado (clamshell)	Glúteos	Elástico	✅	OK		nada a fazer
 299	Abdução de quadril deitado de lado	Glúteos	Peso corporal	✅	OK		nada a fazer
-300	Abdução de quadril na máquina	Glúteos	Máquina	✅ (abdução de quadril na máquina abdutora)	OK+NOME	abdução de quadril na máquina abdutora	rename PRONTO no mapa (desarmado até o Hugo validar)
+300	Abdução de quadril na máquina abdutora	Glúteos	Máquina	✅ (abdução de quadril na máquina abdutora)	OK+NOME	abdução de quadril na máquina abdutora	rename APLICADO (18/09)
 301	Abdução de quadril na polia	Glúteos	Polia	movimento errado	VIDEO		vídeo INSTALADO (17/09, lote 6, 5ª rolagem no 2.5 720p)
 302	Abdução em pé com elástico	Glúteos	Elástico	melhorar o movimento	VIDEO		vídeo INSTALADO (18/09, lote 8)
 303	Adução de quadril na polia	Glúteos	Polia	melhorar o movimento	VIDEO		vídeo INSTALADO (17/09, lote 6, 5ª rolagem no 2.5 720p)
@@ -307,13 +307,13 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 306	Agachamento sumô profundo	Glúteos	Halter	agachamento sumô com barra	NOME	agachamento sumô com barra	rename PENDENTE
 307	Cadeira abdutora	Glúteos	Máquina	tirar	RETIRAR		podado no código (não deployado)
 308	Cadeira adutora	Glúteos	Máquina	✅	OK		nada a fazer
-309	Caminhada lateral com elástico	Glúteos	Elástico	deslocamento lateral com miniband - melhorar movimento	NOME+VIDEO	deslocamento lateral com miniband	vídeo INSTALADO (18/09, lote 8) + rename PRONTO no mapa (desarmado até o Hugo validar)
+309	Deslocamento lateral com miniband	Glúteos	Elástico	deslocamento lateral com miniband - melhorar movimento	NOME+VIDEO	deslocamento lateral com miniband	vídeo INSTALADO (18/09, lote 8) + rename APLICADO (18/09)
 310	Chute de glúteo na polia (kickback)	Glúteos	Polia	tirar	RETIRAR		podado no código (não deployado)
-311	Coice de glúteo com caneleira	Glúteos	Caneleira	glúteo coice com caneleira - colocar caneleira, colchonete e deixar os cotovelos flexionados	NOME+VIDEO	glúteo coice com caneleira	vídeo INSTALADO (18/09, lote 8) + rename PRONTO no mapa (desarmado até o Hugo validar)
+311	Glúteo coice com caneleira	Glúteos	Caneleira	glúteo coice com caneleira - colocar caneleira, colchonete e deixar os cotovelos flexionados	NOME+VIDEO	glúteo coice com caneleira	vídeo INSTALADO (18/09, lote 8) + rename APLICADO (18/09)
 312	Coice de glúteo com elástico	Glúteos	Elástico	tirar	RETIRAR		podado no código (não deployado)
 313	Coice de glúteo na máquina	Glúteos	Máquina	tirar	RETIRAR		podado no código (não deployado)
-314	Elevação de quadril (hip thrust)	Glúteos	Barra	✅ elevação pélvica com barra	OK+NOME	elevação pélvica com barra	rename PRONTO no mapa (desarmado até o Hugo validar)
-315	Elevação de quadril com elástico	Glúteos	Elástico	✅ elevação pélvica com elástico	OK+NOME	elevação pélvica com elástico	rename PRONTO no mapa (desarmado até o Hugo validar)
+314	Elevação pélvica com barra	Glúteos	Barra	✅ elevação pélvica com barra	OK+NOME	elevação pélvica com barra	rename APLICADO (18/09)
+315	Elevação pélvica com elástico	Glúteos	Elástico	✅ elevação pélvica com elástico	OK+NOME	elevação pélvica com elástico	rename APLICADO (18/09)
 316	Elevação de quadril com halter	Glúteos	Halter	retirar	RETIRAR		podado no código (não deployado)
 317	Elevação de quadril com pés no banco	Glúteos	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
 318	Elevação de quadril na máquina	Glúteos	Máquina	colocar a máquina certa	VIDEO		vídeo INSTALADO (17/09)
@@ -324,11 +324,11 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 323	Frog pump	Glúteos	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
 324	Glúteo no cabo (coice)	Glúteos	Polia	melhorar o movimento - inclinar o corpo e aumentar a flexão e extensão do quadril	VIDEO		vídeo INSTALADO (17/09, lote 6)
 325	Glúteo quatro apoios	Glúteos	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
-326	Passada profunda para glúteo	Glúteos	Halteres	avanço com halteres	NOME	avanço com halteres	rename PENDENTE
+326	Avanço com halteres	Glúteos	Halteres	avanço com halteres	NOME	avanço com halteres	rename APLICADO (18/09)
 327	Ponte de glúteo com barra	Glúteos	Barra	retirar	RETIRAR		podado no código (não deployado)
 328	Ponte de glúteo com elevação alternada	Glúteos	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
-329	Ponte de glúteo no solo	Glúteos	Peso corporal	elevação pélvica solo	NOME	elevação pélvica solo	rename PRONTO no mapa (desarmado até o Hugo validar) + vídeo regerado sem o Hugo pedir (aprovado e instalado em 17/09)
-330	Subida no step alta para glúteo	Glúteos	Halteres	subida no step com halter (colocar o pé completo no step)	NOME+VIDEO	subida no step com halter	vídeo INSTALADO (18/09, lote 8) + rename PENDENTE
+329	Elevação pélvica solo	Glúteos	Peso corporal	elevação pélvica solo	NOME	elevação pélvica solo	rename APLICADO (18/09) + vídeo regerado sem o Hugo pedir (aprovado e instalado em 17/09)
+330	Subida no step com halter	Glúteos	Halteres	subida no step com halter (colocar o pé completo no step)	NOME+VIDEO	subida no step com halter	rename APLICADO (18/09)
 331	Panturrilha burro (donkey calf)	Panturrilha	Máquina	retirar	RETIRAR		podado no código (não deployado)
 332	Panturrilha com pés para dentro	Panturrilha	Máquina	retirar	RETIRAR		podado no código (não deployado)
 333	Panturrilha com pés para fora	Panturrilha	Máquina	retirar	RETIRAR		podado no código (não deployado)
@@ -348,9 +348,9 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 347	Abdominal canivete	Core	Peso corporal	✅	OK		nada a fazer
 348	Abdominal declinado	Core	Peso corporal	colocar o banco declinado de abdômen	VIDEO		vídeo INSTALADO (17/09)
 349	Abdominal infra (elevação de pernas)	Core	Peso corporal	✅	OK		nada a fazer
-350	Abdominal na máquina com carga	Core	Máquina	ajustar o erro da máquina - abdominal supra máquina	NOME+VIDEO	ajustar o erro da máquina	vídeo INSTALADO (17/09) + rename PRONTO no mapa (desarmado até o Hugo validar)
+350	Abdominal supra máquina	Core	Máquina	ajustar o erro da máquina - abdominal supra máquina	NOME+VIDEO	ajustar o erro da máquina	vídeo INSTALADO (17/09) + rename APLICADO (18/09)
 351	Abdominal na polia alta (ajoelhado)	Core	Polia	tirar	RETIRAR		podado no código (não deployado)
-352	Abdominal oblíquo	Core	Peso corporal	✅ abdominal oblíquo unilateral	OK+NOME	abdominal oblíquo unilateral	rename PRONTO no mapa (desarmado até o Hugo validar)
+352	Abdominal oblíquo unilateral	Core	Peso corporal	✅ abdominal oblíquo unilateral	OK+NOME	abdominal oblíquo unilateral	rename APLICADO (18/09)
 353	Abdominal oblíquo na polia	Core	Polia	✅	OK		nada a fazer
 354	Abdominal remador	Core	Peso corporal	melhorar o movimento - descer mais	VIDEO		vídeo INSTALADO (17/09)
 355	Abdominal supra (crunch)	Core	Peso corporal	✅	OK		nada a fazer
@@ -359,15 +359,15 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 358	Bird dog	Core	Peso corporal	✅	OK		nada a fazer
 359	Dead bug	Core	Peso corporal	melhorar o movimento	VIDEO		vídeo INSTALADO (17/09, lote 7)
 360	Dragon flag	Core	Peso corporal	colocar encosto no banco para segurar	VIDEO		vídeo INSTALADO (17/09)
-361	Elevação de joelhos suspenso	Core	Peso corporal	✅ abdominal infra suspenso flexionando as pernas (ajustar a mão na pegada barra)	OK+NOME	abdominal infra suspenso flexionando as pernas	rename PRONTO no mapa (desarmado até o Hugo validar) + vídeo regerado embora já ✅ (aprovado e instalado em 17/09)
-362	Elevação de pernas no banco	Core	Peso corporal	✅ abdominal infra no banco	OK+NOME	abdominal infra no banco	rename PRONTO no mapa (desarmado até o Hugo validar)
-363	Elevação de pernas suspenso na barra	Core	Peso corporal	✅ abdominal infra suspenso com pernas estendidas (ajustar a mão na pegada barra)	OK+NOME	abdominal infra suspenso com pernas estendidas	rename PRONTO no mapa (desarmado até o Hugo validar) + vídeo regerado embora já ✅ (aprovado e instalado em 17/09)
+361	Abdominal infra suspenso flexionando as pernas	Core	Peso corporal	✅ abdominal infra suspenso flexionando as pernas (ajustar a mão na pegada barra)	OK+NOME	abdominal infra suspenso flexionando as pernas	rename APLICADO (18/09) + vídeo regerado embora já ✅ (aprovado e instalado em 17/09)
+362	Abdominal infra no banco	Core	Peso corporal	✅ abdominal infra no banco	OK+NOME	abdominal infra no banco	rename APLICADO (18/09)
+363	Abdominal infra suspenso com pernas estendidas	Core	Peso corporal	✅ abdominal infra suspenso com pernas estendidas (ajustar a mão na pegada barra)	OK+NOME	abdominal infra suspenso com pernas estendidas	rename APLICADO (18/09) + vídeo regerado embora já ✅ (aprovado e instalado em 17/09)
 364	Flexão lateral com halter	Core	Halter	✅	OK		nada a fazer
 365	Hollow hold	Core	Peso corporal	melhorar postura - pernas mais baixas e braços atrás da cabeça	VIDEO		vídeo INSTALADO (17/09)
 366	Hollow rock	Core	Peso corporal	corrigir o movimento - pernas e braços mais próximos do chão	VIDEO		vídeo INSTALADO (17/09)
 367	L-sit nas paralelas	Core	Peso corporal	✅	OK		nada a fazer
 368	L-sit no solo	Core	Peso corporal	ajustar a postura - mais no chão mantendo o corpo acima do solo em isometria	VIDEO		vídeo INSTALADO (17/09)
-369	Limpador de para-brisa suspenso na barra	Core	Peso corporal	abdominal pára-brisa suspenso na barra - melhorar movimento - eleva as pernas durante o movimento	NOME+VIDEO	abdominal pára-brisa suspenso na barra	vídeo INSTALADO (17/09) + rename PRONTO no mapa (desarmado até o Hugo validar)
+369	Abdominal pára-brisa suspenso na barra	Core	Peso corporal	abdominal pára-brisa suspenso na barra - melhorar movimento - eleva as pernas durante o movimento	NOME+VIDEO	abdominal pára-brisa suspenso na barra	vídeo INSTALADO (17/09) + rename APLICADO (18/09)
 370	Mountain climber lento	Core	Peso corporal	corrigir execução (pernas trocam de lugar)	VIDEO		vídeo INSTALADO (17/09)
 371	Pallof press	Core	Polia	exercício errado, segura em isometria mantendo o cabo na lateral	VIDEO		vídeo INSTALADO (17/09, lote 6)
 372	Prancha abdominal	Core	Peso corporal	✅	OK		nada a fazer
@@ -376,8 +376,8 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 375	Prancha com apoio dos antebraços	Core	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
 376	Prancha com deslizamento de braços na toalha	Core	Toalha	✅	OK		nada a fazer
 377	Prancha com elevação de braço	Core	Peso corporal	✅	OK		nada a fazer
-378	Prancha com elevação de perna	Core	Peso corporal	✅ mountain climber	OK+NOME	mountain climber	rename PENDENTE
-379	Prancha com remada (renegade)	Core	Halteres	✅ renegade row	OK+NOME	renegade row	rename PRONTO no mapa (desarmado até o Hugo validar)
+378	Mountain climber	Core	Peso corporal	✅ mountain climber	OK+NOME	mountain climber	rename APLICADO (18/09)
+379	Renegade row	Core	Halteres	✅ renegade row	OK+NOME	renegade row	rename APLICADO (18/09)
 380	Prancha com toque no ombro	Core	Peso corporal	✅	OK		nada a fazer
 381	Prancha dinâmica (up-down)	Core	Peso corporal	corrigir o movimento	VIDEO		vídeo INSTALADO (17/09)
 382	Prancha lateral com elevação de quadril	Core	Peso corporal	✅	OK		nada a fazer
@@ -389,13 +389,13 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 388	Rotação russa (russian twist)	Core	Peso corporal	✅	OK		nada a fazer
 389	Rotação russa com medicine ball	Core	Medicine ball	✅	OK		nada a fazer
 390	Serra abdominal na toalha	Core	Toalha	retirar	RETIRAR		podado no código (não deployado)
-391	Sit-up completo	Core	Peso corporal	✅ abdominal supra solo completo	OK+NOME	abdominal supra solo completo	rename PRONTO no mapa (desarmado até o Hugo validar)
+391	Abdominal supra solo completo	Core	Peso corporal	✅ abdominal supra solo completo	OK+NOME	abdominal supra solo completo	rename APLICADO (18/09)
 392	Toes to bar	Core	Peso corporal	✅ movimento do Crossfit - ajustar a pegada na barra	OK+NOME	movimento do Crossfit	rename PENDENTE + vídeo regerado embora já ✅ (aprovado e instalado em 17/09)
-393	Agachamento com salto sobre a caixa	Funcional	Step	✅ box jump	OK+NOME	box jump	rename PRONTO no mapa (desarmado até o Hugo validar)
+393	Box jump	Funcional	Step	✅ box jump	OK+NOME	box jump	rename APLICADO (18/09)
 394	Arremesso de medicine ball no solo	Funcional	Medicine ball	✅	OK		nada a fazer
-395	Assault bike	Funcional	Bicicleta	✅ airbike	OK+NOME	airbike	rename PRONTO no mapa (desarmado até o Hugo validar)
-396	Battle rope com agachamento	Funcional	Corda	corda naval	NOME	corda naval	rename PRONTO no mapa (desarmado até o Hugo validar)
+395	Airbike	Funcional	Bicicleta	✅ airbike	OK+NOME	airbike	rename APLICADO (18/09)
+396	Corda naval	Funcional	Corda	corda naval	NOME	corda naval	rename APLICADO (18/09)
 397	Bear crawl	Funcional	Peso corporal	melhorar o movimento	VIDEO		vídeo INSTALADO (17/09)
 398	Bicicleta ergométrica	Funcional	Bicicleta	trocar a bicicleta	VIDEO		vídeo INSTALADO (18/09, lote 8)
 399	Burpee com flexão	Funcional	Peso corporal	✅	OK		nada a fazer
-400	Burpee com salto na caixa	Funcional	Step	✅ burpee box jump - movimento do Cross	OK+NOME	burpee box jump	rename PRONTO no mapa (desarmado até o Hugo validar)
+400	Burpee box jump	Funcional	Step	✅ burpee box jump - movimento do Cross	OK+NOME	burpee box jump	rename APLICADO (18/09)

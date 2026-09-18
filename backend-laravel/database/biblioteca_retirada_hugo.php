@@ -92,7 +92,6 @@ return [
     'Rosca concentrada na polia',
     'Rosca de bíceps na máquina',
     'Rosca direta',
-    'Rosca direta com halteres',
     'Rosca martelo na corda',
     'Rosca nas argolas',
     // Tríceps
@@ -126,7 +125,6 @@ return [
     'Avanço em diagonal',
     'Belt squat na máquina',
     'Leg press 45°',
-    'Leg press horizontal',
     'Leg press pés afastados',
     'Leg press pés altos',
     'Leg press pés baixos',
@@ -143,7 +141,6 @@ return [
     'Mesa flexora com pausa',
     'Mesa flexora unilateral',
     'Ponte de glúteo com uma perna',
-    'Stiff unilateral',
     // Glúteos
     'Cadeira abdutora',
     'Chute de glúteo na polia (kickback)',

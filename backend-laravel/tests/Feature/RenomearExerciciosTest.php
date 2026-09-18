@@ -123,4 +123,28 @@ class RenomearExerciciosTest extends TestCase
 
         $this->assertSame(1, Exercise::whereIn('name', ['__teste Nome Antigo__', '__teste Nome Novo__'])->count());
     }
+
+    public function test_substituicao_apaga_o_retirado_e_passa_o_nome_adiante(): void
+    {
+        // O Hugo mandou retirar 'Rosca direta com halteres' e deu esse nome ao
+        // 'Rosca 21 com halteres', que é o que tem o vídeo certo.
+        $retirado = Exercise::create(['name' => 'Rosca direta com halteres', 'muscle_group' => 'Bíceps', 'equipment' => 'Halteres', 'video_url' => 'https://cdn/velho.mp4']);
+        $certo = Exercise::create(['name' => 'Rosca 21 com halteres', 'muscle_group' => 'Bíceps', 'equipment' => 'Halteres', 'video_url' => 'https://cdn/certo.mp4']);
+
+        $this->artisan('exercicios:renomear', ['--force' => true]);
+
+        $this->assertNull($retirado->fresh());
+        $this->assertSame('Rosca direta com halteres', $certo->fresh()->name);
+        $this->assertSame('https://cdn/certo.mp4', $certo->fresh()->video_url);
+    }
+
+    public function test_renomear_acerta_o_grupo_muscular_quando_o_nome_novo_pede(): void
+    {
+        $ex = Exercise::create(['name' => 'Tríceps coice bilateral', 'muscle_group' => 'Tríceps', 'equipment' => 'Halteres']);
+
+        $this->artisan('exercicios:renomear', ['--force' => true]);
+
+        $this->assertSame('Crucifixo inverso com halteres', $ex->fresh()->name);
+        $this->assertSame('Ombros', $ex->fresh()->muscle_group);
+    }
 }

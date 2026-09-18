@@ -47,6 +47,10 @@ class RenomearExercicios extends Command
 
         $mapa = require $this->option('arquivo') ?: database_path('renames_revisao_hugo.php');
         $seco = $this->option('dry-run');
+        // Nomes que o Hugo mandou retirar mas deu a outro exercício: aqui o
+        // antigo sai da frente (se nada depender dele) e o nome passa adiante.
+        $substituiveis = $this->option('arquivo') ? [] : array_flip(require database_path('biblioteca_substituida_hugo.php'));
+        $grupos = $this->option('arquivo') ? [] : require database_path('grupos_revisao_hugo.php');
 
         $renomear = [];
         $jaFeitos = [];
@@ -67,7 +71,8 @@ class RenomearExercicios extends Command
             }
 
             if ($destino) {
-                $fantasma = $this->ehFantasmaDeSeeder($destino);
+                $fantasma = $this->ehFantasmaDeSeeder($destino)
+                    || (isset($substituiveis[$novo]) && $this->semDependencia($destino));
                 if (! $fantasma) {
                     $bloqueados[] = "{$antigo} -> {$novo} (o nome novo já é de outro exercício)";
 
@@ -112,10 +117,27 @@ class RenomearExercicios extends Command
             }
         });
 
+        $regrupados = 0;
+        foreach ($grupos as $nome => $grupo) {
+            $regrupados += Exercise::where('name', $nome)->where('muscle_group', '!=', $grupo)->update(['muscle_group' => $grupo]);
+        }
+
         $this->newLine();
-        $this->info('Renomeados: '.count($renomear).'.');
+        $this->info('Renomeados: '.count($renomear).'. Mudaram de grupo: '.$regrupados.'.');
 
         return count($bloqueados) > 0 ? self::FAILURE : self::SUCCESS;
+    }
+
+    /** Nada aponta pra ele: nem treino, nem modelo, nem mídia/histórico do personal. */
+    private function semDependencia(Exercise $ex): bool
+    {
+        foreach (['workout_exercises', 'workout_template_exercises', 'exercise_media_overrides', 'form_correction_videos', 'form_feedback_history'] as $tabela) {
+            if (DB::table($tabela)->where('exercise_id', $ex->id)->exists()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

@@ -13,18 +13,18 @@ Ordem: grupo muscular (mesma ordem da tela) e, dentro do grupo, alfabética. Ao 
 
 | # | Exercício | Equipamento | Vídeo |
 |--:|---|---|:--:|
-| 1 | Chest press sentado | Máquina | ✅ |
-| 2 | Chest press unilateral | Máquina | ✅ |
-| 3 | Crossover | Polia | ✅ |
-| 4 | Crossover de baixo para cima | Polia | ✅ |
-| 5 | Crossover na polia média | Polia | ✅ |
-| 6 | Crossover unilateral | Polia | ✅ |
-| 7 | Crucifixo declinado com halteres | Halteres | ✅ |
-| 8 | Crucifixo inclinado com halteres | Halteres | ✅ |
-| 9 | Crucifixo na polia alta | Polia | ✅ |
-| 10 | Crucifixo na polia baixa | Polia | ✅ |
-| 11 | Crucifixo na polia deitado no banco | Polia | — |
-| 12 | Crucifixo reto | Halteres | ✅ |
+| 1 | Crossover | Polia | ✅ |
+| 2 | Crossover de baixo para cima | Polia | ✅ |
+| 3 | Crossover na polia média | Polia | ✅ |
+| 4 | Crossover unilateral | Polia | ✅ |
+| 5 | Crucifixo | Máquina | ✅ |
+| 6 | Crucifixo declinado com halteres | Halteres | ✅ |
+| 7 | Crucifixo inclinado com halteres | Halteres | ✅ |
+| 8 | Crucifixo na polia alta | Polia | ✅ |
+| 9 | Crucifixo na polia baixa | Polia | ✅ |
+| 10 | Crucifixo na polia deitado no banco | Polia | — |
+| 11 | Crucifixo reto | Halteres | ✅ |
+| 12 | Crucifixo unilateral | Máquina | ✅ |
 | 13 | Crucifixo unilateral na polia | Polia | ✅ |
 | 14 | Flexão com rotação | Peso corporal | ✅ |
 | 15 | Flexão de braço | Peso corporal | ✅ |
@@ -46,23 +46,23 @@ Ordem: grupo muscular (mesma ordem da tela) e, dentro do grupo, alfabética. Ao 
 | 31 | Pullover | Halteres | ✅ |
 | 32 | Pullover com halter | Halter | ✅ |
 | 33 | Pullover na polia alta | Polia | ✅ |
-| 34 | Supino com halteres | Halteres | ✅ |
-| 35 | Supino com pegada fechada | Barra | ✅ |
-| 36 | Supino com pegada neutra | Halteres | ✅ |
-| 37 | Supino declinado | Barra | ✅ |
-| 38 | Supino declinado com halteres | Halteres | ✅ |
-| 39 | Supino declinado na máquina | Máquina | ✅ |
-| 40 | Supino declinado no smith | Smith | ✅ |
-| 41 | Supino inclinado | Barra | ✅ |
-| 42 | Supino inclinado com halteres | Halteres | ✅ |
-| 43 | Supino inclinado com pegada neutra | Halteres | ✅ |
-| 44 | Supino inclinado na máquina | Máquina | ✅ |
-| 45 | Supino inclinado no smith | Smith | ✅ |
-| 46 | Supino inclinado unilateral com halter | Halter | ✅ |
-| 47 | Supino máquina | Máquina | ✅ |
-| 48 | Supino máquina convergente | Máquina | ✅ |
-| 49 | Supino no chão (floor press) | Barra | ✅ |
-| 50 | Supino reto | Barra | ✅ |
+| 34 | Supino com pegada fechada | Barra | ✅ |
+| 35 | Supino com pegada neutra | Halteres | ✅ |
+| 36 | Supino declinado | Barra | ✅ |
+| 37 | Supino declinado com halteres | Halteres | ✅ |
+| 38 | Supino declinado na máquina | Máquina | ✅ |
+| 39 | Supino declinado no smith | Smith | ✅ |
+| 40 | Supino inclinado | Barra | ✅ |
+| 41 | Supino inclinado com halteres | Halteres | ✅ |
+| 42 | Supino inclinado com pegada neutra | Halteres | ✅ |
+| 43 | Supino inclinado na máquina | Máquina | ✅ |
+| 44 | Supino inclinado no smith | Smith | ✅ |
+| 45 | Supino inclinado unilateral com halter | Halter | ✅ |
+| 46 | Supino máquina | Máquina | ✅ |
+| 47 | Supino máquina convergente | Máquina | ✅ |
+| 48 | Supino no chão (floor press) | Barra | ✅ |
+| 49 | Supino reto | Barra | ✅ |
+| 50 | Supino reto com halter | Halteres | ✅ |
 | 51 | Supino reto no smith | Smith | ✅ |
 | 52 | Voador na máquina unilateral | Máquina | ✅ |
 
@@ -89,7 +89,7 @@ Ordem: grupo muscular (mesma ordem da tela) e, dentro do grupo, alfabética. Ao 
 | 69 | Levantamento terra sumô | Barra | ✅ |
 | 70 | Pull-up negativa | Peso corporal | ✅ |
 | 71 | Pulldown com braços estendidos | Polia | ✅ |
-| 72 | Puxada articulada na máquina | Máquina | ✅ |
+| 72 | Puxada frente | Máquina | ✅ |
 | 73 | Puxada frontal | Polia | ✅ |
 | 74 | Puxada frontal ajoelhado na polia | Polia | ✅ |
 | 75 | Puxada frontal com pegada em V | Polia | ✅ |
@@ -99,28 +99,28 @@ Ordem: grupo muscular (mesma ordem da tela) e, dentro do grupo, alfabética. Ao 
 | 79 | Puxada frontal unilateral | Polia | ✅ |
 | 80 | Puxada na máquina sentado | Máquina | ✅ |
 | 81 | Puxada por trás | Polia | ✅ |
-| 82 | Puxador triângulo | Polia | ✅ |
-| 83 | Remada alta na polia | Polia | ✅ |
-| 84 | Remada baixa | Polia | ✅ |
-| 85 | Remada baixa com corda | Polia | ✅ |
+| 82 | Puxada triângulo | Polia | ✅ |
+| 83 | Remada aberta máquina | Máquina | ✅ |
+| 84 | Remada alta na polia | Polia | ✅ |
+| 85 | Remada baixa | Polia | ✅ |
 | 86 | Remada baixa pegada aberta | Polia | ✅ |
 | 87 | Remada baixa unilateral | Polia | ✅ |
 | 88 | Remada cavalinho | Barra T | ✅ |
 | 89 | Remada cavalinho com pegada neutra | Barra T | ✅ |
-| 90 | Remada com kettlebell | Kettlebell | ✅ |
-| 91 | Remada curvada | Barra | ✅ |
+| 90 | Remada com argola | Polia | ✅ |
+| 91 | Remada curvada barra | Barra | ✅ |
 | 92 | Remada curvada com halteres | Halteres | ✅ |
 | 93 | Remada curvada no smith | Smith | ✅ |
 | 94 | Remada curvada pegada supinada | Barra | ✅ |
 | 95 | Remada invertida no TRX | TRX | ✅ |
-| 96 | Remada máquina | Máquina | ✅ |
-| 97 | Remada máquina pegada neutra | Máquina | ✅ |
-| 98 | Remada máquina unilateral | Máquina | ✅ |
-| 99 | Remada nas argolas com pés elevados | Argolas | ✅ |
-| 100 | Remada no banco inclinado | Halteres | ✅ |
-| 101 | Remada Pendlay | Barra | ✅ |
-| 102 | Remada serrote | Halter | ✅ |
-| 103 | Remada unilateral com halter | Halteres | ✅ |
+| 96 | Remada máquina pegada neutra | Máquina | ✅ |
+| 97 | Remada máquina unilateral | Máquina | ✅ |
+| 98 | Remada nas argolas com pés elevados | Argolas | ✅ |
+| 99 | Remada no banco inclinado | Halteres | ✅ |
+| 100 | Remada Pendlay | Barra | ✅ |
+| 101 | Remada serrote | Halter | ✅ |
+| 102 | Remada unilateral com halter | Halteres | ✅ |
+| 103 | Remada unilateral com kettlebell | Kettlebell | ✅ |
 | 104 | Superman no solo | Peso corporal | ✅ |
 
 ## Ombros
@@ -138,30 +138,30 @@ Ordem: grupo muscular (mesma ordem da tela) e, dentro do grupo, alfabética. Ao 
 | 113 | Desenvolvimento com pegada neutra | Halteres | ✅ |
 | 114 | Desenvolvimento em parada de mão na parede | Peso corporal | ✅ |
 | 115 | Desenvolvimento em pé com halteres | Halteres | ✅ |
-| 116 | Desenvolvimento militar | Barra | ✅ |
-| 117 | Desenvolvimento na máquina | Máquina | ✅ |
-| 118 | Desenvolvimento no smith | Smith | ✅ |
-| 119 | Desenvolvimento por trás da nuca | Barra | ✅ |
-| 120 | Desenvolvimento sentado com barra | Barra | ✅ |
-| 121 | Desenvolvimento sentado com halteres | Halteres | ✅ |
-| 122 | Desenvolvimento unilateral com halter | Halter | ✅ |
-| 123 | Elevação em Y no banco inclinado | Halteres | ✅ |
-| 124 | Elevação frontal | Halteres | ✅ |
-| 125 | Elevação frontal alternada | Halteres | ✅ |
-| 126 | Elevação frontal com anilha | Anilha | ✅ |
-| 127 | Elevação frontal com barra | Barra | ✅ |
-| 128 | Elevação frontal na polia | Polia | ✅ |
-| 129 | Elevação lateral | Halteres | ✅ |
-| 130 | Elevação lateral com elástico | Elástico | ✅ |
-| 131 | Elevação lateral com halteres em pé | Halteres | ✅ |
-| 132 | Elevação lateral na máquina | Máquina | ✅ |
-| 133 | Elevação lateral na polia | Polia | ✅ |
-| 134 | Elevação lateral sentado | Halteres | ✅ |
-| 135 | Elevação lateral unilateral na polia | Polia | ✅ |
-| 136 | Face pull ajoelhado | Polia | ✅ |
-| 137 | Flexão de braço em pique (pike push-up) | Peso corporal | ✅ |
-| 138 | Parada de mão na parede | Peso corporal | ✅ |
-| 139 | Press militar estrito | Barra | ✅ |
+| 116 | Desenvolvimento lateral com barra em pé | Barra | ✅ |
+| 117 | Desenvolvimento militar | Barra | ✅ |
+| 118 | Desenvolvimento na máquina | Máquina | ✅ |
+| 119 | Desenvolvimento no smith | Smith | ✅ |
+| 120 | Desenvolvimento por trás da nuca | Barra | ✅ |
+| 121 | Desenvolvimento sentado com barra | Barra | ✅ |
+| 122 | Desenvolvimento sentado com halteres | Halteres | ✅ |
+| 123 | Desenvolvimento unilateral com halter | Halter | ✅ |
+| 124 | Elevação em Y no banco inclinado | Halteres | ✅ |
+| 125 | Elevação frontal | Halteres | ✅ |
+| 126 | Elevação frontal alternada | Halteres | ✅ |
+| 127 | Elevação frontal com anilha | Anilha | ✅ |
+| 128 | Elevação frontal com barra | Barra | ✅ |
+| 129 | Elevação frontal na polia | Polia | ✅ |
+| 130 | Elevação lateral | Halteres | ✅ |
+| 131 | Elevação lateral com elástico | Elástico | ✅ |
+| 132 | Elevação lateral com halteres em pé | Halteres | ✅ |
+| 133 | Elevação lateral na máquina | Máquina | ✅ |
+| 134 | Elevação lateral na polia | Polia | ✅ |
+| 135 | Elevação lateral sentado | Halteres | ✅ |
+| 136 | Elevação lateral unilateral na polia | Polia | ✅ |
+| 137 | Face pull ajoelhado | Polia | ✅ |
+| 138 | Flexão de braço em pique (pike push-up) | Peso corporal | ✅ |
+| 139 | Parada de mão na parede | Peso corporal | ✅ |
 | 140 | Push press | Barra | ✅ |
 | 141 | Remada alta | Barra | ✅ |
 | 142 | Remada alta na polia baixa | Polia | ✅ |
@@ -173,17 +173,17 @@ Ordem: grupo muscular (mesma ordem da tela) e, dentro do grupo, alfabética. Ao 
 
 | # | Exercício | Equipamento | Vídeo |
 |--:|---|---|:--:|
-| 146 | Rosca 21 | Barra | ✅ |
-| 147 | Rosca 21 com halteres | Halteres | ✅ |
-| 148 | Rosca alternada | Halteres | ✅ |
-| 149 | Rosca alternada com rotação | Halteres | ✅ |
-| 150 | Rosca bayesiana com o braço atrás do corpo | Polia | ✅ |
-| 151 | Rosca com corda na polia baixa | Polia | ✅ |
-| 152 | Rosca concentrada | Halter | ✅ |
-| 153 | Rosca concentrada na polia | Polia | ✅ |
-| 154 | Rosca de bíceps na máquina | Máquina | ✅ |
-| 155 | Rosca de bíceps sentado com halteres | Halteres | ✅ |
-| 156 | Rosca direta | Barra | ✅ |
+| 146 | Rosca 21 com halteres | Halteres | ✅ |
+| 147 | Rosca alternada | Halteres | ✅ |
+| 148 | Rosca alternada com rotação | Halteres | ✅ |
+| 149 | Rosca bayesiana com o braço atrás do corpo | Polia | ✅ |
+| 150 | Rosca com corda na polia baixa | Polia | ✅ |
+| 151 | Rosca concentrada | Halter | ✅ |
+| 152 | Rosca concentrada na polia | Polia | ✅ |
+| 153 | Rosca de bíceps na máquina | Máquina | ✅ |
+| 154 | Rosca de bíceps sentado com halteres | Halteres | ✅ |
+| 155 | Rosca direta | Barra | ✅ |
+| 156 | Rosca direta com barra reta | Barra | ✅ |
 | 157 | Rosca direta com barra W | Barra W | ✅ |
 | 158 | Rosca direta com elástico | Elástico | ✅ |
 | 159 | Rosca direta com halteres | Halteres | ✅ |
@@ -191,11 +191,11 @@ Ordem: grupo muscular (mesma ordem da tela) e, dentro do grupo, alfabética. Ao 
 | 161 | Rosca inclinada no banco | Halteres | ✅ |
 | 162 | Rosca inversa | Barra | ✅ |
 | 163 | Rosca invertida na polia | Polia | ✅ |
-| 164 | Rosca martelo | Halteres | ✅ |
-| 165 | Rosca martelo alternada | Halteres | ✅ |
+| 164 | Rosca martelo alternada | Halteres | ✅ |
+| 165 | Rosca martelo com halteres | Halteres | ✅ |
 | 166 | Rosca martelo na corda | Polia | ✅ |
 | 167 | Rosca nas argolas | Argolas | ✅ |
-| 168 | Rosca Scott | Barra W | ✅ |
+| 168 | Rosca Scott com barra reta | Barra W | ✅ |
 | 169 | Rosca Scott com barra W | Barra W | ✅ |
 | 170 | Rosca Scott com halter unilateral | Halter | ✅ |
 | 171 | Rosca Scott na máquina | Máquina | ✅ |
@@ -207,37 +207,37 @@ Ordem: grupo muscular (mesma ordem da tela) e, dentro do grupo, alfabética. Ao 
 |--:|---|---|:--:|
 | 173 | Extensão de tríceps com elástico | Elástico | ✅ |
 | 174 | Extensão de tríceps deitado com halteres neutro | Halteres | ✅ |
-| 175 | Extensão de tríceps na máquina | Máquina | ✅ |
-| 176 | Extensão de tríceps nas argolas | Argolas | ✅ |
-| 177 | Extensão de tríceps unilateral | Polia | ✅ |
-| 178 | Flexão diamante para tríceps | Peso corporal | ✅ |
-| 179 | Mergulho entre bancos | Peso corporal | ✅ |
-| 180 | Mergulho na máquina assistida | Máquina | ✅ |
-| 181 | Mergulho nas argolas | Argolas | — |
-| 182 | Mergulho nas paralelas | Peso corporal | ✅ |
-| 183 | Mergulho no banco | Peso corporal | ✅ |
-| 184 | Supino fechado com halteres | Halteres | ✅ |
-| 185 | Supino fechado no smith | Smith | ✅ |
-| 186 | Tríceps coice bilateral | Halteres | ✅ |
-| 187 | Tríceps coice com halter | Halter | ✅ |
-| 188 | Tríceps coice na polia | Polia | ✅ |
-| 189 | Tríceps corda | Polia | ✅ |
-| 190 | Tríceps corda acima da cabeça | Polia | ✅ |
-| 191 | Tríceps francês | Halter | ✅ |
-| 192 | Tríceps francês na polia | Polia | ✅ |
-| 193 | Tríceps francês sentado com halter | Halter | ✅ |
-| 194 | Tríceps francês unilateral | Halter | ✅ |
-| 195 | Tríceps na máquina unilateral | Máquina | ✅ |
-| 196 | Tríceps na polia com barra V | Polia | ✅ |
-| 197 | Tríceps na polia com pegada cruzada | Polia | ✅ |
-| 198 | Tríceps na polia pegada supinada | Polia | ✅ |
-| 199 | Tríceps na polia unilateral | Polia | ✅ |
-| 200 | Tríceps pulley barra reta | Polia | ✅ |
-| 201 | Tríceps testa | Barra W | ✅ |
-| 202 | Tríceps testa com barra W | Barra W | ✅ |
-| 203 | Tríceps testa com elástico | Elástico | ✅ |
-| 204 | Tríceps testa com halteres | Halteres | ✅ |
-| 205 | Tríceps testa na polia baixa | Polia | ✅ |
+| 175 | Extensão de tríceps nas argolas | Argolas | ✅ |
+| 176 | Flexão diamante para tríceps | Peso corporal | ✅ |
+| 177 | Mergulho nas argolas | Argolas | — |
+| 178 | Paralela livre | Peso corporal | ✅ |
+| 179 | Paralela no gráviton | Máquina | ✅ |
+| 180 | Supino fechado com halteres | Halteres | ✅ |
+| 181 | Supino fechado no smith | Smith | ✅ |
+| 182 | Tríceps banco livre | Peso corporal | ✅ |
+| 183 | Tríceps banco livre com pés suspensos | Peso corporal | ✅ |
+| 184 | Tríceps coice bilateral | Halteres | ✅ |
+| 185 | Tríceps coice com halter | Halter | ✅ |
+| 186 | Tríceps coice na polia | Polia | ✅ |
+| 187 | Tríceps corda | Polia | ✅ |
+| 188 | Tríceps corda acima da cabeça | Polia | ✅ |
+| 189 | Tríceps francês com anilha | Halter | ✅ |
+| 190 | Tríceps francês na polia | Polia | ✅ |
+| 191 | Tríceps francês sentado com halter | Halter | ✅ |
+| 192 | Tríceps francês unilateral | Halter | ✅ |
+| 193 | Tríceps na máquina unilateral | Máquina | ✅ |
+| 194 | Tríceps na polia com barra V | Polia | ✅ |
+| 195 | Tríceps na polia com pegada cruzada | Polia | ✅ |
+| 196 | Tríceps na polia pegada supinada | Polia | ✅ |
+| 197 | Tríceps na polia unilateral | Polia | ✅ |
+| 198 | Tríceps pulley barra reta | Polia | ✅ |
+| 199 | Tríceps testa | Barra W | ✅ |
+| 200 | Tríceps testa com barra W | Barra W | ✅ |
+| 201 | Tríceps testa com elástico | Elástico | ✅ |
+| 202 | Tríceps testa com halteres | Halteres | ✅ |
+| 203 | Tríceps testa na máquina | Máquina | ✅ |
+| 204 | Tríceps testa na polia baixa | Polia | ✅ |
+| 205 | Tríceps unilateral na polia alta | Polia | ✅ |
 
 ## Antebraço
 
@@ -270,38 +270,38 @@ Ordem: grupo muscular (mesma ordem da tela) e, dentro do grupo, alfabética. Ao 
 
 | # | Exercício | Equipamento | Vídeo |
 |--:|---|---|:--:|
-| 223 | Afundo | Halteres | ✅ |
-| 224 | Afundo com barra | Barra | ✅ |
-| 225 | Afundo com halteres | Halteres | ✅ |
-| 226 | Afundo lateral | Halteres | ✅ |
-| 227 | Afundo reverso | Halteres | ✅ |
-| 228 | Afundo reverso com barra | Barra | ✅ |
-| 229 | Agachamento box squat | Barra | ✅ |
-| 230 | Agachamento búlgaro | Halteres | ✅ |
-| 231 | Agachamento búlgaro com halteres | Halteres | ✅ |
-| 232 | Agachamento com barra alta | Barra | ✅ |
-| 233 | Agachamento com barra baixa | Barra | ✅ |
-| 234 | Agachamento com deslocamento lateral na toalha | Toalha | ✅ |
-| 235 | Agachamento com elástico | Elástico | ✅ |
-| 236 | Agachamento com halteres | Halteres | ✅ |
-| 237 | Agachamento com kettlebell (goblet) | Kettlebell | ✅ |
-| 238 | Agachamento com peso corporal | Peso corporal | ✅ |
-| 239 | Agachamento com salto | Peso corporal | ✅ |
-| 240 | Agachamento cossaco | Peso corporal | ✅ |
-| 241 | Agachamento frontal | Barra | ✅ |
-| 242 | Agachamento frontal no smith | Smith | ✅ |
-| 243 | Agachamento isométrico na parede | Peso corporal | ✅ |
-| 244 | Agachamento livre | Barra | ✅ |
-| 245 | Agachamento livre com halteres (goblet squat) | Halter | ✅ |
-| 246 | Agachamento no smith | Máquina | ✅ |
-| 247 | Agachamento no TRX | TRX | ✅ |
-| 248 | Agachamento pausado | Barra | ✅ |
-| 249 | Agachamento sissy | Peso corporal | ✅ |
-| 250 | Agachamento sumô com halter | Halter | ✅ |
-| 251 | Agachamento sumô com kettlebell | Kettlebell | ✅ |
-| 252 | Agachamento unilateral (pistol) | Peso corporal | ✅ |
-| 253 | Avanço em diagonal | Halteres | ✅ |
-| 254 | Avanço estático | Halteres | ✅ |
+| 223 | Afundo com halter | Halteres | ✅ |
+| 224 | Afundo lateral | Halteres | ✅ |
+| 225 | Afundo reverso | Halteres | ✅ |
+| 226 | Agachamento box squat | Barra | ✅ |
+| 227 | Agachamento búlgaro | Halteres | ✅ |
+| 228 | Agachamento búlgaro com halteres | Halteres | ✅ |
+| 229 | Agachamento com barra | Barra | ✅ |
+| 230 | Agachamento com barra baixa | Barra | ✅ |
+| 231 | Agachamento com deslocamento lateral na toalha | Toalha | ✅ |
+| 232 | Agachamento com elástico | Elástico | ✅ |
+| 233 | Agachamento com halteres | Halteres | ✅ |
+| 234 | Agachamento com kettlebell (goblet) | Kettlebell | ✅ |
+| 235 | Agachamento com peso corporal | Peso corporal | ✅ |
+| 236 | Agachamento com salto | Peso corporal | ✅ |
+| 237 | Agachamento cossaco | Peso corporal | ✅ |
+| 238 | Agachamento frontal | Barra | ✅ |
+| 239 | Agachamento frontal no smith | Smith | ✅ |
+| 240 | Agachamento isométrico na parede | Peso corporal | ✅ |
+| 241 | Agachamento livre | Barra | ✅ |
+| 242 | Agachamento livre com halteres (goblet squat) | Halter | ✅ |
+| 243 | Agachamento no smith | Máquina | ✅ |
+| 244 | Agachamento no TRX | TRX | ✅ |
+| 245 | Agachamento pausado | Barra | ✅ |
+| 246 | Agachamento sissy | Peso corporal | ✅ |
+| 247 | Agachamento sumô com halter | Halter | ✅ |
+| 248 | Agachamento sumô com halteres | Halteres | ✅ |
+| 249 | Agachamento sumô com kettlebell | Kettlebell | ✅ |
+| 250 | Agachamento unilateral (pistol) | Peso corporal | ✅ |
+| 251 | Avanço alternado | Halteres | ✅ |
+| 252 | Avanço alternado com barra | Barra | ✅ |
+| 253 | Avanço com barra | Barra | ✅ |
+| 254 | Avanço em diagonal | Halteres | ✅ |
 | 255 | Belt squat na máquina | Máquina | ✅ |
 | 256 | Cadeira extensora | Máquina | ✅ |
 | 257 | Cadeira extensora unilateral | Máquina | ✅ |
@@ -317,11 +317,11 @@ Ordem: grupo muscular (mesma ordem da tela) e, dentro do grupo, alfabética. Ao 
 | 267 | Leg press unilateral | Máquina | ✅ |
 | 268 | Leg press vertical | Máquina | ✅ |
 | 269 | Passada (walking lunge) | Halteres | ✅ |
-| 270 | Passada com barra | Barra | ✅ |
-| 271 | Passada com halteres | Halteres | ✅ |
-| 272 | Subida no step (step-up) | Halteres | ✅ |
-| 273 | Subida no step lateral | Halteres | ✅ |
-| 274 | Terra sumô com halteres | Halteres | ✅ |
+| 270 | Passada com halteres | Halteres | ✅ |
+| 271 | Recuo com barra | Barra | ✅ |
+| 272 | Recuo com halteres | Halteres | ✅ |
+| 273 | Subida no banco lateral | Halteres | ✅ |
+| 274 | Subida no step (step-up) | Halteres | ✅ |
 
 ## Posterior
 
@@ -340,7 +340,7 @@ Ordem: grupo muscular (mesma ordem da tela) e, dentro do grupo, alfabética. Ao 
 | 285 | Good morning | Barra | ✅ |
 | 286 | Good morning no smith | Smith | ✅ |
 | 287 | Hiperextensão com foco em posterior | Peso corporal | ✅ |
-| 288 | Levantamento terra | Barra | ✅ |
+| 288 | Levantamento terra com barra | Barra | ✅ |
 | 289 | Levantamento terra romeno | Barra | ✅ |
 | 290 | Levantamento terra romeno unilateral | Halter | ✅ |
 | 291 | Mesa flexora | Máquina | ✅ |
@@ -360,7 +360,7 @@ Ordem: grupo muscular (mesma ordem da tela) e, dentro do grupo, alfabética. Ao 
 |--:|---|---|:--:|
 | 301 | Abdução com elástico deitado (clamshell) | Elástico | ✅ |
 | 302 | Abdução de quadril deitado de lado | Peso corporal | ✅ |
-| 303 | Abdução de quadril na máquina | Máquina | ✅ |
+| 303 | Abdução de quadril na máquina abdutora | Máquina | ✅ |
 | 304 | Abdução de quadril na polia | Polia | ✅ |
 | 305 | Abdução em pé com elástico | Elástico | ✅ |
 | 306 | Adução de quadril na polia | Polia | ✅ |
@@ -369,27 +369,27 @@ Ordem: grupo muscular (mesma ordem da tela) e, dentro do grupo, alfabética. Ao 
 | 309 | Agachamento sumô profundo | Halter | ✅ |
 | 310 | Cadeira abdutora | Máquina | ✅ |
 | 311 | Cadeira adutora | Máquina | ✅ |
-| 312 | Caminhada lateral com elástico | Elástico | ✅ |
-| 313 | Chute de glúteo na polia (kickback) | Polia | ✅ |
-| 314 | Coice de glúteo com caneleira | Caneleira | ✅ |
-| 315 | Coice de glúteo com elástico | Elástico | ✅ |
-| 316 | Coice de glúteo na máquina | Máquina | ✅ |
-| 317 | Elevação de quadril (hip thrust) | Barra | ✅ |
-| 318 | Elevação de quadril com elástico | Elástico | ✅ |
-| 319 | Elevação de quadril com halter | Halter | ✅ |
-| 320 | Elevação de quadril com pés no banco | Peso corporal | ✅ |
-| 321 | Elevação de quadril na máquina | Máquina | ✅ |
-| 322 | Elevação de quadril no smith | Smith | ✅ |
-| 323 | Elevação de quadril unilateral | Peso corporal | ✅ |
+| 312 | Chute de glúteo na polia (kickback) | Polia | ✅ |
+| 313 | Coice de glúteo com elástico | Elástico | ✅ |
+| 314 | Coice de glúteo na máquina | Máquina | ✅ |
+| 315 | Deslocamento lateral com miniband | Elástico | ✅ |
+| 316 | Elevação de quadril com halter | Halter | ✅ |
+| 317 | Elevação de quadril com pés no banco | Peso corporal | ✅ |
+| 318 | Elevação de quadril na máquina | Máquina | ✅ |
+| 319 | Elevação de quadril no smith | Smith | ✅ |
+| 320 | Elevação de quadril unilateral | Peso corporal | ✅ |
+| 321 | Elevação pélvica com barra | Barra | ✅ |
+| 322 | Elevação pélvica com elástico | Elástico | ✅ |
+| 323 | Elevação pélvica solo | Peso corporal | ✅ |
 | 324 | Extensão de quadril em quatro apoios | Peso corporal | ✅ |
 | 325 | Fire hydrant | Peso corporal | ✅ |
 | 326 | Frog pump | Peso corporal | ✅ |
-| 327 | Glúteo no cabo (coice) | Polia | ✅ |
-| 328 | Glúteo quatro apoios | Peso corporal | ✅ |
-| 329 | Passada profunda para glúteo | Halteres | ✅ |
-| 330 | Ponte de glúteo com barra | Barra | ✅ |
-| 331 | Ponte de glúteo com elevação alternada | Peso corporal | ✅ |
-| 332 | Ponte de glúteo no solo | Peso corporal | ✅ |
+| 327 | Glúteo coice com caneleira | Caneleira | ✅ |
+| 328 | Glúteo no cabo (coice) | Polia | ✅ |
+| 329 | Glúteo quatro apoios | Peso corporal | ✅ |
+| 330 | Passada profunda para glúteo | Halteres | ✅ |
+| 331 | Ponte de glúteo com barra | Barra | ✅ |
+| 332 | Ponte de glúteo com elevação alternada | Peso corporal | ✅ |
 | 333 | Subida no step alta para glúteo | Halteres | ✅ |
 
 ## Panturrilha
@@ -420,67 +420,67 @@ Ordem: grupo muscular (mesma ordem da tela) e, dentro do grupo, alfabética. Ao 
 | 350 | Abdominal canivete | Peso corporal | ✅ |
 | 351 | Abdominal declinado | Peso corporal | ✅ |
 | 352 | Abdominal infra (elevação de pernas) | Peso corporal | ✅ |
-| 353 | Abdominal na máquina com carga | Máquina | ✅ |
-| 354 | Abdominal na polia alta (ajoelhado) | Polia | ✅ |
-| 355 | Abdominal oblíquo | Peso corporal | ✅ |
-| 356 | Abdominal oblíquo na polia | Polia | ✅ |
-| 357 | Abdominal remador | Peso corporal | ✅ |
-| 358 | Abdominal supra (crunch) | Peso corporal | ✅ |
-| 359 | Abdominal supra com pés apoiados | Peso corporal | ✅ |
-| 360 | Abdominal V-up | Peso corporal | ✅ |
-| 361 | Bird dog | Peso corporal | ✅ |
-| 362 | Dead bug | Peso corporal | ✅ |
-| 363 | Dragon flag | Peso corporal | ✅ |
-| 364 | Elevação de joelhos suspenso | Peso corporal | ✅ |
-| 365 | Elevação de pernas no banco | Peso corporal | ✅ |
-| 366 | Elevação de pernas suspenso na barra | Peso corporal | ✅ |
-| 367 | Flexão lateral com halter | Halter | ✅ |
-| 368 | Hollow hold | Peso corporal | ✅ |
-| 369 | Hollow rock | Peso corporal | ✅ |
-| 370 | L-sit nas paralelas | Peso corporal | ✅ |
-| 371 | L-sit no solo | Peso corporal | ✅ |
-| 372 | Limpador de para-brisa suspenso na barra | Peso corporal | ✅ |
-| 373 | Mountain climber lento | Peso corporal | ✅ |
-| 374 | Pallof press | Polia | ✅ |
-| 375 | Prancha abdominal | Peso corporal | ✅ |
-| 376 | Prancha alta | Peso corporal | ✅ |
-| 377 | Prancha com abertura de pernas na toalha | Toalha | ✅ |
-| 378 | Prancha com apoio dos antebraços | Peso corporal | ✅ |
-| 379 | Prancha com deslizamento de braços na toalha | Toalha | ✅ |
-| 380 | Prancha com elevação de braço | Peso corporal | ✅ |
-| 381 | Prancha com elevação de perna | Peso corporal | ✅ |
-| 382 | Prancha com remada (renegade) | Halteres | ✅ |
+| 353 | Abdominal infra no banco | Peso corporal | ✅ |
+| 354 | Abdominal infra suspenso com pernas estendidas | Peso corporal | ✅ |
+| 355 | Abdominal infra suspenso flexionando as pernas | Peso corporal | ✅ |
+| 356 | Abdominal na polia alta (ajoelhado) | Polia | ✅ |
+| 357 | Abdominal oblíquo na polia | Polia | ✅ |
+| 358 | Abdominal oblíquo unilateral | Peso corporal | ✅ |
+| 359 | Abdominal pára-brisa suspenso na barra | Peso corporal | ✅ |
+| 360 | Abdominal remador | Peso corporal | ✅ |
+| 361 | Abdominal supra (crunch) | Peso corporal | ✅ |
+| 362 | Abdominal supra com pés apoiados | Peso corporal | ✅ |
+| 363 | Abdominal supra máquina | Máquina | ✅ |
+| 364 | Abdominal supra solo completo | Peso corporal | ✅ |
+| 365 | Abdominal V-up | Peso corporal | ✅ |
+| 366 | Bird dog | Peso corporal | ✅ |
+| 367 | Dead bug | Peso corporal | ✅ |
+| 368 | Dragon flag | Peso corporal | ✅ |
+| 369 | Flexão lateral com halter | Halter | ✅ |
+| 370 | Hollow hold | Peso corporal | ✅ |
+| 371 | Hollow rock | Peso corporal | ✅ |
+| 372 | L-sit nas paralelas | Peso corporal | ✅ |
+| 373 | L-sit no solo | Peso corporal | ✅ |
+| 374 | Mountain climber lento | Peso corporal | ✅ |
+| 375 | Pallof press | Polia | ✅ |
+| 376 | Prancha abdominal | Peso corporal | ✅ |
+| 377 | Prancha alta | Peso corporal | ✅ |
+| 378 | Prancha com abertura de pernas na toalha | Toalha | ✅ |
+| 379 | Prancha com apoio dos antebraços | Peso corporal | ✅ |
+| 380 | Prancha com deslizamento de braços na toalha | Toalha | ✅ |
+| 381 | Prancha com elevação de braço | Peso corporal | ✅ |
+| 382 | Prancha com elevação de perna | Peso corporal | ✅ |
 | 383 | Prancha com toque no ombro | Peso corporal | ✅ |
 | 384 | Prancha dinâmica (up-down) | Peso corporal | ✅ |
 | 385 | Prancha lateral com elevação de quadril | Peso corporal | ✅ |
 | 386 | Prancha lateral com rotação | Peso corporal | ✅ |
-| 387 | Roda abdominal (ab wheel) | Equipamento | ✅ |
-| 388 | Roda abdominal ajoelhado | Equipamento | ✅ |
-| 389 | Rollout na barra | Barra | ✅ |
-| 390 | Rotação de tronco na polia (woodchop) | Polia | ✅ |
-| 391 | Rotação russa (russian twist) | Peso corporal | ✅ |
-| 392 | Rotação russa com medicine ball | Medicine ball | ✅ |
-| 393 | Serra abdominal na toalha | Toalha | ✅ |
-| 394 | Sit-up completo | Peso corporal | ✅ |
+| 387 | Renegade row | Halteres | ✅ |
+| 388 | Roda abdominal (ab wheel) | Equipamento | ✅ |
+| 389 | Roda abdominal ajoelhado | Equipamento | ✅ |
+| 390 | Rollout na barra | Barra | ✅ |
+| 391 | Rotação de tronco na polia (woodchop) | Polia | ✅ |
+| 392 | Rotação russa (russian twist) | Peso corporal | ✅ |
+| 393 | Rotação russa com medicine ball | Medicine ball | ✅ |
+| 394 | Serra abdominal na toalha | Toalha | ✅ |
 | 395 | Toes to bar | Peso corporal | ✅ |
 
 ## Funcional
 
 | # | Exercício | Equipamento | Vídeo |
 |--:|---|---|:--:|
-| 396 | Agachamento com salto sobre a caixa | Step | ✅ |
+| 396 | Airbike | Bicicleta | ✅ |
 | 397 | Arremesso de medicine ball no solo | Medicine ball | ✅ |
-| 398 | Assault bike | Bicicleta | ✅ |
-| 399 | Back lever progressivo | Peso corporal | — |
-| 400 | Battle rope com agachamento | Corda | ✅ |
-| 401 | Bear crawl | Peso corporal | ✅ |
-| 402 | Bicicleta ergométrica | Bicicleta | ✅ |
+| 398 | Back lever progressivo | Peso corporal | — |
+| 399 | Bear crawl | Peso corporal | ✅ |
+| 400 | Bicicleta ergométrica | Bicicleta | ✅ |
+| 401 | Box jump | Step | ✅ |
+| 402 | Burpee box jump | Step | ✅ |
 | 403 | Burpee com flexão | Peso corporal | ✅ |
-| 404 | Burpee com salto na caixa | Step | ✅ |
-| 405 | Burpee sem flexão | Peso corporal | ✅ |
-| 406 | Caminhada inclinada na esteira | Esteira | ✅ |
-| 407 | Clean and press com barra | Barra | ✅ |
-| 408 | Clean com kettlebell | Kettlebell | ✅ |
+| 404 | Burpee sem flexão | Peso corporal | ✅ |
+| 405 | Caminhada inclinada na esteira | Esteira | ✅ |
+| 406 | Clean and press com barra | Barra | ✅ |
+| 407 | Clean com kettlebell | Kettlebell | ✅ |
+| 408 | Corda naval | Corda | ✅ |
 | 409 | Corda naval alternada | Corda | ✅ |
 | 410 | Corda naval simultânea | Corda | ✅ |
 | 411 | Corrida com calcanhar no glúteo | Peso corporal | ✅ |
