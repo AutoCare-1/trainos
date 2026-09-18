@@ -274,8 +274,8 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 273	Bom dia sentado	Posterior	Barra	retirar	RETIRAR		podado no código (não deployado)
 274	Cadeira flexora	Posterior	Máquina	cadeira Extensora (não é posterior)	NOME	cadeira Extensora	rename PENDENTE
 275	Cadeira flexora unilateral	Posterior	Máquina	retirar	RETIRAR		podado no código (não deployado)
-276	Elevação pélvica solo unilateral	Posterior	Peso corporal	elevação pélvica solo unilateral	NOME	elevação pélvica solo unilateral	rename APLICADO (18/09)
-277	Glúteo coice na polia	Posterior	Polia	glúteo coice na polia - ajustar o movimento	NOME+VIDEO	glúteo coice na polia	rename APLICADO (18/09)
+276	Elevação pélvica solo unilateral	Posterior	Peso corporal	elevação pélvica solo unilateral	NOME	elevação pélvica solo unilateral	vídeo regerado sem o Hugo pedir (aprovado e instalado em 17/09) + rename APLICADO (18/09)
+277	Glúteo coice na polia	Posterior	Polia	glúteo coice na polia - ajustar o movimento	NOME+VIDEO	glúteo coice na polia	vídeo INSTALADO (17/09, lote 6) + rename APLICADO (18/09)
 278	Flexão de joelho com caneleira	Posterior	Caneleira	retirar	RETIRAR		podado no código (não deployado)
 279	Flexão nórdica	Posterior	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
 280	Flexora em pé na máquina	Posterior	Máquina	ajeitar a máquina	VIDEO		vídeo INSTALADO (17/09)
@@ -328,7 +328,7 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 327	Ponte de glúteo com barra	Glúteos	Barra	retirar	RETIRAR		podado no código (não deployado)
 328	Ponte de glúteo com elevação alternada	Glúteos	Peso corporal	retirar	RETIRAR		podado no código (não deployado)
 329	Elevação pélvica solo	Glúteos	Peso corporal	elevação pélvica solo	NOME	elevação pélvica solo	rename APLICADO (18/09) + vídeo regerado sem o Hugo pedir (aprovado e instalado em 17/09)
-330	Subida no step com halter	Glúteos	Halteres	subida no step com halter (colocar o pé completo no step)	NOME+VIDEO	subida no step com halter	rename APLICADO (18/09)
+330	Subida no step com halter	Glúteos	Halteres	subida no step com halter (colocar o pé completo no step)	NOME+VIDEO	subida no step com halter	vídeo INSTALADO (18/09, lote 8) + rename APLICADO (18/09)
 331	Panturrilha burro (donkey calf)	Panturrilha	Máquina	retirar	RETIRAR		podado no código (não deployado)
 332	Panturrilha com pés para dentro	Panturrilha	Máquina	retirar	RETIRAR		podado no código (não deployado)
 333	Panturrilha com pés para fora	Panturrilha	Máquina	retirar	RETIRAR		podado no código (não deployado)
@@ -390,7 +390,7 @@ numero	nome_atual	grupo	equipamento	queixa_do_hugo	classe	nome_novo	status
 389	Rotação russa com medicine ball	Core	Medicine ball	✅	OK		nada a fazer
 390	Serra abdominal na toalha	Core	Toalha	retirar	RETIRAR		podado no código (não deployado)
 391	Abdominal supra solo completo	Core	Peso corporal	✅ abdominal supra solo completo	OK+NOME	abdominal supra solo completo	rename APLICADO (18/09)
-392	Toes to bar	Core	Peso corporal	✅ movimento do Crossfit - ajustar a pegada na barra	OK+NOME	movimento do Crossfit	rename PENDENTE + vídeo regerado embora já ✅ (aprovado e instalado em 17/09)
+392	Toes to bar	Core	Peso corporal	✅ movimento do Crossfit - ajustar a pegada na barra	OK+NOME	movimento do Crossfit	vídeo regerado embora já ✅ (aprovado e instalado em 17/09)
 393	Box jump	Funcional	Step	✅ box jump	OK+NOME	box jump	rename APLICADO (18/09)
 394	Arremesso de medicine ball no solo	Funcional	Medicine ball	✅	OK		nada a fazer
 395	Airbike	Funcional	Bicicleta	✅ airbike	OK+NOME	airbike	rename APLICADO (18/09)
