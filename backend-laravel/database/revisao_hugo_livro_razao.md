@@ -46,7 +46,7 @@ por classe, a conta fecha exatamente com a dele (124 ✅ / 147 retirar / 129 cor
 | | |
 |---|--:|
 | Vídeos aprovados e **INSTALADOS em 17/09** | 57 |
-| Lotes 6 e 7, aprovados e **instalados** | 28 |
+| Lotes 6, 7 e 8, aprovados e **instalados** | 41 |
 | Faltam gerar | **44** |
 | Encerrados (causa raiz é o nome) | 2 (#338, #344) |
 | Parcial, esperando o Hugo | 1 (#359 dead bug) |

@@ -107,4 +107,13 @@ return [
     216 => ['nome' => 'Encolhimento no smith', 'grupo' => 'Trapézio', 'arquivo' => '216.mp4'],
     238 => ['nome' => 'Agachamento frontal', 'grupo' => 'Pernas', 'arquivo' => '238.mp4'],
     330 => ['nome' => 'Subida no step alta para glúteo', 'grupo' => 'Glúteos', 'arquivo' => '330.mp4'],
+    141 => ['nome' => 'Rotação externa com elástico', 'grupo' => 'Ombros', 'arquivo' => '141.mp4'],
+    255 => ['nome' => 'Extensão de joelho com caneleira', 'grupo' => 'Pernas', 'arquivo' => '255.mp4'],
+    302 => ['nome' => 'Abdução em pé com elástico', 'grupo' => 'Glúteos', 'arquivo' => '302.mp4'],
+    311 => ['nome' => 'Coice de glúteo com caneleira', 'grupo' => 'Glúteos', 'arquivo' => '311.mp4'],
+    319 => ['nome' => 'Elevação de quadril no smith', 'grupo' => 'Glúteos', 'arquivo' => '319.mp4'],
+    385 => ['nome' => 'Roda abdominal ajoelhado', 'grupo' => 'Core', 'arquivo' => '385.mp4'],
+    386 => ['nome' => 'Rollout na barra', 'grupo' => 'Core', 'arquivo' => '386.mp4'],
+    398 => ['nome' => 'Bicicleta ergométrica', 'grupo' => 'Funcional', 'arquivo' => '398.mp4'],
+    309 => ['nome' => 'Caminhada lateral com elástico', 'grupo' => 'Glúteos', 'arquivo' => '309.mp4'],
 ];
