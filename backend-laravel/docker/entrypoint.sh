@@ -83,6 +83,14 @@ php artisan db:seed --class="Database\\Seeders\\ExercicioBibliotecaAmpliadaSeede
 php artisan db:seed --class="Database\\Seeders\\ExercicioBibliotecaComplementarSeeder" --force
 php artisan exercicios:aplicar-demonstracoes || true
 
+# Os 147 que o Hugo reprovou (database/biblioteca_retirada_hugo.php). Os
+# seeders já não recriam nenhum; isto apaga os que o banco ainda tem. Poupa o
+# que estiver num treino ou tiver mídia do personal, e o relatório (com os
+# poupados) fica no log do deploy. Idempotente: no deploy seguinte não acha
+# nada. Muda os números da tela de vídeos — a tabela de-para dos 98 está em
+# database/revisao_hugo_de_para.md.
+php artisan exercicios:podar-biblioteca --revisao-hugo --force || true
+
 # Tipos de notificação. Faltava aqui: sem eles a tela de notificações do
 # personal sobe vazia e nenhum aviso é disparado, porque tudo é resolvido por
 # esse catálogo. É updateOrCreate pela chave, então rodar sempre é seguro.
