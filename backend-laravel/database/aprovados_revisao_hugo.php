@@ -103,4 +103,8 @@ return [
     57 => ['nome' => 'Bom dia com barra', 'grupo' => 'Costas', 'arquivo' => '57.mp4'],
     92 => ['nome' => 'Remada curvada pegada supinada', 'grupo' => 'Costas', 'arquivo' => '92.mp4'],
     359 => ['nome' => 'Dead bug', 'grupo' => 'Core', 'arquivo' => '359.mp4'],
+    23 => ['nome' => 'Flexão de braço no TRX', 'grupo' => 'Peito', 'arquivo' => '23.mp4'],
+    216 => ['nome' => 'Encolhimento no smith', 'grupo' => 'Trapézio', 'arquivo' => '216.mp4'],
+    238 => ['nome' => 'Agachamento frontal', 'grupo' => 'Pernas', 'arquivo' => '238.mp4'],
+    330 => ['nome' => 'Subida no step alta para glúteo', 'grupo' => 'Glúteos', 'arquivo' => '330.mp4'],
 ];
