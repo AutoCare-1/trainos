@@ -32,13 +32,18 @@ class PodarBibliotecaExercicios extends Command
 {
     protected $signature = 'exercicios:podar-biblioteca
         {--dry-run : Só mostra o que seria removido e o que está protegido}
-        {--force : Executa a remoção de verdade}';
+        {--force : Executa a remoção de verdade}
+        {--revisao-hugo : Só os 147 que o Hugo reprovou (biblioteca_retirada_hugo.php), apagando mesmo com vídeo}';
 
     protected $description = 'Remove exercícios redundantes/raros da biblioteca, preservando o que está em uso.';
 
     public function handle(): int
     {
-        $nomes = require database_path('biblioteca_podada.php');
+        // Na revisão do Hugo quem decide é o personal, não a falta de mídia:
+        // quase todos os 147 têm vídeo, e a trava de mídia pouparia todos.
+        // As travas de treino e de mídia do personal continuam valendo.
+        $revisaoHugo = (bool) $this->option('revisao-hugo');
+        $nomes = require database_path($revisaoHugo ? 'biblioteca_retirada_hugo.php' : 'biblioteca_podada.php');
 
         if (! $this->option('force') && ! $this->option('dry-run')) {
             $this->error('Isso apaga dados. Rode com --dry-run pra conferir, ou --force pra executar.');
@@ -55,7 +60,7 @@ class PodarBibliotecaExercicios extends Command
         $podeRemover = [];
 
         foreach ($alvos as $ex) {
-            if ($ex->image_url || $ex->video_url) {
+            if (! $revisaoHugo && ($ex->image_url || $ex->video_url)) {
                 // Foto de acervo (wger) ou demonstração já gerada: se chegou a
                 // ganhar mídia, alguém investiu nele — não é candidato a corte.
                 $comMidia[] = $ex->name;

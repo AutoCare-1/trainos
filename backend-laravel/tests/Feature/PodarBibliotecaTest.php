@@ -170,4 +170,48 @@ class PodarBibliotecaTest extends TestCase
         $this->assertNotNull($comFoto->fresh());
         $this->assertNotNull($comVideo->fresh());
     }
+
+    // ---- Revisão do Hugo (--revisao-hugo) --------------------------------
+
+    public function test_revisao_hugo_apaga_mesmo_com_video(): void
+    {
+        // Os 147 do Hugo quase todos têm vídeo; a trava de mídia pouparia todos.
+        $hugo = require database_path('biblioteca_retirada_hugo.php');
+        $reprovado = $this->exercicioLegado($hugo[0], ['video_url' => 'https://cdn/x.mp4']);
+        $foraDaLista = $this->exercicioLegado('Exercício que o Hugo aprovou', ['video_url' => 'https://cdn/y.mp4']);
+
+        $this->artisan('exercicios:podar-biblioteca', ['--force' => true, '--revisao-hugo' => true])->assertSuccessful();
+
+        $this->assertNull($reprovado->fresh());
+        $this->assertNotNull($foraDaLista->fresh());
+    }
+
+    public function test_revisao_hugo_ainda_preserva_exercicio_usado_num_treino(): void
+    {
+        $hugo = require database_path('biblioteca_retirada_hugo.php');
+        $condenado = $this->exercicioLegado($hugo[0], ['video_url' => 'https://cdn/x.mp4']);
+        $professional = $this->personal();
+        $student = Student::create([
+            'professional_id' => $professional->id, 'name' => 'Aluno', 'invite_token' => uniqid('t'),
+        ]);
+        $workout = Workout::create([
+            'student_id' => $student->id, 'professional_id' => $professional->id, 'name' => 'Treino A',
+        ]);
+        WorkoutExercise::create([
+            'workout_id' => $workout->id, 'exercise_id' => $condenado->id,
+            'sets' => 3, 'reps' => '10', 'position' => 1,
+        ]);
+
+        $this->artisan('exercicios:podar-biblioteca', ['--force' => true, '--revisao-hugo' => true])->assertSuccessful();
+
+        $this->assertNotNull($condenado->fresh(), 'exercício prescrito num treino não pode sumir');
+    }
+
+    public function test_revisao_hugo_faz_parte_da_lista_que_os_seeders_respeitam(): void
+    {
+        $hugo = require database_path('biblioteca_retirada_hugo.php');
+
+        $this->assertCount(147, $hugo);
+        $this->assertSame([], array_values(array_diff($hugo, $this->listaDeCorte())));
+    }
 }
