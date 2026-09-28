@@ -21,6 +21,26 @@ function abrirVideoEmTelaCheia(video: HTMLVideoElement) {
   video.muted = false
   video.controls = true
 
+  // O card é um quadrado pequeno, então usa object-fit: cover — a miniatura
+  // preenche o espaço e o corte nas bordas não atrapalha. Em tela cheia esse
+  // mesmo cover CORTA o movimento, que é justamente o que a pessoa abriu pra
+  // ver. Troca por contain enquanto está em tela cheia e devolve o cover ao
+  // sair (senão a miniatura volta com tarja preta na grade).
+  const aoSair = () => {
+    const emTelaCheia = document.fullscreenElement === video
+    video.style.objectFit = emTelaCheia ? 'contain' : 'cover'
+    if (!emTelaCheia) {
+      video.controls = false
+      video.muted = true
+      document.removeEventListener('fullscreenchange', aoSair)
+      video.removeEventListener('webkitendfullscreen', aoSair)
+    }
+  }
+  video.style.objectFit = 'contain'
+  document.addEventListener('fullscreenchange', aoSair)
+  // iOS usa o player nativo e não dispara fullscreenchange; este é o evento dele.
+  video.addEventListener('webkitendfullscreen', aoSair)
+
   const v = video as VideoComFullscreenVendor
   if (v.webkitEnterFullscreen) {
     v.webkitEnterFullscreen()
