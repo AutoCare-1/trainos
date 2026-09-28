@@ -222,9 +222,16 @@ class GerarDemonstracaoExercicio extends Command
             self::equipamento($ajuste['equipamento'] ?? $ex->equipment),
             $descricao ? "Execution: {$descricao}" : null,
             $ajuste['cena'] ?? null,
-            ($ajuste['estatico'] ?? false)
-                ? 'He holds this position still: it is an isometric hold, not a repeated movement.'
-                : 'He repeats the full movement twice, smoothly and under control.',
+            // 'lento': UMA repetição, devagar. Duas repetições em 4 segundos
+            // ficam rápidas demais em exercício de detalhe (rotação de ombro,
+            // roda abdominal), e o Filipe reprovou por "não dá nem pra saber
+            // qual exercício é". Uma repetição lenta usa o mesmo tempo de clipe
+            // pra mostrar o dobro de cada posição.
+            match (true) {
+                ($ajuste['estatico'] ?? false) => 'He holds this position still: it is an isometric hold, not a repeated movement.',
+                ($ajuste['lento'] ?? false) => 'He performs ONE single repetition only, slowly and under full control, taking the whole clip to travel from the start position to the end position and back: the movement is unhurried and easy to follow, and he never does a second repetition.',
+                default => 'He repeats the full movement twice, smoothly and under control.',
+            },
             'Static camera, full body in frame.',
             'Setting: open gym floor with light grey walls, rubber flooring and',
             'weight machines in the background.',
