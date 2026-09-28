@@ -172,4 +172,7 @@ return [
     'Roda abdominal (ab wheel)',
     'Rotação de tronco na polia (woodchop)',
     'Serra abdominal na toalha',
+
+    // 28/09: segunda rodada, sobre os vídeos já refeitos.
+    ...require __DIR__.'/biblioteca_retirada_28_09.php',
 ];

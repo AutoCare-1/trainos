@@ -82,7 +82,10 @@ class PodarBibliotecaTest extends TestCase
         $this->seed(\Database\Seeders\ExerciseSeeder::class);
         $this->seed(\Database\Seeders\ExercicioBibliotecaAmpliadaSeeder::class);
 
-        $this->assertSame(271, Exercise::count());
+        // 267 desde 28/09: a segunda rodada de retiradas do Hugo (6 nomes,
+        // biblioteca_retirada_28_09.php) tirou mais 4 que estavam nestes dois
+        // seeders.
+        $this->assertSame(267, Exercise::count());
         // Eram 75 fotos reais de acervo (wger, CC-BY-SA). A revisão do Hugo
         // (15/09) tirou 15 exercícios que tinham foto — Rosca direta, Puxada
         // frontal, Leg press 45°, Desenvolvimento militar entre eles. Não é
@@ -211,7 +214,7 @@ class PodarBibliotecaTest extends TestCase
     {
         $hugo = require database_path('biblioteca_retirada_hugo.php');
 
-        $this->assertCount(144, $hugo);
+        $this->assertCount(150, $hugo);
         $this->assertSame([], array_values(array_diff($hugo, $this->listaDeCorte())));
     }
 }

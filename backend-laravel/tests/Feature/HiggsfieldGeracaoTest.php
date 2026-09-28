@@ -363,12 +363,12 @@ class HiggsfieldGeracaoTest extends TestCase
         ]);
 
         $this->assertStringContainsString(
-            'facing the machine',
+            'facing the tower',
             GerarDemonstracaoExercicio::montarPrompt($puxada)
         );
         // E quem não tem dica não herda a cena de outro exercício.
         $this->assertStringNotContainsString(
-            'facing the machine',
+            'facing the tower',
             GerarDemonstracaoExercicio::montarPrompt($semDica)
         );
     }

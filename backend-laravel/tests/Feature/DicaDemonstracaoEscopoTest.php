@@ -58,7 +58,7 @@ class DicaDemonstracaoEscopoTest extends TestCase
 
         $prompt = GerarDemonstracaoExercicio::montarPrompt($ex);
 
-        $this->assertStringContainsString('facing the machine', $prompt);
+        $this->assertStringContainsString('facing the tower', $prompt);
         $this->assertStringNotContainsString('swimming stroke', $prompt);
     }
 }

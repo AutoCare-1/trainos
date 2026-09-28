@@ -363,3 +363,18 @@ select:focus-visible,
   background: rgba(27, 19, 80, 0.15);
   border-radius: 3px;
 }
+
+/* Vídeo de demonstração em tela cheia: mostrar o movimento inteiro.
+   No card o vídeo é `object-fit: cover` de propósito — ele preenche o quadrado
+   do exercício sem borda. Esse recorte seguia valendo em tela cheia, onde o
+   9:16 do vídeo não bate com a tela: cortava a cabeça do personal e as pontas
+   do movimento (o Hugo apontou isso em 11 vídeos). Em tela cheia o que importa
+   é ver a execução inteira, então `contain`, com fundo preto nas laterais.
+   `:-webkit-full-screen` é pro Safari, que não implementa a regra padrão. */
+video:fullscreen,
+video:-webkit-full-screen {
+  object-fit: contain !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: #000;
+}
