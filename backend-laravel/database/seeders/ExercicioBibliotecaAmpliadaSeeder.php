@@ -73,8 +73,8 @@ class ExercicioBibliotecaAmpliadaSeeder extends Seeder
             ['Supino reto no smith', 'Peito', 'Smith', 'Barra guiada na linha do mamilo, controle a descida até encostar levemente no peito.'],
             ['Supino inclinado no smith', 'Peito', 'Smith', 'Banco inclinado sob a barra guiada, empurre até a extensão quase completa.'],
             ['Supino inclinado na máquina', 'Peito', 'Máquina', 'Sentado, empurre os pegadores para cima e à frente na linha do peito superior.'],
-            ['Crucifixo', 'Peito', 'Máquina', 'Costas apoiadas, empurre os pegadores à frente até quase estender os cotovelos.'],
-            ['Crucifixo unilateral', 'Peito', 'Máquina', 'Empurre um braço de cada vez, evitando girar o tronco para compensar.'],
+            ['Crucifixo', 'Peito', 'Máquina', 'Costas apoiadas, abra os braços para os lados e feche em arco até a frente do peito.'],
+            ['Crucifixo unilateral', 'Peito', 'Máquina', 'Um braço de cada vez: abra para o lado e feche em arco até a frente do peito, sem girar o tronco.'],
             ['Crucifixo inclinado com halteres', 'Peito', 'Halteres', 'Banco inclinado, abra os braços em arco com cotovelos levemente flexionados.'],
             ['Crucifixo declinado com halteres', 'Peito', 'Halteres', 'Banco declinado, abra em arco e feche acima do peito inferior.'],
             ['Flexão de braço inclinada', 'Peito', 'Peso corporal', 'Mãos apoiadas num banco — versão mais fácil, ideal para iniciantes.'],
@@ -104,7 +104,7 @@ class ExercicioBibliotecaAmpliadaSeeder extends Seeder
             ['Levantamento terra com barra hexagonal', 'Posterior', 'Barra', 'Barra hexagonal mantém a carga alinhada ao corpo e poupa a lombar.'],
             ['Extensão lombar na máquina', 'Costas', 'Máquina', 'Sentado, estenda o tronco para trás contra o encosto acolchoado.'],
             ['Bom dia com barra', 'Costas', 'Barra', 'Barra nas costas, quadril para trás mantendo as costas retas.'],
-            ['Remada com argola', 'Costas', 'Polia', 'Puxe a corda até o abdômen separando as pontas ao final.'],
+            ['Remada com argola', 'Costas', 'Polia', 'Sentado na remada baixa, segure a argola com as duas mãos e puxe até encostar no abdômen, cotovelos para trás.'],
 
             // ---- Ombros --------------------------------------------------------
             ['Desenvolvimento Arnold', 'Ombros', 'Halteres', 'Comece com as palmas para você e gire os punhos enquanto empurra para cima.'],
@@ -151,7 +151,7 @@ class ExercicioBibliotecaAmpliadaSeeder extends Seeder
             ['Tríceps francês na polia', 'Tríceps', 'Polia', 'Sentado de costas para a polia, estenda os braços acima da cabeça.'],
             ['Tríceps coice com halter', 'Tríceps', 'Halter', 'Tronco inclinado, braço colado ao corpo, estenda o cotovelo para trás.'],
             ['Tríceps coice na polia', 'Tríceps', 'Polia', 'Mesma mecânica do coice, com tensão constante do cabo.'],
-            ['Crucifixo inverso com halteres', 'Ombros', 'Halteres', 'Tronco inclinado, estenda os dois braços para trás simultaneamente.'],
+            ['Crucifixo inverso com halteres', 'Ombros', 'Halteres', 'Tronco inclinado, abra os braços em arco para os lados até a altura dos ombros, cotovelos levemente flexionados.'],
             ['Paralela livre', 'Tríceps', 'Peso corporal', 'Tronco na vertical e cotovelos rentes ao corpo — ênfase em tríceps.'],
             ['Paralela no gráviton', 'Tríceps', 'Máquina', 'Máquina assistida permite ajustar o quanto do peso corporal você sustenta.'],
             ['Supino fechado no smith', 'Tríceps', 'Smith', 'Barra guiada com pegada fechada, cotovelos rentes ao tronco.'],
