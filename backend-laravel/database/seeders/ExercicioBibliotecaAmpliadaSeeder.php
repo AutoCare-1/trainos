@@ -117,7 +117,6 @@ class ExercicioBibliotecaAmpliadaSeeder extends Seeder
             ['Elevação frontal com anilha', 'Ombros', 'Anilha', 'Segure a anilha pelas laterais e eleve à frente até a altura dos olhos.'],
             ['Elevação frontal alternada', 'Ombros', 'Halteres', 'Eleve um braço por vez, alternando a cada repetição.'],
             ['Crucifixo invertido no banco inclinado', 'Ombros', 'Halteres', 'Peito apoiado no banco inclinado, abra os braços em arco.'],
-            ['Remada alta na polia baixa', 'Ombros', 'Polia', 'Cotovelos acima das mãos durante toda a subida.'],
             ['Rotação externa com elástico', 'Ombros', 'Elástico', 'Cotovelo colado ao corpo a 90°, gire o antebraço para fora — manguito rotador.'],
             ['Rotação externa na polia', 'Ombros', 'Polia', 'Mesma mecânica da rotação externa, com tensão constante do cabo.'],
             ['Rotação interna na polia', 'Ombros', 'Polia', 'Gire o antebraço em direção ao abdômen mantendo o cotovelo fixo.'],

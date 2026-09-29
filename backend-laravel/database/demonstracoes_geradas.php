@@ -387,7 +387,6 @@ return [
     'Desenvolvimento lateral com barra em pé' => 'https://pub-9482945b571143e887b925bd2e0565e1.r2.dev/exercise-demos/press-militar-estrito.mp4',
     'Push press' => 'https://pub-9482945b571143e887b925bd2e0565e1.r2.dev/exercise-demos/push-press.mp4',
     'Remada alta com barra' => 'https://pub-9482945b571143e887b925bd2e0565e1.r2.dev/exercise-demos/remada-alta.mp4',
-    'Remada alta na polia baixa' => 'https://pub-9482945b571143e887b925bd2e0565e1.r2.dev/exercise-demos/remada-alta-na-polia-baixa.mp4',
     'Rotação externa com elástico' => 'https://pub-9482945b571143e887b925bd2e0565e1.r2.dev/exercise-demos/rotacao-externa-com-elastico.mp4',
     'Rotação externa na polia' => 'https://pub-9482945b571143e887b925bd2e0565e1.r2.dev/exercise-demos/rotacao-externa-na-polia.mp4',
     'Rotação interna na polia' => 'https://pub-9482945b571143e887b925bd2e0565e1.r2.dev/exercise-demos/rotacao-interna-na-polia.mp4',

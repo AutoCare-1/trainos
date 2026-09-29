@@ -13,4 +13,7 @@ return [
     'Hollow hold',
     'Hollow rock',
     'Pallof press',
+    // 29/09: o Filipe mandou apagar — o gerador não consegue fazer a remada
+    // alta na polia; virou bíceps, tríceps e por fim rosca. Cinco tentativas.
+    'Remada alta na polia baixa',
 ];
