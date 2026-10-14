@@ -1537,8 +1537,11 @@ $hugoPendentes29 = [
 // #254, 3ª (14/10, seedance_2_5): 2ª no mini saiu um trote ainda mais baixo.
 // O Filipe pediu o movimento MAIS LENTO. Não usa a chave 'lento' (ela pede UMA
 // repetição, e numa corrida mostraria uma perna só): a lentidão vai na cena.
+// #254, 4ª (14/10, 2.5): a 3ª acertou a ALTURA mas ficou lenta demais — o Filipe
+// quer a velocidade de corrida da original. Agora: ritmo de corrida + coxa na
+// horizontal, negando a marcha lenta e o trote baixo.
 $hugo13_10Amostra1 = [
-    'Corrida com elevação de joelhos' => ['execucao' => 'No lugar, eleve alternadamente os joelhos bem alto, com a coxa na horizontal ou acima dela, devagar e com controle.', 'cena' => 'Filmed from the SIDE. He performs high knees in place SLOWLY and deliberately, like a slow-motion march: each knee rises UP HIGH until the thigh is horizontal or higher — the knee at the height of his belly button, ABOVE his hip, knee bent at 90 degrees — PAUSES there for a moment, then lowers, while the other foot stays flat on the floor; then the other knee rises the same way. It is never a quick jog: the movement is slow, and the thigh is never angled down below the hip line at the top. '.$salaMusculacao],
+    'Corrida com elevação de joelhos' => ['continuo' => true, 'execucao' => 'Correndo no lugar em ritmo de corrida, eleve alternadamente os joelhos até a coxa ficar na horizontal, na altura do quadril.', 'cena' => 'Filmed from the SIDE. He RUNS in place at a brisk, normal running pace, quick steps, like the classic high-knees running drill, arms pumping in rhythm. On EVERY step the knee drives UP until the thigh is horizontal, level with his hip, knee bent at 90 degrees, and the foot comes straight back down as the other knee shoots up. Fast rhythm AND high knees at the same time: it is never a slow march, never a pause at the top, and never a low jog with the knees below the hip. '.$salaMusculacao],
 
     'Salto vertical' => ['cena' => 'Filmed from the SIDE. START POSITION: deep squat, thighs almost parallel to the floor, arms swung back. END POSITION: an explosive jump, whole body straight in the air, arms reaching overhead, both shoes clearly HIGH off the floor — a gap of about knee height between the shoes and the floor. He lands softly back into the squat. Never a small hop where the feet barely leave the floor. '.$salaMusculacao],
 
