@@ -240,7 +240,9 @@ class GerarDemonstracaoExercicio extends Command
                 ($ajuste['lento'] ?? false) => 'He performs ONE single repetition only, slowly and under full control, taking the whole clip to travel from the start position to the end position and back: the movement is unhurried and easy to follow, and he never does a second repetition.',
                 default => 'He repeats the full movement twice, smoothly and under control.',
             },
-            'Static camera, full body in frame.',
+            // 'camera': enquadramento próprio. "Full body" deixava detalhe pequeno
+            // (arco do pé no short foot, #442) invisível no vídeo (14/10).
+            $ajuste['camera'] ?? 'Static camera, full body in frame.',
             'Setting: open gym floor with light grey walls, rubber flooring and',
             'weight machines in the background.',
             // A guarda genérica não bastava em exercício onde UM membro se move
