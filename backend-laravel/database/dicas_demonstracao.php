@@ -1607,4 +1607,17 @@ $hugo13_10Amostra5 = [
 
 ];
 
-return array_replace($base, $maquinas, $outras, $complementar, $revisaoNumerada, $revisaoHugo, $revisaoHugoMaquinas, $terceiraPassada, $revisaoHugoHalteres, $revisaoHugoCorpo, $revisaoHugoCore, $revisaoHugoPolia, $revisaoHugoPesoLivre, $revisaoHugoMistos, $segundaPassadaHugo, $segundaPassadaLote1, $segundaPassadaLote2, $filaRenomeada, $amplitudeAmostra, $hugoPendentes29, $hugo13_10Amostra1, $hugo13_10Amostra2, $hugo13_10Amostra3, $hugo13_10Amostra4, $hugo13_10Amostra5);
+// Lista do Hugo de 13/10 — lote 6 (alongamentos), aprovado pelo Filipe em 14/10.
+// Todos parados: 'estatico' copiado da $isometricosComplementar (array_replace
+// é raso e a entrada nova apagaria a marcação).
+$hugo13_10Lote6 = [
+    'Alongamento de flexores do quadril ajoelhado' => ['estatico' => true, 'cena' => 'Filmed from the SIDE. He is in a LONG kneeling lunge: his BACK knee rests on the floor FAR behind him, the top of that back foot flat on the floor, and his FRONT foot is planted flat far forward with the front knee bent and pushed forward past the ankle. His HIPS and TORSO are pushed well FORWARD, deep into the stretch, so the front of the back thigh and hip is clearly stretched long, torso upright over the hips. It is never a short lunge and his torso never leans back. '.$salaMusculacao],
+
+    'Alongamento de glúteo deitado (figura 4)' => ['estatico' => true, 'cena' => 'Filmed from the SIDE. He lies flat on his back on the floor, head resting on the floor. His RIGHT ankle is CROSSED over his LEFT knee, the right knee pointing out to the side, forming the shape of a number 4. Both hands are clasped BEHIND his LEFT thigh, reaching UNDER it from below, pulling that thigh toward his chest so the left foot lifts off the floor. His hands never hold the crossed leg: they pull the other thigh from underneath. '.$salaMusculacao],
+
+    'Alongamento de panturrilha na parede' => ['estatico' => true, 'execucao' => 'Ponta do pé da frente apoiada na parede e calcanhar no chão, a outra perna um pouco atrás: incline o corpo à frente.', 'cena' => 'Filmed from the SIDE. He stands facing a wall, close to it, with both palms flat on the wall at chest height. His FRONT foot has the HEEL on the floor and the TOES and ball of the foot pressed UP against the wall, the front knee straight. His other foot is only a SHORT step behind, flat on the floor. His body leans FORWARD toward the wall, stretching the calf of the front leg. His feet are close together: it is never a wide lunge with the legs far apart. '.$salaMusculacao],
+
+    'Alongamento de quadríceps deitado de lado' => ['estatico' => true, 'cena' => 'Filmed from the SIDE. He lies on his side on the floor, his head resting on his bottom arm. His BOTTOM leg is fully STRAIGHT, stretched out long on the floor. His TOP hand holds his TOP foot and pulls the heel to his glute, with that top knee drawn BACK so the thigh is in line with his hip or slightly behind it, stretching the front of the thigh. The bottom leg never bends. '.$salaMusculacao],
+];
+
+return array_replace($base, $maquinas, $outras, $complementar, $revisaoNumerada, $revisaoHugo, $revisaoHugoMaquinas, $terceiraPassada, $revisaoHugoHalteres, $revisaoHugoCorpo, $revisaoHugoCore, $revisaoHugoPolia, $revisaoHugoPesoLivre, $revisaoHugoMistos, $segundaPassadaHugo, $segundaPassadaLote1, $segundaPassadaLote2, $filaRenomeada, $amplitudeAmostra, $hugoPendentes29, $hugo13_10Amostra1, $hugo13_10Amostra2, $hugo13_10Amostra3, $hugo13_10Amostra4, $hugo13_10Amostra5, $hugo13_10Lote6);
