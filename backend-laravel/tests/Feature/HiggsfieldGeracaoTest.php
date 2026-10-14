@@ -356,7 +356,7 @@ class HiggsfieldGeracaoTest extends TestCase
             // Era 'pegada aberta' até a revisão do Hugo (15/09) tirar essa da
             // biblioteca. Qualquer uma das 7 puxadas serve — o que o teste
             // verifica é a cena, que é a mesma pra todas.
-            'name' => 'Puxada frontal pegada neutra',
+            'name' => 'Puxada neutra',
             'muscle_group' => 'Costas',
             'equipment' => 'Polia',
             'instructions' => 'Pegada neutra no triângulo, puxe até a clavícula.',

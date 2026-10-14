@@ -37,9 +37,9 @@ class DicaDemonstracaoEscopoTest extends TestCase
             return [$nome, count($dicas)];
         };
 
-        [$nomeDepois, $total] = $sonda('Puxada frontal pegada neutra');
+        [$nomeDepois, $total] = $sonda('Puxada neutra');
 
-        $this->assertSame('Puxada frontal pegada neutra', $nomeDepois);
+        $this->assertSame('Puxada neutra', $nomeDepois);
         $this->assertGreaterThan(100, $total);
     }
 
@@ -50,7 +50,7 @@ class DicaDemonstracaoEscopoTest extends TestCase
     public function test_a_cena_do_prompt_e_a_do_exercicio_pedido(): void
     {
         $ex = Exercise::create([
-            'name' => 'Puxada frontal pegada neutra',
+            'name' => 'Puxada neutra',
             'muscle_group' => 'Costas',
             'equipment' => 'Polia',
             'instructions' => 'Punhos voltados um para o outro, puxe até o peito superior.',

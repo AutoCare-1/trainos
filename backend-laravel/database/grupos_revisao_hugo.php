@@ -9,5 +9,5 @@ return [
     'Elevação pélvica solo unilateral' => 'Glúteos',
     'Glúteo coice na polia' => 'Glúteos',
     'Avanço com halteres' => 'Pernas',
-    'Subida no step com halter' => 'Pernas',
+    'Subida no caixote' => 'Pernas',
 ];

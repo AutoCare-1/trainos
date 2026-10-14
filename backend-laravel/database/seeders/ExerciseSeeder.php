@@ -131,7 +131,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'Franpol · CC-BY-SA 4 (wger.de)',
             ],
             [
-                'name' => 'Remada baixa',
+                'name' => 'Remada baixa com triângulo',
                 'muscle_group' => 'Costas',
                 'equipment' => 'Polia',
                 'instructions' => 'Puxe o cabo em direção ao abdômen mantendo a coluna neutra.',
@@ -139,7 +139,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'Franpol · CC-BY-SA 4 (wger.de)',
             ],
             [
-                'name' => 'Remada curvada barra',
+                'name' => 'Remada curvada barra pronada',
                 'muscle_group' => 'Costas',
                 'equipment' => 'Barra',
                 'instructions' => 'Tronco inclinado à frente, puxe a barra em direção ao abdômen.',
@@ -203,7 +203,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'Tierrasverdes · CC-BY-SA 4 (wger.de)',
             ],
             [
-                'name' => 'Desenvolvimento com halteres',
+                'name' => 'Desenvolvimento lateral com halteres sentado',
                 'muscle_group' => 'Ombros',
                 'equipment' => 'Halteres',
                 'instructions' => 'Empurre os halteres para cima até quase estender totalmente os cotovelos.',
@@ -219,7 +219,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'philip · CC-BY-SA 3 (wger.de)',
             ],
             [
-                'name' => 'Elevação lateral',
+                'name' => 'Elevação lateral com halteres',
                 'muscle_group' => 'Ombros',
                 'equipment' => 'Halteres',
                 'instructions' => 'Eleve os braços lateralmente até a altura dos ombros, cotovelos levemente flexionados.',
@@ -251,7 +251,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'Everkinetic · CC-BY-SA 3 (wger.de)',
             ],
             [
-                'name' => 'Crucifixo reto',
+                'name' => 'Crucifixo reto com halter',
                 'muscle_group' => 'Peito',
                 'equipment' => 'Halteres',
                 'instructions' => 'Braços levemente flexionados, abra e feche em arco como um abraço.',
@@ -275,7 +275,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'cshep442 · CC0 (wger.de)',
             ],
             [
-                'name' => 'Pullover',
+                'name' => 'Pullover deitado com halter',
                 'muscle_group' => 'Peito',
                 'equipment' => 'Halteres',
                 'instructions' => 'Deitado, leve o halter por trás da cabeça em arco e retorne ao peito.',
@@ -283,7 +283,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'Franpol · CC-BY-SA 4 (wger.de)',
             ],
             [
-                'name' => 'Supino reto com halter',
+                'name' => 'Supino reto com halteres',
                 'muscle_group' => 'Peito',
                 'equipment' => 'Halteres',
                 'instructions' => 'Halteres alinhados ao peito, empurre para cima até quase travar o cotovelo.',
@@ -299,7 +299,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'Everkinetic · CC-BY-SA 3 (wger.de)',
             ],
             [
-                'name' => 'Supino inclinado',
+                'name' => 'Supino inclinado com barra',
                 'muscle_group' => 'Peito',
                 'equipment' => 'Barra',
                 'instructions' => 'Banco a 30-45°, desça a barra até a parte superior do peito e empurre para cima.',
@@ -315,7 +315,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'roneydya · CC-BY-SA 3 (wger.de)',
             ],
             [
-                'name' => 'Supino reto',
+                'name' => 'Supino reto com barra',
                 'muscle_group' => 'Peito',
                 'equipment' => 'Barra',
                 'instructions' => 'Deitado no banco, desça a barra até o peito e empurre até a extensão dos cotovelos.',
@@ -371,7 +371,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'Franpol · CC0 (wger.de)',
             ],
             [
-                'name' => 'Hack machine',
+                'name' => 'Agachamento hack',
                 'muscle_group' => 'Pernas',
                 'equipment' => 'Máquina',
                 'instructions' => 'Costas apoiadas, desça flexionando os joelhos e empurre de volta.',
@@ -427,7 +427,7 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'Everkinetic · CC-BY-SA 3 (wger.de)',
             ],
             [
-                'name' => 'Stiff',
+                'name' => 'Stiff com barra',
                 'muscle_group' => 'Posterior',
                 'equipment' => 'Barra',
                 'instructions' => 'Joelhos levemente flexionados, desça a barra rente às pernas até sentir alongar o posterior.',

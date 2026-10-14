@@ -100,31 +100,68 @@ return [
     'Rosca 21 com halteres' => 'Rosca direta com halteres',
     'Leg press 45° unilateral' => 'Leg press horizontal',
     'Levantamento terra romeno unilateral' => 'Stiff unilateral',
-];
 
-// ---------------------------------------------------------------------------
-// FORA DESTE LOTE, e por quê. Nada aqui é esquecimento.
-//
-// 1. Esperam a PODA dos 147 rodar — o nome novo ainda pertence a um exercício
-//    que só sai lá (o índice de `name` é unique, então renomear antes falha):
-//    #145 Rosca 21 com halteres  -> rosca direta com halteres  (hoje é o #157)
-//    #258 Leg press 45° unilateral -> leg press horizontal      (hoje é o #259)
-//
-// 2. COLIDEM com exercício que fica na biblioteca — decisão do Hugo, é preciso
-//    saber qual dos dois fica com o nome:
-//    #181 Supino fechado com halteres -> supino inclinado com halteres (#40)
-//    #182 Supino fechado no smith     -> supino inclinado no smith (#43)
-//    #274 Cadeira flexora             -> cadeira extensora (#253)
-//    #304 Agachamento búlgaro com foco em glúteo -> agachamento búlgaro (#227)
-//    #247 e #306 viram os DOIS "agachamento sumô com barra".
-//
-// 3. O nome novo pede outro GRUPO MUSCULAR, e renomear não move de grupo —
-//    ficariam arquivados no lugar errado:
-//    #65 (Costas->Posterior), #139 (Ombros->Costas), #183 (Tríceps->Ombros,
-//    e é outro exercício), #276 (Posterior->Glúteos), #277 (Posterior->Glúteos),
-//    #326 e #330 (Glúteos->Pernas).
-//
-// 4. AMBÍGUO: pode ser ele nomeando o que viu, não pedindo rename.
-//    #287 "Stiff unilateral ou T ou avião" (três opções)
-//    #378 "✅ mountain climber" num "Prancha com elevação de perna"
-//    #392 "✅ movimento do Crossfit" — comentário, não nome
+    // ---- Segunda lista do Hugo (13/10/2026, numeração de 509) ----
+    // Só os pedidos que são APENAS nome (o vídeo já está certo). Nome novo é o
+    // texto dele com a primeira letra maiúscula; corrigidos só erros de digitação
+    // (spriting, bozu, alongamneto). Livro-razão: revisao_hugo_2026-10-13.tsv.
+    // Ficam DEPOIS dos antigos de propósito: alguns encadeiam (Chest press
+    // sentado -> Crucifixo -> Crucifixo na máquina) e o comando roda em ordem.
+    'Crucifixo' => 'Crucifixo na máquina', // #2
+    'Crucifixo reto' => 'Crucifixo reto com halter', // #5
+    'Crucifixo unilateral' => 'Crucifixo unilateral na máquina', // #6
+    'Flexão de braço inclinada' => 'Flexão de braço inclinado no banco', // #11
+    'Pullover' => 'Pullover deitado com halter', // #15
+    'Pullover na polia alta' => 'Pullover na polia alta com barra', // #16
+    'Supino inclinado' => 'Supino inclinado com barra', // #19
+    'Supino reto' => 'Supino reto com barra', // #24
+    'Supino reto com halter' => 'Supino reto com halteres', // #25
+    'Puxada frontal pegada neutra' => 'Puxada neutra', // #37
+    'Puxada frontal pegada supinada' => 'Puxada aberta', // #38
+    'Remada baixa' => 'Remada baixa com triângulo', // #42
+    'Remada curvada barra' => 'Remada curvada barra pronada', // #45
+    'Remada curvada com halteres' => 'Remada curvada pronada com halteres', // #46
+    'Remada invertida no TRX' => 'Remada pronada no TRX', // #48
+    'Remada no banco inclinado' => 'Remada neutra com halter no banco inclinado', // #49
+    'Remada serrote' => 'Remada unilateral com halter (serrote)', // #50
+    'Desenvolvimento alternado com halteres' => 'Desenvolvimento pegada neutra alternada em pé', // #56
+    'Desenvolvimento Arnold' => 'Desenvolvimento Arnold em pé', // #57
+    'Desenvolvimento com halteres' => 'Desenvolvimento lateral com halteres sentado', // #58
+    'Desenvolvimento em pé com halteres' => 'Desenvolvimento lateral com halteres em pé', // #59
+    'Desenvolvimento na máquina' => 'Desenvolvimento lateral na máquina', // #61
+    'Desenvolvimento no smith' => 'Desenvolvimento lateral no smith em pé', // #62
+    'Elevação lateral' => 'Elevação lateral com halteres', // #66
+    'Tríceps francês unilateral' => 'Tríceps francês unilateral com halter', // #108
+    'Hack machine' => 'Agachamento hack', // #153
+    'Subida no step com halter' => 'Subida no caixote', // #160
+    'Stiff' => 'Stiff com barra', // #171
+    'Elevação de quadril no smith' => 'Elevação pélvica no smith', // #189
+    'Elevação de quadril unilateral' => 'Elevação pélvica unilateral', // #190
+    'Elevação pélvica com elástico' => 'Elevação pélvica solo com elástico', // #192
+    'Abdominal declinado' => 'Abdominal supra no banco declinado', // #205
+    'Deslocamento lateral (skater)' => 'Salto lateral', // #258
+    'Pular corda alternando os pés' => 'Pular corda', // #266
+    'Aceleração de 5 metros com mudança de direção' => 'Deslocamento frontal e posterior', // #279
+    'Desaceleração rotacional com medicine ball para golfe' => 'Rotação de tronco com medicine ball', // #294
+    'Deslocamento defensivo lateral com toque no cone' => 'Deslocamento lateral com toque no cone', // #295
+    'Educativo de corrida: dribling baixo' => 'Sprinting estacionário', // #298
+    'Equilíbrio na prancha de balanço' => 'Equilíbrio no bosu', // #301
+    'Golpe reto com halteres leves' => 'Sombra com halteres', // #309
+    'Rotação de tronco com anilha em guarda' => 'Rotação de tronco com anilha', // #329
+    'Polichinelo com abertura de braços em Y' => 'Polichinelo', // #368
+    'Alongamento dinâmico do flexor de quadril' => 'Afundo sem carga', // #371
+    'Deslizamento de escápula na parede (wall slide)' => 'Mobilidade de ombro YW na parede', // #377
+    'Liberação miofascial de banda iliotibial no rolo' => 'Liberação miofascial na posterior', // #381
+    'Rotação em quatro apoios com mão na nuca' => 'Mobilidade torácica rotação em 3 apoios', // #406
+    'Apoio unipodal com perturbação no elástico' => 'Apoio unipodal com elástico', // #418
+    'Cegonha com passagem de objeto' => 'Apoio unipodal com passagem de objeto', // #422
+    'Deslocamento sobre linha com obstáculos baixos' => 'Escada de agilidade', // #423
+    'Passada com pausa em apoio único' => 'Recuo com elevação de quadril', // #427
+    'Subida no step com pausa em apoio único' => 'Subida no step com elevação de quadril', // #431
+    'Descida controlada do step em apoio único' => 'Mobilidade de tornozelo no step', // #436
+    'Estabilização lombar em ponte com marcha' => 'Ponte alternando as pernas', // #445
+    'Rotação externa de ombro a 90 graus com elástico' => 'Abdução horizontal do ombro a 90 graus com elástico', // #463
+    'Alongamento de quadril em passada profunda com rotação' => 'Mobilidade de quadril com rotação de tronco', // #501
+    'Alongamento de virilha em agachamento profundo' => 'Alongamento de adutores agachado', // #507
+    'Postura da criança' => 'Balasana - postura de criança', // #508
+];
