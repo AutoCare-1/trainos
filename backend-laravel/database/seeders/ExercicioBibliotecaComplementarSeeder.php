@@ -203,7 +203,6 @@ class ExercicioBibliotecaComplementarSeeder extends Seeder
             // Aquecimento e preparação, carga baixa de propósito. Não entra aqui
             // nada que já exista com carga nos grupos de musculação.
             ['Marcha de ativação com elástico nos tornozelos', 'Ativação', 'Elástico', 'Parado no lugar, suba um joelho de cada vez vencendo a tensão do elástico.'],
-            ['Aquecimento articular de ombros com círculos', 'Ativação', 'Peso corporal', 'Braços estendidos, faça círculos pequenos crescendo até a amplitude total.'],
             ['Aquecimento de quadril com círculos em pé', 'Ativação', 'Peso corporal', 'Mãos na cintura, desenhe círculos amplos com o quadril nos dois sentidos.'],
             ['Polichinelo', 'Ativação', 'Peso corporal', 'Polichinelo terminando com os braços em diagonal, não acima da cabeça.'],
             ['Corrida no lugar com toque de calcanhar lateral', 'Ativação', 'Peso corporal', 'Corra parado tocando o calcanhar na mão do mesmo lado, aberta para fora.'],

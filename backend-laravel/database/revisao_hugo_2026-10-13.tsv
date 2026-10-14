@@ -242,7 +242,7 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 241	Funcional	Bear crawl	tirar (já tem um igual) || RESPOSTA 14/10: é igual ao #222 Mountain climber — tirar	RETIRADO
 242	Funcional	Bicicleta ergométrica	✅	ok
 243	Funcional	Box jump	✅	ok
-244	Funcional	Burpee box jump	movimento correto, mas a perna está entrando na parede na hora do burppe	pendente
+244	Funcional	Burpee box jump	movimento correto, mas a perna está entrando na parede na hora do burppe	VÍDEO APROVADO 14/10 (desacelerado 15%; aguarda instalar após o deploy)
 245	Funcional	Burpee com flexão	✅	ok
 246	Funcional	Burpee sem flexão	✅	ok
 247	Funcional	Caminhada inclinada na esteira	diminuir a velocidade e inclinar a esteira (ele está correndo na esteira reta)	pendente
@@ -346,7 +346,7 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 345	Esportivo	Tiro sentado com carga alta na bicicleta	tirar	RETIRADO
 346	Esportivo	Tríceps de finalização de braçada na polia	tirar	RETIRADO
 347	Esportivo	Troca rápida de pés no step (foot fire)	tirar (já tem um igual)	RETIRADO
-348	Ativação	Aquecimento articular de ombros com círculos	melhorar o movimento: realizar movimento mais circular	pendente
+348	Ativação	Aquecimento articular de ombros com círculos	melhorar o movimento: realizar movimento mais circular	RETIRADO 14/10 (decisão do Filipe depois de 2 rolagens; número fica vago)
 349	Ativação	Aquecimento de agachamento com bastão acima da cabeça	✅	ok
 350	Ativação	Aquecimento de coluna com rotações em pé	✅	ok
 351	Ativação	Aquecimento de joelho com extensão sentado sem carga	✅	ok

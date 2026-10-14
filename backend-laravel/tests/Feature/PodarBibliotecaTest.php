@@ -217,8 +217,9 @@ class PodarBibliotecaTest extends TestCase
     {
         $hugo = require database_path('biblioteca_retirada_hugo.php');
 
-        // 151 até 28/09 + 122 da lista de 13/10 (os outros 2 dela são substituídos).
-        $this->assertCount(273, $hugo);
+        // 151 até 28/09 + 122 da lista de 13/10 (os outros 2 dela são substituídos)
+        // + 1 em 14/10 (#348, apagado pelo Filipe depois das rolagens).
+        $this->assertCount(274, $hugo);
         $this->assertSame([], array_values(array_diff($hugo, $this->listaDeCorte())));
     }
 }

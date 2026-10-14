@@ -55,7 +55,6 @@ return [
     'Postura do pombo' => 'https://pub-9482945b571143e887b925bd2e0565e1.r2.dev/exercise-demos/postura-do-pombo.mp4',
     'Farmer walk' => 'https://pub-9482945b571143e887b925bd2e0565e1.r2.dev/exercise-demos/farmer-walk.mp4',
     'Suspensão na barra (dead hang)' => 'https://pub-9482945b571143e887b925bd2e0565e1.r2.dev/exercise-demos/suspensao-na-barra-dead-hang.mp4',
-    'Aquecimento articular de ombros com círculos' => 'https://pub-9482945b571143e887b925bd2e0565e1.r2.dev/exercise-demos/aquecimento-articular-de-ombros-com-circulos.mp4',
     'Aquecimento de agachamento com bastão acima da cabeça' => 'https://pub-9482945b571143e887b925bd2e0565e1.r2.dev/exercise-demos/aquecimento-de-agachamento-com-bastao-acima-da-cabeca.mp4',
     'Aquecimento de coluna com rotações em pé' => 'https://pub-9482945b571143e887b925bd2e0565e1.r2.dev/exercise-demos/aquecimento-de-coluna-com-rotacoes-em-pe.mp4',
     'Aquecimento de joelho com extensão sentado sem carga' => 'https://pub-9482945b571143e887b925bd2e0565e1.r2.dev/exercise-demos/aquecimento-de-joelho-com-extensao-sentado-sem-carga.mp4',

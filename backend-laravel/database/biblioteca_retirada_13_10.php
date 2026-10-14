@@ -139,4 +139,7 @@ return [
     497 => 'Alongamento de punho em extensão na mesa',
     500 => 'Alongamento de quadríceps na parede ajoelhado',
     328 => 'Rotação de ombro em decúbito ventral (nadador)',
+    // 14/10: o Filipe mandou apagar depois de duas rolagens (bambolê inventado,
+    // depois círculos pequenos).
+    348 => 'Aquecimento articular de ombros com círculos',
 ];
