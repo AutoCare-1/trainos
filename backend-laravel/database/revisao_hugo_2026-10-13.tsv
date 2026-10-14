@@ -98,7 +98,7 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 97	Tríceps	Paralela no gráviton	✅	ok
 98	Tríceps	Supino fechado com halteres	✅	ok
 99	Tríceps	Supino fechado no smith	nome: supino inclinado no smith - passar para o grupo de peito || RESPOSTA 14/10: refazer com banco reto e pegada na largura dos ombros, fica em Tríceps; nome pedido: "tríceps supinada no smith"	pendente
-100	Tríceps	Tríceps banco livre	deixar os pés no chão e não flutuando	pendente
+100	Tríceps	Tríceps banco livre	deixar os pés no chão e não flutuando	VÍDEO APROVADO 14/10 (aguarda instalar após o deploy; storage/app/private/higgsfield/hugo-13-10-aprovados/)
 101	Tríceps	Tríceps banco livre com pés suspensos	colocar um step ou banco nos pés para deixar suspenso	pendente
 102	Tríceps	Tríceps coice com halter	corrigir o movimento: apenas flexão e extensão do cotovelo	pendente
 103	Tríceps	Tríceps coice na polia	✅	ok
@@ -118,7 +118,7 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 117	Tríceps	Tríceps unilateral na polia alta	✅	ok
 118	Antebraço	Farmer walk	✅	ok
 119	Antebraço	Suspensão na barra (dead hang)	✅	ok
-120	Trapézio	Encolhimento com halteres	corrigir o movimento, realizar apenas elevação das escapulas. Ele está flexionando o cotovelo	pendente
+120	Trapézio	Encolhimento com halteres	corrigir o movimento, realizar apenas elevação das escapulas. Ele está flexionando o cotovelo	VÍDEO APROVADO 14/10 (aguarda instalar após o deploy; storage/app/private/higgsfield/hugo-13-10-aprovados/)
 121	Trapézio	Encolhimento com kettlebell	✅	ok
 122	Trapézio	Encolhimento de ombros com barra	✅	ok
 123	Trapézio	Encolhimento no smith	✅	ok
@@ -129,7 +129,7 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 128	Pernas	Agachamento com deslocamento lateral na toalha	✅	ok
 129	Pernas	Agachamento com elástico	✅	ok
 130	Pernas	Agachamento com halteres	✅	ok
-131	Pernas	Agachamento com kettlebell (goblet)	corrigir o kettlebell (colocar a alça)	pendente
+131	Pernas	Agachamento com kettlebell (goblet)	corrigir o kettlebell (colocar a alça)	VÍDEO APROVADO 14/10 (aguarda instalar após o deploy; storage/app/private/higgsfield/hugo-13-10-aprovados/)
 132	Pernas	Agachamento com peso corporal	✅	ok
 133	Pernas	Agachamento com salto	✅	ok
 134	Pernas	Agachamento cossaco	✅	ok
