@@ -216,7 +216,7 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 215	Core	Abdominal supra solo completo	✅	ok
 216	Core	Abdominal V-up	✅	ok
 217	Core	Bird dog	✅	ok
-218	Core	Dead bug	corrigir o movimento: ao baixar uma perna, apenas o braço oposto desce, não os dois	pendente
+218	Core	Dead bug	corrigir o movimento: ao baixar uma perna, apenas o braço oposto desce, não os dois	*REVER* VÍDEO APROVADO COM ASTERISCO 14/10 (montagem de 2 fotos com fade; o Filipe quer conferir de novo no futuro)
 219	Core	Flexão lateral com halter	✅	ok
 220	Core	L-sit nas paralelas	✅	ok
 221	Core	L-sit no solo	✅	ok
@@ -337,7 +337,7 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 336	Esportivo	Salto vertical com contramovimento e alcance	??? — RESPOSTA 14/10: FICA	ok (fica)
 337	Esportivo	Saque de tênis com medicine ball	tirar (já tem um igual)	RETIRADO
 338	Esportivo	Split step com salto	tirar	RETIRADO
-339	Esportivo	Sprawl	melhorar o movimento: sprawl não tem flexão de braço e na subida realiza o salto	pendente
+339	Esportivo	Sprawl	melhorar o movimento: sprawl não tem flexão de braço e na subida realiza o salto	VÍDEO APROVADO 14/10 (aguarda instalar após o deploy; storage/app/private/higgsfield/hugo-13-10-aprovados/)
 340	Esportivo	Streamline na parede	tirar	RETIRADO
 341	Esportivo	Suspensão em pegada aberta para escalada	tirar	RETIRADO
 342	Esportivo	Sustentação de tronco em posição aero	tirar (já tem um igual)	RETIRADO
@@ -362,7 +362,7 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 361	Ativação	Ativação de quadril com agachamento pulsado	✅	ok
 362	Ativação	Ativação de serrátil na parede	tirar	RETIRADO
 363	Ativação	Bom dia sem carga para aquecimento	✅	ok
-364	Ativação	Corrida no lugar com toque de calcanhar lateral	melhorar o movimento: mãos atrás dos glúteos e pés subindo sem virar para o lado	pendente
+364	Ativação	Corrida no lugar com toque de calcanhar lateral	melhorar o movimento: mãos atrás dos glúteos e pés subindo sem virar para o lado	VÍDEO APROVADO 14/10 (aguarda instalar após o deploy; storage/app/private/higgsfield/hugo-13-10-aprovados/)
 365	Ativação	Elevação de ponta do pé no degrau (tibial)	tirar	RETIRADO
 366	Ativação	Flexão escapular (scapular push-up)	tirar	RETIRADO
 367	Ativação	Marcha de ativação com elástico nos tornozelos	nome: marcha de ativação com elástico no pé. Melhorar a execução: colocar o elástico na ponta dos pés	pendente
@@ -463,7 +463,7 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 462	Prevenção	Retração e depressão escapular em decúbito ventral	nome: anjo em decúbito ventral. Corrigir o movimento: aumentar a amplitude, realizando a circundação levando o braço a frente da cabeça depois até os glúteos || RESPOSTA 14/10: mesmo exercício que o #328 — apagar um dos dois e refazer o vídeo do que ficar	pendente
 463	Prevenção	Rotação externa de ombro a 90 graus com elástico	nome: abdução horizontal do ombro a 90 graus com elástico	RENOMEADO -> Abdução horizontal do ombro a 90 graus com elástico
 464	Alongamento	Alongamento cervical lateral	✅	ok
-465	Alongamento	Alongamento de abdome em decúbito ventral (esfinge)	corrigir o movimento: pernas no chão, mantendo a região do tronco elevada, olhando para cima	pendente
+465	Alongamento	Alongamento de abdome em decúbito ventral (esfinge)	corrigir o movimento: pernas no chão, mantendo a região do tronco elevada, olhando para cima	VÍDEO APROVADO 14/10 (aguarda instalar após o deploy; storage/app/private/higgsfield/hugo-13-10-aprovados/)
 466	Alongamento	Alongamento de adutores em afastamento lateral	✅	ok
 467	Alongamento	Alongamento de adutores sentado (borboleta)	✅	ok
 468	Alongamento	Alongamento de antebraço em extensão	tirar	RETIRADO
