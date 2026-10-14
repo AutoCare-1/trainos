@@ -269,14 +269,14 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 268	Funcional	Remo ergômetro	✅	ok
 269	Funcional	Salto com afundo alternado	✅	ok
 270	Funcional	Salto horizontal	melhorar o movimento: fazer um salto com deslocamento maior para frente	VÍDEO APROVADO 14/10 (aguarda instalar após o deploy; storage/app/private/higgsfield/hugo-13-10-aprovados/)
-271	Funcional	Salto no step alternado	ajustar o movimento: é para descer e subir no step e não ficar encima	pendente
+271	Funcional	Salto no step alternado	ajustar o movimento: é para descer e subir no step e não ficar encima	VÍDEO APROVADO 14/10 (aguarda instalar após o deploy; storage/app/private/higgsfield/hugo-13-10-aprovados/)
 272	Funcional	Salto vertical	aumentar a altura do salto	VÍDEO APROVADO 14/10 (aguarda instalar após o deploy; storage/app/private/higgsfield/hugo-13-10-aprovados/)
 273	Funcional	Sprint na esteira	✅	ok
 274	Funcional	Swing com kettlebell americano	✅	ok
 275	Funcional	Thruster com barra	ajustar o movimento: ao descer a barra, ela fica na frente, não atrás nas costas	VÍDEO APROVADO 14/10 (aguarda instalar após o deploy; storage/app/private/higgsfield/hugo-13-10-aprovados/)
 276	Funcional	Thruster com halteres	✅	ok
 277	Funcional	Turkish get-up	tirar	RETIRADO
-278	Funcional	Wall ball	melhorar o movimento: ele deve estar de frente para a parede, jogando a bola no alvo, não de lado para a parede	pendente
+278	Funcional	Wall ball	melhorar o movimento: ele deve estar de frente para a parede, jogando a bola no alvo, não de lado para a parede	VÍDEO APROVADO 14/10 (aguarda instalar após o deploy; storage/app/private/higgsfield/hugo-13-10-aprovados/)
 279	Esportivo	Aceleração de 5 metros com mudança de direção	nome: deslocamento frontal e posterior	RENOMEADO -> Deslocamento frontal e posterior
 280	Esportivo	Aceleração de braço com elástico para arremesso	tirar	RETIRADO
 281	Esportivo	Agachamento em base de surf com rotação	✅	ok
