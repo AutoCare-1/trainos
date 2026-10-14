@@ -15,6 +15,8 @@ class Exercise extends Model
 
     protected $fillable = ['name', 'muscle_group', 'equipment', 'instructions', 'video_url', 'image_url', 'image_credit'];
 
+    protected $casts = ['numero_revisao' => 'integer'];
+
     public function workoutExercises(): HasMany
     {
         return $this->hasMany(WorkoutExercise::class);

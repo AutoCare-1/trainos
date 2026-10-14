@@ -118,8 +118,21 @@ function porNome(a: Exercise, b: Exercise): number {
  * Tem que bater com `php artisan exercicios:numerar-biblioteca` — se a ordem
  * mudar de um lado, muda dos dois. O número não é fixo: entrou exercício novo
  * num grupo anterior, todo o resto anda pra frente.
+ *
+ * EXCETO enquanto a numeração está congelada (`numero_revisao`, lista do Hugo
+ * de 13/10/2026): aí vale o número gravado, rename não mexe nele e retirada
+ * deixa buraco — o 401 continua 401. Quem não tem número gravado fica sem.
+ * O cálculo acima só volta quando nenhum exercício tiver número congelado.
  */
 export function numerarBiblioteca(exercises: Exercise[]): Map<string, number> {
+  if (exercises.some((ex) => ex.numero_revisao != null)) {
+    const congelados = new Map<string, number>()
+    for (const ex of exercises) {
+      if (ex.numero_revisao != null) congelados.set(ex.id, ex.numero_revisao)
+    }
+    return congelados
+  }
+
   const ordenados = [...exercises].sort(
     (a, b) =>
       posicao(a.muscle_group) - posicao(b.muscle_group) ||

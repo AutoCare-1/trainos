@@ -289,6 +289,8 @@ export interface Exercise {
   image_url: string | null
   image_credit: string | null
   video_customizado?: boolean
+  /** Número congelado da lista de revisão do Hugo (13/10/2026); null = sem número. */
+  numero_revisao?: number | null
 }
 
 export interface Workout {

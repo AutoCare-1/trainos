@@ -84,6 +84,11 @@ php artisan exercicios:aplicar-demonstracoes || true
 # database/revisao_hugo_de_para.md.
 php artisan exercicios:podar-biblioteca --revisao-hugo --force || true
 
+# Número congelado da tela de vídeos (lista do Hugo de 13/10/2026). Roda depois
+# do rename e da poda: segue os renomes a partir do nome que o Hugo viu, e quem
+# foi retirado deixa o número vago — o 401 continua 401. Idempotente.
+php artisan exercicios:congelar-numeracao || true
+
 # Tipos de notificação. Faltava aqui: sem eles a tela de notificações do
 # personal sobe vazia e nenhum aviso é disparado, porque tudo é resolvido por
 # esse catálogo. É updateOrCreate pela chave, então rodar sempre é seguro.

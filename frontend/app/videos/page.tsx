@@ -69,10 +69,18 @@ export default function VideosPage() {
   }
 
   const gruposDisponiveis = contarPorGrupo(exercises ?? [])
-  const gruposFiltrados = filtrarEAgrupar(exercises ?? [], buscaExercicio, grupoMuscular)
   // Número fixo da biblioteca inteira (não muda com busca/filtro): é o que o
   // personal informa quando um vídeo de demonstração está errado.
   const numeros = numerarBiblioteca(exercises ?? [])
+  // Dentro de cada grupo, na ordem do número: com a numeração congelada um
+  // exercício renomeado manteria o número antigo mas mudaria de lugar na ordem
+  // alfabética, e quem confere pela lista se perderia. Sem número, vai pro fim.
+  const gruposFiltrados = filtrarEAgrupar(exercises ?? [], buscaExercicio, grupoMuscular).map((g) => ({
+    ...g,
+    itens: [...g.itens].sort(
+      (a, b) => (numeros.get(a.id) ?? Infinity) - (numeros.get(b.id) ?? Infinity)
+    ),
+  }))
 
   return (
     <>
@@ -129,7 +137,9 @@ export default function VideosPage() {
                     />
                     <div className="min-w-0 flex-1">
                       <p className="text-sm font-medium text-ink">
-                        <span className="text-ink-muted tabular-nums">#{numeros.get(ex.id)}</span>{' '}
+                        {numeros.has(ex.id) && (
+                          <span className="text-ink-muted tabular-nums">#{numeros.get(ex.id)} </span>
+                        )}
                         {ex.name}
                       </p>
                       <p className="text-xs text-ink-muted">
