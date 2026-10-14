@@ -155,14 +155,6 @@ class ExerciseSeeder extends Seeder
                 'image_credit' => 'barry · CC-BY-SA 4 (wger.de)',
             ],
             [
-                'name' => 'Remada unilateral com halter',
-                'muscle_group' => 'Costas',
-                'equipment' => 'Halteres',
-                'instructions' => 'Apoiado no banco, puxe o halter em direção ao quadril de um lado por vez.',
-                'image_url' => '/exercise-photos/remada-unilateral-com-halter.png',
-                'image_credit' => 'Rottekongen · CC-BY-SA 4 (wger.de)',
-            ],
-            [
                 'name' => 'Corrida na esteira',
                 'muscle_group' => 'Funcional',
                 'equipment' => 'Esteira',
@@ -193,14 +185,6 @@ class ExerciseSeeder extends Seeder
                 'instructions' => 'Costas apoiadas no banco, eleve o quadril contraindo os glúteos no topo.',
                 'image_url' => '/exercise-photos/elevacao-de-quadril-hip-thrust.webp',
                 'image_credit' => 'AlucardEvil40 · CC-BY-SA 4 (wger.de)',
-            ],
-            [
-                'name' => 'Glúteo no cabo (coice)',
-                'muscle_group' => 'Glúteos',
-                'equipment' => 'Polia',
-                'instructions' => 'Empurre a perna para trás e para cima contraindo o glúteo.',
-                'image_url' => '/exercise-photos/gluteo-no-cabo-coice.jpg',
-                'image_credit' => 'Tierrasverdes · CC-BY-SA 4 (wger.de)',
             ],
             [
                 'name' => 'Desenvolvimento lateral com halteres sentado',
@@ -337,14 +321,6 @@ class ExerciseSeeder extends Seeder
                 'instructions' => 'Pé de trás apoiado no banco, desça o joelho da frente controladamente.',
                 'image_url' => '/exercise-photos/agachamento-bulgaro.jpg',
                 'image_credit' => 'AlucardEvil40 · CC-BY-SA 4 (wger.de)',
-            ],
-            [
-                'name' => 'Agachamento livre',
-                'muscle_group' => 'Pernas',
-                'equipment' => 'Barra',
-                'instructions' => 'Pés na largura dos ombros, desça controlando o quadril para trás, mantenha o tronco ereto.',
-                'image_url' => '/exercise-photos/agachamento-livre.jpg',
-                'image_credit' => 'Workout Guru · CC-BY-SA 4 (wger.de)',
             ],
             [
                 'name' => 'Agachamento livre com halteres (goblet squat)',

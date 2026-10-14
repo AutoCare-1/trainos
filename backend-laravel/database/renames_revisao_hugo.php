@@ -164,4 +164,11 @@ return [
     'Alongamento de quadril em passada profunda com rotação' => 'Mobilidade de quadril com rotação de tronco', // #501
     'Alongamento de virilha em agachamento profundo' => 'Alongamento de adutores agachado', // #507
     'Postura da criança' => 'Balasana - postura de criança', // #508
+
+    // 13/10, dependem de uma retirada: o nome passa do #256 ao #253 e do #397
+    // ao #503 (biblioteca_substituida_hugo.php apaga o antigo). O #3 sai junto
+    // com o #4 pra não ficarem dois crucifixos inclinados lado a lado.
+    'Crucifixo declinado com halteres' => 'Crucifixo inclinado com halter', // #3
+    'Corrida com calcanhar no glúteo' => 'Corrida estacionária', // #253
+    'Alongamento de sóleo com joelho flexionado' => 'Mobilidade de tornozelo na parede', // #503
 ];

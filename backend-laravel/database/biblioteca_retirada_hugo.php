@@ -175,4 +175,7 @@ return [
 
     // 28/09: segunda rodada, sobre os vídeos já refeitos.
     ...require __DIR__.'/biblioteca_retirada_28_09.php',
+
+    // 13/10: lista nova do Hugo (numeração de 509), 122 nomes.
+    ...require __DIR__.'/biblioteca_retirada_13_10.php',
 ];

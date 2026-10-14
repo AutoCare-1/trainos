@@ -18,7 +18,7 @@
 // Ele NÃO é estável: se a poda dos 147 rodar, tudo se desloca. O nome é a
 // chave confiável.
 return [
-    7 => ['nome' => 'Crucifixo declinado com halteres', 'grupo' => 'Peito', 'arquivo' => '7.mp4'],
+    7 => ['nome' => 'Crucifixo inclinado com halter', 'grupo' => 'Peito', 'arquivo' => '7.mp4'],
     8 => ['nome' => 'Crucifixo inclinado com halteres', 'grupo' => 'Peito', 'arquivo' => '8.mp4'],
     11 => ['nome' => 'Crucifixo reto com halter', 'grupo' => 'Peito', 'arquivo' => '11.mp4'],
     14 => ['nome' => 'Flexão de braço', 'grupo' => 'Peito', 'arquivo' => '14.mp4'],

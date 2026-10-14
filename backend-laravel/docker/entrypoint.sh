@@ -55,6 +55,13 @@ done
 
 php artisan migrate --force
 
+# Número congelado da tela de vídeos (lista do Hugo de 13/10/2026), 1º passo:
+# ANTES do rename, pelo nome exato — no deploy em que os renomes entram, os
+# nomes ainda são os que o Hugo viu, então cada número cai na linha certa (mesmo
+# id) e vai junto no rename. Número gravado nunca é trocado; quem é retirado
+# deixa o número vago. Idempotente.
+php artisan exercicios:congelar-numeracao --antes-do-rename || true
+
 # Renomeações da biblioteca (database/renames_revisao_hugo.php), pedidas pelo
 # personal que testa o app. Roda ANTES dos seeders de propósito: o nome é a
 # chave do updateOrCreate, então com a ordem invertida o seeder criaria um
@@ -84,9 +91,9 @@ php artisan exercicios:aplicar-demonstracoes || true
 # database/revisao_hugo_de_para.md.
 php artisan exercicios:podar-biblioteca --revisao-hugo --force || true
 
-# Número congelado da tela de vídeos (lista do Hugo de 13/10/2026). Roda depois
-# do rename e da poda: segue os renomes a partir do nome que o Hugo viu, e quem
-# foi retirado deixa o número vago — o 401 continua 401. Idempotente.
+# Número congelado, 2º passo: só pra banco criado do zero (os seeders já nascem
+# com o nome novo). Segue os renomes a partir do nome que o Hugo viu; na produção
+# não acha nada a fazer, porque o 1º passo já numerou todo mundo.
 php artisan exercicios:congelar-numeracao || true
 
 # Tipos de notificação. Faltava aqui: sem eles a tela de notificações do

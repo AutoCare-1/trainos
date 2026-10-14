@@ -1,14 +1,14 @@
 n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 1	Peito	Crossover	✅	ok
 2	Peito	Crucifixo	nome: crucifixo na máquina	RENOMEADO -> Crucifixo na máquina
-3	Peito	Crucifixo declinado com halteres	nome: crucifixo inclinado com halter	pendente
-4	Peito	Crucifixo inclinado com halteres	tirar	pendente
+3	Peito	Crucifixo declinado com halteres	nome: crucifixo inclinado com halter	RENOMEADO -> Crucifixo inclinado com halter
+4	Peito	Crucifixo inclinado com halteres	tirar	RETIRADO
 5	Peito	Crucifixo reto	nome: crucifixo reto com halter	RENOMEADO -> Crucifixo reto com halter
 6	Peito	Crucifixo unilateral	nome: crucifixo unilateral na máquina	RENOMEADO -> Crucifixo unilateral na máquina
 7	Peito	Flexão com rotação	✅	ok
 8	Peito	Flexão de braço	✅	ok
 9	Peito	Flexão de braço com joelhos apoiados	✅	ok
-10	Peito	Flexão de braço com pegada aberta	tirar	pendente
+10	Peito	Flexão de braço com pegada aberta	tirar	RETIRADO
 11	Peito	Flexão de braço inclinada	nome: flexão de braço inclinado no banco	RENOMEADO -> Flexão de braço inclinado no banco
 12	Peito	Flexão de braço no TRX	✅	ok
 13	Peito	Paralelas (mergulho)	✅	ok
@@ -16,7 +16,7 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 15	Peito	Pullover	nome: Pullover deitado com halter	RENOMEADO -> Pullover deitado com halter
 16	Peito	Pullover na polia alta	nome: Pullover na polia alta com barra	RENOMEADO -> Pullover na polia alta com barra
 17	Peito	Supino declinado	ajustar o banco e posição	pendente
-18	Peito	Supino declinado com halteres	tirar	pendente
+18	Peito	Supino declinado com halteres	tirar	RETIRADO
 19	Peito	Supino inclinado	nome: supino inclinado com barra	RENOMEADO -> Supino inclinado com barra
 20	Peito	Supino inclinado com halteres	✅	ok
 21	Peito	Supino inclinado na máquina	✅	ok
@@ -30,11 +30,11 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 29	Costas	Barra fixa pegada neutra	mudar a pegada para neutra e colocar a mão no local correto	pendente
 30	Costas	Barra fixa pegada supinada (chin-up)	deixar as duas mãos supinadas e corrigir o bug do movimento (a barra tá saindo do lugar)	pendente
 31	Costas	Bom dia com barra	✅	ok
-32	Costas	Extensão lombar na máquina	tirar	pendente
+32	Costas	Extensão lombar na máquina	tirar	RETIRADO
 33	Costas	Face pull	corrigir o movimento, a posição é de frente para a máquina, trazendo a corda em direção ao rosto, não empurrando a frente	pendente
 34	Costas	Levantamento terra com halteres	nome: stiff com halteres (colocar no grupo de posterior) || RESPOSTA 14/10: MANTÉM o nome "Levantamento terra com halteres"; refazer com mais flexão de joelho (não muda de grupo)	pendente
 35	Costas	Puxada frente	✅	ok
-36	Costas	Puxada frontal ajoelhado na polia	tirar	pendente
+36	Costas	Puxada frontal ajoelhado na polia	tirar	RETIRADO
 37	Costas	Puxada frontal pegada neutra	nome: puxada neutra	RENOMEADO -> Puxada neutra
 38	Costas	Puxada frontal pegada supinada	nome: puxada aberta	RENOMEADO -> Puxada aberta
 39	Costas	Puxada triângulo	mudar a barra neutra pelo triângulo	pendente
@@ -42,14 +42,14 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 41	Costas	Remada alta na polia	colocar no grupo de ombro	pendente
 42	Costas	Remada baixa	nome: remada baixa com triângulo	RENOMEADO -> Remada baixa com triângulo
 43	Costas	Remada baixa unilateral	✅	ok
-44	Costas	Remada com argola	tirar	pendente
+44	Costas	Remada com argola	tirar	RETIRADO
 45	Costas	Remada curvada barra	nome: remada curvada barra pronada	RENOMEADO -> Remada curvada barra pronada
 46	Costas	Remada curvada com halteres	nome: remada curvada pronada com halteres	RENOMEADO -> Remada curvada pronada com halteres
 47	Costas	Remada curvada pegada supinada	ajustar a pegada (está pronada) para supinada e deixar o corpo mais inclinado	pendente
 48	Costas	Remada invertida no TRX	nome: remada pronada no trx	RENOMEADO -> Remada pronada no TRX
 49	Costas	Remada no banco inclinado	nome: remada neutra com halter no banco inclinado	RENOMEADO -> Remada neutra com halter no banco inclinado
 50	Costas	Remada serrote	nome: remada unilateral com halter (serrote)	RENOMEADO -> Remada unilateral com halter (serrote)
-51	Costas	Remada unilateral com halter	tirar	pendente
+51	Costas	Remada unilateral com halter	tirar	RETIRADO
 52	Costas	Remada unilateral com kettlebell	✅	ok
 53	Ombros	Crucifixo inverso com halteres	✅	ok
 54	Ombros	Crucifixo invertido no banco inclinado	✅	ok
@@ -71,7 +71,7 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 70	Ombros	Face pull ajoelhado	✅	ok
 71	Ombros	Push press	✅	ok
 72	Ombros	Remada alta com barra	✅	ok
-73	Ombros	Rotação externa com elástico	tirar	pendente
+73	Ombros	Rotação externa com elástico	tirar	RETIRADO
 74	Ombros	Rotação externa na polia	deixar a roldana mais encima para o cano ficar paralelo com o chão	pendente
 75	Ombros	Rotação interna na polia	deixar a roldana mais encima para o cano ficar paralelo com o chão	pendente
 76	Bíceps	Rosca alternada	✅	ok
@@ -107,7 +107,7 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 106	Tríceps	Tríceps francês na polia	realizar o movimento de costas para a máquina e não de lado	pendente
 107	Tríceps	Tríceps francês sentado com halter	✅	ok
 108	Tríceps	Tríceps francês unilateral	nome: tríceps francês unilateral com halter	RENOMEADO -> Tríceps francês unilateral com halter
-109	Tríceps	Tríceps na polia com barra V	tirar	pendente
+109	Tríceps	Tríceps na polia com barra V	tirar	RETIRADO
 110	Tríceps	Tríceps na polia com pegada cruzada	corrigir a máquina e bug na execução	pendente
 111	Tríceps	Tríceps na polia pegada supinada	mudar a posição para executar o movimento de frente para a máquina e não embaixo dela - nome: tríceps inverso na polia	pendente
 112	Tríceps	Tríceps pulley barra reta	mudar a pegada para pronada e corrigir a máquina (polia e placas)	pendente
@@ -136,11 +136,11 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 135	Pernas	Agachamento frontal	✅	ok
 136	Pernas	Agachamento frontal no smith	✅	ok
 137	Pernas	Agachamento isométrico na parede	✅	ok
-138	Pernas	Agachamento livre	tirar (já tem um igual)	pendente
+138	Pernas	Agachamento livre	tirar (já tem um igual)	RETIRADO
 139	Pernas	Agachamento livre com halteres (goblet squat)	✅	ok
 140	Pernas	Agachamento no smith	✅	ok
 141	Pernas	Agachamento no TRX	✅	ok
-142	Pernas	Agachamento sumô com barra	tirar (já tem um igual)	pendente
+142	Pernas	Agachamento sumô com barra	tirar (já tem um igual)	RETIRADO
 143	Pernas	Agachamento sumô com halteres	✅	ok
 144	Pernas	Agachamento sumô com kettlebell	✅	ok
 145	Pernas	Agachamento unilateral (pistol)	✅	ok
@@ -181,8 +181,8 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 180	Glúteos	Abdução de quadril na polia	✅	ok
 181	Glúteos	Abdução em pé com elástico	✅	ok
 182	Glúteos	Adução de quadril na polia	✅	ok
-183	Glúteos	Agachamento búlgaro com foco em glúteo	tirar (já tem um igual)	pendente
-184	Glúteos	Agachamento com elástico nos joelhos	tirar (já tem um igual)	pendente
+183	Glúteos	Agachamento búlgaro com foco em glúteo	tirar (já tem um igual)	RETIRADO
+184	Glúteos	Agachamento com elástico nos joelhos	tirar (já tem um igual)	RETIRADO
 185	Glúteos	Agachamento sumô profundo	nome: agachamento sumô - colocar no grupo de pernas	pendente
 186	Glúteos	Cadeira adutora	trocar a máquina, está é a cadeira aBdutora, trocar pela cadeira adutora	pendente
 187	Glúteos	Deslocamento lateral com miniband	corrigir o miniband, deixar apenas um encima do joelho	pendente
@@ -195,7 +195,7 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 194	Glúteos	Elevação pélvica solo unilateral	✅	ok
 195	Glúteos	Glúteo coice com caneleira	✅	ok
 196	Glúteos	Glúteo coice na polia	✅	ok
-197	Glúteos	Glúteo no cabo (coice)	tirar (já existe um igual)	pendente
+197	Glúteos	Glúteo no cabo (coice)	tirar (já existe um igual)	RETIRADO
 198	Panturrilha	Panturrilha em pé com halteres	✅	ok
 199	Panturrilha	Panturrilha em pé no step	✅	ok
 200	Panturrilha	Panturrilha no leg press	corrigir o movimento, ele está fazendo o Leg press. Realizar apenas a flexão plantar e dorsiflexão mantendo os joelhos estendidos	pendente
@@ -239,7 +239,7 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 238	Core	Toes to bar	corrigir a mão, colocando no local de pegada correto	pendente
 239	Funcional	Airbike	✅	ok
 240	Funcional	Arremesso de medicine ball no solo	✅	ok
-241	Funcional	Bear crawl	tirar (já tem um igual) || RESPOSTA 14/10: é igual ao #222 Mountain climber — tirar	pendente
+241	Funcional	Bear crawl	tirar (já tem um igual) || RESPOSTA 14/10: é igual ao #222 Mountain climber — tirar	RETIRADO
 242	Funcional	Bicicleta ergométrica	✅	ok
 243	Funcional	Box jump	✅	ok
 244	Funcional	Burpee box jump	movimento correto, mas a perna está entrando na parede na hora do burppe	pendente
@@ -247,25 +247,25 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 246	Funcional	Burpee sem flexão	✅	ok
 247	Funcional	Caminhada inclinada na esteira	diminuir a velocidade e inclinar a esteira (ele está correndo na esteira reta)	pendente
 248	Funcional	Clean and press com barra	colocar em um cenário próprio para jogar a barra no chão	pendente
-249	Funcional	Clean com kettlebell	tirar	pendente
-250	Funcional	Corda naval	tirar (já tem um igual)	pendente
+249	Funcional	Clean com kettlebell	tirar	RETIRADO
+250	Funcional	Corda naval	tirar (já tem um igual)	RETIRADO
 251	Funcional	Corda naval alternada	✅	ok
 252	Funcional	Corda naval simultânea	✅	ok
-253	Funcional	Corrida com calcanhar no glúteo	nome: corrida estacionária	pendente
+253	Funcional	Corrida com calcanhar no glúteo	nome: corrida estacionária	RENOMEADO -> Corrida estacionária
 254	Funcional	Corrida com elevação de joelhos	elevar mais os joelhos	pendente
 255	Funcional	Corrida de vai e vem (shuttle run)	✅	ok
-256	Funcional	Corrida estacionária	tirar (já tem um igual)	pendente
+256	Funcional	Corrida estacionária	tirar (já tem um igual)	RETIRADO (o nome passou ao #253; quem apaga é o renomear)
 257	Funcional	Corrida na esteira	✅	ok
 258	Funcional	Deslocamento lateral (skater)	nome: salto lateral	RENOMEADO -> Salto lateral
 259	Funcional	Devil press com halteres	✅	ok
 260	Funcional	Elíptico	✅	ok
-261	Funcional	Flexão em pseudo planche	tirar (já tem um igual)	pendente
-262	Funcional	Front lever progressivo	tirar	pendente
+261	Funcional	Flexão em pseudo planche	tirar (já tem um igual)	RETIRADO
+262	Funcional	Front lever progressivo	tirar	RETIRADO
 263	Funcional	Man maker com halteres	✅	ok
 264	Funcional	Muscle-up na barra	✅	ok
 265	Funcional	Polichinelo com agachamento	✅	ok
 266	Funcional	Pular corda alternando os pés	nome: pular corda	RENOMEADO -> Pular corda
-267	Funcional	Pular corda duplo	tirar (já tem um igual)	pendente
+267	Funcional	Pular corda duplo	tirar (já tem um igual)	RETIRADO
 268	Funcional	Remo ergômetro	✅	ok
 269	Funcional	Salto com afundo alternado	✅	ok
 270	Funcional	Salto horizontal	melhorar o movimento: fazer um salto com deslocamento maior para frente	pendente
@@ -275,19 +275,19 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 274	Funcional	Swing com kettlebell americano	✅	ok
 275	Funcional	Thruster com barra	ajustar o movimento: ao descer a barra, ela fica na frente, não atrás nas costas	pendente
 276	Funcional	Thruster com halteres	✅	ok
-277	Funcional	Turkish get-up	tirar	pendente
+277	Funcional	Turkish get-up	tirar	RETIRADO
 278	Funcional	Wall ball	melhorar o movimento: ele deve estar de frente para a parede, jogando a bola no alvo, não de lado para a parede	pendente
 279	Esportivo	Aceleração de 5 metros com mudança de direção	nome: deslocamento frontal e posterior	RENOMEADO -> Deslocamento frontal e posterior
-280	Esportivo	Aceleração de braço com elástico para arremesso	tirar	pendente
+280	Esportivo	Aceleração de braço com elástico para arremesso	tirar	RETIRADO
 281	Esportivo	Agachamento em base de surf com rotação	✅	ok
-282	Esportivo	Arranque de 10 metros a partir da posição deitada	tirar	pendente
+282	Esportivo	Arranque de 10 metros a partir da posição deitada	tirar	RETIRADO
 283	Esportivo	Arremesso acima da cabeça com medicine ball	✅	ok
 284	Esportivo	Arremesso rotacional de medicine ball na parede	ajustar movimento: executar de forma unilateral de lado da parede	pendente
-285	Esportivo	Aterrissagem de salto em profundidade (drop jump)	tirar	pendente
-286	Esportivo	Batida de pernas no banco	tirar	pendente
+285	Esportivo	Aterrissagem de salto em profundidade (drop jump)	tirar	RETIRADO
+286	Esportivo	Batida de pernas no banco	tirar	RETIRADO
 287	Esportivo	Bloqueio duplo com salto lateral	✅	ok
 288	Esportivo	Chute com resistência de elástico	tirar o elástico que está no quadril	pendente
-289	Esportivo	Chute interno resistido no elástico	tirar	pendente
+289	Esportivo	Chute interno resistido no elástico	tirar	RETIRADO
 290	Esportivo	Condução de bola em ziguezague	✅	ok
 291	Esportivo	Corrida em curva fechada	✅	ok
 292	Esportivo	Cruzado com rotação de quadril no elástico	✅	ok
@@ -297,84 +297,84 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 296	Esportivo	Deslocamento em leque na quadra	??? — RESPOSTA 14/10: FICA	ok (fica)
 297	Esportivo	Deslocamento em quadra pequena com giro	??? — RESPOSTA 14/10: FICA	ok (fica)
 298	Esportivo	Educativo de corrida: dribling baixo	nome: spriting estacionário	RENOMEADO -> Sprinting estacionário
-299	Esportivo	Educativo de corrida: skipping A	tirar (já tem igual)	pendente
-300	Esportivo	Educativo de corrida: skipping B	tirar	pendente
+299	Esportivo	Educativo de corrida: skipping A	tirar (já tem igual)	RETIRADO
+300	Esportivo	Educativo de corrida: skipping B	tirar	RETIRADO
 301	Esportivo	Equilíbrio na prancha de balanço	nome: equilíbrio no bozu	RENOMEADO -> Equilíbrio no bosu
-302	Esportivo	Escalada horizontal na parede (traverse)	tirar	pendente
-303	Esportivo	Extensão de tronco em posição de guidão	tirar	pendente
+302	Esportivo	Escalada horizontal na parede (traverse)	tirar	RETIRADO
+303	Esportivo	Extensão de tronco em posição de guidão	tirar	RETIRADO
 304	Esportivo	Freio excêntrico de cotovelo pós-arremesso na polia	nome: elevação frontal unilateral na polia. Corrigir vídeo, tirar o cabo na frente dele	pendente
-305	Esportivo	Freio excêntrico de ombro na polia (pós-saque)	tirar	pendente
+305	Esportivo	Freio excêntrico de ombro na polia (pós-saque)	tirar	RETIRADO
 306	Esportivo	Giro de 180 graus com arranque	??? — RESPOSTA 14/10: FICA	ok (fica)
-307	Esportivo	Golpe de backhand com elástico	tirar	pendente
+307	Esportivo	Golpe de backhand com elástico	tirar	RETIRADO
 308	Esportivo	Golpe de forehand com elástico	??? — RESPOSTA 14/10: FICA	ok (fica)
 309	Esportivo	Golpe reto com halteres leves	sombra com halteres	RENOMEADO -> Sombra com halteres
 310	Esportivo	Joelhada com resistência de elástico	??? — RESPOSTA 14/10: FICA	ok (fica)
 311	Esportivo	Levantada técnica (technical stand-up)	??? — RESPOSTA 14/10: FICA	ok (fica)
 312	Esportivo	Manchete simulada com elástico	??? — RESPOSTA 14/10: FICA	ok (fica)
-313	Esportivo	Marcha atlética no plano	tirar	pendente
-314	Esportivo	Passada lateral defensiva com elástico na cintura	tirar	pendente
-315	Esportivo	Passada saltada (bounding)	tirar	pendente
-316	Esportivo	Passo cruzado para a rede	tirar	pendente
-317	Esportivo	Pedalada em cadência alta na bicicleta	tirar	pendente
-318	Esportivo	Pedalada unilateral na bicicleta	tirar	pendente
-319	Esportivo	Ponte de luta (ponte de pescoço assistida)	tirar	pendente
-320	Esportivo	Pop-up de surf no solo	tirar	pendente
-321	Esportivo	Pronossupinação com bastão lastrado	tirar	pendente
-322	Esportivo	Puxada com pegada de pinça para escalada	tirar	pendente
+313	Esportivo	Marcha atlética no plano	tirar	RETIRADO
+314	Esportivo	Passada lateral defensiva com elástico na cintura	tirar	RETIRADO
+315	Esportivo	Passada saltada (bounding)	tirar	RETIRADO
+316	Esportivo	Passo cruzado para a rede	tirar	RETIRADO
+317	Esportivo	Pedalada em cadência alta na bicicleta	tirar	RETIRADO
+318	Esportivo	Pedalada unilateral na bicicleta	tirar	RETIRADO
+319	Esportivo	Ponte de luta (ponte de pescoço assistida)	tirar	RETIRADO
+320	Esportivo	Pop-up de surf no solo	tirar	RETIRADO
+321	Esportivo	Pronossupinação com bastão lastrado	tirar	RETIRADO
+322	Esportivo	Puxada com pegada de pinça para escalada	tirar	RETIRADO
 323	Esportivo	Puxada de nado na polia deitado	??? — RESPOSTA 14/10: FICA	ok (fica)
 324	Esportivo	Puxada de nado no elástico (crawl)	??? — RESPOSTA 14/10: FICA	ok (fica)
 325	Esportivo	Puxada rotacional na polia alta (topspin)	??? — RESPOSTA 14/10: FICA	ok (fica)
-326	Esportivo	Remada de peito no elástico	tirar	pendente
-327	Esportivo	Remada de surf em decúbito ventral	tirar	pendente
-328	Esportivo	Rotação de ombro em decúbito ventral (nadador)	nome: anjo em decúbito ventral. Melhorar o movimento: gira o braço para frente da cabeça e depois até atrás do glúteo || RESPOSTA 14/10: mesmo exercício que o #462 — apagar um dos dois e refazer o vídeo do que ficar	pendente
+326	Esportivo	Remada de peito no elástico	tirar	RETIRADO
+327	Esportivo	Remada de surf em decúbito ventral	tirar	RETIRADO
+328	Esportivo	Rotação de ombro em decúbito ventral (nadador)	nome: anjo em decúbito ventral. Melhorar o movimento: gira o braço para frente da cabeça e depois até atrás do glúteo || RESPOSTA 14/10: mesmo exercício que o #462 — apagar um dos dois e refazer o vídeo do que ficar	RETIRADO (decisão do Filipe: mesmo exercício do #462, que fica)
 329	Esportivo	Rotação de tronco com anilha em guarda	nome: rotação de tronco com anilha	RENOMEADO -> Rotação de tronco com anilha
 330	Esportivo	Rotação de tronco explosiva na polia (saque)	??? — RESPOSTA 14/10: FICA	ok (fica)
-331	Esportivo	Rotação de tronco para swing de golfe na polia	tirar	pendente
-332	Esportivo	Salto alternado em profundidade	tirar	pendente
+331	Esportivo	Rotação de tronco para swing de golfe na polia	tirar	RETIRADO
+332	Esportivo	Salto alternado em profundidade	tirar	RETIRADO
 333	Esportivo	Salto contínuo com joelhos ao peito	nome: salto contínuo com joelho ao peito unilateral. Melhorar a execução: aumentar a amplitude da “joelhada” chegar mais próximo ao peito	pendente
 334	Esportivo	Salto de cabeceio com aterrissagem	??? — RESPOSTA 14/10: FICA	ok (fica)
 335	Esportivo	Salto lateral sobre linha com aterrissagem em apoio único	✅	ok
 336	Esportivo	Salto vertical com contramovimento e alcance	??? — RESPOSTA 14/10: FICA	ok (fica)
-337	Esportivo	Saque de tênis com medicine ball	tirar (já tem um igual)	pendente
-338	Esportivo	Split step com salto	tirar	pendente
+337	Esportivo	Saque de tênis com medicine ball	tirar (já tem um igual)	RETIRADO
+338	Esportivo	Split step com salto	tirar	RETIRADO
 339	Esportivo	Sprawl	melhorar o movimento: sprawl não tem flexão de braço e na subida realiza o salto	pendente
-340	Esportivo	Streamline na parede	tirar	pendente
-341	Esportivo	Suspensão em pegada aberta para escalada	tirar	pendente
-342	Esportivo	Sustentação de tronco em posição aero	tirar (já tem um igual)	pendente
-343	Esportivo	Swing de golfe resistido com elástico	tirar	pendente
-344	Esportivo	Tiro em subida na rampa	tirar	pendente
-345	Esportivo	Tiro sentado com carga alta na bicicleta	tirar	pendente
-346	Esportivo	Tríceps de finalização de braçada na polia	tirar	pendente
-347	Esportivo	Troca rápida de pés no step (foot fire)	tirar (já tem um igual)	pendente
+340	Esportivo	Streamline na parede	tirar	RETIRADO
+341	Esportivo	Suspensão em pegada aberta para escalada	tirar	RETIRADO
+342	Esportivo	Sustentação de tronco em posição aero	tirar (já tem um igual)	RETIRADO
+343	Esportivo	Swing de golfe resistido com elástico	tirar	RETIRADO
+344	Esportivo	Tiro em subida na rampa	tirar	RETIRADO
+345	Esportivo	Tiro sentado com carga alta na bicicleta	tirar	RETIRADO
+346	Esportivo	Tríceps de finalização de braçada na polia	tirar	RETIRADO
+347	Esportivo	Troca rápida de pés no step (foot fire)	tirar (já tem um igual)	RETIRADO
 348	Ativação	Aquecimento articular de ombros com círculos	melhorar o movimento: realizar movimento mais circular	pendente
 349	Ativação	Aquecimento de agachamento com bastão acima da cabeça	✅	ok
 350	Ativação	Aquecimento de coluna com rotações em pé	✅	ok
 351	Ativação	Aquecimento de joelho com extensão sentado sem carga	✅	ok
-352	Ativação	Aquecimento de ombro com halteres leves em três planos	tirar	pendente
-353	Ativação	Aquecimento de punhos e dedos	tirar	pendente
+352	Ativação	Aquecimento de ombro com halteres leves em três planos	tirar	RETIRADO
+353	Ativação	Aquecimento de punhos e dedos	tirar	RETIRADO
 354	Ativação	Aquecimento de quadril com círculos em pé	✅	ok
 355	Ativação	Aquecimento de quadril em passada com rotação torácica	✅	ok
 356	Ativação	Aquecimento de tronco com rotação e toque no pé	✅	ok
 357	Ativação	Aquecimento específico com barra vazia	✅	ok
-358	Ativação	Ativação de core com respiração 360 graus	tirar	pendente
-359	Ativação	Ativação de dorsal com puxada isométrica no elástico	tirar	pendente
+358	Ativação	Ativação de core com respiração 360 graus	tirar	RETIRADO
+359	Ativação	Ativação de dorsal com puxada isométrica no elástico	tirar	RETIRADO
 360	Ativação	Ativação de peitoral com isometria de palmas	✅	ok
 361	Ativação	Ativação de quadril com agachamento pulsado	✅	ok
-362	Ativação	Ativação de serrátil na parede	tirar	pendente
+362	Ativação	Ativação de serrátil na parede	tirar	RETIRADO
 363	Ativação	Bom dia sem carga para aquecimento	✅	ok
 364	Ativação	Corrida no lugar com toque de calcanhar lateral	melhorar o movimento: mãos atrás dos glúteos e pés subindo sem virar para o lado	pendente
-365	Ativação	Elevação de ponta do pé no degrau (tibial)	tirar	pendente
-366	Ativação	Flexão escapular (scapular push-up)	tirar	pendente
+365	Ativação	Elevação de ponta do pé no degrau (tibial)	tirar	RETIRADO
+366	Ativação	Flexão escapular (scapular push-up)	tirar	RETIRADO
 367	Ativação	Marcha de ativação com elástico nos tornozelos	nome: marcha de ativação com elástico no pé. Melhorar a execução: colocar o elástico na ponta dos pés	pendente
 368	Ativação	Polichinelo com abertura de braços em Y	nome: polichinelo	RENOMEADO -> Polichinelo
-369	Ativação	Retração escapular na polia baixa sentado	tirar	pendente
+369	Ativação	Retração escapular na polia baixa sentado	tirar	RETIRADO
 370	Mobilidade	Agachamento em cócoras com rotação alternada	melhorar execução: posição de cócoras, mãos por dentro das pernas e realizando a rotação de tronco elevando o braço de forma alternada	pendente
 371	Mobilidade	Alongamento dinâmico do flexor de quadril	nome: afundo sem carga	RENOMEADO -> Afundo sem carga
-372	Mobilidade	Balanço de perna frontal	tirar	pendente
+372	Mobilidade	Balanço de perna frontal	tirar	RETIRADO
 373	Mobilidade	Balanço de perna lateral	realizar o exercício no espaldar ou corrigir o bug da máquina mexendo. O exercício é sem carga	pendente
-374	Mobilidade	Cachorro olhando para baixo com pedalada	tirar	pendente
+374	Mobilidade	Cachorro olhando para baixo com pedalada	tirar	RETIRADO
 375	Mobilidade	Círculo de ombro com bastão	corrigir o bug. Realizar o movimento de giro levando o bastão de frente para trás do corpo	pendente
-376	Mobilidade	Círculo de quadril em quatro apoios	tirar	pendente
+376	Mobilidade	Círculo de quadril em quatro apoios	tirar	RETIRADO
 377	Mobilidade	Deslizamento de escápula na parede (wall slide)	mobilidade de ombro YW na parede	RENOMEADO -> Mobilidade de ombro YW na parede
 378	Mobilidade	Escorpião deitado	✅	ok
 379	Mobilidade	Gato e camelo	✅	ok
@@ -382,80 +382,80 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 381	Mobilidade	Liberação miofascial de banda iliotibial no rolo	liberação miofascial na posterior	RENOMEADO -> Liberação miofascial na posterior
 382	Mobilidade	Liberação miofascial de dorsal no rolo	corrigir o movimento: passar o rolo na região das costas	pendente
 383	Mobilidade	Liberação miofascial de panturrilha no rolo	✅	ok
-384	Mobilidade	Liberação miofascial de posterior de coxa no rolo	tirar (já tem um igual)	pendente
+384	Mobilidade	Liberação miofascial de posterior de coxa no rolo	tirar (já tem um igual)	RETIRADO
 385	Mobilidade	Liberação miofascial de quadríceps no rolo	✅	ok
 386	Mobilidade	Mobilidade cervical em flexão e extensão	✅	ok
-387	Mobilidade	Mobilidade de coluna em posição de criança	tirar	pendente
+387	Mobilidade	Mobilidade de coluna em posição de criança	tirar	RETIRADO
 388	Mobilidade	Mobilidade de coluna torácica sobre o rolo	melhorar o movimento: manter os glúteos no chão, deixar o rolo nas escapulas e realizar a hiperextensão da coluna	pendente
-389	Mobilidade	Mobilidade de cotovelo com rotação controlada	tirar	pendente
-390	Mobilidade	Mobilidade de joelho em círculos controlados	tirar	pendente
-391	Mobilidade	Mobilidade de ombro em suspensão passiva com pés apoiados	tirar	pendente
+389	Mobilidade	Mobilidade de cotovelo com rotação controlada	tirar	RETIRADO
+390	Mobilidade	Mobilidade de joelho em círculos controlados	tirar	RETIRADO
+391	Mobilidade	Mobilidade de ombro em suspensão passiva com pés apoiados	tirar	RETIRADO
 392	Mobilidade	Mobilidade de punho em quatro apoios	✅	ok
-393	Mobilidade	Mobilidade de quadril 90/90	tirar	pendente
-394	Mobilidade	Mobilidade de quadril em passada com apoio no cotovelo	tirar	pendente
+393	Mobilidade	Mobilidade de quadril 90/90	tirar	RETIRADO
+394	Mobilidade	Mobilidade de quadril em passada com apoio no cotovelo	tirar	RETIRADO
 395	Mobilidade	Mobilidade de quadril em pé com joelho alto e rotação	✅	ok
-396	Mobilidade	Mobilidade de tornozelo com elástico	tirar	pendente
-397	Mobilidade	Mobilidade de tornozelo na parede	tirar	pendente
-398	Mobilidade	Mobilidade torácica em quatro apoios (open book)	tirar	pendente
-399	Mobilidade	Passagem de bastão pela cabeça	tirar (já tem um igual)	pendente
-400	Mobilidade	Ponte torácica lateral	tirar (já tem um igual)	pendente
-401	Mobilidade	Respiração diafragmática deitada	tirar	pendente
+396	Mobilidade	Mobilidade de tornozelo com elástico	tirar	RETIRADO
+397	Mobilidade	Mobilidade de tornozelo na parede	tirar	RETIRADO (o nome passou ao #503; quem apaga é o renomear)
+398	Mobilidade	Mobilidade torácica em quatro apoios (open book)	tirar	RETIRADO
+399	Mobilidade	Passagem de bastão pela cabeça	tirar (já tem um igual)	RETIRADO
+400	Mobilidade	Ponte torácica lateral	tirar (já tem um igual)	RETIRADO
+401	Mobilidade	Respiração diafragmática deitada	tirar	RETIRADO
 402	Mobilidade	Rotação cervical controlada	✅	ok
-403	Mobilidade	Rotação de ombro no batente da porta	tirar	pendente
+403	Mobilidade	Rotação de ombro no batente da porta	tirar	RETIRADO
 404	Mobilidade	Rotação de quadril em pé (hip airplane)	✅	ok
 405	Mobilidade	Rotação de tronco sentado com bastão	✅	ok
 406	Mobilidade	Rotação em quatro apoios com mão na nuca	mobilidade torácica rotação em 3 apoios	RENOMEADO -> Mobilidade torácica rotação em 3 apoios
 407	Mobilidade	Rotação torácica deitado de lado	✅	ok
 408	Mobilidade	Sustentação em agachamento profundo com apoio	realizar o movimento no espaldar	pendente
-409	Mobilidade	Transição 90/90 com rotação	tirar	pendente
+409	Mobilidade	Transição 90/90 com rotação	tirar	RETIRADO
 410	Equilíbrio	Agachamento no bosu com apoio bipodal	✅	ok
 411	Equilíbrio	Agachamento unipodal no disco de equilíbrio	✅	ok
 412	Equilíbrio	Apoio unipodal com alcance de objeto no solo	✅	ok
-413	Equilíbrio	Apoio unipodal com alcance frontal	tirar	pendente
-414	Equilíbrio	Apoio unipodal com alcance multidirecional	tirar	pendente
+413	Equilíbrio	Apoio unipodal com alcance frontal	tirar	RETIRADO
+414	Equilíbrio	Apoio unipodal com alcance multidirecional	tirar	RETIRADO
 415	Equilíbrio	Apoio unipodal com movimento de braços em três planos	✅	ok
 416	Equilíbrio	Apoio unipodal com olhos abertos	✅	ok
 417	Equilíbrio	Apoio unipodal com olhos fechados	✅	ok
 418	Equilíbrio	Apoio unipodal com perturbação no elástico	nome: apoio unipodal com elástico	RENOMEADO -> Apoio unipodal com elástico
 419	Equilíbrio	Apoio unipodal em superfície instável	✅	ok
-420	Equilíbrio	Apoio unipodal sobre espuma com giro de cabeça	tirar	pendente
-421	Equilíbrio	Caminhada para trás em linha reta	tirar	pendente
+420	Equilíbrio	Apoio unipodal sobre espuma com giro de cabeça	tirar	RETIRADO
+421	Equilíbrio	Caminhada para trás em linha reta	tirar	RETIRADO
 422	Equilíbrio	Cegonha com passagem de objeto	apoio unipodal com passagem de objeto	RENOMEADO -> Apoio unipodal com passagem de objeto
 423	Equilíbrio	Deslocamento sobre linha com obstáculos baixos	escada de agilidade	RENOMEADO -> Escada de agilidade
 424	Equilíbrio	Elevação de joelho com equilíbrio e rotação	✅	ok
-425	Equilíbrio	Equilíbrio dinâmico em agachamento com transferência de peso	tirar	pendente
-426	Equilíbrio	Marcha em linha (tandem)	tirar	pendente
+425	Equilíbrio	Equilíbrio dinâmico em agachamento com transferência de peso	tirar	RETIRADO
+426	Equilíbrio	Marcha em linha (tandem)	tirar	RETIRADO
 427	Equilíbrio	Passada com pausa em apoio único	nome: recuo com elevação de quadril	RENOMEADO -> Recuo com elevação de quadril
 428	Equilíbrio	Prancha com apoio no bosu	✅	ok
-429	Equilíbrio	Salto frontal com aterrissagem em apoio único	tirar	pendente
-430	Equilíbrio	Salto sobre o bosu com aterrissagem estável	tirar	pendente
+429	Equilíbrio	Salto frontal com aterrissagem em apoio único	tirar	RETIRADO
+430	Equilíbrio	Salto sobre o bosu com aterrissagem estável	tirar	RETIRADO
 431	Equilíbrio	Subida no step com pausa em apoio único	nome: subida no step com elevação de quadril	RENOMEADO -> Subida no step com elevação de quadril
-432	Equilíbrio	Transferência de peso em base tandem com resistência elástica	tirar	pendente
+432	Equilíbrio	Transferência de peso em base tandem com resistência elástica	tirar	RETIRADO
 433	Equilíbrio	Transferência de peso lateral controlada	✅	ok
-434	Prevenção	Ativação de transverso do abdome deitado	tirar	pendente
-435	Prevenção	Controle de valgo dinâmico no step	tirar	pendente
+434	Prevenção	Ativação de transverso do abdome deitado	tirar	RETIRADO
+435	Prevenção	Controle de valgo dinâmico no step	tirar	RETIRADO
 436	Prevenção	Descida controlada do step em apoio único	nome: mobilidade de tornozelo no step	RENOMEADO -> Mobilidade de tornozelo no step
-437	Prevenção	Descompressão lombar com elevação de pernas na cadeira	tirar	pendente
-438	Prevenção	Deslizamento de calcanhar bilateral na toalha	tirar	pendente
-439	Prevenção	Deslizamento de isquiotibiais na toalha	tirar	pendente
+437	Prevenção	Descompressão lombar com elevação de pernas na cadeira	tirar	RETIRADO
+438	Prevenção	Deslizamento de calcanhar bilateral na toalha	tirar	RETIRADO
+439	Prevenção	Deslizamento de isquiotibiais na toalha	tirar	RETIRADO
 440	Prevenção	Dorsiflexão de tornozelo com elástico	corrigir o movimento: o elástico deve estar na ponta do pé e na direção oposta, não de lado. Ele deve fazer o movimento de dorsiflexão contra o peso do elástico	pendente
-441	Prevenção	Elevação de calcanhar excêntrica para tendão de aquiles	tirar	pendente
+441	Prevenção	Elevação de calcanhar excêntrica para tendão de aquiles	tirar	RETIRADO
 442	Prevenção	Elevação do arco plantar (short foot)	corrigir o movimento: realizar um arco, deixando apenas o calcanhar e dedos no chão	pendente
-443	Prevenção	Estabilização de tronco em posição de urso com toque	tirar	pendente
-444	Prevenção	Estabilização escapular em prancha com apoio na parede	tirar	pendente
+443	Prevenção	Estabilização de tronco em posição de urso com toque	tirar	RETIRADO
+444	Prevenção	Estabilização escapular em prancha com apoio na parede	tirar	RETIRADO
 445	Prevenção	Estabilização lombar em ponte com marcha	nome: ponte alternando as pernas	RENOMEADO -> Ponte alternando as pernas
 446	Prevenção	Estabilização lombar em quatro apoios com elástico	corrigir o elástico	pendente
 447	Prevenção	Eversão de tornozelo com elástico	corrigir o elástico que deve ser na lateral fazendo contrapeso	pendente
-448	Prevenção	Excêntrico de isquiotibiais na toalha com uma perna	tirar	pendente
-449	Prevenção	Excêntrico de sóleo unilateral no degrau	tirar	pendente
-450	Prevenção	Fortalecimento de pé com toalha	tirar	pendente
-451	Prevenção	Fortalecimento de pescoço com elástico em quatro direções	tirar	pendente
-452	Prevenção	Fortalecimento de pescoço em isometria manual	tirar	pendente
+448	Prevenção	Excêntrico de isquiotibiais na toalha com uma perna	tirar	RETIRADO
+449	Prevenção	Excêntrico de sóleo unilateral no degrau	tirar	RETIRADO
+450	Prevenção	Fortalecimento de pé com toalha	tirar	RETIRADO
+451	Prevenção	Fortalecimento de pescoço com elástico em quatro direções	tirar	RETIRADO
+452	Prevenção	Fortalecimento de pescoço em isometria manual	tirar	RETIRADO
 453	Prevenção	Inversão de tornozelo com elástico	corrigir bug no elástico	pendente
-454	Prevenção	Isometria de cervical em decúbito dorsal	tirar	pendente
+454	Prevenção	Isometria de cervical em decúbito dorsal	tirar	RETIRADO
 455	Prevenção	Mobilização de quadril em decúbito dorsal com elástico	✅	ok
-456	Prevenção	Mobilização neural do nervo ciático sentado	tirar	pendente
-457	Prevenção	Mobilização neural do nervo mediano	tirar	pendente
+456	Prevenção	Mobilização neural do nervo ciático sentado	tirar	RETIRADO
+457	Prevenção	Mobilização neural do nervo mediano	tirar	RETIRADO
 458	Prevenção	Ponte de glúteo com aperto de adutores	✅	ok
 459	Prevenção	Prancha de Copenhague	corrigir o movimento: apenas um pé apoiado no banco, o outro fica embaixo sem tocar no chão	pendente
 460	Prevenção	Prancha de Copenhague com joelho apoiado	corrigir o movimento: apenas um joelho apoiado no banco, o outro fica embaixo sem tocar no chão	pendente
@@ -466,42 +466,42 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 465	Alongamento	Alongamento de abdome em decúbito ventral (esfinge)	corrigir o movimento: pernas no chão, mantendo a região do tronco elevada, olhando para cima	pendente
 466	Alongamento	Alongamento de adutores em afastamento lateral	✅	ok
 467	Alongamento	Alongamento de adutores sentado (borboleta)	✅	ok
-468	Alongamento	Alongamento de antebraço em extensão	tirar	pendente
-469	Alongamento	Alongamento de antebraço em flexão	tirar	pendente
+468	Alongamento	Alongamento de antebraço em extensão	tirar	RETIRADO
+469	Alongamento	Alongamento de antebraço em flexão	tirar	RETIRADO
 470	Alongamento	Alongamento de banda iliotibial em pé	✅	ok
-471	Alongamento	Alongamento de bíceps na parede	tirar	pendente
-472	Alongamento	Alongamento de cadeia anterior em pé na parede	tirar	pendente
-473	Alongamento	Alongamento de cadeia lateral em pé com braço acima da cabeça	tirar (já tem um igual)	pendente
+471	Alongamento	Alongamento de bíceps na parede	tirar	RETIRADO
+472	Alongamento	Alongamento de cadeia anterior em pé na parede	tirar	RETIRADO
+473	Alongamento	Alongamento de cadeia lateral em pé com braço acima da cabeça	tirar (já tem um igual)	RETIRADO
 474	Alongamento	Alongamento de cadeia posterior com toalha	no lugar de uma toalha, usar o elástico	pendente
-475	Alongamento	Alongamento de coluna em torção sentado	tirar	pendente
+475	Alongamento	Alongamento de coluna em torção sentado	tirar	RETIRADO
 476	Alongamento	Alongamento de coluna suspenso na barra com pés no chão	✅	ok
 477	Alongamento	Alongamento de deltoide posterior cruzando o braço	✅	ok
 478	Alongamento	Alongamento de dorsal ajoelhado no banco	✅	ok
-479	Alongamento	Alongamento de dorsal na barra	tirar	pendente
+479	Alongamento	Alongamento de dorsal na barra	tirar	RETIRADO
 480	Alongamento	Alongamento de escaleno e cervical anterior	✅	ok
 481	Alongamento	Alongamento de flexores do quadril ajoelhado	melhorar o movimento: aumentar a amplitude (jogar o tronco mais para frente e joelho do chão mais para trás, realizando o alongamento)	pendente
 482	Alongamento	Alongamento de glúteo deitado (figura 4)	corrigir o movimento: perna cruzada, puxando a coxa por baixo	pendente
 483	Alongamento	Alongamento de glúteo sentado na cadeira	✅	ok
 484	Alongamento	Alongamento de isquiotibiais deitado com elástico	✅	ok
-485	Alongamento	Alongamento de isquiotibiais em passada com apoio no banco	tirar	pendente
-486	Alongamento	Alongamento de isquiotibiais em pé	tirar	pendente
+485	Alongamento	Alongamento de isquiotibiais em passada com apoio no banco	tirar	RETIRADO
+486	Alongamento	Alongamento de isquiotibiais em pé	tirar	RETIRADO
 487	Alongamento	Alongamento de isquiotibiais sentado	✅	ok
 488	Alongamento	Alongamento de lombar com joelhos cruzados	nome: mobilidade lombar com joelhos cruzados. Melhorar o movimento: realizar a rotação deixando o pé tocar no chão e depois voltar	pendente
 489	Alongamento	Alongamento de lombar em posição fetal	✅	ok
-490	Alongamento	Alongamento de manguito rotador na porta	tirar	pendente
+490	Alongamento	Alongamento de manguito rotador na porta	tirar	RETIRADO
 491	Alongamento	Alongamento de ombro em rotação interna com toalha	mobilidade de ombro. Realizar com elástico	pendente
 492	Alongamento	Alongamento de panturrilha na parede	melhorar o movimento: não há necessidade de ficar com as pernas afastadas. Apenas uma um pouco atrás e a outra na frente com a ponta do pé na parede e o corpo inclinado para frente	pendente
-493	Alongamento	Alongamento de peitoral com as mãos atrás da cabeça	tirar	pendente
-494	Alongamento	Alongamento de peitoral no batente	tirar	pendente
+493	Alongamento	Alongamento de peitoral com as mãos atrás da cabeça	tirar	RETIRADO
+494	Alongamento	Alongamento de peitoral no batente	tirar	RETIRADO
 495	Alongamento	Alongamento de piriforme sentado	✅	ok
-496	Alongamento	Alongamento de psoas em decúbito dorsal na maca	tirar	pendente
-497	Alongamento	Alongamento de punho em extensão na mesa	tirar	pendente
+496	Alongamento	Alongamento de psoas em decúbito dorsal na maca	tirar	RETIRADO
+497	Alongamento	Alongamento de punho em extensão na mesa	tirar	RETIRADO
 498	Alongamento	Alongamento de quadríceps deitado de lado	corrigir o movimento: manter a perna de baixo estendida. Puxar a perna flexionada mais para trás para realizar o alongamento correto	pendente
 499	Alongamento	Alongamento de quadríceps em pé	✅	ok
-500	Alongamento	Alongamento de quadríceps na parede ajoelhado	tirar	pendente
+500	Alongamento	Alongamento de quadríceps na parede ajoelhado	tirar	RETIRADO
 501	Alongamento	Alongamento de quadril em passada profunda com rotação	nome: mobilidade de quadril com rotação de tronco	RENOMEADO -> Mobilidade de quadril com rotação de tronco
 502	Alongamento	Alongamento de rotadores externos deitado (sleeper stretch)	nome: mobilidade torácica livro em decúbito lateral. Melhorar o movimento: perna de baixo estendida e a de cima flexionada com o joelho no chão. Realizar o movimento girando o braço de cima e espiando do a caixa torácica até o máximo de amplitude sem tirar o joelho do chão	pendente
-503	Alongamento	Alongamento de sóleo com joelho flexionado	nome: mobilidade de tornozelo na parede	pendente
+503	Alongamento	Alongamento de sóleo com joelho flexionado	nome: mobilidade de tornozelo na parede	RENOMEADO -> Mobilidade de tornozelo na parede
 504	Alongamento	Alongamento de tibial anterior ajoelhado	✅	ok
 505	Alongamento	Alongamento de trapézio superior sentado	✅	ok
 506	Alongamento	Alongamento de tríceps acima da cabeça	corrigir o bug - um braço atravessa o outro	pendente

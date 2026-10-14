@@ -9,4 +9,7 @@ return [
     'Rosca direta com halteres',
     'Leg press horizontal',
     'Stiff unilateral',
+    // 13/10: o nome passa do #256 ao #253 e do #397 ao #503 (lista de 509).
+    'Corrida estacionária',
+    'Mobilidade de tornozelo na parede',
 ];
