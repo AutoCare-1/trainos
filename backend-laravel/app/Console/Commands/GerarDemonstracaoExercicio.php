@@ -232,6 +232,10 @@ class GerarDemonstracaoExercicio extends Command
                 // 'continuo': cardio de ritmo (corrida no lugar). "Repete duas vezes,
                 // suave e controlado" puxava pra dois passos lentos, e o Filipe quer
                 // a velocidade de corrida (#254, 14/10).
+                // 'unico': UMA repetição em velocidade natural. Pra movimento que
+                // atravessa o quadro (salto horizontal): dois saltos longos em 4s
+                // tiravam a pessoa da imagem (#270, 14/10).
+                ($ajuste['unico'] ?? false) => 'He performs ONE single repetition only, at natural speed, and never a second one.',
                 ($ajuste['continuo'] ?? false) => 'He keeps the movement going continuously at a steady brisk rhythm for the whole clip, without stopping.',
                 ($ajuste['lento'] ?? false) => 'He performs ONE single repetition only, slowly and under full control, taking the whole clip to travel from the start position to the end position and back: the movement is unhurried and easy to follow, and he never does a second repetition.',
                 default => 'He repeats the full movement twice, smoothly and under control.',
