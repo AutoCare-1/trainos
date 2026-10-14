@@ -1529,4 +1529,17 @@ $hugoPendentes29 = [
     'Panturrilha unilateral no leg press' => ['lento' => true, 'cena' => 'He sits in a SEATED LEG PRESS machine, filmed from the SIDE, back against the backrest. Only his RIGHT leg is on the footplate, STRAIGHT with the knee locked for the whole clip; his LEFT foot rests flat on the floor beside the seat and never moves. Only the BALL of the right foot and its toes are on the very bottom edge of the footplate, with that heel hanging off the edge in empty air. The ONLY joint that moves is the right ANKLE. '.sprintf($umaPosicaoLenta, 'the right ankle is flexed so the heel drops BELOW the edge of the plate and the toes point back toward the shin', 'the right foot is pointed as far as it goes, like a ballet dancer on tiptoe, pushing the plate AWAY with the toes, calf hard').' It is never a normal leg press: the right knee stays straight and never folds, and the left leg never touches the plate. '.$salaMusculacao],
 ];
 
-return array_replace($base, $maquinas, $outras, $complementar, $revisaoNumerada, $revisaoHugo, $revisaoHugoMaquinas, $terceiraPassada, $revisaoHugoHalteres, $revisaoHugoCorpo, $revisaoHugoCore, $revisaoHugoPolia, $revisaoHugoPesoLivre, $revisaoHugoMistos, $segundaPassadaHugo, $segundaPassadaLote1, $segundaPassadaLote2, $filaRenomeada, $amplitudeAmostra, $hugoPendentes29);
+// Lista do Hugo de 13/10 (numeração de 509) — amostra 1, aprovada pelo Filipe
+// em 14/10 antes de gerar. #254 joelho mais alto, #272 salto mais alto, #206
+// mãos no chão. Câmera de lado nos três: de frente some a altura do joelho e
+// do salto. A execução do #254 é copiada porque array_replace é raso.
+// #254, 2ª rolagem (14/10): na 1ª a coxa parou uns 30-40° abaixo do quadril.
+$hugo13_10Amostra1 = [
+    'Corrida com elevação de joelhos' => ['execucao' => 'Correndo no lugar, eleve alternadamente os joelhos bem alto, com a coxa na horizontal ou acima dela, em ritmo rápido.', 'cena' => 'Filmed from the SIDE. He runs in place, driving each knee UP HIGH until the thigh is horizontal or higher — the knee rises to the height of his belly button, ABOVE his hip, knee bent at 90 degrees — while the other foot stays on the floor, alternating legs. The thigh is never angled down below the hip line at the top of the step. '.$salaMusculacao],
+
+    'Salto vertical' => ['cena' => 'Filmed from the SIDE. START POSITION: deep squat, thighs almost parallel to the floor, arms swung back. END POSITION: an explosive jump, whole body straight in the air, arms reaching overhead, both shoes clearly HIGH off the floor — a gap of about knee height between the shoes and the floor. He lands softly back into the squat. Never a small hop where the feet barely leave the floor. '.$salaMusculacao],
+
+    'Abdominal infra (elevação de pernas)' => ['cena' => 'Filmed from the SIDE. He lies flat on his back, head and shoulders resting on the floor the whole time, both arms straight along his sides with the PALMS pressed FLAT on the floor next to his hips — the hands never lift or float in the air. START POSITION: legs straight, heels just above the floor. END POSITION: legs straight, raised to vertical at 90 degrees; then he lowers them slowly. '.$salaMusculacao],
+];
+
+return array_replace($base, $maquinas, $outras, $complementar, $revisaoNumerada, $revisaoHugo, $revisaoHugoMaquinas, $terceiraPassada, $revisaoHugoHalteres, $revisaoHugoCorpo, $revisaoHugoCore, $revisaoHugoPolia, $revisaoHugoPesoLivre, $revisaoHugoMistos, $segundaPassadaHugo, $segundaPassadaLote1, $segundaPassadaLote2, $filaRenomeada, $amplitudeAmostra, $hugoPendentes29, $hugo13_10Amostra1);
