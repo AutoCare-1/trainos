@@ -93,7 +93,7 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 92	Bíceps	Rosca Scott com halter unilateral	✅	ok
 93	Bíceps	Rosca Scott na máquina	✅	ok
 94	Bíceps	Rosca spider	✅	ok
-95	Tríceps	Flexão diamante para tríceps	ajustar a mão, deixando a mão toda no chão	pendente
+95	Tríceps	Flexão diamante para tríceps	ajustar a mão, deixando a mão toda no chão	VÍDEO APROVADO 14/10 (aguarda instalar após o deploy; storage/app/private/higgsfield/hugo-13-10-aprovados/)
 96	Tríceps	Paralela livre	✅	ok
 97	Tríceps	Paralela no gráviton	✅	ok
 98	Tríceps	Supino fechado com halteres	✅	ok
@@ -204,7 +204,7 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 203	Core	Abdominal bicicleta	✅	ok
 204	Core	Abdominal canivete	✅	ok
 205	Core	Abdominal declinado	nome: abdominal supra no banco declinado	RENOMEADO -> Abdominal supra no banco declinado
-206	Core	Abdominal infra (elevação de pernas)	deixar a mão no chão	pendente
+206	Core	Abdominal infra (elevação de pernas)	deixar a mão no chão	VÍDEO APROVADO 14/10 (aguarda instalar após o deploy; storage/app/private/higgsfield/hugo-13-10-aprovados/)
 207	Core	Abdominal infra no banco	✅	ok
 208	Core	Abdominal infra suspenso com pernas estendidas	✅	ok
 209	Core	Abdominal infra suspenso flexionando as pernas	ajustar a mão no local correto	pendente
@@ -252,7 +252,7 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 251	Funcional	Corda naval alternada	✅	ok
 252	Funcional	Corda naval simultânea	✅	ok
 253	Funcional	Corrida com calcanhar no glúteo	nome: corrida estacionária	RENOMEADO -> Corrida estacionária
-254	Funcional	Corrida com elevação de joelhos	elevar mais os joelhos	pendente
+254	Funcional	Corrida com elevação de joelhos	elevar mais os joelhos	VÍDEO APROVADO 14/10 (aguarda instalar após o deploy; storage/app/private/higgsfield/hugo-13-10-aprovados/)
 255	Funcional	Corrida de vai e vem (shuttle run)	✅	ok
 256	Funcional	Corrida estacionária	tirar (já tem um igual)	RETIRADO (o nome passou ao #253; quem apaga é o renomear)
 257	Funcional	Corrida na esteira	✅	ok
@@ -268,12 +268,12 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 267	Funcional	Pular corda duplo	tirar (já tem um igual)	RETIRADO
 268	Funcional	Remo ergômetro	✅	ok
 269	Funcional	Salto com afundo alternado	✅	ok
-270	Funcional	Salto horizontal	melhorar o movimento: fazer um salto com deslocamento maior para frente	pendente
+270	Funcional	Salto horizontal	melhorar o movimento: fazer um salto com deslocamento maior para frente	VÍDEO APROVADO 14/10 (aguarda instalar após o deploy; storage/app/private/higgsfield/hugo-13-10-aprovados/)
 271	Funcional	Salto no step alternado	ajustar o movimento: é para descer e subir no step e não ficar encima	pendente
-272	Funcional	Salto vertical	aumentar a altura do salto	pendente
+272	Funcional	Salto vertical	aumentar a altura do salto	VÍDEO APROVADO 14/10 (aguarda instalar após o deploy; storage/app/private/higgsfield/hugo-13-10-aprovados/)
 273	Funcional	Sprint na esteira	✅	ok
 274	Funcional	Swing com kettlebell americano	✅	ok
-275	Funcional	Thruster com barra	ajustar o movimento: ao descer a barra, ela fica na frente, não atrás nas costas	pendente
+275	Funcional	Thruster com barra	ajustar o movimento: ao descer a barra, ela fica na frente, não atrás nas costas	VÍDEO APROVADO 14/10 (aguarda instalar após o deploy; storage/app/private/higgsfield/hugo-13-10-aprovados/)
 276	Funcional	Thruster com halteres	✅	ok
 277	Funcional	Turkish get-up	tirar	RETIRADO
 278	Funcional	Wall ball	melhorar o movimento: ele deve estar de frente para a parede, jogando a bola no alvo, não de lado para a parede	pendente
