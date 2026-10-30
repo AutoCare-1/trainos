@@ -232,7 +232,7 @@ return [
     'Abdução de quadril na polia' => 'https://pub-9482945b571143e887b925bd2e0565e1.r2.dev/exercise-demos/abducao-de-quadril-na-polia.mp4',
     'Abdução em pé com elástico' => 'https://pub-9482945b571143e887b925bd2e0565e1.r2.dev/exercise-demos/abducao-em-pe-com-elastico.mp4',
     'Adução de quadril na polia' => 'https://pub-9482945b571143e887b925bd2e0565e1.r2.dev/exercise-demos/aducao-de-quadril-na-polia.mp4',
-    'Agachamento sumô profundo' => 'https://pub-9482945b571143e887b925bd2e0565e1.r2.dev/exercise-demos/agachamento-sumo-profundo.mp4',
+    'Agachamento sumô' => 'https://pub-9482945b571143e887b925bd2e0565e1.r2.dev/exercise-demos/agachamento-sumo-profundo.mp4',
     'Cadeira adutora' => 'https://pub-9482945b571143e887b925bd2e0565e1.r2.dev/exercise-demos/cadeira-adutora.mp4',
     'Deslocamento lateral com miniband' => 'https://pub-9482945b571143e887b925bd2e0565e1.r2.dev/exercise-demos/caminhada-lateral-com-elastico.mp4',
     'Glúteo coice com caneleira' => 'https://pub-9482945b571143e887b925bd2e0565e1.r2.dev/exercise-demos/coice-de-gluteo-com-caneleira.mp4',

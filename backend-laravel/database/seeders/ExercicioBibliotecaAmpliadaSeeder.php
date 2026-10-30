@@ -95,7 +95,7 @@ class ExercicioBibliotecaAmpliadaSeeder extends Seeder
             ['Remada neutra com halter no banco inclinado', 'Costas', 'Halteres', 'Peito apoiado no banco inclinado elimina o balanço do tronco.'],
             ['Remada unilateral com halter (serrote)', 'Costas', 'Halter', 'Joelho e mão apoiados no banco, puxe o halter até a lateral do tronco.'],
             ['Remada baixa unilateral', 'Costas', 'Polia', 'Um braço por vez, permitindo alongar bem o dorsal na volta.'],
-            ['Remada alta na polia', 'Costas', 'Polia', 'Puxe a barra até a altura do queixo com os cotovelos acima das mãos.'],
+            ['Remada alta na polia', 'Ombros', 'Polia', 'Puxe a barra até a altura do queixo com os cotovelos acima das mãos.'],
             ['Remada unilateral com kettlebell', 'Costas', 'Kettlebell', 'Tronco inclinado, puxe o kettlebell até a lateral do abdômen.'],
             ['Levantamento terra com halteres', 'Costas', 'Halteres', 'Mesma mecânica do terra, com halteres ao lado do corpo.'],
             ['Levantamento terra com barra hexagonal', 'Posterior', 'Barra', 'Barra hexagonal mantém a carga alinhada ao corpo e poupa a lombar.'],
@@ -215,7 +215,7 @@ class ExercicioBibliotecaAmpliadaSeeder extends Seeder
             ['Abdução em pé com elástico', 'Glúteos', 'Elástico', 'Elástico nos tornozelos, afaste uma perna lateralmente.'],
             ['Deslocamento lateral com miniband', 'Glúteos', 'Elástico', 'Elástico acima dos joelhos, caminhe de lado em semiagachamento.'],
             ['Adução de quadril na polia', 'Glúteos', 'Polia', 'Tornozeleira na polia, traga a perna em direção à linha média.'],
-            ['Agachamento sumô profundo', 'Glúteos', 'Halter', 'Base ampla e pontas para fora, desça bem o quadril.'],
+            ['Agachamento sumô', 'Pernas', 'Halter', 'Base ampla e pontas para fora, desça bem o quadril.'],
             ['Avanço com halteres', 'Pernas', 'Halteres', 'Passos longos e descida profunda enfatizam o glúteo.'],
             ['Subida no caixote', 'Pernas', 'Halteres', 'Caixa alta e empurrão pelo calcanhar.'],
 

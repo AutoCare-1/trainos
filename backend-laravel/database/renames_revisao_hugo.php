@@ -171,4 +171,8 @@ return [
     'Crucifixo declinado com halteres' => 'Crucifixo inclinado com halter', // #3
     'Corrida com calcanhar no glúteo' => 'Corrida estacionária', // #253
     'Alongamento de sóleo com joelho flexionado' => 'Mobilidade de tornozelo na parede', // #503
+
+    // Lista do Hugo de 13/10, #185: "nome: agachamento sumô - colocar no grupo
+    // de pernas". Só nome e grupo, o vídeo fica (30/10).
+    'Agachamento sumô profundo' => 'Agachamento sumô', // #185
 ];

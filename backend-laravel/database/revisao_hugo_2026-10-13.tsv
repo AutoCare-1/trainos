@@ -39,7 +39,7 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 38	Costas	Puxada frontal pegada supinada	nome: puxada aberta	RENOMEADO -> Puxada aberta
 39	Costas	Puxada triângulo	mudar a barra neutra pelo triângulo	pendente
 40	Costas	Remada aberta máquina	colocar no grupo de peito - nome: supino vertical máquina - ajustar a máquina colocando a lateral com carga em placas	pendente
-41	Costas	Remada alta na polia	colocar no grupo de ombro	pendente
+41	Costas	Remada alta na polia	colocar no grupo de ombro	GRUPO -> Ombros (30/10; nome e vídeo mantidos)
 42	Costas	Remada baixa	nome: remada baixa com triângulo	RENOMEADO -> Remada baixa com triângulo
 43	Costas	Remada baixa unilateral	✅	ok
 44	Costas	Remada com argola	tirar	RETIRADO
@@ -183,7 +183,7 @@ n_hugo	grupo	nome_em_13_10	pedido_do_hugo	status
 182	Glúteos	Adução de quadril na polia	✅	ok
 183	Glúteos	Agachamento búlgaro com foco em glúteo	tirar (já tem um igual)	RETIRADO
 184	Glúteos	Agachamento com elástico nos joelhos	tirar (já tem um igual)	RETIRADO
-185	Glúteos	Agachamento sumô profundo	nome: agachamento sumô - colocar no grupo de pernas	pendente
+185	Glúteos	Agachamento sumô profundo	nome: agachamento sumô - colocar no grupo de pernas	RENOMEADO -> Agachamento sumô (+ grupo Pernas, 30/10; vídeo mantido)
 186	Glúteos	Cadeira adutora	trocar a máquina, está é a cadeira aBdutora, trocar pela cadeira adutora	pendente
 187	Glúteos	Deslocamento lateral com miniband	corrigir o miniband, deixar apenas um encima do joelho	pendente
 188	Glúteos	Elevação de quadril na máquina	nome: elevação película na máquina. Corrigir o movimento, realizar maior amplitude na extensão do quadril	pendente
