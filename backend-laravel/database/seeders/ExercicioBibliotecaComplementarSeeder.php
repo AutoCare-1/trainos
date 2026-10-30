@@ -190,7 +190,7 @@ class ExercicioBibliotecaComplementarSeeder extends Seeder
             ['Alongamento de escaleno e cervical anterior', 'Alongamento', 'Peso corporal', 'Olhe para cima e para o lado, com a mão fixando a clavícula do lado oposto.'],
             ['Alongamento de lombar em posição fetal', 'Alongamento', 'Peso corporal', 'Deitado, abrace os dois joelhos e aproxime-os do peito.'],
             ['Alongamento de lombar com joelhos cruzados', 'Alongamento', 'Peso corporal', 'Deitado, cruze uma perna sobre a outra e deixe os joelhos caírem para o lado.'],
-            ['Alongamento de cadeia posterior com toalha', 'Alongamento', 'Toalha', 'Deitado, passe a toalha na sola do pé e puxe a perna estendida em sua direção.'],
+            ['Alongamento de cadeia posterior com toalha', 'Alongamento', 'Elástico', 'Deitado, passe o elástico na sola do pé e puxe a perna estendida em sua direção.'],
             ['Alongamento de banda iliotibial em pé', 'Alongamento', 'Peso corporal', 'Cruze a perna atrás da outra e incline o tronco para o lado oposto.'],
             ['Mobilidade de quadril com rotação de tronco', 'Alongamento', 'Peso corporal', 'Em passada, apoie a mão no chão e gire o tronco abrindo o braço para cima.'],
             ['Alongamento de abdome em decúbito ventral (esfinge)', 'Alongamento', 'Peso corporal', 'De bruços apoiado nos antebraços, eleve o peito sem tensionar a lombar.'],

@@ -83,6 +83,11 @@ php artisan db:seed --class="Database\\Seeders\\ExercicioBibliotecaAmpliadaSeede
 php artisan db:seed --class="Database\\Seeders\\ExercicioBibliotecaComplementarSeeder" --force
 php artisan exercicios:aplicar-demonstracoes || true
 
+# Equipamento/instrução corrigidos a pedido do Hugo sem trocar o nome
+# (database/textos_revisao_hugo.php). Os seeders acima só inserem exercício
+# novo, então texto de quem já existe só muda por aqui. Idempotente.
+php artisan exercicios:corrigir-textos || true
+
 # Os 147 que o Hugo reprovou (database/biblioteca_retirada_hugo.php). Os
 # seeders já não recriam nenhum; isto apaga os que o banco ainda tem. Poupa o
 # que estiver num treino ou tiver mídia do personal, e o relatório (com os
